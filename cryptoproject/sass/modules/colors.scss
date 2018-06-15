@@ -1,0 +1,19 @@
+/*----------------------------------------
+ * Colors
+ *----------------------------------------*/
+@each $name, $color in $colors {
+    //Important needed for semantic UI's hard to overwrite styles
+    .color-#{$name}{
+        color: $color!important;
+    }
+}
+
+@each $name, $color in $colors {
+    .bg-color-#{$name}{
+        background-color: $color!important;
+
+        &.glass {
+            background-color: rgba($color, .9)!important;
+        }
+    }
+}

@@ -1,0 +1,71 @@
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import CoinMarketWidget from '../../CoinMarket/CoinMarketWidget';
+import Feed from '../../Feed';
+import {RssSquare} from "../../icons";
+import Strings from "../../utils/Strings";
+import $ from 'jquery';
+
+class CryptoSidebar extends Component {
+    static propTypes = {
+        id: PropTypes.number.isRequired,
+        cryptoName: PropTypes.string.isRequired
+    };
+
+    render(){
+        let maxFeeds = (this.props.cryptoName === 'Bitcoin') ? 18 : 5;
+
+        return (
+            <aside id="crypto-sidebar">
+                <CoinMarketWidget id={this.props.id}/>
+                <div>
+                    <h3 className="ui attached bg-color-light-gray header top">
+                        <RssSquare className="color-uiOrange"/>
+                        <div className="content">RSS News Feed</div>
+                    </h3>
+                    <div className="ui attached segment">
+                        <Feed
+                            urls={[
+                                Feed.urls.reddit,
+                                Feed.urls.coinTelegraph,
+                                Feed.urls.coinDesk,
+                                Feed.urls.cryptoPotato,
+                                Feed.urls.coinsutra,
+                                Feed.urls.cryptoClarified
+                            ]}
+                            maxFeeds={maxFeeds}
+                            searchFor={[this.props.cryptoName]}
+                            className="ui divided list"
+                            notFoundHtml={<p>No feeds were found for {this.props.cryptoName}.</p>}
+                            feedRenderer={(key, entry) => {
+                                let dateTime = Strings.toDateTimeString(new Date(entry.date));
+
+                                if(this.props.cryptoName !== 'Bitcoin'){
+                                    return (
+                                        <div key={key}>
+                                            <h4 className="ui attached bg-color-light-gray header top">
+                                                <a href={entry.link}>{entry.title}</a>
+                                            </h4>
+                                            <div key={key} className="ui attached segment">
+                                                <div dangerouslySetInnerHTML={{__html: entry.summary}}/>
+                                            </div>
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <div key={key} className="item">
+                                        <a href={entry.link} className="header">{entry.title}</a>
+                                        <div className="description">{entry.author} - {dateTime}</div>
+                                    </div>
+                                );
+                            }}
+                        />
+                    </div>
+                </div>
+            </aside>
+        );
+    }
+}
+
+export default CryptoSidebar;

@@ -1,0 +1,32 @@
+/*----------------------------------------
+ * CoinMarketTable
+ *----------------------------------------*/
+#coin-market-table {
+    text-align: center;
+
+    .ui.button {
+        padding: 10px;
+        font-size: .9em;
+
+        a:hover {
+            color: inherit;
+        }
+    }
+
+    th.no-sort {
+        cursor: default;
+
+        &:hover {
+            background-color: #f9fafb;
+        }
+    }
+
+    img {
+        vertical-align: middle;
+    }
+
+    .loader,
+    .loader-small {
+        margin: 0 auto;
+    }
+}

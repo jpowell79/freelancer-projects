@@ -1,0 +1,121 @@
+/*----------------------------------------
+ * Crypto Pages
+ *----------------------------------------*/
+#crypto {
+    display: grid;
+    grid-template-areas:
+            "header header header"
+            "content content content"
+            "sidebar sidebar sidebar"
+            "footer footer footer";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-gap: $smallDivider;
+    padding: $smallDivider;
+    max-width: $wrapperWidth;
+    margin: 0 auto;
+
+    #site-header {
+        grid-area: header;
+        margin-bottom: 0;
+    }
+
+    #crypto-content {
+        grid-area: content;
+        @include divideChildren($standardDivider);
+
+        #trade-form {
+            h2 {
+                margin-bottom: 1rem;
+            }
+        }
+    }
+
+    #crypto-sidebar {
+        grid-area: sidebar;
+        @include divideChildren($standardDivider);
+
+        .feed  {
+            > div:first-child .ui.header {
+                margin-top: 0;
+            }
+
+            > .item {
+                padding: $xSmallDivider 0;
+            }
+
+            > .item:first-child {
+                padding-top: 0;
+            }
+        }
+    }
+
+    #site-footer {
+        grid-area: footer;
+        margin-top: 0;
+    }
+
+    .ui {
+        &.header {
+            text-align: center;
+            margin-top: $smallDivider;
+
+            &.dividing {
+                padding-bottom: $smallDivider;
+            }
+
+            &.huge {
+                font-size: 50px;
+
+                > .sub.header {
+                    font-size: 25px;
+                }
+            }
+        }
+
+        &.statistics {
+            justify-content: center;
+        }
+
+        &.segment {
+            word-wrap: break-word;
+        }
+
+        &.definition {
+            text-align: center;
+
+            tr {
+                padding: 0 0 2px 0!important;
+            }
+        }
+    }
+
+    .loader {
+        position: absolute;
+        left: calc(50% - 60px);
+    }
+}
+
+@media (min-width: $mediaMedium) {
+    #crypto {
+        grid-template-areas:
+                "header header header"
+                "content content sidebar"
+                "footer footer footer";
+        padding: 0 $standardDivider;
+        grid-gap: $standardDivider;
+
+        #crypto-content {
+            #trade-form {
+                h2 {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .ui {
+            .definition {
+                text-align: left;
+            }
+        }
+    }
+}

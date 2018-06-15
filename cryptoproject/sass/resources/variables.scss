@@ -1,0 +1,105 @@
+//----------------------------------------------
+// 1.0 Colors
+//----------------------------------------------
+$primary   : #2185d0;
+$secondary : #1b1c1d;
+$white     : #ffffff;
+$black     : #000000;
+$gray      : rgba(0,0,0,.03);
+
+//----------------------------------------------
+// 1.1 Semantic UI Colors
+//----------------------------------------------
+$uiBlue   : #2185d0;
+$uiIndigo : #6610f2;
+$uiPurple : #a333c8;
+$uiPink   : #e03997;
+$uiRed    : #db2828;
+$uiOrange : #cf590c;
+$uiYellow : #cd9903;
+$uiOlive  : #b5cc18;
+$uiGreen  : #198f35;
+$uiTeal   : #00b5ad;
+$uiGray   : #767676;
+$uiBrown  : #a5673f;
+$uiViolet : #6435c9;
+$uiBlack  : #1b1c1d;
+
+//----------------------------------------------
+// 1.2 Color Maps
+//----------------------------------------------
+$darkColors: (
+    (primary   $primary)
+    (secondary $secondary)
+    (black     $black)
+    (uiBlue    $uiBlue)
+    (uiYellow  $uiYellow)
+    (uiOrange  $uiOrange)
+    (uiTeal    $uiTeal)
+    (uiRed     $uiRed)
+    (uiGreen   $uiGreen)
+    (uiGray    $uiGray)
+    (uiPink    $uiPink)
+    (uiPurple  $uiPurple)
+    (uiIndigo  $uiIndigo)
+    (uiBrown   $uiBrown)
+    (uiOlive   $uiOlive)
+    (uiViolet  $uiViolet)
+    (uiBlack   $uiBlack)
+);
+
+$lightColors: (
+    (white $white)
+    (light-gray $gray)
+);
+
+$colors: join($darkColors, $lightColors);
+
+//----------------------------------------------
+// 2.0 Fonts
+//----------------------------------------------
+$iconFont: FontAwesome;
+
+//----------------------------------------------
+// 3.0 Icons
+//----------------------------------------------
+$mobileMenuIcon: "\f039";
+
+//----------------------------------------------
+// 4.0 Site Variables
+//----------------------------------------------
+$headingXLarge: 3rem;
+$headingLarge: 2rem;
+$headingMedium: 1.5rem;
+$headingSmall: 1.25rem;
+$wrapperWidth    : 1200px;
+$standardDivider : 30px;
+$smallDivider    : 15px;
+$xSmallDivider   : 7.5px;
+
+//----------------------------------------------
+// 5.0 Media Queries
+//----------------------------------------------
+// $mediaXLarge  - 1600px
+// $mediaLarge   - 1200px
+// $mediaMedium  - 992px
+// $mediaSmall   - 768px
+// $mediaXSmall  - 576px
+// $mediaXXSmall - 436px
+//----------------------------------------------
+$mediaLarge   : 1200px;
+$mediaMedium  : 992px;
+$mediaSmall   : 768px;
+$mediaXSmall  : 576px;
+$mediaXXSmall : 0;
+
+//----------------------------------------------
+// 5.1 Media Query Map
+//----------------------------------------------
+$mediaQueries: (
+    (lg  $mediaLarge)
+    (md  $mediaMedium)
+    (sm  $mediaSmall)
+    (xs  $mediaXSmall)
+    (xxs $mediaXXSmall)
+);

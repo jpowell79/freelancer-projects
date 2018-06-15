@@ -1,0 +1,128 @@
+import React, {Component} from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import Link from 'next/link';
+import $ from 'jquery';
+import TableSorter from '../TableSorter';
+import Strings from "../utils/Strings";
+import {hideOnMobile} from "../utils/cssUtils";
+import {calcTotalPercentChange} from "../utils";
+import Paths from "../utils/Paths";
+import {fetchAllCryptoContracts} from "../crypto/defaultCrypto";
+import {updateCrypto} from "../../redux/actions";
+
+class CoinMarketTable extends Component {
+    static defaultProps = {
+        marketData: [],
+        crypto: []
+    };
+
+    static propTypes = {
+        marketData: PropTypes.array,
+        crypto: PropTypes.array
+    };
+
+    constructor(props){
+        super(props);
+
+        this.renderMarketData = this.renderMarketData.bind(this);
+    }
+
+    componentDidMount(){
+        new TableSorter($("#coin-market-table"));
+
+        fetchAllCryptoContracts({
+            onContractFetched: (responses) => {
+                this.props.dispatch(updateCrypto(responses));
+            }
+        });
+    }
+
+    renderMarketData(){
+        return this.props.marketData.map((data, i) => {
+            let cryptoFilter = this.props.crypto.filter(cryptoData =>
+                cryptoData.name.toLowerCase() === data.name.toLowerCase()
+            );
+            if(cryptoFilter.length === 0) return false;
+            let crypto = cryptoFilter[0];
+            let usdQuotes = data.quotes.USD;
+
+            return (
+                <tr key={i}>
+                    <td><img src={Paths.getCryptoIcon(crypto.name, 'icon')}/></td>
+                    <td>{crypto.rank}</td>
+                    <td>{crypto.name}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>
+                    <td className={hideOnMobile()}>{usdQuotes.volume_24h}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(crypto.start_price)}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.price)}</td>
+                    <td className={hideOnMobile()}>{usdQuotes.percent_change_24h}</td>
+                    <td>{calcTotalPercentChange(
+                        parseFloat(crypto.start_price),
+                        parseFloat(usdQuotes.price)
+                    )}</td>
+                    <td className={hideOnMobile()}>{crypto.nr_of_trades}</td>
+                    <td className={hideOnMobile()}>{crypto.pot}</td>
+                    <td>
+                        {(crypto.nr_of_trades < 1000)
+                            ? (
+                                <button className="ui primary button">
+                                    <Link href={Paths.getCryptoPage(crypto.index)}><a>Available</a></Link>
+                                </button>
+                            )
+                            : (
+                                <button className="ui button">
+                                    <Link href={Paths.getCryptoPage(crypto.index)}><a>Unavailable</a></Link>
+                                </button>
+                            )
+                        }
+                    </td>
+                </tr>
+            )
+        });
+    }
+
+    render(){
+        return (
+            <table id="coin-market-table" className="ui unstackable selectable sortable very compact celled small table">
+                <thead>
+                <tr>
+                    <th className="no-sort">Icon</th>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th className={hideOnMobile()}>MCap</th>
+                    <th className={hideOnMobile()}>Volume</th>
+                    <th className={hideOnMobile()}>Start Price</th>
+                    <th className={hideOnMobile()}>Now Price</th>
+                    <th className={hideOnMobile()}>% 24hr</th>
+                    <th>% Total</th>
+                    <th className={hideOnMobile()}>Nr. Trades</th>
+                    <th className={hideOnMobile()}>Pot</th>
+                    <th className="no-sort">Trade</th>
+                </tr>
+                </thead>
+                <tbody>
+                {(this.props.isLoadingMarketData)
+                    ? (
+                        <tr>
+                            <td colSpan={12}>
+                                <div className="loader-small"/>
+                            </td>
+                        </tr>
+                    )
+                    : (
+                        this.renderMarketData()
+                    )
+                }
+                </tbody>
+            </table>
+        );
+    }
+}
+
+const mapStateToProps = (state) => {
+    const {crypto, marketData, isLoadingMarketData} = state;
+    return {crypto, marketData, isLoadingMarketData};
+};
+
+export default connect(mapStateToProps)(CoinMarketTable);

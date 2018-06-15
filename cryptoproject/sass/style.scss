@@ -1,0 +1,18 @@
+//Import resources
+@import "resources/variables";
+@import "resources/functions";
+
+//Import site-modules
+@import "site-modules/global";
+@import "site-modules/coin-market-table";
+@import "site-modules/crypto";
+@import "site-modules/footer";
+@import "site-modules/header";
+
+//Import modules
+@import "modules/social-menu";
+@import "modules/attributes";
+@import "modules/visibility";
+@import "modules/loader";
+@import "modules/colors";
+@import "modules/alert";

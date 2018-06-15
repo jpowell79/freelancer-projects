@@ -1,0 +1,15 @@
+/*----------------------------------------
+ * Global
+ *----------------------------------------*/
+img {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    @include standardHoverEffect();
+
+    &:hover {
+        color: darken($primary, 10%);
+    }
+}

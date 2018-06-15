@@ -1,0 +1,76 @@
+/*----------------------------------------
+ * Alerts
+ *----------------------------------------*/
+body.alert-open {
+    overflow: hidden;
+}
+
+body.alert-scrollbar-filler {
+    padding-right: 16px;
+}
+
+.coin-market-alert {
+    .modals {
+        overflow: auto;
+        transition: .3s ease-out!important;
+    }
+
+    .ui.modal,
+    .ui.modals {
+        display: block!important;
+    }
+
+    .modal {
+        transform: scale(1);
+        transition: .3s ease-out!important;
+
+        &.hidden {
+            transform: scale(.8);
+        }
+    }
+
+    .header {
+        position: relative;
+        padding-right: 4.5rem!important;
+
+        > .close {
+            cursor: pointer;
+            position: absolute;
+            right: 1.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        > i {
+            float: left;
+            margin-right: 1.5rem;
+        }
+
+        .modal-title {
+            margin: 0;
+        }
+    }
+}
+
+.error-alert .header,
+.warning-alert .header,
+.info-alert .header,
+.success-alert .header {
+    color: #FFFFFF!important;
+}
+
+.error-alert .header {
+    background-color: $uiRed!important;
+}
+
+.warning-alert .header {
+    background-color: $uiYellow!important;
+}
+
+.info-alert .header {
+    background-color: $uiTeal!important;
+}
+
+.success-alert .header {
+    background-color: $uiGreen!important;
+}

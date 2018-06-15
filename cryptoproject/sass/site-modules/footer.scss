@@ -1,0 +1,24 @@
+/*----------------------------------------
+ * Footer
+ *----------------------------------------*/
+#site-footer {
+    margin-top: $standardDivider;
+
+    .social-menu {
+        &.round > * {
+            background-color: #888;
+
+            &:hover {
+                background-color: darken($primary, 10%);
+            }
+        }
+    }
+
+    .ui.list > a.item {
+        color: #444;
+
+        &:hover {
+            color: $primary;
+        }
+    }
+}

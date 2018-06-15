@@ -1,0 +1,22 @@
+@mixin icon($icon){
+    font-family: $iconFont;
+    content: $icon;
+    cursor: pointer;
+}
+
+@mixin divideChildren($divider){
+    > * {
+        margin-bottom: $divider;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
+}
+
+//----------------------------------------------
+// Effects
+//----------------------------------------------
+@mixin standardHoverEffect(){
+    transition: all .3s ease-out;
+}

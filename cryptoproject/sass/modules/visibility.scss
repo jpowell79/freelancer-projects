@@ -1,0 +1,32 @@
+/*----------------------------------------
+ * Visibility
+ *----------------------------------------*/
+@mixin vanish(){
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+}
+
+@mixin reveal(){
+    position: initial;
+    opacity: 1;
+    visibility: visible;
+}
+
+@mixin forceReveal(){
+    position: initial!important;
+    opacity: 1!important;
+    visibility: visible!important;
+}
+
+@each $name, $size in $mediaQueries {
+    @media (min-width: $size) {
+        .hide-#{$name}{
+            @include vanish();
+        }
+
+        .show-#{$name}{
+            @include forceReveal();
+        }
+    }
+}

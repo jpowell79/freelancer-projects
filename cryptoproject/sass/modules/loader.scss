@@ -1,0 +1,24 @@
+/*----------------------------------------
+ * Loader
+ *----------------------------------------*/
+.loader {
+    width: 120px;
+    height: 120px;
+    border: 16px solid $gray;
+    border-top: 16px solid #337ab7;
+    border-radius: 50%;
+    animation: loader-spin 1s linear infinite;
+
+    &-small {
+        @extend .loader;
+        width: 60px;
+        height: 60px;
+        border: 8px solid $gray;
+        border-top: 8px solid $primary;
+    }
+}
+
+@keyframes loader-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
