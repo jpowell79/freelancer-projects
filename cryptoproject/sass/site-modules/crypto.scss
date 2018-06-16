@@ -14,6 +14,10 @@
     max-width: $wrapperWidth;
     margin: 0 auto;
 
+    > * > .segment {
+        margin: 0;
+    }
+
     #site-header {
         grid-area: header;
         margin-bottom: 0;
@@ -21,18 +25,16 @@
 
     #crypto-content {
         grid-area: content;
-        @include divideChildren($standardDivider);
 
-        #trade-form {
-            h2 {
-                margin-bottom: 1rem;
+        #crypto-details {
+            > * {
+                margin-bottom: 2em;
             }
         }
     }
 
     #crypto-sidebar {
         grid-area: sidebar;
-        @include divideChildren($standardDivider);
 
         .feed  {
             > div:first-child .ui.header {

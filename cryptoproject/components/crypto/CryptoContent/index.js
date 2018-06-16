@@ -61,7 +61,7 @@ class CryptoContent extends Component {
                     <div className="ui top attached padded bg-color-light-gray header">
                         <h2>Name: {name}</h2>
                     </div>
-                    <div className="ui attached padded segment">
+                    <div id="crypto-details" className="ui attached padded segment">
                         <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
                         <CryptoCountdown
                             standardTimeCloses={standard_time_closes}
