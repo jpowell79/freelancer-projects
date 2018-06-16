@@ -8,12 +8,12 @@ import Footer from '../../components/Footer';
 import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
 import AlertOptionPane from "../../components/Alert/AlertOptionPane";
 
 class Crypto_01 extends Component {
     static defaultData = getDefaultCrypto({
-        name: 'Bitcoin',
+        name: cryptoNames.bitcoin,
         index: 1
     });
 
@@ -28,7 +28,7 @@ class Crypto_01 extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_01_contract, 1);
+        return fetchCryptoContract(crypto_01_contract, Crypto_01.defaultData.index);
     }
 
     componentDidMount(){

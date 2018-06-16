@@ -8,11 +8,11 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
 
 class Crypto_09 extends Component {
     static defaultData = getDefaultCrypto({
-        name: 'MaidSafeCoin',
+        name: cryptoNames.maidSafeCoin,
         index: 9
     });
 
@@ -27,7 +27,7 @@ class Crypto_09 extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_09_contract);
+        return fetchCryptoContract(crypto_09_contract, Crypto_09.defaultData.index);
     }
 
     componentDidMount(){

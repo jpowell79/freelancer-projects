@@ -1,7 +1,6 @@
 export const cryptoNames = {
     bitcoin: 'Bitcoin',
     litecoin: 'Litecoin',
-    skipped: "Skipped",
     ripple: "Ripple",
     nxt: "Nxt",
     dogecoin: "Dogecoin",

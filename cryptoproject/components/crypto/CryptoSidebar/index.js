@@ -68,18 +68,18 @@ class CryptoSidebar extends Component {
                             }}
                         />
                     </div>
-                    <div>
-                        <h3 className="ui attached bg-color-light-gray header top">
-                            <Twitter className="color-uiBlue"/>
-                            <div className="content">Twitter Feed</div>
-                        </h3>
-                        <div className="ui attached segment">
-                            {twitterFeeds.map((feed, i) => (
-                                <div key={i}>
-                                    <TwitterWidget feed={feed}/>
-                                </div>
-                            ))}
-                        </div>
+                </div>
+                <div>
+                    <h3 className="ui attached bg-color-light-gray header top">
+                        <Twitter className="color-uiBlue"/>
+                        <div className="content">Twitter Feed</div>
+                    </h3>
+                    <div className="ui attached segment">
+                        {twitterFeeds.map((feed, i) => (
+                            <div key={i}>
+                                <TwitterWidget feed={feed}/>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </aside>

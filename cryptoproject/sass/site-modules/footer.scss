@@ -4,6 +4,11 @@
 #site-footer {
     margin-top: $standardDivider;
 
+    > * {
+        max-width: $wrapperWidth;
+        margin: 0 auto!important;
+    }
+
     .social-menu {
         &.round > * {
             background-color: #888;

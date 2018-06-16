@@ -186,10 +186,10 @@ printTitle "Generating Crypto Pages"
 cd ../../../pages/crypto
 
 names=(
-    "Skipped" "Bitcoin" "Litecoin" "Ripple" "Nxt" "Dogecoin" "DigiByte"
-    "ReddCoin" "MonaCoin" "MaidSafeCoin" "Monero" "Bytecoin" "BitShares"
-    "Stellar" "Syscoin" "Verge" "Tether" "NEM" "Ethereum" "Siacoin" "Augur"
-    "Decred" "PIVX" "Lisk" "DigixDAO" "Steem"
+    "skipped" "bitcoin" "litecoin" "ripple" "nxt" "dogecoin" "digiByte"
+    "reddCoin" "monaCoin" "maidSafeCoin" "monero" "byteCoin" "bitShares"
+    "stellar" "syscoin" "verge" "tether" "nem" "ethereum" "siacoin" "augur"
+    "decred" "pivx" "lisk" "digixDao" "steem"
 )
 
 for i in `seq 2 9`
@@ -207,11 +207,11 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
 
 class Crypto_0${i} extends Component {
     static defaultData = getDefaultCrypto({
-        name: '${names[i]}',
+        name: cryptoNames.${names[i]},
         index: ${i}
     });
 
@@ -226,7 +226,7 @@ class Crypto_0${i} extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_0${i}_contract);
+        return fetchCryptoContract(crypto_0${i}_contract, Crypto_0${i}.defaultData.index);
     }
 
     componentDidMount(){
@@ -304,11 +304,11 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
 
 class Crypto_${i} extends Component {
     static defaultData = getDefaultCrypto({
-        name: '${names[i]}',
+        name: cryptoNames.${names[i]},
         index: ${i}
     });
 
@@ -323,7 +323,7 @@ class Crypto_${i} extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_${i}_contract);
+        return fetchCryptoContract(crypto_${i}_contract, Crypto_${i}.defaultData.index);
     }
 
     componentDidMount(){

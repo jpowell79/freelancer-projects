@@ -48,7 +48,7 @@ class TwitterWidget extends Component {
     }
 
     componentWillUnmount(){
-        let $twitterTimelineScript = $('.twitter-timeline-script');
+        let $twitterTimelineScript = $('#twitter-timeline-script');
 
         if($twitterTimelineScript.length > 0) {
             $twitterTimelineScript.remove();

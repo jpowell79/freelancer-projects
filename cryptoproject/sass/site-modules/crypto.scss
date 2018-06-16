@@ -107,11 +107,17 @@
         grid-gap: $standardDivider;
 
         #crypto-content {
+            @include divideChildren($standardDivider);
+
             #trade-form {
                 h2 {
                     margin-bottom: 0;
                 }
             }
+        }
+
+        #crypto-sidebar {
+            @include divideChildren($standardDivider);
         }
 
         .ui {

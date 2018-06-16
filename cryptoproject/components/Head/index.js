@@ -58,7 +58,11 @@ class Head extends Component {
                 this.props.dispatch(updateMarketData(marketData));
                 this.props.dispatch(isLoadingMarketData(false));
             }).catch(err => {
+                if(this.props.addTimer) {
+                    clearInterval(this.timer);
+                }
                 AlertOptionPane.showErrorAlert({message: err.toString()});
+
                 this.props.dispatch(isLoadingMarketData(false));
             });
     }

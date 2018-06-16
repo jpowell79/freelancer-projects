@@ -8,11 +8,11 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
 
 class Crypto_12 extends Component {
     static defaultData = getDefaultCrypto({
-        name: 'BitShares',
+        name: cryptoNames.bitShares,
         index: 12
     });
 
@@ -27,7 +27,7 @@ class Crypto_12 extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_12_contract);
+        return fetchCryptoContract(crypto_12_contract, Crypto_12.defaultData.index);
     }
 
     componentDidMount(){
