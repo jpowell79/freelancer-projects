@@ -20,8 +20,6 @@ class CryptoSidebar extends Component {
         let maxFeeds = (this.props.cryptoName.toLowerCase() === cryptoNames.bitcoin.toLowerCase()) ? 6 : 3;
         let twitterFeeds = getTwitterFeeds(this.props.cryptoName);
 
-        console.log(this.props.cryptoName);
-
         return (
             <aside id="crypto-sidebar">
                 <CoinMarketWidget id={this.props.id}/>

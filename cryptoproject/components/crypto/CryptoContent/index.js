@@ -25,7 +25,9 @@ class CryptoContent extends Component {
             extended_time_closes
         } = this.props.data;
 
-        return (nr_of_trades < 1000) && (standard_time_closes !== 0) && (extended_time_closes !== 0);
+        return (nr_of_trades < 1000) &&
+            (Date.now() < standard_time_closes*1000) &&
+            (Date.now() < extended_time_closes*1000);
     }
 
     render(){
