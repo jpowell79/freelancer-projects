@@ -1,0 +1,10 @@
+/*----------------------------------------
+ * Headings
+ *----------------------------------------*/
+@each $name, $heading in $headings {
+    @include semanticAttribute(
+        '.#{$name}',
+        'font-size',
+        $heading
+    );
+}

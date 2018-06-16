@@ -1,49 +1,44 @@
-.no-margin-top {
-    margin-top: 0;
-}
+/*----------------------------------------
+ * Attribute Replacements
+ *----------------------------------------*/
+@include semanticAttribute(
+    '.no-margin-top',
+    'margin-top',
+    '0'
+);
 
-.no-margin-bottom {
-    margin-bottom: 0;
-}
+@include semanticAttribute(
+    '.no-margin-bottom',
+    'margin-bottom',
+    '0'
+);
 
-.no-padding {
-    padding: 0;
-}
+@include semanticAttribute(
+    '.no-padding',
+    'padding',
+    '0'
+);
 
-.text-center {
-    text-align: center;
-}
+@include semanticAttribute(
+    '.text-center',
+    'text-align',
+    'center'
+);
 
-.text-left {
-    text-align: left;
-}
+@include semanticAttribute(
+    '.text-left',
+    'text-align',
+    'left'
+);
 
-.standard-divider {
-    margin-top: $standardDivider;
-}
+@include semanticAttribute(
+    '.standard-divider',
+    'margin-top',
+    $standardDivider
+);
 
-.justify-content-center {
-    justify-content: center;
-}
-
-.ui {
-    .no-margin-top {
-        margin-top: 0!important;
-    }
-
-    .no-margin-bottom {
-        margin-bottom: 0!important;
-    }
-
-    .no-padding {
-        padding: 0!important;
-    }
-
-    .text-center {
-        text-align: center!important;
-    }
-
-    .text-left {
-        text-align: left!important;
-    }
-}
+@include semanticAttribute(
+    '.justify-content-center',
+    'justify-content',
+    'center'
+);

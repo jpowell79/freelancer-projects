@@ -2,18 +2,23 @@
  * Colors
  *----------------------------------------*/
 @each $name, $color in $colors {
-    //Important needed for semantic UI's hard to overwrite styles
-    .color-#{$name}{
-        color: $color!important;
-    }
+    @include semanticAttribute(
+        '.color-#{$name}',
+        'color',
+        $color
+    );
 }
 
 @each $name, $color in $colors {
-    .bg-color-#{$name}{
-        background-color: $color!important;
+    @include semanticAttribute(
+        '.bg-color-#{$name}',
+        'background-color',
+        $color
+    );
 
-        &.glass {
-            background-color: rgba($color, .9)!important;
-        }
-    }
+    @include semanticAttribute(
+        '.bg-color-#{$name}.glass',
+        'background-color',
+        rgba($color, .9)
+    );
 }

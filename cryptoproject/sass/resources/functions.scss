@@ -4,6 +4,19 @@
     cursor: pointer;
 }
 
+@mixin semanticAttribute($class, $attribute, $value){
+    #{$class}{
+        #{$attribute}: #{$value};
+    }
+
+    .ui {
+        &#{$class},
+        #{$class}{
+            #{$attribute}: #{$value}!important;
+        }
+    }
+}
+
 @mixin divideChildren($divider){
     > * {
         margin-bottom: $divider;

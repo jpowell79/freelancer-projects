@@ -6,6 +6,7 @@ $secondary : #1b1c1d;
 $white     : #ffffff;
 $black     : #000000;
 $gray      : rgba(0,0,0,.03);
+$darkGray  : #888;
 
 //----------------------------------------------
 // 1.1 Semantic UI Colors
@@ -77,10 +78,16 @@ $standardDivider : 30px;
 $smallDivider    : 15px;
 $xSmallDivider   : 7.5px;
 
+$headings: (
+    heading-xl: $headingXLarge,
+    heading-lg: $headingLarge,
+    heading-md: $headingMedium,
+    heading-sm: $headingSmall
+);
+
 //----------------------------------------------
 // 5.0 Media Queries
 //----------------------------------------------
-// $mediaXLarge  - 1600px
 // $mediaLarge   - 1200px
 // $mediaMedium  - 992px
 // $mediaSmall   - 768px

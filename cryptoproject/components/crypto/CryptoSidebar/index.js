@@ -49,7 +49,7 @@ class CryptoSidebar extends Component {
                                 if(this.props.cryptoName !== 'Bitcoin'){
                                     return (
                                         <div key={key}>
-                                            <h4 className="ui attached bg-color-light-gray header top">
+                                            <h4 className="ui attached color-uiBlue header top">
                                                 <a href={entry.link}>{entry.title}</a>
                                             </h4>
                                             <div key={key} className="ui attached segment">

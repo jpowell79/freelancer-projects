@@ -27,6 +27,7 @@ export const cryptoNames = {
 };
 
 export const twitterFeeds = {
+    defaultFeed: 'BitcoinMagazine',
     bitcoinMagazine: 'BitcoinMagazine',
     ripple: 'Ripple',
     ethereum: 'ethereum',
@@ -67,7 +68,7 @@ export const getTwitterFeeds = (cryptoName) => {
     if(feeds.length > 0){
         return feeds;
     } else {
-        return [twitterFeeds.bitcoinMagazine];
+        return [twitterFeeds.defaultFeed];
     }
 };
 

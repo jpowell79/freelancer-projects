@@ -1,19 +1,16 @@
+@mixin socialIconContainer($size){
+    display: block;
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+}
+
+$iconSize: 40px;
+
 .social-menu {
     display: flex;
     flex-wrap: wrap;
     font-size: $headingMedium;
-
-    &.small {
-        font-size: $headingSmall;
-    }
-
-    &.large {
-        font-size: $headingLarge;
-    }
-
-    &.xLarge {
-        font-size: $headingXLarge;
-    }
 
     > * {
         margin-right: $xSmallDivider;
@@ -26,10 +23,9 @@
     }
 
     &.round > * {
+        @include socialIconContainer($iconSize);
         color: $white;
         background-color: $primary;
-        padding: $xSmallDivider;
-        border-radius: 50%;
 
         &:hover {
             color: $white;
@@ -37,6 +33,8 @@
         }
 
         i {
+            @include socialIconContainer($iconSize);
+            font-size: $iconSize/1.75;
             position: relative;
 
             &::before {

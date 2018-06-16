@@ -56,7 +56,7 @@ class CryptoTrade extends Component {
         } = this.state;
 
         return (
-            <div id="trade-form" className="standard-divider">
+            <div id="trade-form">
                 <div className="ui stackable padded grid centered">
                     <h2>Trade now:</h2>
                     <div className={

@@ -11,7 +11,7 @@
 
     .social-menu {
         &.round > * {
-            background-color: #888;
+            background-color: $darkGray;
 
             &:hover {
                 background-color: darken($primary, 10%);
@@ -20,7 +20,7 @@
     }
 
     .ui.list > a.item {
-        color: #444;
+        color: $uiBlack;
 
         &:hover {
             color: $primary;
