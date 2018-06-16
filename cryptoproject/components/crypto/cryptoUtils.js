@@ -1,3 +1,77 @@
+export const cryptoNames = {
+    bitcoin: 'Bitcoin',
+    litecoin: 'Litecoin',
+    skipped: "Skipped",
+    ripple: "Ripple",
+    nxt: "Nxt",
+    dogecoin: "Dogecoin",
+    digiByte: "DigiByte",
+    reddCoin: "ReddCoin",
+    monaCoin: "MonaCoin",
+    maidSafeCoin: "MaidSafeCoin",
+    monero: "Monero",
+    byteCoin: "Bytecoin",
+    bitShares: "BitShares",
+    stellar: "Stellar",
+    syscoin: "Syscoin",
+    verge: "Verge",
+    tether: "Tether",
+    nem: "NEM",
+    ethereum: "Ethereum",
+    siacoin: "Siacoin",
+    augur: "Augur",
+    decred: "Decred",
+    pivx: "PIVX",
+    lisk: "Lisk",
+    digixDao:"DigixDAO",
+    steem: "Steem"
+};
+
+export const twitterFeeds = {
+    bitcoinMagazine: 'BitcoinMagazine',
+    ripple: 'Ripple',
+    ethereum: 'ethereum',
+    eos: 'EOS_io',
+    litecoin: 'LitecoinProject',
+    stellar: 'stellarOrg',
+    cardano: 'CardanoStiftung',
+    iota: 'iotatoken',
+    tron: 'Tronfoundation',
+    tether: 'Tether_to',
+    neo: 'NEO_council',
+    dash: 'dashPay',
+    monero: 'monero',
+    nem: 'NEMofficial',
+    binanceCoin: 'binance',
+    veChain: 'vechainofficial',
+    ethereumClassic: 'eth_classic',
+    qtum: 'QtumOfficial',
+    omiseGo: 'omise_go',
+    ontology: 'OntologyNetwork',
+    zcash: 'zcashco',
+    icon: 'icx_official',
+    bytecoin: 'Bytecoin_BCN',
+    list: 'ListHQ',
+    decred: 'decredproject',
+    zilliqa: 'zilliqa',
+    aeternity: 'aeternity',
+    bitcoinGold: 'bitcoingold',
+    byteom: 'Byteom_Official'
+};
+
+export const getTwitterFeeds = (cryptoName) => {
+    let nameKey = Object.keys(cryptoNames)
+        .filter(name => cryptoNames[name] === cryptoName);
+    let feeds = Object.keys(twitterFeeds)
+        .filter(feedKey => feedKey.startsWith(nameKey));
+
+    if(feeds.length > 0){
+        return feeds;
+    } else {
+        return [twitterFeeds.bitcoinMagazine];
+    }
+};
+
 export const getDefaultCrypto = ({name, index}) => {
     return {
         rank: 0,

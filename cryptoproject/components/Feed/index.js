@@ -67,7 +67,6 @@ class Feed extends Component {
             })
             .then(feeds => {
                 let key = 0;
-                console.log(feeds);
 
                 return flatten(feeds.map((feed) => {
                     return feed.entries.map((entry) => {

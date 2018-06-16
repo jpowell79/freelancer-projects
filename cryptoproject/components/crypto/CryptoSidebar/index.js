@@ -2,9 +2,13 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CoinMarketWidget from '../../CoinMarket/CoinMarketWidget';
 import Feed from '../../Feed';
-import {RssSquare} from "../../icons";
+import {
+    RssSquare,
+    Twitter
+} from "../../icons";
 import Strings from "../../utils/Strings";
-import $ from 'jquery';
+import TwitterWidget from '../../TwitterWidget';
+import {getTwitterFeeds, cryptoNames} from "../cryptoUtils";
 
 class CryptoSidebar extends Component {
     static propTypes = {
@@ -13,7 +17,8 @@ class CryptoSidebar extends Component {
     };
 
     render(){
-        let maxFeeds = (this.props.cryptoName === 'Bitcoin') ? 18 : 5;
+        let maxFeeds = (this.props.cryptoName === cryptoNames.bitcoin) ? 6 : 3;
+        let twitterFeeds = getTwitterFeeds(this.props.cryptoName);
 
         return (
             <aside id="crypto-sidebar">
@@ -34,6 +39,7 @@ class CryptoSidebar extends Component {
                                 Feed.urls.cryptoClarified
                             ]}
                             maxFeeds={maxFeeds}
+                            maxFeedsForEachUrl={2}
                             searchFor={[this.props.cryptoName]}
                             className="ui divided list"
                             notFoundHtml={<p>No feeds were found for {this.props.cryptoName}.</p>}
@@ -61,6 +67,19 @@ class CryptoSidebar extends Component {
                                 );
                             }}
                         />
+                    </div>
+                    <div>
+                        <h3 className="ui attached bg-color-light-gray header top">
+                            <Twitter className="color-uiBlue"/>
+                            <div className="content">Twitter Feed</div>
+                        </h3>
+                        <div className="ui attached segment">
+                            {twitterFeeds.map((feed, i) => (
+                                <div key={i}>
+                                    <TwitterWidget feed={feed}/>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </aside>
