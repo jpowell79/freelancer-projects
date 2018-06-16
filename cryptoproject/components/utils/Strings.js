@@ -5,7 +5,7 @@ class Strings {
 
     static toUSD(string){
         let opts = {style: "decimal", currency: "USD"};
-        return string.toLocaleString("en-US", opts) + '$';
+        return '$' + string.toLocaleString("en-US", opts);
     };
 
     static includesIgnoreCase(stringArray, string){
