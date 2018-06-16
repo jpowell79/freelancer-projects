@@ -1,5 +1,5 @@
 class CoinMarketCapApi {
-    static baseUrl = 'https://api.coinmarketcap.com/v2/';
+    static baseUrl = 'https://api.coinmarketcap.com/v2';
 
     static fiatCurrencies = {
         AUD: "AUD", BRL: "BRL", CAD: "CAD", CHF: "CHF", CLP: "CLP",

@@ -17,8 +17,10 @@ class CryptoSidebar extends Component {
     };
 
     render(){
-        let maxFeeds = (this.props.cryptoName === cryptoNames.bitcoin) ? 6 : 3;
+        let maxFeeds = (this.props.cryptoName.toLowerCase() === cryptoNames.bitcoin.toLowerCase()) ? 6 : 3;
         let twitterFeeds = getTwitterFeeds(this.props.cryptoName);
+
+        console.log(this.props.cryptoName);
 
         return (
             <aside id="crypto-sidebar">
@@ -46,7 +48,7 @@ class CryptoSidebar extends Component {
                             feedRenderer={(key, entry) => {
                                 let dateTime = Strings.toDateTimeString(new Date(entry.date));
 
-                                if(this.props.cryptoName !== 'Bitcoin'){
+                                if(this.props.cryptoName.toLowerCase() !== cryptoNames.bitcoin.toLowerCase()){
                                     return (
                                         <div key={key}>
                                             <h4 className="ui attached color-uiBlue header top">

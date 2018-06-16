@@ -61,9 +61,9 @@ export const twitterFeeds = {
 
 export const getTwitterFeeds = (cryptoName) => {
     let nameKey = Object.keys(cryptoNames)
-        .filter(name => cryptoNames[name] === cryptoName);
+        .filter(name => cryptoNames[name].toLowerCase() === cryptoName.toLowerCase())[0];
     let feeds = Object.keys(twitterFeeds)
-        .filter(feedKey => feedKey.startsWith(nameKey));
+        .filter(feedKey => feedKey.toLowerCase().startsWith(nameKey.toLowerCase()));
 
     if(feeds.length > 0){
         return feeds;
@@ -94,13 +94,14 @@ export const fetchCryptoContract = (contract, index) => {
 
     return Promise.all([
         methods.admin().call(),
-        methods.cryptoname().call(),
+        methods.showCryptoName().call(),
         methods.thisContractAddress().call(),
-        methods.startrank().call(),
-        methods.startprice().call(),
-        methods.numberoftrades().call(),
-        methods.standardtimecloses().call(),
-        methods.extendedtimecloses().call()
+        methods.showRank().call(),
+        methods.showCryptoStartPrice().call(),
+        methods.numberOfTrades().call(),
+        methods.standardTimeCloses().call(),
+        methods.extendedTimeCloses().call(),
+        methods.potBalance().call()
     ]).then(responses => {
         return {
             index: index,
@@ -108,11 +109,11 @@ export const fetchCryptoContract = (contract, index) => {
             name: responses[1],
             contract_address: responses[2],
             rank: responses[3],
-            start_price: responses[4],
+            start_price: responses[4]/100000,
             nr_of_trades: parseInt(responses[5], 10),
             standard_time_closes: parseInt(responses[6], 10),
             extended_time_closes: parseInt(responses[7], 10),
-            pot: 0
+            pot: responses[8]/1000000000000000000
         };
     });
 };

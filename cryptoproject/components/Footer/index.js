@@ -4,7 +4,7 @@ import {SocialMenu} from "../navigation/SocialMenu";
 class Footer extends Component {
     render() {
         return (
-            <div id="site-footer" className="ui bg-color-light-gray segment">
+            <footer id="site-footer" className="ui bg-color-light-gray segment">
                 <div className="ui padded stackable centered grid">
                     <div className="four wide column">
                         <div className="ui list">
@@ -46,7 +46,7 @@ class Footer extends Component {
                     </div>
                 </div>
                 {this.props.children}
-            </div>
+            </footer>
         );
     }
 }

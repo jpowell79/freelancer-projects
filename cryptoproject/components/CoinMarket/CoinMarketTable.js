@@ -6,7 +6,7 @@ import $ from 'jquery';
 import TableSorter from '../TableSorter';
 import Strings from "../utils/Strings";
 import {hideOnMobile} from "../utils/cssUtils";
-import {calcTotalPercentChange} from "../utils";
+import {calcTotalPercentChange, clone, joinClassNames} from "../utils";
 import Paths from "../utils/Paths";
 import {fetchAllCryptoContracts} from "../crypto/defaultCrypto";
 import {updateCrypto} from "../../redux/actions";
@@ -26,6 +26,7 @@ class CoinMarketTable extends Component {
         super(props);
 
         this.renderMarketData = this.renderMarketData.bind(this);
+        this.valueOnChangeClass = this.valueOnChangeClass.bind(this);
     }
 
     componentDidMount(){
@@ -38,6 +39,32 @@ class CoinMarketTable extends Component {
         });
     }
 
+    componentDidUpdate(prevProps){
+        this.prevProps = clone(prevProps);
+    }
+
+    valueOnChangeClass(currentData){
+        if(this.prevProps === undefined){
+            return '';
+        }
+
+        let prevData = this.prevProps.marketData.filter(data => data.name === currentData.name);
+
+        if(prevData.length !== 1){
+            return '';
+        }
+
+        return (currentData.quotes.USD.price > prevData[0].quotes.USD.price)
+            ? "color-uiGreen"
+            : (currentData.quotes.USD.price === prevData[0].quotes.USD.price)
+                ? ""
+                : "color-uiRed";
+    }
+
+    static getValueClass(value){
+        return (value < 0) ? "color-uiRed" : "color-uiGreen";
+    }
+
     renderMarketData(){
         return this.props.marketData.map((data, i) => {
             let cryptoFilter = this.props.crypto.filter(cryptoData =>
@@ -46,6 +73,10 @@ class CoinMarketTable extends Component {
             if(cryptoFilter.length === 0) return false;
             let crypto = cryptoFilter[0];
             let usdQuotes = data.quotes.USD;
+            let totalPriceChange = calcTotalPercentChange(
+                parseFloat(crypto.start_price),
+                parseFloat(usdQuotes.price)
+            );
 
             return (
                 <tr key={i}>
@@ -55,12 +86,17 @@ class CoinMarketTable extends Component {
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>
                     <td className={hideOnMobile()}>{usdQuotes.volume_24h}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(crypto.start_price)}</td>
-                    <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.price)}</td>
-                    <td className={hideOnMobile()}>{usdQuotes.percent_change_24h}</td>
-                    <td>{calcTotalPercentChange(
-                        parseFloat(crypto.start_price),
-                        parseFloat(usdQuotes.price)
-                    )}</td>
+                    <td className={joinClassNames(
+                        hideOnMobile(),
+                        this.valueOnChangeClass(data)
+                    )}>{Strings.toUSD(usdQuotes.price)}</td>
+                    <td className={joinClassNames(
+                        hideOnMobile(),
+                        CoinMarketTable.getValueClass(usdQuotes.percent_change_24h)
+                    )}>{usdQuotes.percent_change_24h}</td>
+                    <td className={
+                        CoinMarketTable.getValueClass(totalPriceChange)
+                    }>{totalPriceChange}</td>
                     <td className={hideOnMobile()}>{crypto.nr_of_trades}</td>
                     <td className={hideOnMobile()}>{crypto.pot}</td>
                     <td>

@@ -18,6 +18,10 @@ export const joinClassNames = (className1, className2) => {
 };
 
 export const calcTotalPercentChange = (startPrice, currentPrice) => {
+    if(startPrice === 0){
+        return "Unavailable";
+    }
+
     let change = currentPrice-startPrice;
     return ((change/startPrice)*100).toFixed(2);
 };

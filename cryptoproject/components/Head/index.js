@@ -68,7 +68,6 @@ class Head extends Component {
     }
 
     render(){
-        //TODO: move script to footer?
         return (
             <NextHead>
                 <title>CoinMarketTable</title>
