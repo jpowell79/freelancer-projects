@@ -1,3 +1,5 @@
+import Router from 'next/router';
+
 export const filterObject = (objectToFilter, objectToFilterOut) => {
     let filteredObject = {};
 
@@ -36,4 +38,16 @@ export const flatten = (array) => {
 
 export const reduce = (array, amountToReduce) => {
     return array.filter((item, i) => i < amountToReduce);
+};
+
+export const redirect = (res, url) => {
+    if(res){
+        res.writeHead(302, {
+            Location: url
+        });
+        res.end();
+        res.finished = true;
+    } else {
+        Router.push(url);
+    }
 };

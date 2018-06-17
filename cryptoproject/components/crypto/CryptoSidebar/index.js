@@ -8,7 +8,7 @@ import {
 } from "../../icons";
 import Strings from "../../utils/Strings";
 import TwitterWidget from '../../TwitterWidget';
-import {getTwitterFeeds, cryptoNames} from "../cryptoUtils";
+import {getTwitterFeeds} from "../cryptoUtils";
 
 class CryptoSidebar extends Component {
     static propTypes = {
@@ -17,7 +17,7 @@ class CryptoSidebar extends Component {
     };
 
     render(){
-        let maxFeeds = (this.props.cryptoName.toLowerCase() === cryptoNames.bitcoin.toLowerCase()) ? 6 : 3;
+        let maxFeeds = (this.props.cryptoName.toLowerCase() === 'bitcoin') ? 6 : 3;
         let twitterFeeds = getTwitterFeeds(this.props.cryptoName);
 
         return (
@@ -46,7 +46,7 @@ class CryptoSidebar extends Component {
                             feedRenderer={(key, entry) => {
                                 let dateTime = Strings.toDateTimeString(new Date(entry.date));
 
-                                if(this.props.cryptoName.toLowerCase() !== cryptoNames.bitcoin.toLowerCase()){
+                                if(this.props.cryptoName.toLowerCase() !== 'bitcoin'){
                                     return (
                                         <div key={key}>
                                             <h4 className="ui attached color-uiBlue header top">

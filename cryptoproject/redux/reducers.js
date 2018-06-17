@@ -1,10 +1,9 @@
 import {constants} from './constants';
 import {combineReducers} from 'redux';
-import {defaultCrypto} from "../components/crypto/defaultCrypto";
 import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
 export const initialState = {
-    crypto: defaultCrypto,
+    crypto: [],
     marketData: [],
     feeds: [],
     isLoadingFeeds: true,
@@ -43,6 +42,10 @@ export const isLoadingFeeds = (state = true, action) => {
 export const crypto = (state = {}, action) => {
     switch(action.type){
     case constants.UPDATE_CRYPTO:
+        if(Object.keys(state).length === 0){
+            return [action.payload];
+        }
+
         return state.map((cryptoRow) => {
             if(cryptoRow.index === action.payload.index){
                 return action.payload;

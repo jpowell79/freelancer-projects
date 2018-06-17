@@ -8,7 +8,7 @@ import Strings from "../utils/Strings";
 import {hideOnMobile} from "../utils/cssUtils";
 import {calcTotalPercentChange, clone, joinClassNames} from "../utils";
 import Paths from "../utils/Paths";
-import {fetchAllCryptoContracts} from "../crypto/defaultCrypto";
+import {fetchAllCryptoContracts} from "../crypto/cryptoUtils";
 import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
 import AlertOptionPane from "../Alert/AlertOptionPane";
 
@@ -37,7 +37,6 @@ class CoinMarketTable extends Component {
         fetchAllCryptoContracts().then((responses) => {
             this.props.dispatch(updateAllCrypto(responses));
             this.props.dispatch(isLoadingCrypto(false));
-            this.tablesorter.sortAtName("Rank");
         }).catch(err => {
             AlertOptionPane.showErrorAlert({message: err.toString()});
         });
@@ -45,7 +44,6 @@ class CoinMarketTable extends Component {
 
     componentDidUpdate(prevProps){
         this.prevProps = clone(prevProps);
-        this.tablesorter.sortCurrentlySelected();
     }
 
     valueOnChangeClass(currentData){
@@ -108,12 +106,18 @@ class CoinMarketTable extends Component {
                         {(crypto.nr_of_trades < 1000)
                             ? (
                                 <button className="ui primary button">
-                                    <Link href={Paths.getCryptoPage(crypto.index)}><a>Available</a></Link>
+                                    <Link href={{
+                                        pathname: Paths.getCryptoPage(),
+                                        query: {index: crypto.index}
+                                    }}><a>Available</a></Link>
                                 </button>
                             )
                             : (
                                 <button className="ui button">
-                                    <Link href={Paths.getCryptoPage(crypto.index)}><a>Unavailable</a></Link>
+                                    <Link href={{
+                                        pathname: Paths.getCryptoPage(),
+                                        query: {index: crypto.index}
+                                    }}><a>Unavailable</a></Link>
                                 </button>
                             )
                         }

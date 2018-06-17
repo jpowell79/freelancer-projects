@@ -1,30 +1,4 @@
-export const cryptoNames = {
-    bitcoin: 'Bitcoin',
-    litecoin: 'Litecoin',
-    ripple: "Ripple",
-    nxt: "Nxt",
-    dogecoin: "Dogecoin",
-    digiByte: "DigiByte",
-    reddCoin: "ReddCoin",
-    monaCoin: "MonaCoin",
-    maidSafeCoin: "MaidSafeCoin",
-    monero: "Monero",
-    byteCoin: "Bytecoin",
-    bitShares: "BitShares",
-    stellar: "Stellar",
-    syscoin: "Syscoin",
-    verge: "Verge",
-    tether: "Tether",
-    nem: "NEM",
-    ethereum: "Ethereum",
-    siacoin: "Siacoin",
-    augur: "Augur",
-    decred: "Decred",
-    pivx: "PIVX",
-    lisk: "Lisk",
-    digixDao:"DigixDAO",
-    steem: "Steem"
-};
+import {contracts} from "./contract";
 
 export const twitterFeeds = {
     defaultFeed: 'BitcoinMagazine',
@@ -60,10 +34,10 @@ export const twitterFeeds = {
 };
 
 export const getTwitterFeeds = (cryptoName) => {
-    let nameKey = Object.keys(cryptoNames)
-        .filter(name => cryptoNames[name].toLowerCase() === cryptoName.toLowerCase())[0];
     let feeds = Object.keys(twitterFeeds)
-        .filter(feedKey => feedKey.toLowerCase().startsWith(nameKey.toLowerCase()));
+        .filter(feedKey =>
+            feedKey.toLowerCase().startsWith(cryptoName.toLowerCase())
+        );
 
     if(feeds.length > 0){
         return feeds;
@@ -89,8 +63,8 @@ export const getDefaultCrypto = ({index}) => {
     }
 };
 
-export const fetchCryptoContract = (contract, index) => {
-    const methods = contract.methods;
+export const fetchCryptoContract = (index) => {
+    const methods = contracts[index].methods;
 
     return Promise.all([
         methods.admin().call(),
@@ -116,4 +90,10 @@ export const fetchCryptoContract = (contract, index) => {
             pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });
+};
+
+export const fetchAllCryptoContracts = () => {
+    return Promise.all(contracts.map((contract, i) =>
+        fetchCryptoContract(i)
+    ));
 };
