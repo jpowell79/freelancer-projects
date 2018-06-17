@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import Head from '../../components/Head';
-import crypto_20_contract from '../../components/crypto/contract/crypto_01_contract';
+import crypto_20_contract from '../../components/crypto/contract/crypto_20_contract';
 import Header from '../../components/Header';
 import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
@@ -31,13 +31,11 @@ class Crypto_20 extends Component {
     }
 
     componentDidMount(){
-        /*
         Crypto_20.fetchContract().then(response => {
             this.props.dispatch(updateCrypto(response));
         }).catch(err => {
-            AlertOptionPane.showErrorAlert({message: err});
+            AlertOptionPane.showErrorAlert({message: err.toString()});
         });
-        */
     }
 
     render() {

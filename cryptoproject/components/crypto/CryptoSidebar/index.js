@@ -52,9 +52,12 @@ class CryptoSidebar extends Component {
                                             <h4 className="ui attached color-uiBlue header top">
                                                 <a href={entry.link}>{entry.title}</a>
                                             </h4>
-                                            <div key={key} className="ui attached segment">
-                                                <div dangerouslySetInnerHTML={{__html: entry.summary}}/>
-                                            </div>
+                                            {(entry.summary !== null && entry.summary !== "")
+                                                ? (
+                                                    <div key={key} className="ui attached segment">
+                                                        <div dangerouslySetInnerHTML={{__html: entry.summary}}/>
+                                                    </div>
+                                                ) : null}
                                         </div>
                                     );
                                 }
