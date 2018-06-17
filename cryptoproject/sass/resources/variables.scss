@@ -11,20 +11,21 @@ $darkGray  : #888;
 //----------------------------------------------
 // 1.1 Semantic UI Colors
 //----------------------------------------------
-$uiBlue   : #2185d0;
-$uiIndigo : #6610f2;
-$uiPurple : #a333c8;
-$uiPink   : #e03997;
-$uiRed    : #db2828;
-$uiOrange : #cf590c;
-$uiYellow : #cd9903;
-$uiOlive  : #b5cc18;
-$uiGreen  : #198f35;
-$uiTeal   : #00b5ad;
-$uiGray   : #767676;
-$uiBrown  : #a5673f;
-$uiViolet : #6435c9;
-$uiBlack  : #1b1c1d;
+$uiBlue    : #2185d0;
+$uiIndigo  : #6610f2;
+$uiPurple  : #a333c8;
+$uiPink    : #e03997;
+$uiRed     : #db2828;
+$uiOrange  : #cf590c;
+$uiYellow  : #cd9903;
+$uiOlive   : #b5cc18;
+$uiGreen   : #198f35;
+$uiTeal    : #00b5ad;
+$uiGray    : #767676;
+$uiBrown   : #a5673f;
+$uiViolet  : #6435c9;
+$uiBlack   : #1b1c1d;
+$uiThColor : #f9fafb;
 
 //----------------------------------------------
 // 1.2 Color Maps
@@ -59,12 +60,15 @@ $colors: join($darkColors, $lightColors);
 //----------------------------------------------
 // 2.0 Fonts
 //----------------------------------------------
-$iconFont: FontAwesome;
+$iconFont: Icons;
 
 //----------------------------------------------
 // 3.0 Icons
 //----------------------------------------------
 $mobileMenuIcon: "\f039";
+$sortableIcon: "\f0dc";
+$caretDownIcon: "\f0d7";
+$caretUpIcon: "\f0d8";
 
 //----------------------------------------------
 // 4.0 Site Variables

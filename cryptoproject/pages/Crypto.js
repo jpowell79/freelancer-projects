@@ -11,6 +11,7 @@ import AlertOptionPane from "../components/Alert/AlertOptionPane";
 import {withRouter} from 'next/router';
 import {redirect} from "../components/utils/index";
 import Paths from '../components/utils/Paths';
+import {contracts} from "../components/crypto/contract";
 
 class Crypto extends Component {
     static defaultProps = {
@@ -18,26 +19,31 @@ class Crypto extends Component {
         crypto: []
     };
 
-    static async getInitialProps ({res, req, query}) {
+    static async getInitialProps ({res, query}) {
         if(query.index === undefined){
             redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
 
-        return {};
+        let index = parseInt(query.index, 10);
+
+        if(index < 0 || isNaN(query.index) || index >= contracts.length){
+            redirect(res, `${Paths.getCryptoPage('')}?index=0`);
+        }
+
+        return {index: parseInt(query.index, 10)};
     }
 
     constructor(props){
         super(props);
 
-        this.index = parseInt(this.props.router.query.index, 10);
         this.props.dispatch(isLoadingCrypto(true));
     }
 
     componentDidMount(){
-        fetchCryptoContract(this.index)
+        fetchCryptoContract(this.props.index)
             .then(response => {
                 this.props.dispatch(updateCrypto(Object.assign({}, response, {
-                    index: this.index
+                    index: this.props.index
                 })));
                 this.props.dispatch(isLoadingCrypto(false));
             }).catch(err => {
@@ -47,6 +53,7 @@ class Crypto extends Component {
 
     render() {
         const {
+            index,
             crypto,
             marketData,
             isLoadingCrypto,
@@ -64,9 +71,9 @@ class Crypto extends Component {
             );
         }
 
-        let currentCrypto = crypto.filter(cryptoObject => {
-            return cryptoObject.index === this.index;
-        })[0];
+        let currentCrypto = crypto.filter(cryptoObject =>
+            cryptoObject.index === index
+        )[0];
 
         let currentMarketData = marketData.filter(data =>
             data.name.toLowerCase() === currentCrypto.name.toLowerCase()

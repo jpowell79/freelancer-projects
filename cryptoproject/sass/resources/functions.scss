@@ -1,6 +1,6 @@
 @mixin icon($icon){
     font-family: $iconFont;
-    content: $icon;
+    content: $icon!important;
     cursor: pointer;
 }
 

@@ -6,17 +6,20 @@ export const Loader = ({className = "", ...props}) =>
 export const LoaderSmall = ({className = "", ...props}) =>
     <div {...props} className={joinClassNames('loader-small', className)}/>;
 
+export const Sort = ({className = "", ...props}) =>
+    <i {...props} className={joinClassNames('sort icon', className)}/>;
+
 export const Times = ({className = "", ...props}) =>
-    <i {...props} className={joinClassNames('times icon', className)} aria-hidden="true"/>;
+    <i {...props} className={joinClassNames('times icon', className)}/>;
 
 export const CheckCircle = ({className = "", ...props}) =>
-    <i {...props} className={joinClassNames('check circle icon', className)} aria-hidden="true"/>;
+    <i {...props} className={joinClassNames('check circle icon', className)}/>;
 
 export const ExclamationCircle = ({className = "", ...props}) =>
-    <i {...props} className={joinClassNames('exclamation circle icon', className)} aria-hidden="true"/>;
+    <i {...props} className={joinClassNames('exclamation circle icon', className)}/>;
 
 export const InfoCircle = ({className = "", ...props}) =>
-    <i {...props} className={joinClassNames('info circle icon', className)} aria-hidden="true"/>;
+    <i {...props} className={joinClassNames('info circle icon', className)}/>;
 
 export const Twitter = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames("twitter icon", className)}/>;

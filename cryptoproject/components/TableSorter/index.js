@@ -9,6 +9,7 @@ import $ from 'jquery';
 class TableSorter {
     static defaultClassNames = {
         sort: 'tablesort',
+        sortable: 'sortable',
         sortStart: 'start',
         sortComplete: 'complete',
         noSort: 'no-sort',
@@ -58,6 +59,10 @@ class TableSorter {
         this.ascending = this.settings.ascending;
         let self = this;
 
+        $.each(this.$ths, (i, th) => {
+            $(th).addClass(this.classNames.sortable);
+        });
+
         this.$ths.on(`click.${this.classNames.sort}`, function(){
             self.sort($(this));
         });
@@ -67,9 +72,20 @@ class TableSorter {
         this.sortAtIndex = this.sortAtIndex.bind(this);
         this.sortCurrentlySelected = this.sortCurrentlySelected.bind(this);
         this.turnOffSorting = this.turnOffSorting.bind(this);
+        this.hasSelectedHeader = this.hasSelectedHeader.bind(this);
     }
 
-    sortCurrentlySelected(){
+    hasSelectedHeader(){
+        return this.$th !== null && this.$th !== undefined;
+    }
+
+    sortCurrentlySelected(ascending = true){
+        if(ascending){
+            this.index = null;
+        } else {
+            this.ascending = !ascending;
+        }
+
         this.sort(this.$th);
     }
 
@@ -89,7 +105,12 @@ class TableSorter {
     sort($th){
         if($th === null) return;
 
+        if(this.hasSelectedHeader()){
+            this.$th.addClass(this.classNames.sortable);
+        }
+
         this.$th = $th;
+
         let self = this,
             table = this.$table,
             rowsContainer = table.find('tbody').length > 0 ? table.find('tbody') : table,
@@ -139,6 +160,7 @@ class TableSorter {
                 rowsContainer.append(entry.row);
             });
 
+            $th.removeClass(self.classNames.sortable);
             $th.addClass(self.ascending
                 ? self.classNames.ascending
                 : self.classNames.descending

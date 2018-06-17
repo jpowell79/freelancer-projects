@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import PropTypes from 'prop-types';
 import Link from 'next/link';
 import $ from 'jquery';
 import TableSorter from '../TableSorter';
 import Strings from "../utils/Strings";
 import {hideOnMobile} from "../utils/cssUtils";
-import {calcTotalPercentChange, clone, joinClassNames} from "../utils";
+import {calcTotalPercentChange, joinClassNames} from "../utils";
 import Paths from "../utils/Paths";
 import {fetchAllCryptoContracts} from "../crypto/cryptoUtils";
 import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
@@ -16,11 +15,6 @@ class CoinMarketTable extends Component {
     static defaultProps = {
         marketData: [],
         crypto: []
-    };
-
-    static propTypes = {
-        marketData: PropTypes.array,
-        crypto: PropTypes.array
     };
 
     constructor(props){
@@ -37,13 +31,22 @@ class CoinMarketTable extends Component {
         fetchAllCryptoContracts().then((responses) => {
             this.props.dispatch(updateAllCrypto(responses));
             this.props.dispatch(isLoadingCrypto(false));
+            this.tablesorter.sortAtName("Start Rank");
         }).catch(err => {
             AlertOptionPane.showErrorAlert({message: err.toString()});
         });
     }
 
     componentDidUpdate(prevProps){
-        this.prevProps = clone(prevProps);
+        this.prevProps = prevProps;
+
+        if(this.tablesorter.hasSelectedHeader()){
+            this.tablesorter.sortCurrentlySelected(
+                this.tablesorter.$th.attr('class').includes(
+                    TableSorter.defaultClassNames.ascending
+                )
+            );
+        }
     }
 
     valueOnChangeClass(currentData){
@@ -51,7 +54,9 @@ class CoinMarketTable extends Component {
             return '';
         }
 
-        let prevData = this.prevProps.marketData.filter(data => data.name === currentData.name);
+        let prevData = this.prevProps.marketData.filter(
+            data => data.name === currentData.name
+        );
 
         if(prevData.length !== 1){
             return '';
@@ -147,7 +152,7 @@ class CoinMarketTable extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                {(this.props.isLoadingMarketData || this.props.isLoadingCrypto)
+                {(this.props.marketData.length === 0 || this.props.isLoadingCrypto)
                     ? (
                         <tr>
                             <td colSpan={12}>
@@ -169,14 +174,12 @@ const mapStateToProps = (state) => {
     const {
         crypto,
         marketData,
-        isLoadingMarketData,
         isLoadingCrypto
     } = state;
 
     return {
         crypto,
         marketData,
-        isLoadingMarketData,
         isLoadingCrypto
     };
 };

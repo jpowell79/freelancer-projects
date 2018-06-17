@@ -1,3 +1,12 @@
+@mixin uiTableIcon($icon){
+    font-family: $iconFont;
+    content: $icon!important;
+    display: inline-block!important;
+    height: 1em;
+    width: auto;
+    margin: 0 0 0 .5em;
+}
+
 /*----------------------------------------
  * Coin Market Table
  *----------------------------------------*/
@@ -13,11 +22,32 @@
         }
     }
 
-    th.no-sort {
-        cursor: default;
+    th {
+        &.sortable:after {
+            @include uiTableIcon($sortableIcon);
+            color: darken($uiThColor, 25%);
+        }
 
-        &:hover {
-            background-color: #f9fafb;
+        &.no-sort {
+            cursor: default;
+
+            &:hover {
+                background-color: $uiThColor;
+            }
+        }
+
+
+    }
+
+    td {
+        font-size: 1.15em!important;
+
+        &.color-uiRed:after {
+            @include uiTableIcon($caretDownIcon);
+        }
+
+        &.color-uiGreen:after {
+            @include uiTableIcon($caretUpIcon);
         }
     }
 
@@ -28,5 +58,18 @@
     .loader,
     .loader-small {
         margin: 0 auto;
+    }
+}
+
+@media (max-width: $mediaXSmall){
+    #coin-market-table {
+        .ui.button {
+            padding: 6px;
+            font-size: .8em;
+        }
+
+        td {
+            font-size: 1em !important;
+        }
     }
 }

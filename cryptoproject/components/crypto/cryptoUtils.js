@@ -46,23 +46,6 @@ export const getTwitterFeeds = (cryptoName) => {
     }
 };
 
-export const getDefaultCrypto = ({index}) => {
-    return {
-        rank: 0,
-        name: '',
-        index: index,
-        start_price: '1',
-        nr_of_trades: 0,
-        pot: 0,
-        standard_time_closes: 0,
-        extended_time_closes: 0,
-        last_updated: 0,
-        contract_address: 'undefined',
-        admin: 'undefined',
-        circulating_supply: 0
-    }
-};
-
 export const fetchCryptoContract = (index) => {
     const methods = contracts[index].methods;
 
