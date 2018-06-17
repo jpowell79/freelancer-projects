@@ -7,6 +7,13 @@ export const updateFeeds = (feeds) => {
     }
 };
 
+export const updateTradeStatus = (tradeStatus) => {
+    return {
+        type: constants.UPDATE_TRADE_STATUS,
+        payload: tradeStatus
+    }
+};
+
 export const isLoadingFeeds = (isLoading) => {
     return {
         type: constants.IS_LOADING_FEEDS,

@@ -1,6 +1,7 @@
 import {constants} from './constants';
 import {combineReducers} from 'redux';
 import {defaultCrypto} from "../components/crypto/defaultCrypto";
+import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
 //TODO: better define default marketData?
 export const initialState = {
@@ -8,7 +9,17 @@ export const initialState = {
     marketData: [],
     feeds: [],
     isLoadingFeeds: true,
-    isLoadingMarketData: true
+    isLoadingMarketData: true,
+    tradeStatus: CryptoTrade.tradeStatus.idle
+};
+
+export const tradeStatus = (state = CryptoTrade.tradeStatus.idle, action) => {
+    switch(action.type){
+    case constants.UPDATE_TRADE_STATUS:
+        return action.payload;
+    default:
+        return state;
+    }
 };
 
 export const feeds = (state = [], action) => {
@@ -68,5 +79,6 @@ export default combineReducers({
     marketData,
     feeds,
     isLoadingMarketData,
-    isLoadingFeeds
+    isLoadingFeeds,
+    tradeStatus
 });

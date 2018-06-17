@@ -19,8 +19,8 @@ class CryptoContent extends Component {
     }
 
     isOpen(){
-        let {nr_of_trades} = this.props.data;
         let {
+            nr_of_trades,
             standard_time_closes,
             extended_time_closes
         } = this.props.data;
@@ -34,8 +34,8 @@ class CryptoContent extends Component {
         let {
             name,
             contract_address,
-            standard_time_closes = 0,
-            extended_time_closes = 0,
+            standard_time_closes,
+            extended_time_closes,
         } = this.props.data;
 
         return (
@@ -79,7 +79,7 @@ class CryptoContent extends Component {
                                 })));
                             }}
                         />
-                        <CryptoTrade isOpen={this.isOpen}/>
+                        <CryptoTrade isOpen={this.isOpen()}/>
                     </div>
                 </div>
             </div>

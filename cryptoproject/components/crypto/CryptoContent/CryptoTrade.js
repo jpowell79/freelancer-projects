@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import PositiveFloatInput from '../../forms/PositiveFloatInput';
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
+import {updateTradeStatus} from "../../../redux/actions";
 
 //TODO: Wire up with some actual trade mechanism
 class CryptoTrade extends Component {
     static propTypes = {
-        isOpen: PropTypes.func.isRequired
+        isOpen: PropTypes.bool.isRequired
     };
 
     static tradeStatus = {
@@ -18,9 +20,12 @@ class CryptoTrade extends Component {
         super(props);
 
         this.state = {
-            tradeStatus: CryptoTrade.tradeStatus.idle,
             hasCorrectInput: true
         };
+    }
+
+    componentWillUnmount(){
+        this.props.dispatch(updateTradeStatus(CryptoTrade.tradeStatus.idle));
     }
 
     static isValidTrade(tradeValue){
@@ -51,9 +56,13 @@ class CryptoTrade extends Component {
     render(){
         let {
             tradeValue,
-            tradeStatus,
             hasCorrectInput
         } = this.state;
+
+        let {
+            tradeStatus,
+            isOpen
+        } = this.props;
 
         return (
             <div id="trade-form">
@@ -77,20 +86,20 @@ class CryptoTrade extends Component {
                                 });
                             }}
                         />
-                        {this.props.isOpen()
+                        {(isOpen)
                             ? <button
                                 className="ui primary submit button"
                                 onClick={(event) => {
                                     event.preventDefault();
 
                                     if(CryptoTrade.isValidTrade(tradeValue)){
-                                        this.setState({
-                                            tradeStatus: CryptoTrade.tradeStatus.success
-                                        });
+                                        this.props.dispatch(updateTradeStatus(
+                                            CryptoTrade.tradeStatus.success
+                                        ));
                                     } else {
-                                        this.setState({
-                                            tradeStatus: CryptoTrade.tradeStatus.error
-                                        });
+                                        this.props.dispatch(updateTradeStatus(
+                                            CryptoTrade.tradeStatus.error
+                                        ));
                                     }
                                 }}>Trade</button>
                             : <button disabled className="ui submit button">Locked</button>}
@@ -102,4 +111,10 @@ class CryptoTrade extends Component {
     }
 }
 
-export default CryptoTrade;
+const mapStateToProps = (state) => {
+    let {tradeStatus} = state;
+
+    return {tradeStatus};
+};
+
+export default connect(mapStateToProps)(CryptoTrade);
