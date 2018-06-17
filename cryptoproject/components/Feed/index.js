@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import FeedParser from "./FeedParser";
 import PropTypes from "prop-types";
 import {clone, flatten, reduce, joinClassNames} from "../utils";
+import {updateFeeds, isLoadingFeeds} from "../../redux/actions";
+import {connect} from 'react-redux';
 import Strings from '../utils/Strings';
 
 class Feed extends Component {
@@ -36,17 +38,17 @@ class Feed extends Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            isLoadingFeeds: true,
-            feeds: []
-        };
-
         this.feedHtml = this.feedHtml.bind(this);
         this.fetchFeed = this.fetchFeed.bind(this);
     }
 
     componentDidMount(){
         this.fetchFeed();
+    }
+
+    componentWillUnmount(){
+        this.props.dispatch(isLoadingFeeds(true));
+        this.props.dispatch(updateFeeds([]));
     }
 
     fetchFeed(){
@@ -57,37 +59,31 @@ class Feed extends Component {
             urls
         } = this.props;
 
-        Promise.all(urls.map(url => feednami.load(url)))
-            .then(responses => {
-                return flatten(responses.map(response => {
-                    let parser = new FeedParser(clone(response));
-                    parser.parse(maxFeedsForEachUrl, searchFor);
-                    return parser.feeds;
-                }));
-            })
-            .then(feeds => {
-                let key = 0;
+        Promise.all(urls.map(url => feednami.load(url))).then(responses => {
+            return flatten(responses.map(response => {
+                let parser = new FeedParser(clone(response));
+                parser.parse(maxFeedsForEachUrl, searchFor);
+                return parser.feeds;
+            }));
+        }).then(feeds => {
+            let key = 0;
 
-                return flatten(feeds.map((feed) => {
-                    return feed.entries.map((entry) => {
-                        key += 1;
+            return flatten(feeds.map((feed) => {
+                return feed.entries.map((entry) => {
+                    key += 1;
 
-                        return this.feedHtml(key, entry, feed.meta);
-                    });
-                }));
-            }).then(feeds => {
-                if(maxFeeds >= 0){
-                    this.setState({
-                        feeds: reduce(feeds, maxFeeds),
-                        isLoadingFeeds: false
-                    });
-                } else {
-                    this.setState({
-                        feeds,
-                        isLoadingFeeds: false
-                    });
-                }
-            });
+                    return this.feedHtml(key, entry, feed.meta);
+                });
+            }));
+        }).then(feeds => {
+            if(maxFeeds >= 0){
+                this.props.dispatch(updateFeeds(reduce(feeds, maxFeeds)));
+                this.props.dispatch(isLoadingFeeds(false));
+            } else {
+                this.props.dispatch(updateFeeds(feeds));
+                this.props.dispatch(isLoadingFeeds(false));
+            }
+        });
     }
 
     feedHtml(key, entry, meta){
@@ -108,9 +104,9 @@ class Feed extends Component {
     render(){
         return (
             <div className={joinClassNames("feed", this.props.className)}>
-                {(this.state.feeds.length > 0)
-                    ? this.state.feeds
-                    : (this.state.isLoadingFeeds)
+                {(this.props.feeds.length > 0)
+                    ? this.props.feeds
+                    : (this.props.isLoadingFeeds)
                         ? <p>Loading feeds...</p>
                         : this.props.notFoundHtml}
             </div>
@@ -118,4 +114,10 @@ class Feed extends Component {
     }
 }
 
-export default Feed;
+const mapStateToProps = (state) => {
+    let {feeds, isLoadingFeeds} = state;
+
+    return {feeds, isLoadingFeeds};
+};
+
+export default connect(mapStateToProps)(Feed);
