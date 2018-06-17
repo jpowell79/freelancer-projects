@@ -23,7 +23,6 @@ import Crypto_22, {cryptoData22} from '../../pages/crypto/Crypto_22';
 import Crypto_23, {cryptoData23} from '../../pages/crypto/Crypto_23';
 import Crypto_24, {cryptoData24} from '../../pages/crypto/Crypto_24';
 import Crypto_25, {cryptoData25} from '../../pages/crypto/Crypto_25';
-import AlertOptionPane from '../Alert/AlertOptionPane';
 
 export const defaultCrypto = [
     cryptoData01,
@@ -53,106 +52,32 @@ export const defaultCrypto = [
     cryptoData25,
 ];
 
-export const fetchAllCryptoContracts = ({onContractFetched}) => {
-    return Crypto_01.fetchContract().then(response => {
-        onContractFetched(response);
-        return Crypto_02.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_03.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_04.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_05.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_06.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_07.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_08.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_09.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_10.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_11.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_12.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_13.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_14.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_15.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_16.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_17.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_18.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_19.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_20.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_21.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_22.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_23.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_24.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-        return Crypto_25.fetchContract();
-    })
-    .then(response => {
-        onContractFetched(response);
-    }).catch(err => {
-        AlertOptionPane.showErrorAlert({message: err.toString()});
-    });
+export const fetchAllCryptoContracts = () => {
+    return Promise.all([
+        Crypto_01.fetchContract(),
+        Crypto_02.fetchContract(),
+        Crypto_03.fetchContract(),
+        Crypto_04.fetchContract(),
+        Crypto_05.fetchContract(),
+        Crypto_06.fetchContract(),
+        Crypto_07.fetchContract(),
+        Crypto_08.fetchContract(),
+        Crypto_09.fetchContract(),
+        Crypto_10.fetchContract(),
+        Crypto_11.fetchContract(),
+        Crypto_12.fetchContract(),
+        Crypto_13.fetchContract(),
+        Crypto_14.fetchContract(),
+        Crypto_15.fetchContract(),
+        Crypto_16.fetchContract(),
+        Crypto_17.fetchContract(),
+        Crypto_18.fetchContract(),
+        Crypto_19.fetchContract(),
+        Crypto_20.fetchContract(),
+        Crypto_21.fetchContract(),
+        Crypto_22.fetchContract(),
+        Crypto_23.fetchContract(),
+        Crypto_24.fetchContract(),
+        Crypto_25.fetchContract(),
+    ]);
 };

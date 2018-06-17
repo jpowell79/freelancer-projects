@@ -3,7 +3,6 @@ import NextHead from 'next/head';
 import {connect} from 'react-redux';
 import {isLoadingMarketData, updateMarketData} from "../../redux/actions";
 import CoinMarketCapApi from "../CoinMarket/CoinMarketCapApi";
-import Strings from "../utils/Strings";
 import axios from 'axios';
 import PropTypes from "prop-types";
 import '../../sass/style.scss';
@@ -43,17 +42,11 @@ class Head extends Component {
     }
 
     fetchMarketData(){
-        let names = this.props.crypto.map(data => data.name);
+        this.props.dispatch(isLoadingMarketData(true));
 
-        axios.get(CoinMarketCapApi.ticker(), {}, {onUploadProgress: () => {
-                if(!this.props.isLoadingMarketData){
-                    this.props.dispatch(isLoadingMarketData(true));
-                }
-            }})
+        axios.get(CoinMarketCapApi.ticker())
             .then(response => {
-                return Object.values(response.data.data).filter(data => {
-                    return Strings.includesIgnoreCase(names, data.name);
-                });
+                return Object.values(response.data.data);
             }).then(marketData => {
                 this.props.dispatch(updateMarketData(marketData));
                 this.props.dispatch(isLoadingMarketData(false));

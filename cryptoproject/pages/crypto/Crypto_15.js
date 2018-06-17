@@ -8,13 +8,10 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
 
 class Crypto_15 extends Component {
-    static defaultData = getDefaultCrypto({
-        name: cryptoNames.verge,
-        index: 15
-    });
+    static defaultData = getDefaultCrypto({index: 15});
 
     static defaultProps = {
         marketData: {},
@@ -70,15 +67,16 @@ class Crypto_15 extends Component {
 const mapStateToProps = (state) => {
     const {crypto, marketData} = state;
 
+    let cryptoData = crypto.filter(data =>
+        data.index === Crypto_15.defaultData.index
+    )[0];
+
     return {
-        data: crypto.filter(data =>
-            data.name.toLowerCase() === Crypto_15.defaultData.name.toLowerCase()
-        )[0],
+        data: cryptoData,
         marketData: (marketData.length > 0)
             ? marketData.filter(data =>
-                data.name.toLowerCase() === Crypto_15.defaultData.name.toLowerCase()
-            )[0]
-            : {}
+                data.name.toLowerCase() === cryptoData.name.toLowerCase()
+            )[0] : {}
     };
 };
 

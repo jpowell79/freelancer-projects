@@ -9,7 +9,8 @@ import {hideOnMobile} from "../utils/cssUtils";
 import {calcTotalPercentChange, clone, joinClassNames} from "../utils";
 import Paths from "../utils/Paths";
 import {fetchAllCryptoContracts} from "../crypto/defaultCrypto";
-import {updateCrypto} from "../../redux/actions";
+import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
+import AlertOptionPane from "../Alert/AlertOptionPane";
 
 class CoinMarketTable extends Component {
     static defaultProps = {
@@ -30,17 +31,21 @@ class CoinMarketTable extends Component {
     }
 
     componentDidMount(){
-        new TableSorter($("#coin-market-table"));
+        this.tablesorter = new TableSorter($("#coin-market-table"));
+        this.props.dispatch(isLoadingCrypto(true));
 
-        fetchAllCryptoContracts({
-            onContractFetched: (responses) => {
-                this.props.dispatch(updateCrypto(responses));
-            }
+        fetchAllCryptoContracts().then((responses) => {
+            this.props.dispatch(updateAllCrypto(responses));
+            this.props.dispatch(isLoadingCrypto(false));
+            this.tablesorter.sortAtName("Rank");
+        }).catch(err => {
+            AlertOptionPane.showErrorAlert({message: err.toString()});
         });
     }
 
     componentDidUpdate(prevProps){
         this.prevProps = clone(prevProps);
+        this.tablesorter.sortCurrentlySelected();
     }
 
     valueOnChangeClass(currentData){
@@ -138,7 +143,7 @@ class CoinMarketTable extends Component {
                 </tr>
                 </thead>
                 <tbody>
-                {(this.props.isLoadingMarketData)
+                {(this.props.isLoadingMarketData || this.props.isLoadingCrypto)
                     ? (
                         <tr>
                             <td colSpan={12}>
@@ -157,8 +162,19 @@ class CoinMarketTable extends Component {
 }
 
 const mapStateToProps = (state) => {
-    const {crypto, marketData, isLoadingMarketData} = state;
-    return {crypto, marketData, isLoadingMarketData};
+    const {
+        crypto,
+        marketData,
+        isLoadingMarketData,
+        isLoadingCrypto
+    } = state;
+
+    return {
+        crypto,
+        marketData,
+        isLoadingMarketData,
+        isLoadingCrypto
+    };
 };
 
 export default connect(mapStateToProps)(CoinMarketTable);

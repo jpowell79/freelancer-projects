@@ -8,14 +8,11 @@ import Footer from '../../components/Footer';
 import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
 import AlertOptionPane from "../../components/Alert/AlertOptionPane";
 
 class Crypto_01 extends Component {
-    static defaultData = getDefaultCrypto({
-        name: cryptoNames.bitcoin,
-        index: 1
-    });
+    static defaultData = getDefaultCrypto({index: 1});
 
     static defaultProps = {
         marketData: {},
@@ -28,12 +25,17 @@ class Crypto_01 extends Component {
     };
 
     static fetchContract(){
-        return fetchCryptoContract(crypto_01_contract, Crypto_01.defaultData.index);
+        return fetchCryptoContract(
+            crypto_01_contract,
+            Crypto_01.defaultData.index
+        );
     }
 
     componentDidMount(){
         Crypto_01.fetchContract().then(response => {
-            this.props.dispatch(updateCrypto(response));
+            this.props.dispatch(updateCrypto(Object.assign({}, response, {
+                index: Crypto_01.defaultData.index
+            })));
         }).catch(err => {
             AlertOptionPane.showErrorAlert({message: err.toString()});
         });
@@ -71,15 +73,16 @@ class Crypto_01 extends Component {
 const mapStateToProps = (state) => {
     const {crypto, marketData} = state;
 
+    let cryptoData = crypto.filter(data =>
+        data.index === Crypto_01.defaultData.index
+    )[0];
+
     return {
-        data: crypto.filter(data =>
-            data.name.toLowerCase() === Crypto_01.defaultData.name.toLowerCase()
-        )[0],
-        marketData: (marketData.length > 0)
+        data: cryptoData,
+        marketData: (marketData.length > 0 && cryptoData !== undefined)
             ? marketData.filter(data =>
-                data.name.toLowerCase() === Crypto_01.defaultData.name.toLowerCase()
-            )[0]
-            : {}
+                data.name.toLowerCase() === cryptoData.name.toLowerCase()
+            )[0] : {}
     };
 };
 

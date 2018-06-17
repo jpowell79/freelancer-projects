@@ -65,7 +65,12 @@ class TableSorter {
         this.sort = this.sort.bind(this);
         this.sortAtName = this.sortAtName.bind(this);
         this.sortAtIndex = this.sortAtIndex.bind(this);
+        this.sortCurrentlySelected = this.sortCurrentlySelected.bind(this);
         this.turnOffSorting = this.turnOffSorting.bind(this);
+    }
+
+    sortCurrentlySelected(){
+        this.sort(this.$th);
     }
 
     sortAtName(thName){
@@ -82,6 +87,9 @@ class TableSorter {
     }
 
     sort($th){
+        if($th === null) return;
+
+        this.$th = $th;
         let self = this,
             table = this.$table,
             rowsContainer = table.find('tbody').length > 0 ? table.find('tbody') : table,

@@ -7,6 +7,13 @@ export const updateFeeds = (feeds) => {
     }
 };
 
+export const updateAllCrypto = (crypto) => {
+    return {
+        type: constants.UPDATE_ALL_CRYPTO,
+        payload: crypto
+    }
+};
+
 export const updateTradeStatus = (tradeStatus) => {
     return {
         type: constants.UPDATE_TRADE_STATUS,
@@ -38,6 +45,13 @@ export const updateMarketData = (marketData) => {
 export const isLoadingMarketData = (isLoading) => {
     return {
         type: constants.IS_LOADING_MARKET_DATA,
+        payload: isLoading
+    }
+};
+
+export const isLoadingCrypto = (isLoading) => {
+    return {
+        type: constants.IS_LOADING_CRYPTO,
         payload: isLoading
     }
 };

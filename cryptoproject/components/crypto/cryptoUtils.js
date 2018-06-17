@@ -72,10 +72,10 @@ export const getTwitterFeeds = (cryptoName) => {
     }
 };
 
-export const getDefaultCrypto = ({name, index}) => {
+export const getDefaultCrypto = ({index}) => {
     return {
         rank: 0,
-        name: name,
+        name: '',
         index: index,
         start_price: '1',
         nr_of_trades: 0,
@@ -113,7 +113,7 @@ export const fetchCryptoContract = (contract, index) => {
             nr_of_trades: parseInt(responses[5], 10),
             standard_time_closes: parseInt(responses[6], 10),
             extended_time_closes: parseInt(responses[7], 10),
-            pot: responses[8]/1000000000000000000
+            pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });
 };

@@ -59,31 +59,32 @@ class Feed extends Component {
             urls
         } = this.props;
 
-        Promise.all(urls.map(url => feednami.load(url))).then(responses => {
-            return flatten(responses.map(response => {
-                let parser = new FeedParser(clone(response));
-                parser.parse(maxFeedsForEachUrl, searchFor);
-                return parser.feeds;
-            }));
-        }).then(feeds => {
-            let key = 0;
+        Promise.all(urls.map(url => feednami.load(url)))
+            .then(responses => {
+                return flatten(responses.map(response => {
+                    let parser = new FeedParser(clone(response));
+                    parser.parse(maxFeedsForEachUrl, searchFor);
+                    return parser.feeds;
+                }));
+            }).then(feeds => {
+                let key = 0;
 
-            return flatten(feeds.map((feed) => {
-                return feed.entries.map((entry) => {
-                    key += 1;
+                return flatten(feeds.map((feed) => {
+                    return feed.entries.map((entry) => {
+                        key += 1;
 
-                    return this.feedHtml(key, entry, feed.meta);
-                });
-            }));
-        }).then(feeds => {
-            if(maxFeeds >= 0){
-                this.props.dispatch(updateFeeds(reduce(feeds, maxFeeds)));
-                this.props.dispatch(isLoadingFeeds(false));
-            } else {
-                this.props.dispatch(updateFeeds(feeds));
-                this.props.dispatch(isLoadingFeeds(false));
-            }
-        });
+                        return this.feedHtml(key, entry, feed.meta);
+                    });
+                }));
+            }).then(feeds => {
+                if(maxFeeds >= 0){
+                    this.props.dispatch(updateFeeds(reduce(feeds, maxFeeds)));
+                    this.props.dispatch(isLoadingFeeds(false));
+                } else {
+                    this.props.dispatch(updateFeeds(feeds));
+                    this.props.dispatch(isLoadingFeeds(false));
+                }
+            });
     }
 
     feedHtml(key, entry, meta){

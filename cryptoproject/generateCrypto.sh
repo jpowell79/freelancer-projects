@@ -472,13 +472,10 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
 
 class Crypto_0${i} extends Component {
-    static defaultData = getDefaultCrypto({
-        name: cryptoNames.${names[i]},
-        index: ${i}
-    });
+    static defaultData = getDefaultCrypto({index: ${i}});
 
     static defaultProps = {
         marketData: {},
@@ -534,15 +531,16 @@ class Crypto_0${i} extends Component {
 const mapStateToProps = (state) => {
     const {crypto, marketData} = state;
 
+    let cryptoData = crypto.filter(data =>
+        data.index === Crypto_0${i}.defaultData.index
+    )[0];
+
     return {
-        data: crypto.filter(data =>
-            data.name.toLowerCase() === Crypto_0${i}.defaultData.name.toLowerCase()
-        )[0],
+        data: cryptoData,
         marketData: (marketData.length > 0)
             ? marketData.filter(data =>
-                data.name.toLowerCase() === Crypto_0${i}.defaultData.name.toLowerCase()
-            )[0]
-            : {}
+                data.name.toLowerCase() === cryptoData.name.toLowerCase()
+            )[0] : {}
     };
 };
 
@@ -567,13 +565,10 @@ import CryptoContent from '../../components/crypto/CryptoContent';
 import CryptoSidebar from '../../components/crypto/CryptoSidebar';
 import Footer from '../../components/Footer';
 import {updateCrypto} from "../../redux/actions";
-import {fetchCryptoContract, getDefaultCrypto, cryptoNames} from "../../components/crypto/cryptoUtils";
+import {fetchCryptoContract, getDefaultCrypto} from "../../components/crypto/cryptoUtils";
 
 class Crypto_${i} extends Component {
-    static defaultData = getDefaultCrypto({
-        name: cryptoNames.${names[i]},
-        index: ${i}
-    });
+    static defaultData = getDefaultCrypto({index: ${i}});
 
     static defaultProps = {
         marketData: {},
@@ -629,15 +624,16 @@ class Crypto_${i} extends Component {
 const mapStateToProps = (state) => {
     const {crypto, marketData} = state;
 
+    let cryptoData = crypto.filter(data =>
+        data.index === Crypto_${i}.defaultData.index
+    )[0];
+
     return {
-        data: crypto.filter(data =>
-            data.name.toLowerCase() === Crypto_${i}.defaultData.name.toLowerCase()
-        )[0],
+        data: cryptoData,
         marketData: (marketData.length > 0)
             ? marketData.filter(data =>
-                data.name.toLowerCase() === Crypto_${i}.defaultData.name.toLowerCase()
-            )[0]
-            : {}
+                data.name.toLowerCase() === cryptoData.name.toLowerCase()
+            )[0] : {}
     };
 };
 
@@ -653,6 +649,7 @@ printTitle "Updating defaultCrypto"
 cd ../../components/crypto
 > defaultCrypto.js
 
+
 for i in `seq 1 9`
 do
     echo "import Crypto_0${i}, {cryptoData0${i}} from '../../pages/crypto/Crypto_0$i';" >> defaultCrypto.js
@@ -663,9 +660,9 @@ do
     echo "import Crypto_${i}, {cryptoData${i}} from '../../pages/crypto/Crypto_$i';" >> defaultCrypto.js
 done
 
-echo "import AlertOptionPane from '../Alert/AlertOptionPane';
+echo "" >> defaultCrypto.js
 
-export const defaultCrypto = [" >> defaultCrypto.js
+echo "export const defaultCrypto = [" >> defaultCrypto.js
 for i in `seq 1 9`
 do
     echo "Updating cryptoData0${i}..."
@@ -681,33 +678,20 @@ done
 echo "];" >> defaultCrypto.js
 
 echo "
-export const fetchAllCryptoContracts = ({onContractFetched}) => {
-    return Crypto_01.fetchContract().then(response => {
-        onContractFetched(response);
-        return Crypto_02.fetchContract();
-    })" >> defaultCrypto.js
+export const fetchAllCryptoContracts = () => {
+    return Promise.all([" >> defaultCrypto.js
 
-for i in `seq 3 9`
+for i in `seq 1 9`
 do
-    echo "    .then(response => {
-        onContractFetched(response);
-        return Crypto_0${i}.fetchContract();
-    })" >> defaultCrypto.js
+    echo "        Crypto_0${i}.fetchContract()," >> defaultCrypto.js
 done
 
 for i in `seq 10 25`
 do
-    echo "    .then(response => {
-        onContractFetched(response);
-        return Crypto_${i}.fetchContract();
-    })" >> defaultCrypto.js
+    echo "        Crypto_${i}.fetchContract()," >> defaultCrypto.js
 done
 
-echo "    .then(response => {
-        onContractFetched(response);
-    }).catch(err => {
-        AlertOptionPane.showErrorAlert({message: err.toString()});
-    });
+echo "    ]);
 };" >> defaultCrypto.js
 printEndOfSection
 
