@@ -434,7 +434,7 @@ EOF
 
 printTitle "Generating Crypto Contracts"
 cd components/crypto/contract
-for i in `seq 4 9`
+for i in `seq 9 9`
 do
     createFile "crypto_0${i}_contract.js"
     createContractDocument "crypto_0${i}_contract.js"
@@ -450,13 +450,13 @@ names=(
     "skipped" "bitcoin" "litecoin" "ripple" "nxt" "dogecoin" "digiByte"
     "reddCoin" "monaCoin" "maidSafeCoin" "monero" "byteCoin" "bitShares"
     "stellar" "syscoin" "verge" "tether" "nem" "ethereum" "siacoin" "augur"
-    "decred" "pivx" "lisk" "digixDao" "steem"
+    "decred" "pivx" "lisk" "digixDao" "steem" "eos" "cardano"
 )
 
 printTitle "Generating placeholder images"
 cd ../../../static/images
 
-for i in `seq 1 25`
+for i in `seq 1 27`
 do
     echo "Creating crypto_icons/${names[i]}_icon.png..."
     cp picture_icon.png crypto_icons/${names[i]}_icon.png

@@ -47,8 +47,8 @@ class Crypto extends Component {
                 })));
                 this.props.dispatch(isLoadingCrypto(false));
             }).catch(err => {
-            AlertOptionPane.showErrorAlert({message: err.toString()});
-        });
+                AlertOptionPane.showErrorAlert({message: err.toString()});
+            });
     }
 
     render() {

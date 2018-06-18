@@ -1,6 +1,6 @@
 import web3 from '../../web3/';
 
-const address = '0x6f0946722a105d5620044ee708e562ce84490218';
+const address = '0x68af25e562372ca011699bc55b6b40c63484515a';
 
 const abi =
     [{

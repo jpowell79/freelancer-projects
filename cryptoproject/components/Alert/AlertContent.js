@@ -51,7 +51,6 @@ class AlertContent extends Component {
             MAIN_CONTAINER,
             BACKDROP,
             CONTENT_CONTAINER,
-            DIALOG_CONTAINER,
             HEADER,
             TITLE,
             BUTTON_CONTAINER
