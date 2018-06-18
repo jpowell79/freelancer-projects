@@ -21,6 +21,7 @@ class CoinMarketTable extends Component {
     constructor(props){
         super(props);
 
+        this.prevProps = {marketData: []};
         this.renderMarketData = this.renderMarketData.bind(this);
     }
 
@@ -165,10 +166,7 @@ class CoinMarketTable extends Component {
                             </td>
                         </tr>
                     )
-                    : (
-                        this.renderMarketData()
-                    )
-                }
+                    : this.renderMarketData()}
                 </tbody>
             </table>
         );
