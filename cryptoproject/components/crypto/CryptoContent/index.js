@@ -16,6 +16,10 @@ class CryptoContent extends Component {
     constructor(props){
         super(props);
 
+        this.state = {
+            renderPlaceholderIcon: false
+        };
+
         this.isOpen = this.isOpen.bind(this);
         this.isLocked = this.isLocked.bind(this);
     }
@@ -57,7 +61,14 @@ class CryptoContent extends Component {
                 <div className="ui padded segment items">
                     <div className="item">
                         <div className="image">
-                            <img src={Paths.getCryptoIcon(name, 'medium')}/>
+                            <img
+                                src={(this.state.renderPlaceholderIcon)
+                                    ? Paths.getCryptoIcon('placeholder', 'medium')
+                                    : Paths.getCryptoIcon(name, 'medium')}
+                                onError={() => {
+                                    this.setState({renderPlaceholderIcon: true})
+                                }}
+                            />
                         </div>
                         <div className="middle aligned content no-padding text-center">
                             <h2 className="ui huge header no-margin-top">

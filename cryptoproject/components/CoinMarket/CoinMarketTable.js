@@ -7,7 +7,7 @@ import Strings from "../utils/Strings";
 import {hideOnMobile} from "../utils/cssUtils";
 import {calcTotalPercentChange} from "../utils";
 import Paths from "../utils/Paths";
-import {fetchAllCryptoContracts} from "../crypto/cryptoUtils";
+import {fetchAllCryptoContracts} from "../crypto/contract";
 import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
 import AlertOptionPane from "../Alert/AlertOptionPane";
 import {CoinMarketFlashCell} from "./CoinMarketFlashCell";
@@ -20,6 +20,10 @@ class CoinMarketTable extends Component {
 
     constructor(props){
         super(props);
+
+        this.state = {
+            placeholderIcons: []
+        };
 
         this.prevProps = {marketData: []};
         this.renderMarketData = this.renderMarketData.bind(this);
@@ -81,7 +85,20 @@ class CoinMarketTable extends Component {
 
             return (
                 <tr key={i}>
-                    <td><img src={Paths.getCryptoIcon(crypto.name, 'icon')}/></td>
+                    <td><img
+                        src={(this.state.placeholderIcons.includes(`Icon ${i}`))
+                            ? Paths.getCryptoIcon('placeholder', 'icon')
+                            : Paths.getCryptoIcon(crypto.name, 'icon')}
+                        onError={() => {
+                            this.setState((prevState) => {
+                                return {
+                                    placeholderIcons: [
+                                        ...prevState.placeholderIcons,
+                                        `Icon ${i}`
+                                    ]
+                                }
+                            });
+                        }}/></td>
                     <td>{crypto.rank}</td>
                     <td>{crypto.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>

@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Head from '../components/Head/index';
-import Header from '../components/Header/index';
-import Footer from '../components/Footer/index';
-import CryptoContent from '../components/crypto/CryptoContent/index';
-import CryptoSidebar from '../components/crypto/CryptoSidebar/index';
-import {updateCrypto, isLoadingCrypto} from "../redux/actions";
-import {fetchCryptoContract} from "../components/crypto/cryptoUtils";
+import Head from '../components/Head';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import CryptoContent from '../components/crypto/CryptoContent';
+import CryptoSidebar from '../components/crypto/CryptoSidebar';
+import {
+    updateCrypto,
+    isLoadingCrypto
+} from "../redux/actions";
+import {
+    fetchCryptoContract,
+    contractAddresses
+} from "../components/crypto/contract";
 import AlertOptionPane from "../components/Alert/AlertOptionPane";
 import {withRouter} from 'next/router';
 import {redirect} from "../components/utils/index";
 import Paths from '../components/utils/Paths';
-import {contracts} from "../components/crypto/contract";
 
 class Crypto extends Component {
     static defaultProps = {
@@ -26,7 +31,7 @@ class Crypto extends Component {
 
         let index = parseInt(query.index, 10);
 
-        if(index < 0 || isNaN(query.index) || index >= contracts.length){
+        if(index < 0 || isNaN(query.index) || index >= contractAddresses.length){
             redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
 

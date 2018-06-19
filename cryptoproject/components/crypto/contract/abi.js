@@ -1,8 +1,4 @@
-import web3 from '../../web3/';
-
-const address = '0x6d83e8f763e0f78e7a571e7eca9dc0bd8c7ed332';
-
-const abi =
+export const abi =
     [{
         "constant": true,
         "inputs": [],
@@ -406,5 +402,3 @@ const abi =
         "stateMutability": "payable",
         "type": "fallback"
     }];
-
-export default new web3.eth.Contract(abi, address);

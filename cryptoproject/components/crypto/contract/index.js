@@ -1,37 +1,54 @@
-import crypto_01_contract from './crypto_01_contract';
-import crypto_02_contract from './crypto_02_contract';
-import crypto_03_contract from './crypto_03_contract';
-import crypto_04_contract from './crypto_04_contract';
-import crypto_05_contract from './crypto_05_contract';
-import crypto_06_contract from './crypto_06_contract';
-import crypto_07_contract from './crypto_07_contract';
-import crypto_08_contract from './crypto_08_contract';
-import crypto_09_contract from './crypto_09_contract';
-import crypto_10_contract from './crypto_10_contract';
-import crypto_11_contract from './crypto_11_contract';
-import crypto_12_contract from './crypto_12_contract';
-import crypto_13_contract from './crypto_13_contract';
-import crypto_14_contract from './crypto_14_contract';
-import crypto_15_contract from './crypto_15_contract';
-import crypto_16_contract from './crypto_16_contract';
-import crypto_17_contract from './crypto_17_contract';
-import crypto_18_contract from './crypto_18_contract';
-import crypto_19_contract from './crypto_19_contract';
-import crypto_20_contract from './crypto_20_contract';
-import crypto_21_contract from './crypto_21_contract';
-import crypto_22_contract from './crypto_22_contract';
-import crypto_23_contract from './crypto_23_contract';
-import crypto_24_contract from './crypto_24_contract';
-import crypto_25_contract from './crypto_25_contract';
+import {abi} from "./abi";
+import web3 from '../../web3/';
 
-export const contracts = [
-    crypto_01_contract, crypto_02_contract, crypto_03_contract,
-    crypto_04_contract, crypto_05_contract, crypto_06_contract,
-    crypto_07_contract, crypto_08_contract, crypto_09_contract,
-    crypto_10_contract, crypto_11_contract, crypto_12_contract,
-    crypto_13_contract, crypto_14_contract, crypto_15_contract,
-    crypto_16_contract, crypto_17_contract, crypto_18_contract,
-    crypto_19_contract, crypto_20_contract, crypto_21_contract,
-    crypto_22_contract, crypto_23_contract, crypto_24_contract,
-    crypto_25_contract,
+export const contractAddresses = [
+    '0x25ca14bd7cff6054f78e24ed4a20271b8706c9d7',
+    '0xdb918f2e49557f6036cfb8b8ece49a059b9371b7',
+    '0x460bcfefe032e8930593e96adefced7cf20b9036',
+    '0xa05a051c5273388e43a83ddaa7e4326b56aa394d',
+    '0x335c687b1c659862268dfd140a945c7d0028d798',
+    '0xc32cbba58545d461f80af539005c26c7f8a1e376',
+    '0x512ed6df2486ed493c9407dd24ea1f9d0cddae8f',
+    '0xf878d01dbf475e4eb551fa6927ecbcfad866fddf',
+    '0x6d83e8f763e0f78e7a571e7eca9dc0bd8c7ed332',
+    '0x57045e0485686986c88f8785db74fc5a34c2e7e9'
 ];
+
+export const getContract = (index) => {
+    return new web3.eth.Contract(abi, contractAddresses[index]);
+};
+
+export const fetchCryptoContract = (index) => {
+    const methods = getContract(index).methods;
+
+    return Promise.all([
+        methods.admin().call(),
+        methods.showCryptoName().call(),
+        methods.thisContractAddress().call(),
+        methods.showRank().call(),
+        methods.showCryptoStartPrice().call(),
+        methods.numberOfTrades().call(),
+        methods.standardTimeCloses().call(),
+        methods.extendedTimeCloses().call(),
+        methods.potBalance().call()
+    ]).then(responses => {
+        return {
+            index: index,
+            admin: responses[0],
+            name: responses[1],
+            contract_address: responses[2],
+            rank: responses[3],
+            start_price: responses[4]/100000,
+            nr_of_trades: parseInt(responses[5], 10),
+            standard_time_closes: parseInt(responses[6], 10)*1000,
+            extended_time_closes: parseInt(responses[7], 10)*1000,
+            pot: (responses[8]/1000000000000000000).toFixed(2)
+        };
+    });
+};
+
+export const fetchAllCryptoContracts = () => {
+    return Promise.all(contractAddresses.map((contract, i) =>
+        fetchCryptoContract(i)
+    ));
+};

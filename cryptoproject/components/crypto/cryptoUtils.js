@@ -1,5 +1,3 @@
-import {contracts} from "./contract";
-
 export const cryptoNames = {
     bitcoin: "bitcoin",
     ethereum: "ethereum",
@@ -135,39 +133,4 @@ export const getTwitterFeeds = (cryptoName) => {
         console.error(`Twitter feeds for ${name} could not be found`);
         return [];
     }
-};
-
-export const fetchCryptoContract = (index) => {
-    const methods = contracts[index].methods;
-
-    return Promise.all([
-        methods.admin().call(),
-        methods.showCryptoName().call(),
-        methods.thisContractAddress().call(),
-        methods.showRank().call(),
-        methods.showCryptoStartPrice().call(),
-        methods.numberOfTrades().call(),
-        methods.standardTimeCloses().call(),
-        methods.extendedTimeCloses().call(),
-        methods.potBalance().call()
-    ]).then(responses => {
-        return {
-            index: index,
-            admin: responses[0],
-            name: responses[1],
-            contract_address: responses[2],
-            rank: responses[3],
-            start_price: responses[4]/100000,
-            nr_of_trades: parseInt(responses[5], 10),
-            standard_time_closes: parseInt(responses[6], 10)*1000,
-            extended_time_closes: parseInt(responses[7], 10)*1000,
-            pot: (responses[8]/1000000000000000000).toFixed(2)
-        };
-    });
-};
-
-export const fetchAllCryptoContracts = () => {
-    return Promise.all(contracts.map((contract, i) =>
-        fetchCryptoContract(i)
-    ));
 };

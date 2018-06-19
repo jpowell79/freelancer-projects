@@ -20,6 +20,7 @@ class CryptoBalance extends Component {
 
     fetchTradeTokens(accountAddress, contractAddress){
         this.props.dispatch(isLoadingTradeTokens(true));
+        //TODO: Check if the correct tokens are actually being fetched here.
         let contractData = `0x70a08231000000000000000000000000${accountAddress.substring(2)}`;
 
         web3.eth.call({
