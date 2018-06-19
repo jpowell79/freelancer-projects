@@ -14,6 +14,10 @@ class Paths {
     static getCryptoPage(root = '../..'){
         return `${root}/Crypto`;
     };
+
+    static getHistoricDataPage(root = '../..'){
+        return `${root}/HistoricData`;
+    };
 }
 
 export default Paths;

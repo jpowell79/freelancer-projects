@@ -18,8 +18,8 @@ class TableSorter {
     };
 
     static defaultComparator(a, b){
-        let data1 = a.replace(/[%$,]*/g, '');
-        let data2 = b.replace(/[%$,]*/g, '');
+        let data1 = a.replace(/[%$,/-: ]*/g, '');
+        let data2 = b.replace(/[%$,/-: ]*/g, '');
 
         if(!isNaN(data1) && !isNaN(data2)){
             data1 = parseFloat(data1);

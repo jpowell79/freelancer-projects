@@ -1,4 +1,5 @@
 {
+  "ignore": [],
   "env": {
     "development": {
       "presets": ["next/babel"]

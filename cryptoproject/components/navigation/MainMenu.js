@@ -12,7 +12,7 @@ export const MainMenu = ({className, ...props}) => {
                 <a className="item">Trade</a>
                 <a className="item">How it Works</a>
                 <a className="item">The Team</a>
-                <a className="item">Historic Data</a>
+                <Link href={Paths.getHistoricDataPage()}><a className="item">Historic Data</a></Link>
                 <a className="item">Contact</a>
             </div>
         </nav>

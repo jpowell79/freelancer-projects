@@ -7,10 +7,13 @@
     margin: 0 0 0 .5em;
 }
 
+
+//TODO: Generalize styles
 /*----------------------------------------
  * Coin Market Table
  *----------------------------------------*/
-#coin-market-table {
+#coin-market-table,
+#historic-data-table {
     text-align: center;
 
     .ui.button {
