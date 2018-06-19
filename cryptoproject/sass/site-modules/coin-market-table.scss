@@ -35,20 +35,10 @@
                 background-color: $uiThColor;
             }
         }
-
-
     }
 
     td {
         font-size: 1.15em!important;
-
-        &.color-uiRed:after {
-            @include uiTableIcon($caretDownIcon);
-        }
-
-        &.color-uiGreen:after {
-            @include uiTableIcon($caretUpIcon);
-        }
     }
 
     img {

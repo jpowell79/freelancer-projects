@@ -159,8 +159,8 @@ export const fetchCryptoContract = (index) => {
             rank: responses[3],
             start_price: responses[4]/100000,
             nr_of_trades: parseInt(responses[5], 10),
-            standard_time_closes: parseInt(responses[6], 10),
-            extended_time_closes: parseInt(responses[7], 10),
+            standard_time_closes: parseInt(responses[6], 10)*1000,
+            extended_time_closes: parseInt(responses[7], 10)*1000,
             pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });

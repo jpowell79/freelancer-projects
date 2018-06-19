@@ -13,7 +13,7 @@ export const CryptoStats = ({
     pot
 }) => {
     return (
-        <div>
+        <div id="crypto-stats">
             <table className="ui definition table">
                 <tbody>
                     <tr>

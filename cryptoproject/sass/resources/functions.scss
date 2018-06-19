@@ -25,6 +25,14 @@
     > *:last-child {
         margin-bottom: 0;
     }
+
+    &.ui > * {
+        margin-bottom: $divider!important;
+    }
+
+    &.ui > *:last-child {
+        margin-bottom: 0!important;
+    }
 }
 
 //----------------------------------------------

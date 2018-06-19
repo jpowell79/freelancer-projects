@@ -106,7 +106,9 @@ class TableSorter {
         if($th === null) return;
 
         if(this.hasSelectedHeader()){
-            this.$th.addClass(this.classNames.sortable);
+            if($th.text() !== this.$th.text()){
+                this.$th.addClass(this.classNames.sortable);
+            }
         }
 
         this.$th = $th;

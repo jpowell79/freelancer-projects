@@ -7,7 +7,8 @@ import {updateTradeStatus} from "../../../redux/actions";
 //TODO: Wire up with some actual trade mechanism
 class CryptoTrade extends Component {
     static propTypes = {
-        isOpen: PropTypes.bool.isRequired
+        isOpen: PropTypes.bool.isRequired,
+        isLocked: PropTypes.bool.isRequired
     };
 
     static tradeStatus = {
@@ -22,6 +23,8 @@ class CryptoTrade extends Component {
         this.state = {
             hasCorrectInput: true
         };
+
+        this.renderTradeForm = this.renderTradeForm.bind(this);
     }
 
     componentWillUnmount(){
@@ -53,44 +56,48 @@ class CryptoTrade extends Component {
         }
     }
 
-    render(){
+    renderTradeForm(){
         let {
             tradeValue,
             hasCorrectInput
         } = this.state;
 
         let {
-            tradeStatus,
             isOpen
         } = this.props;
 
         return (
-            <div id="trade-form">
-                <div className="ui stackable padded grid centered">
-                    <h2>Trade now:</h2>
-                    <div className={
-                        (hasCorrectInput) ? "ui action input" : "ui action input error"
-                    }>
-                        <PositiveFloatInput
-                            lowestDigit={0.1}
-                            highestDigit={10}
-                            placeholder="Min 0.1 eth"
-                            onIncorrectInput={(event) => {
-                                this.setState({hasCorrectInput: false});
-                                event.preventDefault();
-                            }}
-                            onCorrectInput={(event) => {
-                                this.setState({
-                                    tradeValue: event.target.value,
-                                    hasCorrectInput: true
-                                });
-                            }}
-                        />
-                        {(isOpen)
-                            ? <button
+            <div className="ui stackable padded grid centered">
+                <h2>Trade now:</h2>
+                <div className={
+                    (hasCorrectInput) ? "ui action input" : "ui action input error"
+                }>
+                    <PositiveFloatInput
+                        lowestDigit={0.1}
+                        highestDigit={10}
+                        placeholder="Min 0.1 eth"
+                        onIncorrectInput={(event) => {
+                            this.setState({hasCorrectInput: false});
+                            event.preventDefault();
+                        }}
+                        onCorrectInput={(event) => {
+                            this.setState({
+                                tradeValue: event.target.value,
+                                hasCorrectInput: true
+                            });
+                        }}
+                    />
+                    {(isOpen)
+                        ? (
+                            <button
                                 className="ui primary submit button"
                                 onClick={(event) => {
                                     event.preventDefault();
+
+                                    //TODO: Trading steps
+                                    //1. Check if they entered the correct amount
+                                    //2. Check their balance and error if it's not enough
+                                    //3. Proceed with metamask.
 
                                     if(CryptoTrade.isValidTrade(tradeValue)){
                                         this.props.dispatch(updateTradeStatus(
@@ -102,9 +109,31 @@ class CryptoTrade extends Component {
                                         ));
                                     }
                                 }}>Trade</button>
-                            : <button disabled className="ui submit button">Locked</button>}
-                    </div>
+                        )
+                        : <button disabled className="ui submit button">Locked</button>}
                 </div>
+            </div>
+        );
+    }
+
+    render(){
+        let {
+            tradeStatus,
+            isLocked,
+        } = this.props;
+
+        return (
+            <div id="crypto-trade">
+                {(isLocked)
+                    ? (
+                        <div className="ui message text-center">
+                            <div className="header">
+                                Trading is locked for this Crypto.
+                            </div>
+                        </div>
+                    ) : (
+                        this.renderTradeForm()
+                    )}
                 {CryptoTrade.renderTradeTransactionMessage(tradeStatus)}
             </div>
         );

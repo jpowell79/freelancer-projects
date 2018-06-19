@@ -5,10 +5,6 @@ let changedClasses = new Map();
 
 export const CoinMarketFlashCell = ({keyName = "", value, prevValue, addColor = false, children}) => {
     function valueComparator(currentData, prevData){
-        if(prevData === undefined){
-            return 0;
-        }
-
         if (currentData > prevData) {
             if(keyName !== ""){
                 changedClasses.set(keyName, "color-uiGreen");

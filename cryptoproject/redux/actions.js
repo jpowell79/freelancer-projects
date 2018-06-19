@@ -21,6 +21,20 @@ export const updateTradeStatus = (tradeStatus) => {
     }
 };
 
+export const updateTradeTokens = (tokens) => {
+    return {
+        type: constants.UPDATE_TRADE_TOKENS,
+        payload: tokens
+    }
+};
+
+export const isLoadingTradeTokens = (isLoading) => {
+    return {
+        type: constants.IS_LOADING_TRADE_TOKENS,
+        payload: isLoading
+    }
+};
+
 export const isLoadingFeeds = (isLoading) => {
     return {
         type: constants.IS_LOADING_FEEDS,

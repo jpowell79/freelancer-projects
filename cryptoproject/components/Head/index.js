@@ -9,7 +9,7 @@ import '../../sass/style.scss';
 import AlertOptionPane from "../Alert/AlertOptionPane";
 
 class Head extends Component {
-    static REFRESH_RATE = 1000 * 30;
+    static REFRESH_RATE = 1000 * 10;
 
     static propTypes = {
         crypto: PropTypes.array,

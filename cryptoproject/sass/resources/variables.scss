@@ -73,14 +73,22 @@ $caretUpIcon: "\f0d8";
 //----------------------------------------------
 // 4.0 Site Variables
 //----------------------------------------------
-$headingXLarge: 3rem;
-$headingLarge: 2rem;
-$headingMedium: 1.5rem;
-$headingSmall: 1.25rem;
+$headingXLarge   : 3rem;
+$headingLarge    : 2rem;
+$headingMedium   : 1.5rem;
+$headingSmall    : 1.25rem;
 $wrapperWidth    : 1200px;
-$standardDivider : 30px;
+$largeDivider    : 60px;
+$standardDivider : 1.5em;
 $smallDivider    : 15px;
 $xSmallDivider   : 7.5px;
+
+$dividers: (
+    (divider-lg $largeDivider)
+    (divider-md $standardDivider)
+    (divider-sm $smallDivider)
+    (divider-xs $xSmallDivider)
+);
 
 $headings: (
     heading-xl: $headingXLarge,

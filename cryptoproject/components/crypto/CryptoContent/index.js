@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Paths from "../../utils/Paths";
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {updateCrypto} from "../../../redux/actions";
+import {updateCrypto,} from "../../../redux/actions";
+import CryptoBalance from './CryptoBalance';
 import {CryptoStats} from "./CryptoStats";
 import CryptoCountdown from './CryptoCountdown';
 import CryptoTrade from "./CryptoTrade";
@@ -16,6 +17,12 @@ class CryptoContent extends Component {
         super(props);
 
         this.isOpen = this.isOpen.bind(this);
+        this.isLocked = this.isLocked.bind(this);
+    }
+
+    isLocked(){
+        let {extended_time_closes} = this.props.data;
+        return Date.now() > extended_time_closes;
     }
 
     isOpen(){
@@ -25,14 +32,21 @@ class CryptoContent extends Component {
             extended_time_closes
         } = this.props.data;
 
-        return (nr_of_trades < 1000) &&
-            (Date.now() < standard_time_closes*1000) &&
-            (Date.now() < extended_time_closes*1000);
+        let hasEnoughTrades = (nr_of_trades < 1000);
+        let hasStandardTimeLeftOrTradeTokens =
+            (Date.now() < standard_time_closes) ||
+            (this.props.tradeTokens !== null && this.props.tradeTokens > 0);
+        let hasExtendedTimeLeft = (Date.now() < extended_time_closes);
+
+        return hasEnoughTrades &&
+            hasStandardTimeLeftOrTradeTokens &&
+            hasExtendedTimeLeft;
     }
 
     render(){
         let {
             name,
+            admin,
             contract_address,
             standard_time_closes,
             extended_time_closes,
@@ -59,11 +73,14 @@ class CryptoContent extends Component {
                         <div className="sub header"><a href={`https://etherscan.io/address/${contract_address}`}>{contract_address}</a></div>
                     </h2>
                 </div>
+                <CryptoBalance
+                    accountAddress={admin}
+                    contractAddress={contract_address}/>
                 <div>
                     <div className="ui top attached padded bg-color-light-gray header">
-                        <h2>Name: {name}</h2>
+                        <h2>{name}</h2>
                     </div>
-                    <div id="crypto-details" className="ui attached padded segment">
+                    <div id="crypto-details" className="ui attached padded segment children-divider-md">
                         <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
                         <CryptoCountdown
                             standardTimeCloses={standard_time_closes}
@@ -79,7 +96,9 @@ class CryptoContent extends Component {
                                 })));
                             }}
                         />
-                        <CryptoTrade isOpen={this.isOpen()}/>
+                        <CryptoTrade
+                            isOpen={this.isOpen()}
+                            isLocked={this.isLocked()}/>
                     </div>
                 </div>
             </div>
@@ -87,4 +106,10 @@ class CryptoContent extends Component {
     }
 }
 
-export default connect()(CryptoContent);
+let mapStateToProps = (state) => {
+    let {tradeTokens} = state;
+
+    return {tradeTokens};
+};
+
+export default connect(mapStateToProps)(CryptoContent);

@@ -1,5 +1,5 @@
 /*----------------------------------------
- * Crypto Pages
+ * Crypto Page
  *----------------------------------------*/
 #crypto {
     display: grid;
@@ -95,6 +95,11 @@
         position: absolute;
         left: calc(50% - 60px);
     }
+
+    .loader-small {
+        position: static;
+        margin: 0 auto;
+    }
 }
 
 @media (min-width: $mediaMedium) {
@@ -107,17 +112,11 @@
         grid-gap: $standardDivider;
 
         #crypto-content {
-            @include divideChildren($standardDivider);
-
-            #trade-form {
+            #crypto-trade {
                 h2 {
                     margin-bottom: 0;
                 }
             }
-        }
-
-        #crypto-sidebar {
-            @include divideChildren($standardDivider);
         }
 
         .ui {

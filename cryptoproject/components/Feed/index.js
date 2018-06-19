@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {clone, flatten, reduce, joinClassNames} from "../utils";
 import {updateFeeds, isLoadingFeeds} from "../../redux/actions";
 import {connect} from 'react-redux';
+import {LoaderSmall} from '../icons';
 import Strings from '../utils/Strings';
 
 class Feed extends Component {
@@ -108,7 +109,7 @@ class Feed extends Component {
                 {(this.props.feeds.length > 0)
                     ? this.props.feeds
                     : (this.props.isLoadingFeeds)
-                        ? <p>Loading feeds...</p>
+                        ? <LoaderSmall/>
                         : this.props.notFoundHtml}
             </div>
         );

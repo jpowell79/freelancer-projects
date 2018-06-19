@@ -21,7 +21,7 @@ function createContractDocument {
     cat > "$1" <<EOF
 import web3 from '../../web3/';
 
-const address = '0x6f0946722a105d5620044ee708e562ce84490218';
+const address = '0x25ca14bd7cff6054f78e24ed4a20271b8706c9d7';
 
 const abi =
     [{
@@ -434,12 +434,7 @@ EOF
 
 printTitle "Generating Crypto Contracts"
 cd components/crypto/contract
-for i in `seq 9 9`
-do
-    createFile "crypto_0${i}_contract.js"
-    createContractDocument "crypto_0${i}_contract.js"
-done
-for i in `seq 10 25`
+for i in `seq 11 25`
 do
     createFile "crypto_${i}_contract.js"
     createContractDocument "crypto_${i}_contract.js"
@@ -450,13 +445,13 @@ names=(
     "skipped" "bitcoin" "litecoin" "ripple" "nxt" "dogecoin" "digiByte"
     "reddCoin" "monaCoin" "maidSafeCoin" "monero" "byteCoin" "bitShares"
     "stellar" "syscoin" "verge" "tether" "nem" "ethereum" "siacoin" "augur"
-    "decred" "pivx" "lisk" "digixDao" "steem" "eos" "cardano"
+    "decred" "pivx" "lisk" "digixDao" "steem" "eos" "cardano" "iota" "tron"
 )
 
 printTitle "Generating placeholder images"
 cd ../../../static/images
 
-for i in `seq 1 27`
+for i in `seq 1 29`
 do
     echo "Creating crypto_icons/${names[i]}_icon.png..."
     cp picture_icon.png crypto_icons/${names[i]}_icon.png

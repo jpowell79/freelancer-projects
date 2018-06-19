@@ -9,7 +9,9 @@ export const initialState = {
     isLoadingFeeds: true,
     isLoadingMarketData: true,
     isLoadingCrypto: true,
-    tradeStatus: CryptoTrade.tradeStatus.idle
+    tradeStatus: CryptoTrade.tradeStatus.idle,
+    tradeTokens: null,
+    isLoadingTradeTokens: true
 };
 
 export const tradeStatus = (state = CryptoTrade.tradeStatus.idle, action) => {
@@ -62,10 +64,28 @@ export const crypto = (state = {}, action) => {
 
 export const isLoadingCrypto = (state = true, action) => {
     switch(action.type){
-        case constants.IS_LOADING_CRYPTO:
-            return action.payload;
-        default:
-            return state;
+    case constants.IS_LOADING_CRYPTO:
+        return action.payload;
+    default:
+        return state;
+    }
+};
+
+export const tradeTokens = (state = null, action) => {
+    switch(action.type){
+    case constants.UPDATE_TRADE_TOKENS:
+        return action.payload;
+    default:
+        return state;
+    }
+};
+
+export const isLoadingTradeTokens = (state = true, action) => {
+    switch(action.type){
+    case constants.IS_LOADING_TRADE_TOKENS:
+        return action.payload;
+    default:
+        return state;
     }
 };
 
@@ -91,8 +111,10 @@ export default combineReducers({
     crypto,
     marketData,
     feeds,
+    tradeStatus,
+    tradeTokens,
+    isLoadingTradeTokens,
     isLoadingMarketData,
     isLoadingFeeds,
     isLoadingCrypto,
-    tradeStatus
 });

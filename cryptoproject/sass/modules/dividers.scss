@@ -1,0 +1,8 @@
+/*----------------------------------------
+ * Dividers
+ *----------------------------------------*/
+@each $name, $divider in $dividers {
+    .children-#{$name}{
+        @include divideChildren($divider);
+    }
+}

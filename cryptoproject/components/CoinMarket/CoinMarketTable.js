@@ -5,7 +5,7 @@ import $ from 'jquery';
 import TableSorter from '../TableSorter';
 import Strings from "../utils/Strings";
 import {hideOnMobile} from "../utils/cssUtils";
-import {calcTotalPercentChange, joinClassNames} from "../utils";
+import {calcTotalPercentChange} from "../utils";
 import Paths from "../utils/Paths";
 import {fetchAllCryptoContracts} from "../crypto/cryptoUtils";
 import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";

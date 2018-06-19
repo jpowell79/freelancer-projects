@@ -35,11 +35,11 @@ class CryptoCountdown extends Component {
 
     render(){
         return (
-            <div>
+            <div id="crypto-countdown">
                 <h2 className="ui dividing header">Standard trade time closes:</h2>
                 <div className="content">
                     <Countdown
-                        date={this.props.standardTimeCloses*1000}
+                        date={this.props.standardTimeCloses}
                         onComplete={this.props.onStandardTimeZero}
                         renderer={CryptoCountdown.countdownRenderer}
                     />
@@ -47,7 +47,7 @@ class CryptoCountdown extends Component {
                 <h2 className="ui dividing header">Extended trade time closes:</h2>
                 <div className="content">
                     <Countdown
-                        date={this.props.extendedTimeCloses*1000}
+                        date={this.props.extendedTimeCloses}
                         onComplete={this.props.onExtendedTimeZero}
                         renderer={CryptoCountdown.countdownRenderer}
                     />
