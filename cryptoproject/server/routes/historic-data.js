@@ -10,6 +10,7 @@ module.exports = (server) => {
         urls.historicData,
         mongooseCrudify({
             Model: HistoricData,
+            identifyingKey: '_id',
             selectFields: '-__v',
             endResponseInAction: false,
             afterActions: [

@@ -5,11 +5,11 @@ import {definitionTable} from "../../utils/cssUtils";
 
 export const CryptoStats = ({
     rank,
-    start_price,
+    startPrice,
     market_cap,
     volume_24h,
     price,
-    nr_of_trades,
+    nrOfTrades,
     percent_change_24h,
     pot
 }) => {
@@ -23,7 +23,7 @@ export const CryptoStats = ({
                     </tr>
                     <tr>
                         <td className="four wide column">Start Price:</td>
-                        <td>{Strings.toUSD(start_price)}</td>
+                        <td>{Strings.toUSD(startPrice)}</td>
                     </tr>
                     <tr>
                         <td className="four wide column">Market Cap:</td>
@@ -43,11 +43,11 @@ export const CryptoStats = ({
                     </tr>
                     <tr>
                         <td className="four wide column">Overall % Change:</td>
-                        <td>{calcTotalPercentChange(parseFloat(start_price), parseFloat(price))}</td>
+                        <td>{calcTotalPercentChange(parseFloat(startPrice), parseFloat(price))}</td>
                     </tr>
                     <tr>
                         <td className="four wide column">Number of Trades:</td>
-                        <td>{nr_of_trades}</td>
+                        <td>{nrOfTrades}</td>
                     </tr>
                     <tr>
                         <td className="four wide column">Pot Size:</td>

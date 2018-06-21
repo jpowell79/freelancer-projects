@@ -4,9 +4,9 @@ import {updateCrypto, updateMarketData, isLoadingMarketData} from "../../redux/a
 let mockCrypto = {
     index: 1,
     rank: 1,
-    start_price: 1,
+    startPrice: 1,
     pot: 1,
-    nr_of_trades: 1,
+    nrOfTrades: 1,
     name: 'Litecoin',
     icon: "../../static/images/picture.png"
 };

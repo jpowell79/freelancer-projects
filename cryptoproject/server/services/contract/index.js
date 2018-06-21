@@ -17,7 +17,7 @@ const fetchCryptoContract = (index) => {
         methods.showRank().call(),
         methods.showCryptoStartPrice().call(),
         methods.numberOfTrades().call(),
-        methods.standardTimeCloses().call(),
+        methods.extendedTimeCloses().call(),
         methods.extendedTimeCloses().call(),
         methods.potBalance().call()
     ]).then(responses => {
@@ -25,13 +25,13 @@ const fetchCryptoContract = (index) => {
             index: index,
             admin: responses[0],
             name: responses[1],
-            contract_address: responses[2],
+            contractAddress: responses[2],
             rank: responses[3],
-            start_price: responses[4]/100000,
-            finish_price: 0,
-            nr_of_trades: parseInt(responses[5], 10),
-            standard_time_closes: parseInt(responses[6], 10)*1000,
-            extended_time_closes: parseInt(responses[7], 10)*1000,
+            startPrice: responses[4]/100000,
+            finishPrice: 0,
+            nrOfTrades: parseInt(responses[5], 10),
+            standardTimeCloses: parseInt(responses[6], 10)*1000,
+            extendedTimeCloses: parseInt(responses[7], 10)*1000,
             pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });

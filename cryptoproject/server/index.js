@@ -58,7 +58,7 @@ app.prepare().then(() => {
             }
         },
         onSnapshotSaved: (contract) => {
-            console.log(`Historic data for contract ${contract.contract_address} saved.`);
+            console.log(`Historic data for contract ${contract.contractAddress} saved.`);
         }
     });
 

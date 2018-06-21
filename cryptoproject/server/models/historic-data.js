@@ -15,7 +15,7 @@ const historicDataSchema = new Schema({
             type: Number,
             required: true
         },
-        potSize: {
+        pot: {
             type: Number,
             required: true
         },

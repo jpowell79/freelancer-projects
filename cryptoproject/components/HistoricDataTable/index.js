@@ -40,13 +40,12 @@ class HistoricDataTable extends Component {
             name: 'Bitcoin',
             startPrice: 1,
             finishPrice: 2,
-            potSize: 3,
+            pot: 3,
             nrOfTrades: 4,
         });
         */
 
         axios.get(urls.historicData).then(response => {
-            console.log(response);
             this.setState({
                 isLoadingHistoricData: false,
                 historicData: response.data
@@ -74,7 +73,7 @@ class HistoricDataTable extends Component {
                     <td>{data.name}</td>
                     <td>{Strings.toUSD(data.startPrice)}</td>
                     <td>{Strings.toUSD(data.finishPrice)}</td>
-                    <td className={hideOnMobile()}>{data.potSize}</td>
+                    <td className={hideOnMobile()}>{data.pot}</td>
                     <td className={hideOnMobile()}>{data.nrOfTrades}</td>
                 </tr>
             );
@@ -133,7 +132,7 @@ class HistoricDataTable extends Component {
                                             })
                                         }
                                         totalPotSize={parseFloat(this.state.historicData
-                                            .map(data => data.potSize)
+                                            .map(data => data.pot)
                                             .reduce((accumulator, currentValue) => {
                                                 return accumulator + currentValue;
                                             }).toFixed(2))

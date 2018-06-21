@@ -67,7 +67,7 @@ class CoinMarketTable extends Component {
             let crypto = cryptoFilter[0];
             let usdQuotes = data.quotes.USD;
             let totalPriceChange = calcTotalPercentChange(
-                parseFloat(crypto.start_price),
+                parseFloat(crypto.startPrice),
                 parseFloat(usdQuotes.price)
             );
 
@@ -77,7 +77,7 @@ class CoinMarketTable extends Component {
             prevData = (prevData === undefined) ? data : prevData;
             let prevUsdQuotes = prevData.quotes.USD;
             let prevTotalPriceChange = calcTotalPercentChange(
-                parseFloat(crypto.start_price),
+                parseFloat(crypto.startPrice),
                 parseFloat(prevUsdQuotes.price)
             );
             if(i === this.props.marketData.length-1){
@@ -104,7 +104,7 @@ class CoinMarketTable extends Component {
                     <td>{crypto.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>
                     <td className={hideOnMobile()}>{usdQuotes.volume_24h}</td>
-                    <td className={hideOnMobile()}>{Strings.toUSD(crypto.start_price)}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(crypto.startPrice)}</td>
                     <td className={hideOnMobile()}>
                         <CoinMarketFlashCell
                             keyName={`price ${i}`}
@@ -129,10 +129,10 @@ class CoinMarketTable extends Component {
                             {totalPriceChange}
                         </CoinMarketFlashCell>
                     </td>
-                    <td className={hideOnMobile()}>{crypto.nr_of_trades}</td>
+                    <td className={hideOnMobile()}>{crypto.nrOfTrades}</td>
                     <td className={hideOnMobile()}>{crypto.pot}</td>
                     <td>
-                        {(crypto.nr_of_trades < MAX_NR_OF_TRADES)
+                        {(crypto.nrOfTrades < MAX_NR_OF_TRADES)
                             ? (
                                 <button className="ui primary button">
                                     <Link href={{

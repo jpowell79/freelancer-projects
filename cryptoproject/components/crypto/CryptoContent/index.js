@@ -30,22 +30,22 @@ class CryptoContent extends Component {
     }
 
     isLocked(){
-        let {extended_time_closes} = this.props.data;
-        return Date.now() > extended_time_closes;
+        let {extendedTimeCloses} = this.props.data;
+        return Date.now() > extendedTimeCloses;
     }
 
     isOpen(){
         let {
-            nr_of_trades,
-            standard_time_closes,
-            extended_time_closes
+            nrOfTrades,
+            standardTimeCloses,
+            extendedTimeCloses
         } = this.props.data;
 
-        let hasEnoughTrades = (nr_of_trades < MAX_NR_OF_TRADES);
+        let hasEnoughTrades = (nrOfTrades < MAX_NR_OF_TRADES);
         let hasStandardTimeLeftOrTradeTokens =
-            (Date.now() < standard_time_closes) ||
+            (Date.now() < standardTimeCloses) ||
             (this.props.tradeTokens !== null && this.props.tradeTokens > 0);
-        let hasExtendedTimeLeft = (Date.now() < extended_time_closes);
+        let hasExtendedTimeLeft = (Date.now() < extendedTimeCloses);
 
         return hasEnoughTrades &&
             hasStandardTimeLeftOrTradeTokens &&
@@ -57,9 +57,9 @@ class CryptoContent extends Component {
             name,
             admin,
             symbol,
-            contract_address,
-            standard_time_closes,
-            extended_time_closes,
+            contractAddress,
+            standardTimeCloses,
+            extendedTimeCloses,
         } = this.props.data;
 
         return (
@@ -87,12 +87,12 @@ class CryptoContent extends Component {
                 <section id="crypto-contract-address" className="ui segment header">
                     <h2 className="ui header no-margin-top">
                         This smart contract address is:
-                        <div className="sub header"><a href={`https://etherscan.io/address/${contract_address}`}>{contract_address}</a></div>
+                        <div className="sub header"><a href={`https://etherscan.io/address/${contractAddress}`}>{contractAddress}</a></div>
                     </h2>
                 </section>
                 <CryptoBalance
                     accountAddress={admin}
-                    contractAddress={contract_address}/>
+                    contractAddress={contractAddress}/>
                 <section id="crypto-details">
                     <div className={titledSegmentHeader()}>
                         <h2>{name}<span className="small symbol">({symbol})</span></h2>
@@ -100,16 +100,16 @@ class CryptoContent extends Component {
                     <div className={titledSegmentContent('children-divider-md')}>
                         <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
                         <CryptoCountdown
-                            standardTimeCloses={standard_time_closes}
-                            extendedTimeCloses={extended_time_closes}
+                            standardTimeCloses={standardTimeCloses}
+                            extendedTimeCloses={extendedTimeCloses}
                             onStandardTimeZero={() => {
                                 this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                    standard_time_closes: 0
+                                    standardTimeCloses: 0
                                 })));
                             }}
                             onExtendedTimeZero={() => {
                                 this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                    extended_time_closes: 0
+                                    extendedTimeCloses: 0
                                 })));
                             }}
                         />

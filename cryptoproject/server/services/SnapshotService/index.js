@@ -11,10 +11,10 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
     let saveHistoricData = (contract, finishPrice) => {
         let historicData = new HistoricData({
             name: contract.name,
-            startPrice: contract.start_price,
+            startPrice: contract.startPrice,
             finishPrice: finishPrice,
-            potSize: contract.pot,
-            nrOfTrades: contract.nr_of_trades
+            pot: contract.pot,
+            nrOfTrades: contract.nrOfTrades
         });
 
         historicData.save();
@@ -22,14 +22,14 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
 
     let onTimeExpired = (time) => {
         let snapshotContracts = this.contractData.filter(contract =>
-            contract.standard_time_closes === time
+            contract.extendedTimeCloses === time
         );
 
         if(snapshotContracts.length === 0) return;
 
         let contract = snapshotContracts[0];
 
-        if(contract.finish_price === 0){
+        if(contract.finishPrice === 0){
             axios.get(CoinMarketCapApi.ticker())
                 .then(response => {
                     return Object.keys(response.data.data)
@@ -44,8 +44,8 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
                     onSnapshotSaved(contract, finishPrice);
                 });
         } else {
-            saveHistoricData(contract, contract.finish_price);
-            onSnapshotSaved(contract, contract.finish_price);
+            saveHistoricData(contract, contract.finishPrice);
+            onSnapshotSaved(contract, contract.finishPrice);
         }
     };
 
@@ -54,10 +54,10 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
 
         fetchAllCryptoContracts().then(response => {
             this.contractData = response.filter(contract =>
-                contract.standard_time_closes > Date.now()
+                contract.extendedTimeCloses > Date.now()
             );
             this.watcher = new TimeWatcher(
-                this.contractData.map(contract => contract.standard_time_closes),
+                this.contractData.map(contract => contract.extendedTimeCloses),
                 onTimeExpired
             );
 
@@ -65,11 +65,11 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
 
             if(this.contractData.length > 0){
                 this.contractData.forEach(contract => {
-                    log += `${contract.contract_address.padEnd(45)}${new Date(contract.standard_time_closes)}\n`;
+                    log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
                 });
             } else {
                 response.forEach(contract => {
-                    log += `${contract.contract_address.padEnd(45)}${new Date(contract.standard_time_closes)}\n`;
+                    log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
                 });
             }
 
