@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 
 const Schema = mongoose.Schema;
 
@@ -30,4 +31,5 @@ const historicDataSchema = new Schema({
         }
     });
 
+historicDataSchema.plugin(autoIncrement.plugin, 'HistoricalData');
 module.exports = mongoose.model('HistoricData', historicDataSchema);

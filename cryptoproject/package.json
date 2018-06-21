@@ -29,6 +29,7 @@
     "moment": "^2.22.2",
     "mongodb": "^3.0.10",
     "mongoose": "^5.1.5",
+    "mongoose-auto-increment": "^5.0.1",
     "mongoose-crudify": "^0.2.0",
     "next": "^6.0.3",
     "next-redux-wrapper": "^2.0.0-beta.6",

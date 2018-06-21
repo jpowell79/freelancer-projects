@@ -1,11 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 const glob = require('glob');
 const next = require('next');
 const urls = require('./services/utils/urls');
-const SnapshotDaemon = require('./services/SnapshotService/');
-const SNAPSHOT_REFRESH_CONTRACT = require('../site-settings').SNAPSHOT_CONTRACT_REFRESH_RATE;
 
 const server = express();
 const dev = process.env.NODE_ENV !== 'production';
@@ -23,6 +22,7 @@ app.prepare().then(() => {
     mongoose.connect(MONGODB_URI);
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
+    autoIncrement.initialize(db);
 
     server.use((req, res, next) => {
         req.db = db;
@@ -47,6 +47,8 @@ app.prepare().then(() => {
     server.get(urls.base, customRequestHandler.bind(undefined, urls.base));
     server.get('*', app.getRequestHandler());
 
+    const SnapshotDaemon = require('./services/SnapshotService/');
+    const SNAPSHOT_REFRESH_CONTRACT = require('../site-settings').SNAPSHOT_CONTRACT_REFRESH_RATE;
     let snapshotDaemon = new SnapshotDaemon({
         onLaunch: (waitLog, watcher) => {
             if(watcher.timesToWatch.length > 0){
