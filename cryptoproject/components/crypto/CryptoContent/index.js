@@ -7,6 +7,11 @@ import CryptoBalance from './CryptoBalance';
 import {CryptoStats} from "./CryptoStats";
 import CryptoCountdown from './CryptoCountdown';
 import CryptoTrade from "./CryptoTrade";
+import {MAX_NR_OF_TRADES} from "../../../site-settings";
+import {
+    titledSegmentHeader,
+    titledSegmentContent
+} from "../../utils/cssUtils";
 
 class CryptoContent extends Component {
     static propTypes = {
@@ -36,7 +41,7 @@ class CryptoContent extends Component {
             extended_time_closes
         } = this.props.data;
 
-        let hasEnoughTrades = (nr_of_trades < 1000);
+        let hasEnoughTrades = (nr_of_trades < MAX_NR_OF_TRADES);
         let hasStandardTimeLeftOrTradeTokens =
             (Date.now() < standard_time_closes) ||
             (this.props.tradeTokens !== null && this.props.tradeTokens > 0);
@@ -51,14 +56,15 @@ class CryptoContent extends Component {
         let {
             name,
             admin,
+            symbol,
             contract_address,
             standard_time_closes,
             extended_time_closes,
         } = this.props.data;
 
         return (
-            <div id="crypto-content">
-                <div className="ui padded segment items">
+            <section id="crypto-content">
+                <section id="crypto-content-header" className="ui padded segment items">
                     <div className="item">
                         <div className="image">
                             <img
@@ -72,26 +78,26 @@ class CryptoContent extends Component {
                         </div>
                         <div className="middle aligned content no-padding text-center">
                             <h2 className="ui huge header no-margin-top">
-                                {name}
+                                {name}<span className="symbol">({symbol})</span>
                                 <div className="sub header">Status: {(this.isOpen()) ? "Open" : "Locked"}</div>
                             </h2>
                         </div>
                     </div>
-                </div>
-                <div className="ui segment header">
+                </section>
+                <section id="crypto-contract-address" className="ui segment header">
                     <h2 className="ui header no-margin-top">
                         This smart contract address is:
                         <div className="sub header"><a href={`https://etherscan.io/address/${contract_address}`}>{contract_address}</a></div>
                     </h2>
-                </div>
+                </section>
                 <CryptoBalance
                     accountAddress={admin}
                     contractAddress={contract_address}/>
-                <div>
-                    <div className="ui top attached padded bg-color-light-gray header">
-                        <h2>{name}</h2>
+                <section id="crypto-details">
+                    <div className={titledSegmentHeader()}>
+                        <h2>{name}<span className="small symbol">({symbol})</span></h2>
                     </div>
-                    <div id="crypto-details" className="ui attached padded segment children-divider-md">
+                    <div className={titledSegmentContent('children-divider-md')}>
                         <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
                         <CryptoCountdown
                             standardTimeCloses={standard_time_closes}
@@ -111,8 +117,8 @@ class CryptoContent extends Component {
                             isOpen={this.isOpen()}
                             isLocked={this.isLocked()}/>
                     </div>
-                </div>
-            </div>
+                </section>
+            </section>
         );
     }
 }

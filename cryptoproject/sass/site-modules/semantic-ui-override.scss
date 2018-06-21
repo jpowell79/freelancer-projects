@@ -1,0 +1,104 @@
+/*----------------------------------------
+ * Semantic UI Override
+ *----------------------------------------*/
+.ui {
+    &.table {
+        margin: 0 0 $standardDivider 0;
+    }
+
+    &.grid.two-column {
+        >.column:first-child {
+            padding-left: 0
+        }
+
+        >.column:last-child {
+            padding-right: 0;
+        }
+    }
+
+    &.feed.divided.list {
+        > div:first-child .ui.header {
+            margin-top: 0;
+        }
+
+        > .item {
+            padding: $xSmallDivider 0;
+        }
+
+        > .item:first-child {
+            padding-top: 0;
+        }
+    }
+
+    &.header {
+        position: relative;
+        text-align: center;
+        margin-top: $smallDivider;
+
+        &.dividing {
+            padding-bottom: $smallDivider;
+        }
+
+        &.huge {
+            font-size: 50px;
+
+            > .sub.header {
+                font-size: 25px;
+            }
+        }
+
+        .symbol {
+            vertical-align: text-top;
+            font-size: $headingMedium;
+            font-weight: lighter;
+            margin-left: $xSmallDivider;
+
+            &.small {
+                font-size: $headingSmall;
+            }
+        }
+    }
+
+    &.statistics {
+        justify-content: center;
+    }
+
+    &.segment {
+        word-wrap: break-word;
+    }
+
+    &.definition {
+        text-align: center;
+
+        tr {
+            padding: 0 0 2px 0!important;
+        }
+
+        td {
+            word-break: break-word;
+            word-wrap: break-word;
+        }
+    }
+}
+
+@media (max-width: $mediaMedium){
+    .ui {
+        &.grid.unstack-md>.column {
+            width: 100%!important;
+        }
+    }
+}
+
+@media (min-width: $mediaSmall){
+    .ui {
+        &.header {
+            .symbol {
+                position: absolute;
+            }
+        }
+
+        &.definition {
+            text-align: left;
+        }
+    }
+}

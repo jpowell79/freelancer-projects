@@ -4,12 +4,13 @@ import Link from 'next/link';
 import $ from 'jquery';
 import TableSorter from '../TableSorter';
 import Strings from "../utils/Strings";
-import {hideOnMobile} from "../utils/cssUtils";
+import {hideOnMobile, sortableTable} from "../utils/cssUtils";
 import {calcTotalPercentChange} from "../utils";
 import Paths from "../utils/Paths";
-import {fetchAllCryptoContracts} from "../crypto/contract";
+import {fetchAllCryptoContracts} from "../../server/services/contract";
 import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
 import AlertOptionPane from "../Alert/AlertOptionPane";
+import {MAX_NR_OF_TRADES} from "../../site-settings";
 import {CoinMarketFlashCell} from "./CoinMarketFlashCell";
 
 class CoinMarketTable extends Component {
@@ -131,7 +132,7 @@ class CoinMarketTable extends Component {
                     <td className={hideOnMobile()}>{crypto.nr_of_trades}</td>
                     <td className={hideOnMobile()}>{crypto.pot}</td>
                     <td>
-                        {(crypto.nr_of_trades < 1000)
+                        {(crypto.nr_of_trades < MAX_NR_OF_TRADES)
                             ? (
                                 <button className="ui primary button">
                                     <Link href={{
@@ -157,22 +158,22 @@ class CoinMarketTable extends Component {
 
     render(){
         return (
-            <table id="coin-market-table" className="ui unstackable selectable sortable very compact celled small table">
+            <table id="coin-market-table" className={sortableTable()}>
                 <thead>
-                <tr>
-                    <th className="no-sort">Icon</th>
-                    <th>Rank</th>
-                    <th>Name</th>
-                    <th className={hideOnMobile()}>MCap</th>
-                    <th className={hideOnMobile()}>Volume</th>
-                    <th className={hideOnMobile()}>Start Price</th>
-                    <th className={hideOnMobile()}>Now Price</th>
-                    <th className={hideOnMobile()}>% 24hr</th>
-                    <th>% Total</th>
-                    <th className={hideOnMobile()}>Nr. Trades</th>
-                    <th className={hideOnMobile()}>Pot</th>
-                    <th className="no-sort">Trade</th>
-                </tr>
+                    <tr>
+                        <th className="no-sort">Icon</th>
+                        <th>Rank</th>
+                        <th>Name</th>
+                        <th className={hideOnMobile()}>MCap</th>
+                        <th className={hideOnMobile()}>Volume</th>
+                        <th className={hideOnMobile()}>Start Price</th>
+                        <th className={hideOnMobile()}>Now Price</th>
+                        <th className={hideOnMobile()}>% 24hr</th>
+                        <th>% Total</th>
+                        <th className={hideOnMobile()}>Nr. Trades</th>
+                        <th className={hideOnMobile()}>Pot</th>
+                        <th className="no-sort">Trade</th>
+                    </tr>
                 </thead>
                 <tbody>
                 {(this.props.marketData.length === 0 || this.props.isLoadingCrypto)

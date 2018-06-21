@@ -1,13 +1,18 @@
+//Import external-modules
+@import "external-modules/react-datepicker";
+
 //Import resources
 @import "resources/variables";
 @import "resources/functions";
 
 //Import site-modules
 @import "site-modules/global";
-@import "site-modules/coin-market-table";
+@import "site-modules/sortable-table";
 @import "site-modules/crypto";
 @import "site-modules/footer";
 @import "site-modules/header";
+@import "site-modules/page-title";
+@import "site-modules/semantic-ui-override";
 
 //Import modules
 @import "modules/social-menu";
@@ -15,6 +20,7 @@
 @import "modules/headings";
 @import "modules/dividers";
 @import "modules/visibility";
+@import "modules/wrappers";
 @import "modules/loader";
 @import "modules/colors";
 @import "modules/alert";

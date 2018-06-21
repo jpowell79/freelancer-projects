@@ -1,4 +1,4 @@
-import Web3 from 'web3';
+let Web3 = require('web3');
 
 let index;
 
@@ -16,6 +16,6 @@ if (typeof window !== 'undefined' && typeof window.index !== 'undefined') {
 }
 
 // const web3 = new Web3(window.web3.currentProvider);
-export default index;
+module.exports = index;
 
 // TODO: improve later for when users don't have metamask installed

@@ -6,11 +6,10 @@ import CoinMarketCapApi from "../CoinMarket/CoinMarketCapApi";
 import axios from 'axios';
 import PropTypes from "prop-types";
 import '../../sass/style.scss';
+import {TABLE_REFRESH_RATE} from "../../site-settings";
 import AlertOptionPane from "../Alert/AlertOptionPane";
 
 class Head extends Component {
-    static REFRESH_RATE = 1000 * 10;
-
     static propTypes = {
         crypto: PropTypes.array,
         addTimer: PropTypes.bool.isRequired,
@@ -31,7 +30,7 @@ class Head extends Component {
         if(this.props.addTimer){
             this.timer = setInterval(() => {
                 this.fetchMarketData();
-            }, Head.REFRESH_RATE);
+            }, TABLE_REFRESH_RATE);
         }
     }
 
@@ -46,7 +45,9 @@ class Head extends Component {
 
         axios.get(CoinMarketCapApi.ticker())
             .then(response => {
-                return Object.values(response.data.data);
+                return Object.keys(response.data.data).map(dataKey =>
+                    response.data.data[dataKey]
+                );
             }).then(marketData => {
                 this.props.dispatch(updateMarketData(marketData));
                 this.props.dispatch(isLoadingMarketData(false));

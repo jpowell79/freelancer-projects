@@ -1,38 +1,90 @@
 import React, {Component} from 'react';
-import urls from '../../server/services/urls';
+import urls from '../../server/services/utils/urls';
 import axios from 'axios';
 import AlertOptionPane from "../Alert/AlertOptionPane";
 import TableSorter from '../TableSorter';
 import {LoaderSmall} from "../icons";
-import {hideOnMobile} from "../utils/cssUtils";
+import {
+    hideOnMobile,
+    sortableTable,
+    titledSegmentHeader,
+    titledSegmentContent
+} from "../utils/cssUtils";
+import {
+    getTimePassed,
+    getTimeLeftInTheDay
+} from "../utils";
 import Strings from '../utils/Strings';
-import SubTable from './SubTable';
+import ComparisonTable from './ComparisonTable';
+import DateForm from '../forms/DateForm';
+import Files from '../utils/Files'
 import $ from 'jquery';
 
 class HistoricDataTable extends Component {
-    state = {
-        historicData: []
-    };
+    constructor(props){
+        super(props);
+
+        this.state = {
+            isLoadingHistoricData: true,
+            historicData: []
+        };
+
+        this.renderHistoricData = this.renderHistoricData.bind(this);
+    }
 
     componentDidMount(){
         new TableSorter($("#historic-data-table"));
 
-        axios.get(urls.historicalData).then(response => {
-            this.setState({historicData: response.data});
+        /*
+        axios.post(urls.historicData, {
+            name: 'Bitcoin',
+            startPrice: 1,
+            finishPrice: 2,
+            potSize: 3,
+            nrOfTrades: 4,
+        });
+        */
+
+        axios.get(urls.historicData).then(response => {
+            console.log(response);
+            this.setState({
+                isLoadingHistoricData: false,
+                historicData: response.data
+            });
         }).catch(err => {
             AlertOptionPane.showErrorAlert({
                 message: err.toString()
             });
+
+            this.setState({
+                isLoadingHistoricData: false
+            });
+        });
+    }
+
+    renderHistoricData(){
+        return this.state.historicData.map((data, i) => {
+            return (
+                <tr key={i}>
+                    <td>{
+                        Strings.toDateTimeString(
+                            new Date(data.timestamp)
+                        )
+                    }</td>
+                    <td>{data.name}</td>
+                    <td>{Strings.toUSD(data.startPrice)}</td>
+                    <td>{Strings.toUSD(data.finishPrice)}</td>
+                    <td className={hideOnMobile()}>{data.potSize}</td>
+                    <td className={hideOnMobile()}>{data.nrOfTrades}</td>
+                </tr>
+            );
         });
     }
 
     render(){
-        if(this.state.historicData.length > 0)
-            console.log();
-
         return (
             <div>
-                <table id="historic-data-table" className="ui unstackable selectable sortable very compact celled small table">
+                <table id="historic-data-table" className={sortableTable()}>
                     <thead>
                         <tr>
                             <th>Created</th>
@@ -44,7 +96,7 @@ class HistoricDataTable extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                    {(this.state.historicData.length === 0)
+                    {(this.state.isLoadingHistoricData)
                         ? (
                             <tr>
                                 <td colSpan={12}>
@@ -52,42 +104,77 @@ class HistoricDataTable extends Component {
                                 </td>
                             </tr>
                         )
-                        : (
-                            this.state.historicData.map((data, i) => {
-                                return (
-                                    <tr key={i}>
-                                        <td>{
-                                            Strings.toDateTimeString(
-                                                new Date(data.createdAt)
-                                            )
-                                        }</td>
-                                        <td>{data.name}</td>
-                                        <td>{data.startPrice}</td>
-                                        <td>{data.finishPrice}</td>
-                                        <td className={hideOnMobile()}>{data.potSize}</td>
-                                        <td className={hideOnMobile()}>{data.nrOfTrades}</td>
-                                    </tr>
-                                );
-                            })
-                        )
+                        : (this.state.historicData.length > 0)
+                            ? (
+                                this.renderHistoricData()
+                            ) : (
+                                <tr>
+                                    <td colSpan={12}>
+                                        No historic data could be found.
+                                    </td>
+                                </tr>
+                            )
                     }
                     </tbody>
                 </table>
                 {(this.state.historicData.length > 0)
                     ? (
-                        <SubTable
-                            totalNrOfTrades={this.state.historicData
-                                .map(data => data.nrOfTrades)
-                                .reduce((accumulator, currentValue) => {
-                                    return accumulator + currentValue;
-                                })
-                            }
-                            totalPotSize={parseFloat(this.state.historicData
-                                .map(data => data.potSize)
-                                .reduce((accumulator, currentValue) => {
-                                    return accumulator + currentValue;
-                                }).toFixed(2))
-                            }/>
+                        <div className="ui padded stackable centered grid unstack-md two-column">
+                            <div className="eight wide column">
+                                <h2 className={titledSegmentHeader()}>
+                                    Summary
+                                </h2>
+                                <div className={titledSegmentContent()}>
+                                    <ComparisonTable
+                                        totalNrOfTrades={this.state.historicData
+                                            .map(data => data.nrOfTrades)
+                                            .reduce((accumulator, currentValue) => {
+                                                return accumulator + currentValue;
+                                            })
+                                        }
+                                        totalPotSize={parseFloat(this.state.historicData
+                                            .map(data => data.potSize)
+                                            .reduce((accumulator, currentValue) => {
+                                                return accumulator + currentValue;
+                                            }).toFixed(2))
+                                        }
+                                    />
+                                </div>
+                            </div>
+                            <div className="eight wide column">
+                                <h2 className={titledSegmentHeader()}>
+                                    Download CSV
+                                </h2>
+                                <div className={titledSegmentContent()}>
+                                    <DateForm onSubmit={(startDate, endDate) => {
+                                        //TODO: Ignore time completely
+                                        let start = startDate.unix()*1000-getTimePassed(
+                                            new Date(startDate.unix()*1000)
+                                        );
+                                        let end = endDate.unix()*1000+getTimeLeftInTheDay(
+                                            new Date(endDate.unix()*1000)
+                                        );
+
+                                        let convertToCsv = this.state.historicData.filter(data => {
+                                            let timestamp = new Date(data.timestamp).getTime();
+                                            return (timestamp >= start) && (timestamp <= end);
+                                        });
+
+                                        if(convertToCsv.length > 0){
+                                            let csv = Files.objectArrayToCsv(
+                                                convertToCsv, ['_id', 'updatedAt']
+                                            );
+
+                                            Files.downloadCsv(csv, `historic-data`);
+                                        } else {
+                                            AlertOptionPane.showInfoAlert({
+                                                message: "No historical data between the given dates could be found."
+                                            });
+                                        }
+                                    }} submitText={"Download CSV"}/>
+                                </div>
+                            </div>
+                        </div>
                     ) : null}
             </div>
         );

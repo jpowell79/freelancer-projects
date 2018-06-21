@@ -9,7 +9,7 @@
             "sidebar sidebar sidebar"
             "footer footer footer";
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: $smallDivider;
+    grid-gap: $standardDivider;
     padding: $smallDivider;
     max-width: $wrapperWidth;
     margin: 0 auto;
@@ -25,70 +25,17 @@
 
     #crypto-content {
         grid-area: content;
-
-        #crypto-details {
-            > * {
-                margin-bottom: 2em;
-            }
-        }
+        @include divideChildren($standardDivider);
     }
 
     #crypto-sidebar {
         grid-area: sidebar;
-
-        .feed  {
-            > div:first-child .ui.header {
-                margin-top: 0;
-            }
-
-            > .item {
-                padding: $xSmallDivider 0;
-            }
-
-            > .item:first-child {
-                padding-top: 0;
-            }
-        }
+        @include divideChildren($standardDivider);
     }
 
     #site-footer {
         grid-area: footer;
         margin-top: 0;
-    }
-
-    .ui {
-        &.header {
-            text-align: center;
-            margin-top: $smallDivider;
-
-            &.dividing {
-                padding-bottom: $smallDivider;
-            }
-
-            &.huge {
-                font-size: 50px;
-
-                > .sub.header {
-                    font-size: 25px;
-                }
-            }
-        }
-
-        &.statistics {
-            justify-content: center;
-        }
-
-        &.segment {
-            word-wrap: break-word;
-        }
-
-        &.definition {
-            text-align: center;
-
-            tr {
-                padding: 0 0 2px 0!important;
-            }
-        }
     }
 
     .loader {
@@ -108,8 +55,6 @@
                 "header header header"
                 "content content sidebar"
                 "footer footer footer";
-        padding: 0 $standardDivider;
-        grid-gap: $standardDivider;
 
         #crypto-content {
             #crypto-trade {
@@ -118,11 +63,11 @@
                 }
             }
         }
+    }
+}
 
-        .ui {
-            .definition {
-                text-align: left;
-            }
-        }
+@media (min-width: $mediaSmall) {
+    #crypto {
+        padding: 0 $standardDivider;
     }
 }

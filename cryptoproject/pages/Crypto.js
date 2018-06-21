@@ -9,13 +9,11 @@ import {
     updateCrypto,
     isLoadingCrypto
 } from "../redux/actions";
-import {
-    fetchCryptoContract,
-    contractAddresses
-} from "../components/crypto/contract";
+import {Loader} from "../components/icons";
+import {fetchCryptoContract} from "../server/services/contract";
+import {CONTRACT_ADDRESSES} from "../site-settings";
 import AlertOptionPane from "../components/Alert/AlertOptionPane";
 import {withRouter} from 'next/router';
-import {redirect} from "../components/utils/index";
 import Paths from '../components/utils/Paths';
 
 class Crypto extends Component {
@@ -26,13 +24,13 @@ class Crypto extends Component {
 
     static async getInitialProps ({res, query}) {
         if(query.index === undefined){
-            redirect(res, `${Paths.getCryptoPage('')}?index=0`);
+            Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
 
         let index = parseInt(query.index, 10);
 
-        if(index < 0 || isNaN(query.index) || index >= contractAddresses.length){
-            redirect(res, `${Paths.getCryptoPage('')}?index=0`);
+        if(index < 0 || isNaN(query.index) || index >= CONTRACT_ADDRESSES.length){
+            Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
 
         return {index: parseInt(query.index, 10)};
@@ -70,7 +68,7 @@ class Crypto extends Component {
                 <div>
                     <Head fetchMarketData={true} addTimer={false}/>
                     <div id="crypto">
-                        <div className="loader"/>
+                        <Loader/>
                     </div>
                 </div>
             );

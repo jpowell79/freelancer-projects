@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-const historicalDataSchema = new Schema({
+const historicDataSchema = new Schema({
         name: {
             type: String,
             required: true
@@ -26,8 +26,8 @@ const historicalDataSchema = new Schema({
     },
     {
         timestamps: {
-            createdAt: 'createdAt'
+            createdAt: 'timestamp'
         }
     });
 
-module.exports = mongoose.model('HistoricalData', historicalDataSchema);
+module.exports = mongoose.model('HistoricData', historicDataSchema);

@@ -1,15 +1,15 @@
 'use strict';
 
-const urls = require('../services/urls');
+const urls = require('../services/utils/urls');
 const mongooseCrudify = require('mongoose-crudify');
-const helpers = require('../services/helpers');
-const HistoricalData = require('../models/historical-data');
+const helpers = require('../services/utils/helpers');
+const HistoricData = require('../models/historic-data');
 
 module.exports = (server) => {
     server.use(
-        urls.historicalData,
+        urls.historicData,
         mongooseCrudify({
-            Model: HistoricalData,
+            Model: HistoricData,
             selectFields: '-__v',
             endResponseInAction: false,
             afterActions: [

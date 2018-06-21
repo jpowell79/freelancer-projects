@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import PositiveFloatInput from '../../forms/PositiveFloatInput';
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
+import {MAX_ETH, LOWEST_ETH} from "../../../site-settings";
 import {updateTradeStatus} from "../../../redux/actions";
 
 //TODO: Wire up with some actual trade mechanism
@@ -32,7 +33,7 @@ class CryptoTrade extends Component {
     }
 
     static isValidTrade(tradeValue){
-        return (tradeValue >= 0.1) && (tradeValue <= 10);
+        return (tradeValue >= LOWEST_ETH) && (tradeValue <= MAX_ETH);
     }
 
     static renderTradeTransactionMessage(tradeStatus){
@@ -73,9 +74,9 @@ class CryptoTrade extends Component {
                     (hasCorrectInput) ? "ui action input" : "ui action input error"
                 }>
                     <PositiveFloatInput
-                        lowestDigit={0.1}
-                        highestDigit={10}
-                        placeholder="Min 0.1 eth"
+                        lowestDigit={LOWEST_ETH}
+                        highestDigit={MAX_ETH}
+                        placeholder={`Min ${LOWEST_ETH} eth`}
                         onIncorrectInput={(event) => {
                             this.setState({hasCorrectInput: false});
                             event.preventDefault();

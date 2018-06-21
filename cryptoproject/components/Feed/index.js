@@ -27,15 +27,6 @@ class Feed extends Component {
         className: PropTypes.string
     };
 
-    static urls = {
-        coinDesk: 'https://www.coindesk.com/feed/',
-        coinTelegraph: 'https://cointelegraph.com/rss/',
-        reddit: 'https://www.reddit.com/r/CryptoCurrency/top/.rss?format=xml',
-        cryptoPotato: 'https://cryptopotato.com/feed/',
-        coinsutra: 'https://coinsutra.com/blog/feed/',
-        cryptoClarified: 'https://cryptoclarified.com/feed/'
-    };
-
     constructor(props){
         super(props);
 

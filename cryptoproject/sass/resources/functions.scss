@@ -4,6 +4,15 @@
     cursor: pointer;
 }
 
+@mixin uiTableIcon($icon){
+    font-family: $iconFont;
+    content: $icon!important;
+    display: inline-block!important;
+    height: 1em;
+    width: auto;
+    margin: 0 0 0 .5em;
+}
+
 @mixin semanticAttribute($class, $attribute, $value){
     #{$class}{
         #{$attribute}: #{$value};

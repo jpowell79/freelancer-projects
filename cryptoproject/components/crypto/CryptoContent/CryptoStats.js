@@ -1,6 +1,7 @@
 import React from 'react';
 import Strings from "../../utils/Strings";
 import {calcTotalPercentChange} from "../../utils";
+import {definitionTable} from "../../utils/cssUtils";
 
 export const CryptoStats = ({
     rank,
@@ -13,8 +14,8 @@ export const CryptoStats = ({
     pot
 }) => {
     return (
-        <div id="crypto-stats">
-            <table className="ui definition table">
+        <section id="crypto-stats">
+            <table className={definitionTable()}>
                 <tbody>
                     <tr>
                         <td className="four wide column">Start Rank:</td>
@@ -54,6 +55,6 @@ export const CryptoStats = ({
                     </tr>
                 </tbody>
             </table>
-        </div>
+        </section>
     );
 };

@@ -1,19 +1,7 @@
-@mixin uiTableIcon($icon){
-    font-family: $iconFont;
-    content: $icon!important;
-    display: inline-block!important;
-    height: 1em;
-    width: auto;
-    margin: 0 0 0 .5em;
-}
-
-
-//TODO: Generalize styles
 /*----------------------------------------
- * Coin Market Table
+ * Sortable Table
  *----------------------------------------*/
-#coin-market-table,
-#historic-data-table {
+.ui.sortable-table {
     text-align: center;
 
     .ui.button {
@@ -91,7 +79,7 @@
 }
 
 @media (max-width: $mediaXSmall){
-    #coin-market-table {
+    .ui.sortable-table {
         .ui.button {
             padding: 6px;
             font-size: .8em;

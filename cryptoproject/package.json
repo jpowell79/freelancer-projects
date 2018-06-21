@@ -3,35 +3,40 @@
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
+    "chai": "^4.1.2",
     "enzyme": "^2.8.2",
     "jest": "22.0.1",
+    "mocha": "^5.2.0",
     "nodemon": "^1.12.1",
     "react-addons-test-utils": "^15.6.2",
     "react-test-renderer": "16.2.0"
   },
   "dependencies": {
+    "@zeit/next-css": "^0.2.0",
     "@zeit/next-sass": "^0.2.0",
     "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-jest": "22.4.3",
     "body-parser": "^1.18.3",
     "bson": "^3.0.0",
+    "csv": "^3.1.0",
     "express": "^4.16.3",
     "glob": "^7.1.2",
-    "isomorphic-unfetch": "^2.0.0",
     "jquery": "^3.3.1",
+    "json2csv": "^4.1.3",
     "kerberos": "0.0.24",
     "lodash": "^4.17.4",
+    "moment": "^2.22.2",
     "mongodb": "^3.0.10",
     "mongoose": "^5.1.5",
     "mongoose-crudify": "^0.2.0",
-    "mongoose-csv": "^1.1.0",
     "next": "^6.0.3",
     "next-redux-wrapper": "^2.0.0-beta.6",
     "node-sass": "^4.9.0",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-countdown-now": "^1.3.0",
+    "react-datepicker": "^1.5.0",
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
@@ -48,7 +53,7 @@
     "database": "mongod --dbpath=database",
     "dev": "nodemon -w server -w package.json server/index.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server/index.js"
+    "start": "node server/index.js"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -57,7 +62,8 @@
     ],
     "testPathIgnorePatterns": [
       "<rootDir>/.next/",
-      "<rootDir>/node_modules/"
+      "<rootDir>/node_modules/",
+      "<rootDir>/server/"
     ],
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",

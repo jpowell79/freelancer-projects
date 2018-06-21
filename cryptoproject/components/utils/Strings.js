@@ -18,22 +18,28 @@ class Strings {
         return false;
     };
 
+    static toDateString(date){
+        let year = date.getFullYear().toString(10);
+        let month = (date.getMonth()+1).toString(10);
+        let day = date.getDate().toString(10);
+
+        if (month.length === 1) month = "0" + month;
+        if (day.length === 1) day = "0" + day;
+
+        return `${year}/${month}/${day}`;
+    }
+
     /**
      * @returns {string} formatted as YYYY-MM-DDTHH:MM
      */
     static toDateTimeString(date){
-        let year = date.getFullYear().toString(10);
-        let month = (date.getMonth()+1).toString(10);
-        let day = date.getDate().toString(10);
         let hours = date.getHours().toString(10);
         let minutes = date.getMinutes().toString(10);
 
-        if (month.length === 1) month = "0" + month;
-        if (day.length === 1) day = "0" + day;
         if (hours.length === 1) hours = "0" + hours;
         if (minutes.length === 1) minutes = "0" + minutes;
 
-        return `${year}/${month}/${day} - ${hours}:${minutes}`;
+        return `${Strings.toDateString(date)} - ${hours}:${minutes}`;
     }
 
     static escapeHTML(string) {

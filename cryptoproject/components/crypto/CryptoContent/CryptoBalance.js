@@ -2,9 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {updateTradeTokens, isLoadingTradeTokens} from "../../../redux/actions";
 import {LoaderSmall} from "../../icons";
+import {
+    definitionTable,
+    titledSegmentHeader,
+    titledSegmentContent
+} from "../../utils/cssUtils";
 import AlertOptionPane from "../../Alert/AlertOptionPane";
 import PropTypes from 'prop-types';
-import web3 from "../../web3";
+import web3 from "../../../server/services/web3";
 
 class CryptoBalance extends Component {
     static propTypes = {
@@ -56,24 +61,24 @@ class CryptoBalance extends Component {
     render(){
         if(this.props.isLoadingTradeTokens){
             return (
-                <div id="crypto-balance">
+                <section id="crypto-balance">
                     <div className="ui top attached padded bg-color-light-gray header">
                         <h2>Your account</h2>
                     </div>
                     <div className="ui attached padded segment children-divider-md">
                         <LoaderSmall/>
                     </div>
-                </div>
+                </section>
             );
         }
 
         return (
-            <div id="crypto-balance">
-                <div className="ui top attached padded bg-color-light-gray header">
+            <section id="crypto-balance">
+                <div className={titledSegmentHeader()}>
                     <h2>Your account</h2>
                 </div>
-                <div className="ui attached padded segment children-divider-md">
-                    <table className="ui definition table">
+                <div className={titledSegmentContent('children-divider-md')}>
+                    <table className={definitionTable()}>
                         <tbody>
                             <tr>
                                 <td className="four wide column">
@@ -105,7 +110,7 @@ class CryptoBalance extends Component {
                             </div>
                         )}
                 </div>
-            </div>
+            </section>
         );
     }
 }

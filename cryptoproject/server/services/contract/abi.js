@@ -1,4 +1,4 @@
-export const abi =
+module.exports =
     [{
         "constant": true,
         "inputs": [],

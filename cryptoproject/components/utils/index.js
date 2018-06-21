@@ -1,5 +1,3 @@
-import Router from 'next/router';
-
 export const filterObject = (objectToFilter, objectToFilterOut) => {
     let filteredObject = {};
 
@@ -13,6 +11,24 @@ export const filterObject = (objectToFilter, objectToFilterOut) => {
     });
 
     return filteredObject;
+};
+
+export const getTimePassed = (date) => {
+    let hours = date.getHours() * 60 * 60 * 1000;
+    let minutes = date.getMinutes() * 60 * 1000;
+    let seconds = date.getSeconds() * 1000;
+    let milliseconds = date.getMilliseconds();
+
+    return hours+minutes+seconds+milliseconds;
+};
+
+export const getTimeLeftInTheDay = (date) => {
+    let hours = Math.abs(date.getHours() * 60 * 60 * 1000 - 1000 * 23 * 60 * 60);
+    let minutes = Math.abs(date.getMinutes() * 60 * 1000 - 1000 * 59 * 60);
+    let seconds = Math.abs(date.getSeconds() * 1000 - 1000 * 60);
+    let milliseconds = Math.abs(date.getMilliseconds() - 1000);
+
+    return hours+minutes+seconds+milliseconds;
 };
 
 export const joinClassNames = (className1, className2) => {
@@ -38,16 +54,4 @@ export const flatten = (array) => {
 
 export const reduce = (array, amountToReduce) => {
     return array.filter((item, i) => i < amountToReduce);
-};
-
-export const redirect = (res, url) => {
-    if(res){
-        res.writeHead(302, {
-            Location: url
-        });
-        res.end();
-        res.finished = true;
-    } else {
-        Router.push(url);
-    }
 };

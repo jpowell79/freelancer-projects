@@ -1,3 +1,5 @@
+import Router from "next/router";
+
 export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto_icons`;
@@ -17,6 +19,18 @@ class Paths {
 
     static getHistoricDataPage(root = '../..'){
         return `${root}/HistoricData`;
+    };
+
+    static redirect = (res, url) => {
+        if(res){
+            res.writeHead(302, {
+                Location: url
+            });
+            res.end();
+            res.finished = true;
+        } else {
+            Router.push(url);
+        }
     };
 }
 

@@ -78,10 +78,16 @@ $headingLarge    : 2rem;
 $headingMedium   : 1.5rem;
 $headingSmall    : 1.25rem;
 $wrapperWidth    : 1200px;
-$largeDivider    : 60px;
+$largeDivider    : 2em;
 $standardDivider : 1.5em;
-$smallDivider    : 15px;
-$xSmallDivider   : 7.5px;
+$smallDivider    : 1em;
+$xSmallDivider   : 0.5em;
+
+$wrappers: (
+    (wrapper    $wrapperWidth)
+    (wrapper-md $wrapperWidth/1.5)
+    (wrapper-sm $wrapperWidth/2)
+);
 
 $dividers: (
     (divider-lg $largeDivider)
