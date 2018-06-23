@@ -66,7 +66,7 @@ export const twitterFeeds = {
 };
 
 export const getTwitterFeeds = (cryptoName) => {
-    let name = cryptoName.toLowerCase();
+    let name = cryptoName.toLowerCase().replace(/ /g,'');
     
     switch(name){
     case cryptoNames.aeternity:
