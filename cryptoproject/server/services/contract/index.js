@@ -38,8 +38,8 @@ const fetchCryptoContract = (index) => {
             startPrice: responses[4]/100000,
             finishPrice: 0,
             nrOfTrades: parseInt(responses[5], 10),
-            standardTimeCloses: parseInt(responses[6], 10)*1000 + (1000 * 60 * 60 * 2),
-            extendedTimeCloses: parseInt(responses[7], 10)*1000 + (1000 * 60 * 60 * 2),
+            standardTimeCloses: parseInt(responses[6], 10)*1000,
+            extendedTimeCloses: parseInt(responses[7], 10)*1000,
             pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });
