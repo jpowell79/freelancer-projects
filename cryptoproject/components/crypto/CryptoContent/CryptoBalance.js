@@ -8,38 +8,38 @@ import {
     titledSegmentContent
 } from "../../utils/cssUtils";
 import AlertOptionPane from "../../Alert/AlertOptionPane";
-import PropTypes from 'prop-types';
-import web3 from "../../../server/services/Web3";
+import Settings from '../../../site-settings';
+import Web3 from "../../../server/services/Web3";
 
 class CryptoBalance extends Component {
-    static propTypes = {
-        accountAddress: PropTypes.string.isRequired,
-        contractAddress: PropTypes.string.isRequired
-    };
-
     constructor(props){
         super(props);
 
+        this.accountAddress = 'undefined';
         this.fetchTradeTokens = this.fetchTradeTokens.bind(this);
     }
 
-    fetchTradeTokens(accountAddress, contractAddress){
+    fetchTradeTokens(){
         this.props.dispatch(isLoadingTradeTokens(true));
-        //TODO: Check if the correct tokens are actually being fetched here.
-        let contractData = `0x70a08231000000000000000000000000${accountAddress.substring(2)}`;
 
-        web3.eth.call({
-            to: contractAddress,
-            data: contractData
-        }, (err, result) => {
+        Web3.getAccountAddress().then(accountAddress => {
+            this.accountAddress = accountAddress;
+
+            return Web3.eth.call({
+                to: Settings.TOKEN_CONTRACT,
+                data: `0x70a08231000000000000000000000000${accountAddress.substring(2)}`
+            });
+        }).then(result => {
             if(result){
-                let bn = web3.utils.toBN(result).toString();
-                let tokens = parseFloat(web3.utils.fromWei(bn, 'ether'));
+                let bn = Web3.utils.toBN(result).toString();
+                let tokens = parseFloat(Web3.utils.fromWei(bn, 'ether'));
                 this.props.dispatch(updateTradeTokens(tokens));
             } else {
                 AlertOptionPane.showErrorAlert({message: err.toString()});
             }
 
+            this.props.dispatch(isLoadingTradeTokens(false));
+        }).catch(() => {
             this.props.dispatch(isLoadingTradeTokens(false));
         });
     }
@@ -51,10 +51,7 @@ class CryptoBalance extends Component {
 
     componentDidMount(){
         if(this.props.tradeTokens === null){
-            this.fetchTradeTokens(
-                this.props.accountAddress,
-                this.props.contractAddress
-            );
+            this.fetchTradeTokens();
         }
     }
 
@@ -85,7 +82,7 @@ class CryptoBalance extends Component {
                                     Ethereum address:
                                 </td>
                                 <td>
-                                    {this.props.accountAddress}
+                                    {this.accountAddress}
                                 </td>
                             </tr>
                             <tr>

@@ -1,41 +1,44 @@
-let web3 = require('web3');
+const web3 = require('web3');
+const Settings = require('../../../site-settings');
 
-const Web3 = (() => {
+function Web3(provider){
+    web3.call(this, provider);
+
+    //TODO: Remove later. Used to always access some account during development.
+    this.eth.defaultAccount = Settings.DEFAULT_ACCOUNT;
+
+    this.isMetaMask = () => {
+        return this.currentProvider.isMetaMask;
+    };
+
+    this.getAccountAddress = () => {
+        return this.eth.getAccounts().then(accounts => {
+            //TODO: Remove later.
+            if(accounts.length === 0){
+                return Web3.eth.defaultAccount;
+            }
+
+            return accounts[0];
+        });
+    };
+
+    this.getBalance = (accountAddress) => {
+        return this.eth.getBalance(accountAddress)
+            .then(balance => balance/1000000000000000000)
+    };
+}
+
+Web3.prototype = Object.create(web3.prototype);
+Web3.prototype.contructor = Web3;
+
+const getProvider = () => {
     if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
-        return new web3(window.web3.currentProvider);
+        return window.web3.currentProvider;
     }
 
-    const provider = new web3.providers.HttpProvider(
+    return new web3.providers.HttpProvider(
         'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv'
     );
-
-    return new web3(provider);
-})();
-
-Web3.isMetaMask = () => {
-    return Web3.currentProvider.isMetaMask;
 };
 
-Web3.getAccountAddress = () => {
-    return Web3.eth.getAccounts().then(accounts => {
-        //TODO: Remove later.
-        if(accounts.length === 0){
-            return Web3.eth.defaultAccount;
-        }
-
-        return accounts[0];
-    });
-};
-
-Web3.getBalance = () => {
-    return Web3.getAccountAddress().then(accountAddress => {
-        return Web3.eth.getBalance(accountAddress);
-    }).then(balance => {
-        return balance/1000000000000000000;
-    });
-};
-
-//TODO: Remove later. Used to always access some account during development.
-Web3.eth.defaultAccount = '0xB736a9bACC8855531AeF429735D477D4b5A4D208';
-
-module.exports = Web3;
+module.exports = new Web3(getProvider());

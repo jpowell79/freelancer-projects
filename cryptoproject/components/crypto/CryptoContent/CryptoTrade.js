@@ -3,22 +3,21 @@ import PositiveFloatInput from '../../forms/PositiveFloatInput';
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {MAX_ETH, LOWEST_ETH} from "../../../site-settings";
-import {endTransaction, startTransaction} from "../../../redux/actions";
-import Contract from '../../../server/services/contract';
-import Web3 from '../../../server/services/Web3';
-import AlertOptionPane from "../../Alert/AlertOptionPane";
-import {LoaderTiny} from "../../icons";
+import {LoaderSmall} from "../../icons";
 
-//TODO: Wire up with some actual trade mechanism
 class CryptoTrade extends Component {
     static propTypes = {
-        index: PropTypes.number.isRequired,
+        handleTrade: PropTypes.func.isRequired,
         isOpen: PropTypes.bool.isRequired,
         isLocked: PropTypes.bool.isRequired
     };
 
     static tradeStatus = {
         idle: "idle",
+        inProgress: "inProgress",
+        incorrectEth: "incorrectEth",
+        notEnoughEth: "notEnoughEth",
+        notEnoughTradeTokens: "notEnoughTradeTokens",
         success: "success",
         error: "error"
     };
@@ -32,59 +31,6 @@ class CryptoTrade extends Component {
 
         this.renderTradeForm = this.renderTradeForm.bind(this);
         this.renderTradeTransactionMessage = this.renderTradeTransactionMessage.bind(this);
-        this.handleTrade = this.handleTrade.bind(this);
-    }
-
-    handleTrade(tradeValue){
-        //TODO: Trading steps
-        //1. Check if they entered the correct amount
-        //2. Check their balance and error if it's not enough
-        //3. Proceed with metamask.
-
-        if(!CryptoTrade.isValidTrade(tradeValue)){
-            AlertOptionPane.showErrorAlert({
-                title: "Invalid trade",
-                message: `Please correct the amount of Eth to ` +
-                         `a value between ${LOWEST_ETH} and ${MAX_ETH}.`
-            });
-        } else if(!this.props.transaction.inProgress){
-            this.props.dispatch(startTransaction());
-
-            Web3.getAccountAddress().then(accountAddress => {
-                return Web3.eth.getBalance(accountAddress);
-            }).then(balance => {
-                if(balance < tradeValue){
-                    AlertOptionPane.showErrorAlert({
-                        title: "Invalid trade",
-                        message: `You're missing a total of ` +
-                        `${tradeValue-balance} eth to make this trade.`
-                    });
-
-                    return null;
-                }
-
-                return Contract.enterTheGame(this.props.index, {
-                    from: Web3.eth.defaultAccount,
-                    value: tradeValue
-                });
-            }).then(transaction => {
-                if(transaction !== null){
-                    transaction.inProgress = false;
-                    transaction.tradeStatus = CryptoTrade.tradeStatus.success;
-                    this.props.dispatch(endTransaction(transaction));
-                } else {
-                    this.props.dispatch(endTransaction({
-                        inProgress: false,
-                        tradeStatus: CryptoTrade.tradeStatus.idle
-                    }));
-                }
-            }).catch(() => {
-                this.props.dispatch(endTransaction({
-                    inProgress: false,
-                    tradeStatus: CryptoTrade.tradeStatus.error
-                }));
-            });
-        }
     }
 
     static isValidTrade(tradeValue){
@@ -98,15 +44,48 @@ class CryptoTrade extends Component {
         case CryptoTrade.tradeStatus.success:
             return (
                 <div className="ui success message">
-                    <div className="header">Trade Successful</div>
-                    Transaction hash: {transaction.transactionHash}
+                    <div className="header">Your transaction has been approved!</div>
+                    <span>You have successfully entered the game. Your transaction hash is </span>
+                    <a href={`https://etherscan.io/address/${transaction.transactionHash}`}>
+                        {transaction.transactionHash}
+                    </a>
+                </div>
+            );
+        case CryptoTrade.tradeStatus.inProgress:
+            return (
+                <div className="ui icon info message">
+                    <LoaderSmall/>
+                    <div className="content">
+                        <div className="header">Waiting for transaction confirmation</div>
+                        <span>Please allow up to 30 seconds for the transaction to
+                            be processed and written to the Ethereum blockchain.</span>
+                    </div>
+                </div>
+            );
+        case CryptoTrade.tradeStatus.incorrectEth:
+            return (
+                <div className="ui error message">
+                    {`Please correct the amount of Eth to a value between ${LOWEST_ETH} and ${MAX_ETH}`}
+                </div>
+            );
+        case CryptoTrade.tradeStatus.notEnoughEth:
+            return (
+                <div className="ui error message">
+                    {`Please note that you require a minimum of ${LOWEST_ETH} Eth to place a trade.`}
+                </div>
+            );
+        case CryptoTrade.tradeStatus.notEnoughTradeTokens:
+            return (
+                <div className="ui error message">
+                    <span>Please note that you need more than 0 trade tokens
+                        to place a trade during the extended time period.</span>
                 </div>
             );
         case CryptoTrade.tradeStatus.error:
             return (
                 <div className="ui error message">
-                    <div className="header">Trade Failed</div>
-                    Trade cancelled. Please try again.
+                    <div className="header">Trade Cancelled</div>
+                    Please try again.
                 </div>
             );
         default:
@@ -122,7 +101,7 @@ class CryptoTrade extends Component {
 
         let {
             isOpen,
-            transaction
+            handleTrade
         } = this.props;
 
         return (
@@ -152,10 +131,8 @@ class CryptoTrade extends Component {
                                 className="ui primary submit button"
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    this.handleTrade(tradeValue);
-                                }}>{(transaction.inProgress)
-                                    ? <LoaderTiny className="secondary"/>
-                                    : "Trade"}</button>
+                                    handleTrade(tradeValue);
+                                }}>Trade</button>
                         )
                         : <button disabled className="ui submit button">Locked</button>}
                 </div>

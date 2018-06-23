@@ -15,6 +15,26 @@ export const updateAllCrypto = (crypto) => {
     }
 };
 
+export const startTransaction = () => {
+    return {
+        type: constants.START_TRANSACTION,
+        payload: {
+            inProgress: true,
+            tradeStatus: CryptoTrade.tradeStatus.idle
+        }
+    }
+};
+
+export const updateTransactionStatus = (tradeStatus) => {
+    return {
+        type: constants.UPDATE_TRANSACTION_STATUS,
+        payload: {
+            inProgress: true,
+            tradeStatus: tradeStatus
+        }
+    }
+};
+
 export const endTransaction = (transaction) => {
     return {
         type: constants.END_TRANSACTION,
@@ -26,16 +46,6 @@ export const updateTradeTokens = (tokens) => {
     return {
         type: constants.UPDATE_TRADE_TOKENS,
         payload: tokens
-    }
-};
-
-export const startTransaction = () => {
-    return {
-        type: constants.START_TRANSACTION,
-        payload: {
-            inProgress: true,
-            tradeStatus: CryptoTrade.tradeStatus.idle
-        }
     }
 };
 

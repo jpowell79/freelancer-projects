@@ -30,6 +30,16 @@ module.exports.CONTRACT_ADDRESSES = [
 ];
 
 /*----------------------------------------
+ * Token Contract
+ *----------------------------------------*/
+module.exports.TOKEN_CONTRACT = '0xe69faa73b3bb4cfca6cd83c1a8bfe52cbeb5877d';
+
+/*----------------------------------------
+ * Default Account
+ *----------------------------------------*/
+module.exports.DEFAULT_ACCOUNT = '0xB736a9bACC8855531AeF429735D477D4b5A4D208';
+
+/*----------------------------------------
  * Misc. Database Options
  *----------------------------------------*/
 module.exports.REMOVE_DATABASE = false;

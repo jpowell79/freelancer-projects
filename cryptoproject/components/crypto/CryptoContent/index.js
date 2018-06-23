@@ -2,7 +2,12 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Paths from "../../utils/Paths";
 import PropTypes from 'prop-types';
-import {updateCrypto,} from "../../../redux/actions";
+import {
+    endTransaction,
+    updateTransactionStatus,
+    startTransaction,
+    updateCrypto
+} from "../../../redux/actions";
 import CryptoBalance from './CryptoBalance';
 import {CryptoStats} from "./CryptoStats";
 import CryptoCountdown from './CryptoCountdown';
@@ -12,6 +17,8 @@ import {
     titledSegmentHeader,
     titledSegmentContent
 } from "../../utils/cssUtils";
+import Contract from "../../../server/services/contract";
+import Web3 from "../../../server/services/Web3";
 
 class CryptoContent extends Component {
     static propTypes = {
@@ -27,6 +34,7 @@ class CryptoContent extends Component {
 
         this.isOpen = this.isOpen.bind(this);
         this.isLocked = this.isLocked.bind(this);
+        this.handleTrade = this.handleTrade.bind(this);
     }
 
     isLocked(){
@@ -35,8 +43,6 @@ class CryptoContent extends Component {
     }
 
     isOpen(){
-        console.log(this.props);
-
         let {
             nrOfTrades,
             standardTimeCloses,
@@ -54,12 +60,67 @@ class CryptoContent extends Component {
             hasExtendedTimeLeft;
     }
 
+    handleTrade(tradeValue){
+        if(!CryptoTrade.isValidTrade(tradeValue)){
+            this.props.dispatch(updateTransactionStatus(
+                CryptoTrade.tradeStatus.incorrectEth
+            ));
+        } else if(this.props.transaction.tradeStatus !== CryptoTrade.tradeStatus.inProgress){
+            this.props.dispatch(startTransaction());
+
+            Web3.getAccountAddress().then(accountAddress => {
+                return Web3.getBalance(accountAddress);
+            }).then(balance => {
+                if(balance < tradeValue){
+                    this.props.dispatch(updateTransactionStatus(
+                        CryptoTrade.tradeStatus.notEnoughEth
+                    ));
+
+                    return null;
+                } else if(this.props.data.standardTimeCloses < Date.now()){
+                    if(this.props.tradeTokens <= 0){
+                        this.props.dispatch(endTransaction({
+                            inProgress: false,
+                            tradeStatus: CryptoTrade.tradeStatus.idle
+                        }));
+
+                        return null;
+                    }
+                }
+
+                this.props.dispatch(updateTransactionStatus(
+                    CryptoTrade.tradeStatus.inProgress
+                ));
+
+                return Contract.enterTheGame(this.props.data.index, {
+                    from: Web3.eth.defaultAccount,
+                    value: tradeValue
+                });
+            }).then(transaction => {
+                if(transaction !== null){
+                    transaction.inProgress = false;
+                    transaction.tradeStatus = CryptoTrade.tradeStatus.success;
+                    this.props.dispatch(endTransaction(transaction));
+                    this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                        nrOfTrades: this.props.data.nrOfTrades+1,
+                        pot: this.props.data.pot + tradeValue
+                    })));
+                } else {
+
+                }
+            }).catch(() => {
+                this.props.dispatch(endTransaction({
+                    inProgress: false,
+                    tradeStatus: CryptoTrade.tradeStatus.error
+                }));
+            });
+        }
+    }
+
     render(){
         let {
             name,
-            admin,
             symbol,
-            index,
             contractAddress,
             standardTimeCloses,
             extendedTimeCloses,
@@ -93,10 +154,7 @@ class CryptoContent extends Component {
                         <div className="sub header"><a href={`https://etherscan.io/address/${contractAddress}`}>{contractAddress}</a></div>
                     </h2>
                 </section>
-                <CryptoBalance
-                    index={index}
-                    accountAddress={admin}
-                    contractAddress={contractAddress}/>
+                <CryptoBalance/>
                 <section id="crypto-details">
                     <div className={titledSegmentHeader()}>
                         <h2>{name}<span className="small symbol">({symbol})</span></h2>
@@ -118,9 +176,9 @@ class CryptoContent extends Component {
                             }}
                         />
                         <CryptoTrade
-                            index={index}
                             isOpen={this.isOpen()}
-                            isLocked={this.isLocked()}/>
+                            isLocked={this.isLocked()}
+                            handleTrade={this.handleTrade}/>
                     </div>
                 </section>
             </section>
@@ -129,9 +187,9 @@ class CryptoContent extends Component {
 }
 
 let mapStateToProps = (state) => {
-    let {tradeTokens} = state;
+    let {tradeTokens, transaction} = state;
 
-    return {tradeTokens};
+    return {tradeTokens, transaction};
 };
 
 export default connect(mapStateToProps)(CryptoContent);

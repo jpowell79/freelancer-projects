@@ -60,6 +60,8 @@ export const transaction = (state = {}, action) => {
     switch(action.type){
     case constants.START_TRANSACTION:
         return action.payload;
+    case constants.UPDATE_TRANSACTION_STATUS:
+        return action.payload;
     case constants.END_TRANSACTION:
         return action.payload;
     default:
