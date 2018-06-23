@@ -8,9 +8,9 @@ const CoinMarketCapApi = require('../../../components/CoinMarket/CoinMarketCapAp
 const HistoricDataHelper = require('../databaseHelpers/HistoricDataHelper');
 
 function SnapshotService({onSnapshotSaved = () => {}}){
-    let onTimeExpired = async (time) => {
+    let onTimeExpired = async (timeObject) => {
         let snapshotContracts = this.contractData.filter(contract =>
-            contract.extendedTimeCloses === time
+            contract.name === timeObject.id
         );
 
         if(snapshotContracts.length === 0) return;
@@ -55,11 +55,11 @@ function SnapshotService({onSnapshotSaved = () => {}}){
 
         if(this.contractData.length > 0){
             this.contractData.forEach(contract => {
-                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
+                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.standardTimeCloses)}\n`;
             });
         } else {
             contracts.forEach(contract => {
-                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
+                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.standardTimeCloses)}\n`;
             });
         }
 
@@ -69,15 +69,20 @@ function SnapshotService({onSnapshotSaved = () => {}}){
     let fetchContracts = () => {
         return fetchAllCryptoContracts().then(contracts => {
             this.contractData = contracts.filter(contract =>
-                contract.extendedTimeCloses > Date.now()
+                contract.standardTimeCloses > Date.now()
             );
 
             this.watcher = new TimeWatcher(
-                this.contractData.map(contract => contract.extendedTimeCloses),
+                this.contractData.map(contract => {
+                    return {
+                        id: contract.name,
+                        time: contract.extendedTimeCloses
+                    }
+                }),
                 onTimeExpired
             );
 
-            if(this.watcher.timesToWatch.length > 0){
+            if(this.watcher.objectsToWatch.length > 0){
                 this.watcher.watch();
             }
 

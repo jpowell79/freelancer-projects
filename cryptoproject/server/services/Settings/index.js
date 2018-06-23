@@ -30,7 +30,7 @@ async function enableSnaphotService(){
                     `(it will relaunch every ${refreshRate/(1000*60)} minutes)`
                 );
 
-                if(response.watcher.timesToWatch.length > 0){
+                if(response.watcher.objectsToWatch.length > 0){
                     console.log('SnapshotService is now waiting for the following contracts:');
                     console.log(response.log);
                 } else {

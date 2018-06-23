@@ -1,23 +1,22 @@
 'use strict';
 
-function TimeWatcher(times, notify){
-    this.timesToWatch = times.filter(time => time > Date.now());
+function TimeWatcher(timeObjects, notify){
+    this.objectsToWatch = timeObjects.filter(object => object.time > Date.now());
     this.timer = false;
 
     this.watch = () => {
         this.timer = setInterval(() => {
-            this.timesToWatch = this.timesToWatch.filter((time) => {
-                if(time <= Date.now()){
-                    notify(time);
+            this.objectsToWatch = this.objectsToWatch.filter((object) => {
+                if(object.time <= Date.now()){
+                    notify(object);
                     return false;
                 }
 
                 return true;
             });
 
-            if(this.timesToWatch.length === 0){
-                clearInterval(this.timer);
-                this.timer = false;
+            if(this.objectsToWatch.length === 0){
+                this.stopWatching();
             }
         }, 1000);
     };
@@ -29,6 +28,7 @@ function TimeWatcher(times, notify){
     this.stopWatching = () => {
         if(this.isWatching()){
             clearInterval(this.timer);
+            this.timer = false;
         }
     };
 }

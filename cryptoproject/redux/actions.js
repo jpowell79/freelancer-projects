@@ -1,4 +1,5 @@
 import {constants} from './constants';
+import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
 export const updateFeeds = (feeds) => {
     return {
@@ -14,10 +15,10 @@ export const updateAllCrypto = (crypto) => {
     }
 };
 
-export const updateTradeStatus = (tradeStatus) => {
+export const endTransaction = (transaction) => {
     return {
-        type: constants.UPDATE_TRADE_STATUS,
-        payload: tradeStatus
+        type: constants.END_TRANSACTION,
+        payload: transaction
     }
 };
 
@@ -25,6 +26,16 @@ export const updateTradeTokens = (tokens) => {
     return {
         type: constants.UPDATE_TRADE_TOKENS,
         payload: tokens
+    }
+};
+
+export const startTransaction = () => {
+    return {
+        type: constants.START_TRANSACTION,
+        payload: {
+            inProgress: true,
+            tradeStatus: CryptoTrade.tradeStatus.idle
+        }
     }
 };
 

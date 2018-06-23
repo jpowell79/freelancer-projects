@@ -35,6 +35,8 @@ class CryptoContent extends Component {
     }
 
     isOpen(){
+        console.log(this.props);
+
         let {
             nrOfTrades,
             standardTimeCloses,
@@ -57,6 +59,7 @@ class CryptoContent extends Component {
             name,
             admin,
             symbol,
+            index,
             contractAddress,
             standardTimeCloses,
             extendedTimeCloses,
@@ -91,6 +94,7 @@ class CryptoContent extends Component {
                     </h2>
                 </section>
                 <CryptoBalance
+                    index={index}
                     accountAddress={admin}
                     contractAddress={contractAddress}/>
                 <section id="crypto-details">
@@ -114,6 +118,7 @@ class CryptoContent extends Component {
                             }}
                         />
                         <CryptoTrade
+                            index={index}
                             isOpen={this.isOpen()}
                             isLocked={this.isLocked()}/>
                     </div>

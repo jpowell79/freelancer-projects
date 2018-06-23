@@ -1,6 +1,15 @@
 const abi = require('./abi');
-const web3 = require('../web3/index');
+const web3 = require('../Web3');
 const CONTRACT_ADDRESSES = require("../../../site-settings").CONTRACT_ADDRESSES;
+
+const enterTheGame = (index, {from, value}) => {
+    const methods = getContract(index).methods;
+
+    return methods.enterTheGame().send({
+        from,
+        value: web3.utils.toWei(value, 'ether')
+    });
+};
 
 const getContract = (index) => {
     return new web3.eth.Contract(abi, CONTRACT_ADDRESSES[index]);
@@ -29,8 +38,8 @@ const fetchCryptoContract = (index) => {
             startPrice: responses[4]/100000,
             finishPrice: 0,
             nrOfTrades: parseInt(responses[5], 10),
-            standardTimeCloses: parseInt(responses[6], 10)*1000,
-            extendedTimeCloses: parseInt(responses[7], 10)*1000,
+            standardTimeCloses: parseInt(responses[6], 10)*1000 + (1000 * 60 * 60 * 2),
+            extendedTimeCloses: parseInt(responses[7], 10)*1000 + (1000 * 60 * 60 * 2),
             pot: (responses[8]/1000000000000000000).toFixed(2)
         };
     });
@@ -45,5 +54,6 @@ const fetchAllCryptoContracts = () => {
 module.exports = {
     fetchAllCryptoContracts,
     fetchCryptoContract,
-    getContract
+    getContract,
+    enterTheGame
 };

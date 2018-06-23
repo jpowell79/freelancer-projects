@@ -9,7 +9,7 @@ import {
 } from "../../utils/cssUtils";
 import AlertOptionPane from "../../Alert/AlertOptionPane";
 import PropTypes from 'prop-types';
-import web3 from "../../../server/services/web3";
+import web3 from "../../../server/services/Web3";
 
 class CryptoBalance extends Component {
     static propTypes = {

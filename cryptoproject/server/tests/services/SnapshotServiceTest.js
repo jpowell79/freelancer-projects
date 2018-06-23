@@ -8,7 +8,7 @@ let snapshotService = new SnapshotService({
 
 console.log('Testing to launch the snapshot service...');
 snapshotService.launch().then(response => {
-    if(response.watcher.timesToWatch.length > 0){
+    if(response.watcher.objectsToWatch.length > 0){
         console.log('SnapshotService is waiting for the following contracts:\n');
         console.log(response.log);
     } else {
