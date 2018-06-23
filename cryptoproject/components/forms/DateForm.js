@@ -19,7 +19,7 @@ class DateForm extends Component {
             <div className="date-form text-center">
                 <div className="ui padded stackable centered grid two-column">
                     <div className="eight wide column text-center">
-                        <h4>From Date:</h4>
+                        <h4>Start Date:</h4>
                         <DatePicker
                             inline
                             locale="en-gb"
@@ -29,7 +29,7 @@ class DateForm extends Component {
                         />
                     </div>
                     <div className="eight wide column text-center">
-                        <h4>To Date:</h4>
+                        <h4>End Date:</h4>
                         <DatePicker
                             inline
                             locale="en-gb"

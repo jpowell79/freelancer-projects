@@ -9,7 +9,6 @@ const getContract = (index) => {
 const fetchCryptoContract = (index) => {
     const methods = getContract(index).methods;
 
-    //TODO: Changing naming!!
     return Promise.all([
         methods.admin().call(),
         methods.showCryptoName().call(),
@@ -43,6 +42,8 @@ const fetchAllCryptoContracts = () => {
     ));
 };
 
-module.exports.fetchAllCryptoContracts = fetchAllCryptoContracts;
-module.exports.fetchCryptoContract = fetchCryptoContract;
-module.exports.getContract = getContract;
+module.exports = {
+    fetchAllCryptoContracts,
+    fetchCryptoContract,
+    getContract
+};

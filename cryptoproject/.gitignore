@@ -4,7 +4,8 @@ node_modules
 .idea/
 .next/
 coverage/
-database/
+database/*
+!database/.keep
 .grunt
 _SpecRunner.html
 flow-coverage/

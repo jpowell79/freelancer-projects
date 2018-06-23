@@ -1,5 +1,5 @@
-import Head from '../components/Head';
 import React, {Component} from 'react';
+import Head from '../components/Head';
 import {connect} from 'react-redux';
 import CoinMarketTable from '../components/CoinMarket/CoinMarketTable';
 import Header from "../components/Header/index";

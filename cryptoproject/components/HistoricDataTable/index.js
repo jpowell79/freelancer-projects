@@ -10,10 +10,8 @@ import {
     titledSegmentHeader,
     titledSegmentContent
 } from "../utils/cssUtils";
-import {
-    getTimePassed,
-    getTimeLeftInTheDay
-} from "../utils";
+import CsvParser from '../../server/services/CsvParser';
+import moment from 'moment';
 import Strings from '../utils/Strings';
 import ComparisonTable from './ComparisonTable';
 import DateForm from '../forms/DateForm';
@@ -30,20 +28,11 @@ class HistoricDataTable extends Component {
         };
 
         this.renderHistoricData = this.renderHistoricData.bind(this);
+        this.downloadCsv = this.downloadCsv.bind(this);
     }
 
     componentDidMount(){
         new TableSorter($("#historic-data-table"));
-
-        /*
-        axios.post(urls.historicData, {
-            name: 'Bitcoin',
-            startPrice: 1,
-            finishPrice: 2,
-            pot: 3,
-            nrOfTrades: 4,
-        });
-        */
 
         axios.get(urls.historicData).then(response => {
             this.setState({
@@ -59,6 +48,36 @@ class HistoricDataTable extends Component {
                 isLoadingHistoricData: false
             });
         });
+    }
+
+    downloadCsv(startDate, endDate){
+        let start = parseInt(startDate.format('YYYYMMDD'), 10);
+        let end = parseInt(endDate.format('YYYYMMDD'), 10);
+
+        let convertToCsv = this.state.historicData.filter(data => {
+            let timestamp = parseInt(moment(data.timestamp).format('YYYYMMDD'));
+
+            return (timestamp >= start) && (timestamp <= end);
+        }).map(data => {
+            return Object.assign({}, data, {
+                date: parseInt(moment(data.timestamp).format('YYYYMMDD'))
+            })
+        });
+
+        axios.get(`${urls.archivedHistoricData}/${start}-${end}`)
+            .then(response => {
+                response.data.forEach(data => {
+                    convertToCsv.push(data);
+                });
+
+                if(convertToCsv.length > 0){
+                    Files.downloadCsv(CsvParser.parse(convertToCsv), `historic-data`);
+                } else {
+                    AlertOptionPane.showInfoAlert({
+                        message: "No historical data between the given dates could be found."
+                    });
+                }
+            });
     }
 
     renderHistoricData(){
@@ -142,35 +161,13 @@ class HistoricDataTable extends Component {
                             </div>
                             <div className="eight wide column">
                                 <h2 className={titledSegmentHeader()}>
-                                    Download CSV
+                                    Download historic data
                                 </h2>
                                 <div className={titledSegmentContent()}>
-                                    <DateForm onSubmit={(startDate, endDate) => {
-                                        //TODO: Ignore time completely
-                                        let start = startDate.unix()*1000-getTimePassed(
-                                            new Date(startDate.unix()*1000)
-                                        );
-                                        let end = endDate.unix()*1000+getTimeLeftInTheDay(
-                                            new Date(endDate.unix()*1000)
-                                        );
-
-                                        let convertToCsv = this.state.historicData.filter(data => {
-                                            let timestamp = new Date(data.timestamp).getTime();
-                                            return (timestamp >= start) && (timestamp <= end);
-                                        });
-
-                                        if(convertToCsv.length > 0){
-                                            let csv = Files.objectArrayToCsv(
-                                                convertToCsv, ['_id', 'updatedAt']
-                                            );
-
-                                            Files.downloadCsv(csv, `historic-data`);
-                                        } else {
-                                            AlertOptionPane.showInfoAlert({
-                                                message: "No historical data between the given dates could be found."
-                                            });
-                                        }
-                                    }} submitText={"Download CSV"}/>
+                                    <DateForm
+                                        onSubmit={this.downloadCsv}
+                                        submitText="Download CSV"
+                                    />
                                 </div>
                             </div>
                         </div>

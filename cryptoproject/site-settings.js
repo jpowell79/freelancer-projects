@@ -2,22 +2,72 @@
  * Smart Contracts
  *----------------------------------------*/
 module.exports.CONTRACT_ADDRESSES = [
-    '0x25ca14bd7cff6054f78e24ed4a20271b8706c9d7',
-    '0xdb918f2e49557f6036cfb8b8ece49a059b9371b7',
-    '0x460bcfefe032e8930593e96adefced7cf20b9036',
-    '0xa05a051c5273388e43a83ddaa7e4326b56aa394d',
-    '0x335c687b1c659862268dfd140a945c7d0028d798',
-    '0xc32cbba58545d461f80af539005c26c7f8a1e376',
-    '0x512ed6df2486ed493c9407dd24ea1f9d0cddae8f',
-    '0xf878d01dbf475e4eb551fa6927ecbcfad866fddf',
-    '0x6d83e8f763e0f78e7a571e7eca9dc0bd8c7ed332',
-    '0x57045e0485686986c88f8785db74fc5a34c2e7e9'
+    '0x68469e2b07baa06ae497a8d40820ef6bf9388f07',
+    '0x1848ae70600f1d325a05dbe52761d75018843f83',
+    '0x28c944750cfdc1f814f48dd7c1cf695187495c11',
+    '0x6baaede72d6a2cfd830b1baf39de6a4abd9d658b',
+    '0x1655f780e8a9e28e125b6b8d387936c480ab4cc7',
+    '0x2e7696c6eed9f9280c8c89cf1317eff8ffd40873',
+    '0x271b39c7473a6ba36991ca8c95cb0d59f4969afe',
+    '0x09ef0ea67dbf622241f3327c7cdc9a93de9d981c',
+    '0x0b6e5b76d7e65b379991371062ad80991264d04d',
+    '0xb7608f40b81988b16d83f5d6b0885511868866aa',
+    '0x5f5626f11a997e5eb05536e0f36b32e7007af59b',
+    '0x035e45b1a047a7bdf3cc2f82eb709e4f61ffeaf0',
+    '0x22abc898d9781fa65425fbe160ba90da65a03f68',
+    '0x699c3eb8fae7138cc5cada432affc2e643f88966',
+    '0x67d44cc5fa10315d662f38fa7ef27bddbc4493a7',
+    '0x60a7acb7a8abb956eb56b91792a938a6325523f7',
+    '0x7c1c3d0d876c83ac2d586b9955f68c4c5cf0e4e2',
+    '0x5e285f2735da40c15616ee26fa73e4d14f27db73',
+    '0x5904a96b8ca260fd4710c3ff6ed5976ff00a641f',
+    '0x1ed36af73c1e1ba30562db21f2b9484940434c26',
+    '0x058da8092b2a36a332dda908adc7dca7d10de42e',
+    '0xb8452e80142a22f19d0081a78b422c75cb342d44',
+    '0xb639ccbca4a09879b125e6b797eaa6213ee7a1e7',
+    '0xedc75522c5fe7a1affe870bd2b7f987cf6da340c',
+    '0x2f024aa47c01809f5ecaed8c03507f9609903d37'
 ];
 
 /*----------------------------------------
- * Database Snapshot
+ * Misc. Database Options
  *----------------------------------------*/
-module.exports.SNAPSHOT_CONTRACT_REFRESH_RATE = 1000 * 60 * 60; //Milliseconds
+module.exports.REMOVE_DATABASE = false;
+module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 100;
+
+/*----------------------------------------
+ * Dummy Database
+ * ---------------------------------------
+ * Replaces the existing /database with one
+ * containing randomized data.
+ * The generated archived historic data
+ * will have a date older than the
+ * ARCHIVE_DATA_OLDER_THAN option.
+ *----------------------------------------*/
+module.exports.LOAD_DUMMY_DATABASE = true;
+module.exports.DUMMY_HISTORIC_DATA_TO_GENERATE = 20;
+module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
+
+/*----------------------------------------
+ * Historic Data Archiver
+ * ---------------------------------------
+ * Archives data older than a specific
+ * amount of days.
+ *----------------------------------------*/
+module.exports.ENABLE_ARCHIVE_OLD_DATA = true;
+module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 60 };
+
+/*----------------------------------------
+ * Snapshot Service
+ * ---------------------------------------
+ * Runs in the background and saves information
+ * from smart contracts into the historical
+ * database when their standard time expires.
+ *----------------------------------------*/
+module.exports.ENABLE_SNAPSHOT_SERVICE = true;
+
+//Says how often the snapshot service should update it's known smart contracts.
+module.exports.SNAPSHOT_SERVICE_REFRESH_RATE = 1000 * 60 * 60; //Milliseconds
 
 /*----------------------------------------
  * Table
@@ -34,7 +84,6 @@ module.exports.LOWEST_ETH = 0.1;
 /*----------------------------------------
  * Feeds
  *----------------------------------------*/
-//Rules for fetching Bitcoin feeds.
 module.exports.MAX_BITCOIN_FEEDS = 12;
 module.exports.MAX_BITCOIN_FEEDS_PER_URL = 3;
 

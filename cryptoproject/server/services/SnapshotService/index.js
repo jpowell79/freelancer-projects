@@ -4,23 +4,11 @@ require('../utils/padEnd');
 const axios = require('axios');
 const fetchAllCryptoContracts = require('../contract/').fetchAllCryptoContracts;
 const TimeWatcher = require('../TimeWatcher/');
-const HistoricData = require('../../models/historic-data');
 const CoinMarketCapApi = require('../../../components/CoinMarket/CoinMarketCapApi');
+const HistoricDataHelper = require('../databaseHelpers/HistoricDataHelper');
 
-function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
-    let saveHistoricData = (contract, finishPrice) => {
-        let historicData = new HistoricData({
-            name: contract.name,
-            startPrice: contract.startPrice,
-            finishPrice: finishPrice,
-            pot: contract.pot,
-            nrOfTrades: contract.nrOfTrades
-        });
-
-        historicData.save();
-    };
-
-    let onTimeExpired = (time) => {
+function SnapshotService({onSnapshotSaved = () => {}}){
+    let onTimeExpired = async (time) => {
         let snapshotContracts = this.contractData.filter(contract =>
             contract.extendedTimeCloses === time
         );
@@ -30,7 +18,9 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
         let contract = snapshotContracts[0];
 
         if(contract.finishPrice === 0){
-            axios.get(CoinMarketCapApi.ticker())
+            let finishPrice;
+
+            return axios.get(CoinMarketCapApi.ticker())
                 .then(response => {
                     return Object.keys(response.data.data)
                         .map(dataKey => response.data.data[dataKey])
@@ -39,81 +29,106 @@ function SnapshotService({onLaunch = () => {}, onSnapshotSaved = () => {}}){
                         )[0];
                 })
                 .then(marketData => {
-                    let finishPrice = marketData.quotes.USD.price;
-                    saveHistoricData(contract, finishPrice);
-                    onSnapshotSaved(contract, finishPrice);
+                    finishPrice = marketData.quotes.USD.price;
+
+                    return HistoricDataHelper.create(
+                        Object.assign({}, contract, {finishPrice})
+                    );
+                }).then(() => {
+                    return new Promise(resolve => {
+                        onSnapshotSaved(contract, finishPrice);
+                        resolve();
+                    });
                 });
         } else {
-            saveHistoricData(contract, contract.finishPrice);
-            onSnapshotSaved(contract, contract.finishPrice);
+            return HistoricDataHelper.create(contract).then(() => {
+                return new Promise(resolve => {
+                    onSnapshotSaved(contract, contract.finishPrice);
+                    resolve();
+                });
+            });
         }
     };
 
-    let fetchContracts = () => {
-        this.isFetching = true;
+    let createWaitLog = (contracts) => {
+        let log = `${'Contract:'.padEnd(45)}Standard time expires:\n`;
 
-        fetchAllCryptoContracts().then(response => {
-            this.contractData = response.filter(contract =>
+        if(this.contractData.length > 0){
+            this.contractData.forEach(contract => {
+                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
+            });
+        } else {
+            contracts.forEach(contract => {
+                log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
+            });
+        }
+
+        return log;
+    };
+
+    let fetchContracts = () => {
+        return fetchAllCryptoContracts().then(contracts => {
+            this.contractData = contracts.filter(contract =>
                 contract.extendedTimeCloses > Date.now()
             );
+
             this.watcher = new TimeWatcher(
                 this.contractData.map(contract => contract.extendedTimeCloses),
                 onTimeExpired
             );
 
-            let log = `${'Contract:'.padEnd(45)}Standard time expires:\n`;
-
-            if(this.contractData.length > 0){
-                this.contractData.forEach(contract => {
-                    log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
-                });
-            } else {
-                response.forEach(contract => {
-                    log += `${contract.contractAddress.padEnd(45)}${new Date(contract.extendedTimeCloses)}\n`;
-                });
-            }
-
             if(this.watcher.timesToWatch.length > 0){
                 this.watcher.watch();
             }
 
-            onLaunch(log, this.watcher, this.contractData);
-            this.isFetching = false;
+            return {
+                log: createWaitLog(contracts),
+                watcher: this.watcher,
+                contractData: this.contractData
+            };
         });
     };
 
     this.isFetching = false;
 
-    this.stop = ({onDone = () => {}}) => {
-        if(this.isFetching){
-            let timer = setInterval(() => {
-                if(!this.isFetching){
-                    if(this.watcher.isWatching()){
-                        this.watcher.stopWatching();
-                    }
+    this.launch = () => {
+        this.isFetching = true;
 
-                    clearInterval(timer);
-                    onDone();
-                }
-            }, 100);
-        } else {
-            if(this.watcher.isWatching()){
-                this.watcher.stopWatching();
-            }
-
-            onDone();
-        }
-    };
-
-    this.reLaunch = () => {
-        this.stop({
-            onDone: () => {
-                fetchContracts();
-            }
+        return fetchContracts().then(contracts => {
+            this.isFetching = false;
+            return contracts;
         });
     };
 
-    fetchContracts();
+    this.stop = () => {
+        return new Promise((resolve) => {
+            if(this.isFetching){
+                let timer = setInterval(() => {
+                    if(!this.isFetching){
+                        if(this.watcher.isWatching()){
+                            this.watcher.stopWatching();
+                        }
+
+                        clearInterval(timer);
+                        resolve();
+                    }
+                }, 100);
+            } else {
+                if(this.watcher.isWatching()){
+                    this.watcher.stopWatching();
+                }
+
+                resolve();
+            }
+        });
+
+    };
+
+    this.reLaunch = () => {
+        return this.stop().then(() => {
+            return this.launch();
+        });
+    };
 }
 
 module.exports = SnapshotService;

@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
+autoIncrement.initialize(mongoose.connection);
 
 const Schema = mongoose.Schema;
 
-const historicDataSchema = new Schema({
+const historicDataSchema = new Schema(
+    {
         name: {
             type: String,
             required: true
@@ -23,13 +25,16 @@ const historicDataSchema = new Schema({
         nrOfTrades: {
             type: Number,
             required: true
-        },
+        }
     },
     {
         timestamps: {
-            createdAt: 'timestamp'
-        }
-    });
+            createdAt: 'timestamp',
+            updatedAt: ''
+        },
+        versionKey: false
+    }
+);
 
 historicDataSchema.plugin(autoIncrement.plugin, 'HistoricalData');
 module.exports = mongoose.model('HistoricData', historicDataSchema);

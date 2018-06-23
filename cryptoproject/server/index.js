@@ -1,10 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const autoIncrement = require('mongoose-auto-increment');
 const glob = require('glob');
 const next = require('next');
 const urls = require('./services/utils/urls');
+const Settings = require('./services/Settings');
+const log = require('./services/utils/log');
+const moment = require('moment');
 
 const server = express();
 const dev = process.env.NODE_ENV !== 'production';
@@ -22,7 +24,6 @@ app.prepare().then(() => {
     mongoose.connect(MONGODB_URI);
     const db = mongoose.connection;
     db.on('error', console.error.bind(console, 'connection error:'));
-    autoIncrement.initialize(db);
 
     server.use((req, res, next) => {
         req.db = db;
@@ -47,41 +48,13 @@ app.prepare().then(() => {
     server.get(urls.base, customRequestHandler.bind(undefined, urls.base));
     server.get('*', app.getRequestHandler());
 
-    const SnapshotDaemon = require('./services/SnapshotService/');
-    const SNAPSHOT_REFRESH_CONTRACT = require('../site-settings').SNAPSHOT_CONTRACT_REFRESH_RATE;
-    let snapshotDaemon = new SnapshotDaemon({
-        onLaunch: (waitLog, watcher) => {
-            if(watcher.timesToWatch.length > 0){
-                console.log('The snapshot service is now waiting for the following contracts:\n');
-                console.log(waitLog);
-            } else {
-                console.log('The snapshot service found no times to wait for. See the following data for reference:\n');
-                console.log(waitLog);
-            }
-        },
-        onSnapshotSaved: (contract) => {
-            console.log(`Historic data for contract ${contract.contractAddress} saved.`);
-        }
-    });
-
-    setInterval(() => {
-        console.log('Relaunching the snapshot service...');
-        snapshotDaemon.reLaunch();
-    }, SNAPSHOT_REFRESH_CONTRACT);
-
+    moment.locale('en');
+    return Settings.load();
+}).then(() => {
     server.listen(PORT, () => {
-        let routesLog = '';
-
-        Object.keys(urls).forEach((addressKey, i) => {
-            if(urls[addressKey] !== urls.base){
-                routesLog += `${i}: ${urls[addressKey]}/\n`;
-            }
-        });
-
-        console.log(
-            `App running on http://localhost:${PORT}/\n\n` +
-            `Available API points:\n` +
-            `${routesLog}`
-        );
+        log.sectionTitle('Starting Application');
+        console.log(`The application is running on http://localhost:${PORT}/\n`);
+        log.apiPoints();
+        log.endOfSection();
     });
 });
