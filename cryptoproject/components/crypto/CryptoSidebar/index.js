@@ -80,7 +80,7 @@ class CryptoSidebar extends Component {
                             maxFeedsForEachUrl={maxFeedsForEachUrl}
                             searchFor={[cryptoName]}
                             className={className}
-                            notFoundHtml={<p>No feeds were found for {cryptoName}.</p>}
+                            notFoundHtml={<p>No feeds related to {cryptoName} were found.</p>}
                             feedRenderer={feedRenderer}
                         />
                     </div>

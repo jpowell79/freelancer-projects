@@ -37,6 +37,13 @@ class CryptoContent extends Component {
         this.handleTrade = this.handleTrade.bind(this);
     }
 
+    componentWillUnmount(){
+        this.props.dispatch(endTransaction({
+            inProgress: false,
+            tradeStatus: CryptoTrade.tradeStatus.idle
+        }));
+    }
+
     isLocked(){
         let {extendedTimeCloses} = this.props.data;
         return Date.now() > extendedTimeCloses;

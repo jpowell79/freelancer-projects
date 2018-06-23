@@ -4,7 +4,6 @@ const Settings = require('../../../site-settings');
 function Web3(provider){
     web3.call(this, provider);
 
-    //TODO: Remove later. Used to always access some account during development.
     this.eth.defaultAccount = Settings.DEFAULT_ACCOUNT;
 
     this.isMetaMask = () => {

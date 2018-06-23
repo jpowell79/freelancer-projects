@@ -43,7 +43,7 @@ module.exports.DEFAULT_ACCOUNT = '0xB736a9bACC8855531AeF429735D477D4b5A4D208';
  * Misc. Database Options
  *----------------------------------------*/
 module.exports.REMOVE_DATABASE = false;
-module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 100;
+module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 10000;
 
 /*----------------------------------------
  * Dummy Database
