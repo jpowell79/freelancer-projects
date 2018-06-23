@@ -29,7 +29,7 @@ export const CoinMarketFlashCell = ({keyName = "", value, prevValue, addColor = 
             return "";
         }
 
-        if(value === 0){
+        if(value === 0 || value === "Unavailable"){
             return "";
         }
 
