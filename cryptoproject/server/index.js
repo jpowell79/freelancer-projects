@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const glob = require('glob');
 const next = require('next');
 const urls = require('./services/utils/urls');
+const siteSettings = require('../site-settings');
 const Settings = require('./services/Settings');
 const log = require('./services/utils/log');
 const moment = require('moment');
@@ -12,8 +13,8 @@ const server = express();
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({dev});
 
-const MONGODB_URI = process.env.MONGODB_URI || `mongodb://localhost/database`;
-const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI || siteSettings.MONGODB_URI;
+const PORT = process.env.PORT || siteSettings.DEFAULT_PORT;
 
 app.prepare().then(() => {
     server.set('json spaces', 4);

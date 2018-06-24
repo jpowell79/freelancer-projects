@@ -30,16 +30,21 @@ module.exports.CONTRACT_ADDRESSES = [
 ];
 
 /*----------------------------------------
+ * Server Options
+ *----------------------------------------*/
+module.exports.DEFAULT_PORT = 3000;
+module.exports.MONGODB_URI = 'mongodb://localhost/database';
+
+/*----------------------------------------
  * Web3 Development Settings
  *----------------------------------------*/
-module.exports.DEFAULT_ACCOUNT = '0xB736a9bACC8855531AeF429735D477D4b5A4D208';
 module.exports.TOKEN_CONTRACT = '0xe69faa73b3bb4cfca6cd83c1a8bfe52cbeb5877d';
 module.exports.HTTP_PROVIDER = 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv';
 
 /*----------------------------------------
  * Misc. Database Options
  *----------------------------------------*/
-module.exports.REMOVE_DATABASE = false;
+module.exports.REMOVE_DATABASE = false; //On server start
 module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 10000;
 
 /*----------------------------------------
@@ -51,7 +56,7 @@ module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 10000;
  * will have a date older than the
  * ARCHIVE_DATA_OLDER_THAN option.
  *----------------------------------------*/
-module.exports.LOAD_DUMMY_DATABASE = false;
+module.exports.LOAD_DUMMY_DATABASE = false; //On server start
 module.exports.DUMMY_HISTORIC_DATA_TO_GENERATE = 20;
 module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
 
@@ -61,7 +66,7 @@ module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
  * Archives data older than a specific
  * amount of days.
  *----------------------------------------*/
-module.exports.ENABLE_ARCHIVE_OLD_DATA = true;
+module.exports.ENABLE_ARCHIVE_OLD_DATA = false; //On server start
 module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 7 };
 
 /*----------------------------------------

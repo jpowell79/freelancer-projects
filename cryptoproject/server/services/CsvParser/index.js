@@ -1,8 +1,8 @@
 const moment = require('moment');
 
-function parse(historicalDataArray){
-    let headings = 'Crypto Name, Start Price, Finish Price, Pot, Number of trades, Date created\n';
+let headings = 'Crypto Name, Start Price, Finish Price, Pot, Number of trades, Date created\n';
 
+function parse(historicalDataArray){
     let fields = [
         'name',
         'startPrice',
@@ -23,6 +23,8 @@ function parse(historicalDataArray){
             case 'finishPrice':
                 let opts = {style: "decimal", currency: "USD"};
                 return '$' + value.toLocaleString("en-US", opts);
+            case 'date':
+                return moment(value, 'YYYYMMDD').format('YYYY-MM-DD');
             default:
                 return value;
             }
@@ -31,5 +33,6 @@ function parse(historicalDataArray){
 }
 
 module.exports = {
+    headings,
     parse
 };

@@ -51,6 +51,9 @@
     "test": "jest --env=jsdom",
     "test coverage": "jest --env=jsdom --coverage",
     "database": "mongod --dbpath=database",
+    "remove database": "node scripts.js removeDatabase",
+    "dummy database": "node scripts.js dummyDatabase",
+    "archive": "node scripts.js archive",
     "dev": "nodemon -w server -w package.json server/index.js",
     "build": "next build",
     "start": "node server/index.js"

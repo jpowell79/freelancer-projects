@@ -14,10 +14,13 @@ let mockHistoricData = {
 };
 
 describe('CsvParser tests', () => {
-    it('Manually check if contracts parses correctly.', () => {
-        console.log(CsvParser.parse([
+    it('Should parse historic data correctly.', () => {
+        expect(CsvParser.parse([
             mockHistoricData,
             mockHistoricData
-        ]));
+        ])).to.be.equal(
+            `${CsvParser.headings}` +
+            `Bitcoin,$6400,$6500,0.25,900,2018-06-24\n` +
+            `Bitcoin,$6400,$6500,0.25,900,2018-06-24`);
     });
 });
