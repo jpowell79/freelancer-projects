@@ -18,7 +18,7 @@ import {
     titledSegmentContent
 } from "../../utils/cssUtils";
 import Contract from "../../../server/services/contract";
-import Web3 from "../../../server/services/Web3";
+import web3 from "../../../server/services/Web3";
 
 class CryptoContent extends Component {
     static propTypes = {
@@ -59,7 +59,7 @@ class CryptoContent extends Component {
         let hasEnoughTrades = (nrOfTrades < MAX_NR_OF_TRADES);
         let hasStandardTimeLeftOrTradeTokens =
             (Date.now() < standardTimeCloses) ||
-            (this.props.tradeTokens !== null && this.props.tradeTokens > 0);
+            (this.props.account.tradeTokens !== null && this.props.account.tradeTokens > 0);
         let hasExtendedTimeLeft = (Date.now() < extendedTimeCloses);
 
         return hasEnoughTrades &&
@@ -75,8 +75,8 @@ class CryptoContent extends Component {
         } else if(this.props.transaction.tradeStatus !== CryptoTrade.tradeStatus.inProgress){
             this.props.dispatch(startTransaction());
 
-            Web3.getAccountAddress().then(accountAddress => {
-                return Web3.getBalance(accountAddress);
+            web3.getAccountAddress().then(accountAddress => {
+                return web3.getBalance(accountAddress);
             }).then(balance => {
                 if(balance < tradeValue){
                     this.props.dispatch(updateTransactionStatus(
@@ -85,7 +85,7 @@ class CryptoContent extends Component {
 
                     return null;
                 } else if(this.props.data.standardTimeCloses < Date.now()){
-                    if(this.props.tradeTokens <= 0){
+                    if(this.props.account.tradeTokens <= 0){
                         this.props.dispatch(endTransaction({
                             inProgress: false,
                             tradeStatus: CryptoTrade.tradeStatus.idle
@@ -100,7 +100,7 @@ class CryptoContent extends Component {
                 ));
 
                 return Contract.enterTheGame(this.props.data.index, {
-                    from: Web3.eth.defaultAccount,
+                    from: web3.eth.defaultAccount,
                     value: tradeValue
                 });
             }).then(transaction => {
@@ -161,42 +161,62 @@ class CryptoContent extends Component {
                         <div className="sub header"><a href={`https://etherscan.io/address/${contractAddress}`}>{contractAddress}</a></div>
                     </h2>
                 </section>
-                <CryptoBalance/>
-                <section id="crypto-details">
-                    <div className={titledSegmentHeader()}>
-                        <h2>{name}<span className="small symbol">({symbol})</span></h2>
-                    </div>
-                    <div className={titledSegmentContent('children-divider-md')}>
-                        <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
-                        <CryptoCountdown
-                            standardTimeCloses={standardTimeCloses}
-                            extendedTimeCloses={extendedTimeCloses}
-                            onStandardTimeZero={() => {
-                                this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                    standardTimeCloses: 0
-                                })));
-                            }}
-                            onExtendedTimeZero={() => {
-                                this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                    extendedTimeCloses: 0
-                                })));
-                            }}
-                        />
-                        <CryptoTrade
-                            isOpen={this.isOpen()}
-                            isLocked={this.isLocked()}
-                            handleTrade={this.handleTrade}/>
-                    </div>
-                </section>
+                {!web3.hasMetaMask()
+                    ?  (
+                        <section id="metamask-not-found" className="ui segment header">
+                            <div className="ui error message text-center">
+                                <h2 className="ui header">Metamask not found.
+                                <div className="sub header">
+                                    You need to install the <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">
+                                        metamask plugin
+                                    </a> in order to trade.
+                                </div>
+                                </h2>
+                            </div>
+                        </section>
+                    ) : null}
+                {web3.hasMetaMask()
+                    ? (
+                        <CryptoBalance/>
+                    ) : null}
+                {web3.hasMetaMask()
+                    ? (
+                        <section id="crypto-details">
+                            <div className={titledSegmentHeader()}>
+                                <h2>{name}<span className="small symbol">({symbol})</span></h2>
+                            </div>
+                            <div className={titledSegmentContent('children-divider-md')}>
+                                <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
+                                <CryptoCountdown
+                                    standardTimeCloses={standardTimeCloses}
+                                    extendedTimeCloses={extendedTimeCloses}
+                                    onStandardTimeZero={() => {
+                                        this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                                standardTimeCloses: 0
+                                            })));
+                                    }}
+                                    onExtendedTimeZero={() => {
+                                        this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                            extendedTimeCloses: 0
+                                        })));
+                                    }}
+                                />
+                                <CryptoTrade
+                                    isOpen={this.isOpen()}
+                                    isLocked={this.isLocked()}
+                                    handleTrade={this.handleTrade}/>
+                            </div>
+                        </section>
+                    ) : null}
             </section>
         );
     }
 }
 
 let mapStateToProps = (state) => {
-    let {tradeTokens, transaction} = state;
+    let {account, transaction} = state;
 
-    return {tradeTokens, transaction};
+    return {account, transaction};
 };
 
 export default connect(mapStateToProps)(CryptoContent);

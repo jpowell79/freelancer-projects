@@ -10,7 +10,9 @@ class Paths {
     };
 
     static getCryptoIcon(name, size, root = '../..'){
-        return `${root}/${CRYPTO_ICONS}/${name}_${size}.png`;
+        let parsedName = name.toLowerCase().replace(/ /g,'');
+
+        return `${root}/${CRYPTO_ICONS}/${parsedName}_${size}.png`;
     };
 
     static getCryptoPage(root = '../..'){

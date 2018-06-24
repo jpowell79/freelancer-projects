@@ -10,6 +10,7 @@ import {
     titledSegmentHeader,
     titledSegmentContent
 } from "../utils/cssUtils";
+import {calcTotalPercentChange} from "../utils";
 import CsvParser from '../../server/services/CsvParser';
 import moment from 'moment';
 import Strings from '../utils/Strings';
@@ -29,6 +30,7 @@ class HistoricDataTable extends Component {
 
         this.renderHistoricData = this.renderHistoricData.bind(this);
         this.downloadCsv = this.downloadCsv.bind(this);
+        this.getBestValueCrypto = this.getBestValueCrypto.bind(this);
     }
 
     componentDidMount(){
@@ -90,12 +92,40 @@ class HistoricDataTable extends Component {
                         )
                     }</td>
                     <td>{data.name}</td>
-                    <td>{Strings.toUSD(data.startPrice)}</td>
-                    <td>{Strings.toUSD(data.finishPrice)}</td>
-                    <td className={hideOnMobile()}>{data.pot}</td>
-                    <td className={hideOnMobile()}>{data.nrOfTrades}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(data.startPrice)}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(data.finishPrice)}</td>
+                    <td>{data.pot}</td>
+                    <td>{data.nrOfTrades}</td>
                 </tr>
             );
+        });
+    }
+
+    getBestValueCrypto(){
+        return this.state.historicData.map(data => {
+
+            let value = calcTotalPercentChange(
+                data.startPrice, data.finishPrice
+            );
+
+            return {
+                name: data.name,
+                value: parseFloat(value)
+            }
+        }).reduce((accumulator, current) => {
+            if(accumulator.value === undefined){
+                return current;
+            }
+
+            if(isNaN(current.value)){
+                return accumulator;
+            }
+
+            if(accumulator.value < current.value){
+                return current;
+            }
+
+            return accumulator;
         });
     }
 
@@ -107,10 +137,10 @@ class HistoricDataTable extends Component {
                         <tr>
                             <th>Created</th>
                             <th>Name</th>
-                            <th>Start Price</th>
-                            <th>Finish Price</th>
-                            <th className={hideOnMobile()}>Pot size</th>
-                            <th className={hideOnMobile()}>Nr. Trades</th>
+                            <th className={hideOnMobile()}>Start Price</th>
+                            <th className={hideOnMobile()}>Finish Price</th>
+                            <th>Pot size</th>
+                            <th>Nr. Trades</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,6 +174,7 @@ class HistoricDataTable extends Component {
                                 </h2>
                                 <div className={titledSegmentContent()}>
                                     <ComparisonTable
+                                        bestValueCrypto={this.getBestValueCrypto()}
                                         totalNrOfTrades={this.state.historicData
                                             .map(data => data.nrOfTrades)
                                             .reduce((accumulator, currentValue) => {

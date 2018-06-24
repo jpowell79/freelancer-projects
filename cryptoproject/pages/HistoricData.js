@@ -8,7 +8,7 @@ class HistoricData extends Component {
     render(){
         return (
             <div id="historic-data" className="wrapper">
-                <Head fetchMarketData={true} addTimer={false}/>
+                <Head fetchMarketData={false} addTimer={false}/>
                 <Header/>
                 <HistoricDataTable/>
                 <Footer/>

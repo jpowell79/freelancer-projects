@@ -62,7 +62,7 @@ module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
  * amount of days.
  *----------------------------------------*/
 module.exports.ENABLE_ARCHIVE_OLD_DATA = true;
-module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 60 };
+module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 7 };
 
 /*----------------------------------------
  * Snapshot Service

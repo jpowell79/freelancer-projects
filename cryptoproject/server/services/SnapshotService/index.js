@@ -16,33 +16,23 @@ function SnapshotService({onSnapshotSaved = () => {}}){
         if(snapshotContracts.length === 0) return;
 
         let contract = snapshotContracts[0];
+        let finishPrice = 0;
 
-        if(contract.finishPrice === 0){
-            let finishPrice;
+        return axios.get(CoinMarketCapApi.ticker())
+            .then(response => {
+                return Object.keys(response.data.data)
+                    .map(dataKey => response.data.data[dataKey])
+                    .filter(data =>
+                        data.name.toLowerCase() === contract.name.toLowerCase()
+                    )[0];
+            })
+            .then(marketData => {
+                finishPrice = marketData.quotes.USD.price;
 
-            return axios.get(CoinMarketCapApi.ticker())
-                .then(response => {
-                    return Object.keys(response.data.data)
-                        .map(dataKey => response.data.data[dataKey])
-                        .filter(data =>
-                            data.name.toLowerCase() === contract.name.toLowerCase()
-                        )[0];
-                })
-                .then(marketData => {
-                    finishPrice = marketData.quotes.USD.price;
-
-                    return HistoricDataHelper.create(contract, finishPrice);
-                }).then(() => {
-                    onSnapshotSaved(contract, finishPrice);
-                });
-        } else {
-            return HistoricDataHelper.create(contract).then(() => {
-                return new Promise(resolve => {
-                    onSnapshotSaved(contract, contract.finishPrice);
-                    resolve();
-                });
+                return HistoricDataHelper.create(contract, finishPrice);
+            }).then(() => {
+                onSnapshotSaved(contract, finishPrice);
             });
-        }
     };
 
     let createWaitLog = (contracts) => {

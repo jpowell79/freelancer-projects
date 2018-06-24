@@ -1,22 +1,24 @@
 const web3 = require('web3');
 const Settings = require('../../../site-settings');
+const utils = require('../utils');
 
-function Web3(provider){
+const getProvider = () => {
+    if (utils.isClient() && typeof window.web3 !== 'undefined') {
+        return window.web3.currentProvider;
+    }
+
+    return new web3.providers.HttpProvider(Settings.HTTP_PROVIDER);
+};
+
+function CustomWeb3(provider){
     web3.call(this, provider);
 
-    this.eth.defaultAccount = Settings.DEFAULT_ACCOUNT;
-
-    this.isMetaMask = () => {
-        return this.currentProvider.isMetaMask;
+    this.hasMetaMask = () => {
+        return this.currentProvider.isMetaMask !== undefined;
     };
 
     this.getAccountAddress = () => {
         return this.eth.getAccounts().then(accounts => {
-            //TODO: Remove later.
-            if(accounts.length === 0){
-                return Web3.eth.defaultAccount;
-            }
-
             return accounts[0];
         });
     };
@@ -27,15 +29,7 @@ function Web3(provider){
     };
 }
 
-Web3.prototype = Object.create(web3.prototype);
-Web3.prototype.contructor = Web3;
+CustomWeb3.prototype = Object.create(web3.prototype);
+CustomWeb3.prototype.contructor = CustomWeb3;
 
-const getProvider = () => {
-    if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
-        return window.web3.currentProvider;
-    }
-
-    return new web3.providers.HttpProvider(Settings.HTTP_PROVIDER);
-};
-
-module.exports = new Web3(getProvider());
+module.exports = new CustomWeb3(getProvider());

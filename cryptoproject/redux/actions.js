@@ -42,17 +42,20 @@ export const endTransaction = (transaction) => {
     }
 };
 
-export const updateTradeTokens = (tokens) => {
+export const updateAccount = ({isLoading = true, tradeTokens = null, address = null}) => {
     return {
-        type: constants.UPDATE_TRADE_TOKENS,
-        payload: tokens
+        type: constants.UPDATE_ACCOUNT,
+        payload: {
+            isLoading: isLoading,
+            address: address,
+            tradeTokens: tradeTokens
+        }
     }
 };
 
-export const isLoadingTradeTokens = (isLoading) => {
+export const resetAccount = () => {
     return {
-        type: constants.IS_LOADING_TRADE_TOKENS,
-        payload: isLoading
+        type: constants.RESET_ACCOUNT
     }
 };
 

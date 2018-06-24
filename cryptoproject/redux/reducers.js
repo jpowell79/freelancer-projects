@@ -2,6 +2,12 @@ import {constants} from './constants';
 import {combineReducers} from 'redux';
 import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
+const DEFAULT_ACCOUNT = {
+    isLoading: true,
+    address: 'Address could not be detected',
+    tradeTokens: null
+};
+
 export const initialState = {
     crypto: [],
     marketData: [],
@@ -10,11 +16,10 @@ export const initialState = {
         inProgress: false,
         tradeStatus: CryptoTrade.tradeStatus.idle
     },
+    account: DEFAULT_ACCOUNT,
     isLoadingFeeds: true,
     isLoadingMarketData: true,
     isLoadingCrypto: true,
-    tradeTokens: null,
-    isLoadingTradeTokens: true
 };
 
 export const feeds = (state = [], action) => {
@@ -78,6 +83,25 @@ export const isLoadingCrypto = (state = true, action) => {
     }
 };
 
+export const account = (state = {}, action) => {
+    switch (action.type){
+    case constants.UPDATE_ACCOUNT:
+        if(action.payload.address === null){
+            return {
+                isLoading: action.payload.isLoading,
+                tradeTokens: action.payload.tradeTokens,
+                address: DEFAULT_ACCOUNT.address
+            }
+        }
+
+        return action.payload;
+    case constants.RESET_ACCOUNT:
+        return DEFAULT_ACCOUNT;
+    default:
+        return state;
+    }
+};
+
 export const tradeTokens = (state = null, action) => {
     switch(action.type){
     case constants.UPDATE_TRADE_TOKENS:
@@ -118,9 +142,8 @@ export default combineReducers({
     crypto,
     marketData,
     feeds,
-    tradeTokens,
+    account,
     transaction,
-    isLoadingTradeTokens,
     isLoadingMarketData,
     isLoadingFeeds,
     isLoadingCrypto,

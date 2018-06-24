@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {updateTradeTokens, isLoadingTradeTokens} from "../../../redux/actions";
+import {
+    resetAccount,
+    updateAccount
+} from "../../../redux/actions";
 import {LoaderSmall} from "../../icons";
 import {
     definitionTable,
@@ -9,54 +12,58 @@ import {
 } from "../../utils/cssUtils";
 import AlertOptionPane from "../../Alert/AlertOptionPane";
 import Settings from '../../../site-settings';
-import Web3 from "../../../server/services/Web3";
+import web3 from "../../../server/services/Web3";
 
 class CryptoBalance extends Component {
     constructor(props){
         super(props);
 
-        this.accountAddress = 'undefined';
         this.fetchTradeTokens = this.fetchTradeTokens.bind(this);
     }
 
     fetchTradeTokens(){
-        this.props.dispatch(isLoadingTradeTokens(true));
+        let address = '';
+        this.props.dispatch(updateAccount({isLoading: true}));
 
-        Web3.getAccountAddress().then(accountAddress => {
-            this.accountAddress = accountAddress;
+        web3.getAccountAddress().then(accountAddress => {
+            if(accountAddress === undefined) return false;
 
-            return Web3.eth.call({
+            address = accountAddress;
+
+            return web3.eth.call({
                 to: Settings.TOKEN_CONTRACT,
                 data: `0x70a08231000000000000000000000000${accountAddress.substring(2)}`
             });
         }).then(result => {
-            if(result){
-                let bn = Web3.utils.toBN(result).toString();
-                let tokens = parseFloat(Web3.utils.fromWei(bn, 'ether'));
-                this.props.dispatch(updateTradeTokens(tokens));
+            if(address !== ''){
+                let bn = web3.utils.toBN(result).toString();
+                let tokens = parseFloat(web3.utils.fromWei(bn, 'ether'));
+                this.props.dispatch(updateAccount({
+                    isLoading: false,
+                    tradeTokens: tokens,
+                    address: address
+                }));
             } else {
-                AlertOptionPane.showErrorAlert({message: err.toString()});
+                this.props.dispatch(updateAccount({isLoading: false}));
             }
-
-            this.props.dispatch(isLoadingTradeTokens(false));
-        }).catch(() => {
-            this.props.dispatch(isLoadingTradeTokens(false));
+        }).catch(err => {
+            AlertOptionPane.showErrorAlert({message: err.toString()});
+            this.props.dispatch(updateAccount({isLoading: false}));
         });
     }
 
     componentWillUnmount(){
-        this.props.dispatch(updateTradeTokens(null));
-        this.props.dispatch(isLoadingTradeTokens(true));
+        this.props.dispatch(resetAccount());
     }
 
     componentDidMount(){
-        if(this.props.tradeTokens === null){
-            this.fetchTradeTokens();
-        }
+        this.fetchTradeTokens();
     }
 
     render(){
-        if(this.props.isLoadingTradeTokens){
+        let {account} = this.props;
+
+        if(account.isLoading){
             return (
                 <section id="crypto-balance">
                     <div className="ui top attached padded bg-color-light-gray header">
@@ -82,7 +89,7 @@ class CryptoBalance extends Component {
                                     Ethereum address:
                                 </td>
                                 <td>
-                                    {this.accountAddress}
+                                    {account.address}
                                 </td>
                             </tr>
                             <tr>
@@ -90,12 +97,12 @@ class CryptoBalance extends Component {
                                     Trade tokens:
                                 </td>
                                 <td>
-                                    {this.props.tradeTokens}
+                                    {account.tradeTokens}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    {(this.props.tradeTokens > 0)
+                    {(account.tradeTokens > 0)
                         ? (
                             <div className="ui success message">
                                 You are eligible to trade during the extended trading period.
@@ -113,9 +120,9 @@ class CryptoBalance extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let {tradeTokens, isLoadingTradeTokens} = state;
+    let {account} = state;
 
-    return {tradeTokens, isLoadingTradeTokens};
+    return {account};
 };
 
 export default connect(mapStateToProps)(CryptoBalance);
