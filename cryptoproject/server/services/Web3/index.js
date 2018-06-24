@@ -35,9 +35,7 @@ const getProvider = () => {
         return window.web3.currentProvider;
     }
 
-    return new web3.providers.HttpProvider(
-        'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv'
-    );
+    return new web3.providers.HttpProvider(Settings.HTTP_PROVIDER);
 };
 
 module.exports = new Web3(getProvider());

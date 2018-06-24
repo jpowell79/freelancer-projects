@@ -8,9 +8,9 @@ const CoinMarketCapApi = require('../../../components/CoinMarket/CoinMarketCapAp
 const HistoricDataHelper = require('../databaseHelpers/HistoricDataHelper');
 
 function SnapshotService({onSnapshotSaved = () => {}}){
-    let onTimeExpired = async (timeObject) => {
+    let onTimeExpired = async (expiredContract) => {
         let snapshotContracts = this.contractData.filter(contract =>
-            contract.name === timeObject.id
+            contract.name === expiredContract.name
         );
 
         if(snapshotContracts.length === 0) return;
@@ -31,14 +31,9 @@ function SnapshotService({onSnapshotSaved = () => {}}){
                 .then(marketData => {
                     finishPrice = marketData.quotes.USD.price;
 
-                    return HistoricDataHelper.create(
-                        Object.assign({}, contract, {finishPrice})
-                    );
+                    return HistoricDataHelper.create(contract, finishPrice);
                 }).then(() => {
-                    return new Promise(resolve => {
-                        onSnapshotSaved(contract, finishPrice);
-                        resolve();
-                    });
+                    onSnapshotSaved(contract, finishPrice);
                 });
         } else {
             return HistoricDataHelper.create(contract).then(() => {
@@ -75,7 +70,7 @@ function SnapshotService({onSnapshotSaved = () => {}}){
             this.watcher = new TimeWatcher(
                 this.contractData.map(contract => {
                     return {
-                        id: contract.name,
+                        name: contract.name,
                         time: contract.extendedTimeCloses
                     }
                 }),

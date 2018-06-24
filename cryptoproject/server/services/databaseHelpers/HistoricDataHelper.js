@@ -1,10 +1,12 @@
 const HistoricData = require('../../models/historic-data');
 
-async function create(smartContract){
+async function create(smartContract, finishPrice = 0){
+    let finish = (finishPrice === 0) ? smartContract.finishPrice : finishPrice;
+
     let historicData = new HistoricData({
         name: smartContract.name,
         startPrice: smartContract.startPrice,
-        finishPrice: smartContract.finishPrice,
+        finishPrice: finish,
         pot: smartContract.pot,
         nrOfTrades: smartContract.nrOfTrades
     });

@@ -25,7 +25,7 @@ const fetchCryptoContract = (index) => {
         methods.showRank().call(),
         methods.showCryptoStartPrice().call(),
         methods.numberOfTrades().call(),
-        methods.extendedTimeCloses().call(),
+        methods.standardTimeCloses().call(),
         methods.extendedTimeCloses().call(),
         methods.potBalance().call()
     ]).then(responses => {
