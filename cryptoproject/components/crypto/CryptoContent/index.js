@@ -68,57 +68,60 @@ class CryptoContent extends Component {
     }
 
     handleTrade(tradeValue){
+        let {
+            incorrectEth,
+            notEnoughEth,
+            inProgress,
+            success,
+            error,
+            idle
+        } = CryptoTrade.tradeStatus;
+
         if(!CryptoTrade.isValidTrade(tradeValue)){
-            this.props.dispatch(updateTransactionStatus(
-                CryptoTrade.tradeStatus.incorrectEth
-            ));
-        } else if(this.props.transaction.tradeStatus !== CryptoTrade.tradeStatus.inProgress){
+            this.props.dispatch(updateTransactionStatus(incorrectEth));
+        } else if(this.props.transaction.tradeStatus !== inProgress){
+            let address = '';
             this.props.dispatch(startTransaction());
 
             web3.getAccountAddress().then(accountAddress => {
+                address = accountAddress;
                 return web3.getBalance(accountAddress);
             }).then(balance => {
                 if(balance < tradeValue){
-                    this.props.dispatch(updateTransactionStatus(
-                        CryptoTrade.tradeStatus.notEnoughEth
-                    ));
+                    this.props.dispatch(updateTransactionStatus(notEnoughEth));
 
                     return null;
                 } else if(this.props.data.standardTimeCloses < Date.now()){
                     if(this.props.account.tradeTokens <= 0){
                         this.props.dispatch(endTransaction({
                             inProgress: false,
-                            tradeStatus: CryptoTrade.tradeStatus.idle
+                            tradeStatus: idle
                         }));
 
                         return null;
                     }
                 }
 
-                this.props.dispatch(updateTransactionStatus(
-                    CryptoTrade.tradeStatus.inProgress
-                ));
+                this.props.dispatch(updateTransactionStatus(inProgress));
 
                 return Contract.enterTheGame(this.props.data.index, {
-                    from: web3.eth.defaultAccount,
+                    from: address,
                     value: tradeValue
                 });
             }).then(transaction => {
                 if(transaction !== null){
                     transaction.inProgress = false;
-                    transaction.tradeStatus = CryptoTrade.tradeStatus.success;
+                    transaction.tradeStatus = success;
                     this.props.dispatch(endTransaction(transaction));
                     this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
                         nrOfTrades: this.props.data.nrOfTrades+1,
                         pot: this.props.data.pot + tradeValue
                     })));
-                } else {
-
                 }
             }).catch(() => {
                 this.props.dispatch(endTransaction({
                     inProgress: false,
-                    tradeStatus: CryptoTrade.tradeStatus.error
+                    tradeStatus: error
                 }));
             });
         }
@@ -191,8 +194,8 @@ class CryptoContent extends Component {
                                     extendedTimeCloses={extendedTimeCloses}
                                     onStandardTimeZero={() => {
                                         this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                                standardTimeCloses: 0
-                                            })));
+                                            standardTimeCloses: 0
+                                        })));
                                     }}
                                     onExtendedTimeZero={() => {
                                         this.props.dispatch(updateCrypto(Object.assign(this.props.data, {

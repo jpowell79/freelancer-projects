@@ -38,7 +38,10 @@ class CryptoTrade extends Component {
     }
 
     renderTradeTransactionMessage(){
-        let {transaction} = this.props;
+        let {
+            transaction,
+            account
+        } = this.props;
 
         switch(transaction.tradeStatus){
         case CryptoTrade.tradeStatus.success:
@@ -85,7 +88,9 @@ class CryptoTrade extends Component {
             return (
                 <div className="ui error message">
                     <div className="header">Trade Cancelled</div>
-                    Please try again.
+                    {(account.address === null)
+                        ? "Unable to detect ethereum account address."
+                        : "Please try again."}
                 </div>
             );
         default:
@@ -162,9 +167,15 @@ class CryptoTrade extends Component {
 }
 
 const mapStateToProps = (state) => {
-    let {transaction} = state;
+    let {
+        transaction,
+        account
+    } = state;
 
-    return {transaction};
+    return {
+        transaction,
+        account
+    };
 };
 
 export default connect(mapStateToProps)(CryptoTrade);

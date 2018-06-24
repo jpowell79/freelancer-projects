@@ -89,7 +89,9 @@ class CryptoBalance extends Component {
                                     Ethereum address:
                                 </td>
                                 <td>
-                                    {account.address}
+                                    {(account.address === null)
+                                        ? 'Could not be detected.'
+                                        : account.address}
                                 </td>
                             </tr>
                             <tr>
@@ -110,7 +112,9 @@ class CryptoBalance extends Component {
                         )
                         : (
                             <div className="ui error message">
-                                You are not eligible to trade during the extended trading period.
+                                {(account.address === null)
+                                    ? "Please check your connection to metamask."
+                                    : "You are not eligible to trade during the extended trading period."}
                             </div>
                         )}
                 </div>

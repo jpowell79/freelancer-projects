@@ -4,7 +4,7 @@ import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
 const DEFAULT_ACCOUNT = {
     isLoading: true,
-    address: 'Address could not be detected',
+    address: null,
     tradeTokens: null
 };
 
