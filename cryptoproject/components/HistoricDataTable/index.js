@@ -34,7 +34,7 @@ class HistoricDataTable extends Component {
     }
 
     componentDidMount(){
-        new TableSorter($("#historic-data-table"));
+        this.tablesorter = new TableSorter($("#historic-data-table"));
 
         axios.get(urls.historicData).then(response => {
             this.setState({
@@ -50,6 +50,10 @@ class HistoricDataTable extends Component {
                 isLoadingHistoricData: false
             });
         });
+    }
+
+    componentWillUnmount(){
+        this.tablesorter.turnOffSorting();
     }
 
     downloadCsv(startDate, endDate){

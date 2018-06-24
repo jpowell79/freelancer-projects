@@ -20,10 +20,10 @@
         }
 
         &.no-sort {
-            cursor: default;
+            cursor: default!important;
 
             &:hover {
-                background-color: $uiThColor;
+                background-color: $uiThColor!important;
             }
         }
     }

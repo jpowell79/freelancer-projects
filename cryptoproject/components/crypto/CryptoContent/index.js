@@ -163,15 +163,14 @@ class CryptoContent extends Component {
                 </section>
                 {!web3.hasMetaMask()
                     ?  (
-                        <section id="metamask-not-found" className="ui segment header">
-                            <div className="ui error message text-center">
-                                <h2 className="ui header">Metamask not found.
-                                <div className="sub header">
-                                    You need to install the <a href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en">
-                                        metamask plugin
-                                    </a> in order to trade.
-                                </div>
-                                </h2>
+                        <section id="metamask-not-found">
+                            <div className={titledSegmentHeader() + ' error'}>
+                                <h2>The Metamask plugin is required in order to trade</h2>
+                            </div>
+                            <div className={titledSegmentContent('children-divider-md')}>
+                                <a href="https://metamask.io/">
+                                    <img src={Paths.getImage('metamask', 'download')}/>
+                                </a>
                             </div>
                         </section>
                     ) : null}

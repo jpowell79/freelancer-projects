@@ -43,6 +43,10 @@ class CoinMarketTable extends Component {
         });
     }
 
+    componentWillUnmount(){
+        this.tablesorter.turnOffSorting();
+    }
+
     componentDidUpdate(){
         if(this.tablesorter.hasSelectedHeader()){
             this.tablesorter.sortCurrentlySelected(
