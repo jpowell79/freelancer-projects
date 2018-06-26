@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {definitionTable} from "../utils/cssUtils";
 
-class ComparisonTable extends Component {
+class SummaryTable extends Component {
     static defaultProps = {
         bestValueCrypto: {},
         isLoadingMarketData: true
@@ -43,4 +43,4 @@ class ComparisonTable extends Component {
     }
 }
 
-export default ComparisonTable;
+export default SummaryTable;

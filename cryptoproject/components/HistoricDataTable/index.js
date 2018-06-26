@@ -14,7 +14,7 @@ import {calcTotalPercentChange} from "../utils";
 import CsvParser from '../../server/services/CsvParser';
 import moment from 'moment';
 import Strings from '../utils/Strings';
-import ComparisonTable from './ComparisonTable';
+import SummaryTable from './SummaryTable';
 import DateForm from '../forms/DateForm';
 import Files from '../utils/Files'
 import $ from 'jquery';
@@ -177,7 +177,7 @@ class HistoricDataTable extends Component {
                                     Summary
                                 </h2>
                                 <div className={titledSegmentContent()}>
-                                    <ComparisonTable
+                                    <SummaryTable
                                         bestValueCrypto={this.getBestValueCrypto()}
                                         totalNrOfTrades={this.state.historicData
                                             .map(data => data.nrOfTrades)

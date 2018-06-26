@@ -1,20 +1,4 @@
-import {Parser} from 'json2csv';
-
 class Files {
-    static objectArrayToCsv(objectArray, fieldsToExclude = [], options = {}){
-        if(objectArray.length === 0){
-            return "";
-        }
-
-        let fieldsToInclude = Object.keys(objectArray[0]).filter(key =>
-            !fieldsToExclude.includes(key)
-        );
-        let opts = Object.assign({}, options, {fields: fieldsToInclude});
-        let parser = new Parser(opts);
-
-        return parser.parse(objectArray);
-    }
-
     static downloadCsv(content, name){
         Files.download(
             content,

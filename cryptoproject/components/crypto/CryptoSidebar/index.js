@@ -31,7 +31,7 @@ class CryptoSidebar extends Component {
         let {cryptoName} = this.props;
         let maxFeeds = MAX_FEEDS;
         let maxFeedsForEachUrl = MAX_FEEDS_PER_URL;
-        let className = "ui divided list children-divider-sm";
+        let className = "ui divided list children-divider-3";
         let twitterFeeds = getTwitterFeeds(cryptoName);
         let feedRenderer = (key, entry) => {
             return (

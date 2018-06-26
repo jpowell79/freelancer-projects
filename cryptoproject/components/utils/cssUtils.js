@@ -3,7 +3,7 @@ export const hideOnMobile = () => {
 };
 
 export const sortableTable = () =>{
-    return "ui unstackable selectable sortable very" +
+    return "ui unstackable selectable sortable very " +
         "compact celled small table sortable-table"
 };
 
