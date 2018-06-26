@@ -1,10 +1,16 @@
 import React, {Component} from 'react';
 import {SocialMenu} from "../navigation/SocialMenu";
+import {joinClassNames} from "../utils";
 
 class Footer extends Component {
     render() {
+        let {
+            className,
+            ...props
+        } = this.props;
+
         return (
-            <footer id="site-footer" className="ui bg-color-light-gray segment">
+            <footer {...props} className={joinClassNames("ui bg-color-light-gray segment", className)}>
                 <div className="ui padded stackable centered grid">
                     <div className="four wide column">
                         <div className="ui list">

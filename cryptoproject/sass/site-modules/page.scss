@@ -1,0 +1,44 @@
+/*----------------------------------------
+ * Page
+ *----------------------------------------*/
+#page {
+    &-header {
+        padding-top: $divider5;
+        margin-bottom: $divider2;
+    }
+
+    &-footer {
+        margin-top: $divider2;
+
+        > * {
+            max-width: $wrapper;
+            margin: 0 auto!important;
+        }
+
+        .social-menu {
+            &.round > * {
+                background-color: $darkGray;
+
+                &:hover {
+                    background-color: darken($primary, 10%);
+                }
+            }
+        }
+
+        .ui.list > a.item {
+            color: $uiBlack;
+
+            &:hover {
+                color: $primary;
+            }
+        }
+    }
+
+    &-content {
+        .loader,
+        .loader-small {
+            position: static;
+            margin: 0 auto;
+        }
+    }
+}

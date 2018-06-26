@@ -1,19 +1,14 @@
 import React, {Component} from 'react';
-import Head from '../components/Head';
+import Page from '../components/Page';
 import {connect} from 'react-redux';
 import CoinMarketTable from '../components/CoinMarket/CoinMarketTable';
-import Header from "../components/Header/index";
-import Footer from "../components/Footer/index";
 
 class Index extends Component {
     render () {
         return (
-            <div>
-                <Head fetchMarketData={true} addTimer={true}/>
-                <Header/>
+            <Page fetchMarketData={true} addTimer={true}>
                 <CoinMarketTable/>
-                <Footer/>
-            </div>
+            </Page>
         )
     }
 }

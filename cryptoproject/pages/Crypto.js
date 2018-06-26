@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Head from '../components/Head';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+import Page from '../components/Page'
 import CryptoContent from '../components/crypto/CryptoContent';
 import CryptoSidebar from '../components/crypto/CryptoSidebar';
 import {
@@ -36,13 +34,9 @@ class Crypto extends Component {
         return {index: parseInt(query.index, 10)};
     }
 
-    constructor(props){
-        super(props);
-
-        this.props.dispatch(isLoadingCrypto(true));
-    }
-
     componentDidMount(){
+        this.props.dispatch(isLoadingCrypto(true));
+
         fetchCryptoContract(this.props.index)
             .then(response => {
                 this.props.dispatch(updateCrypto(Object.assign({}, response, {
@@ -66,27 +60,17 @@ class Crypto extends Component {
 
         if(isLoadingMarketData || isLoadingCrypto){
             return (
-                <div>
-                    <Head fetchMarketData={true} addTimer={false}/>
-                    <Header/>
-                    <div id="crypto">
-                        <Loader/>
-                    </div>
-                    <Footer/>
-                </div>
+                <Page fetchMarketData={true} addTimer={false}>
+                    <Loader/>
+                </Page>
             );
         }
 
         if(crypto.length === 0){
             return (
-                <div>
-                    <Head fetchMarketData={true} addTimer={false}/>
-                    <Header/>
-                    <div id="crypto" className="text-center">
-                        <h2>Error: Unable to load crypto data.</h2>
-                    </div>
-                    <Footer/>
-                </div>
+                <Page fetchMarketData={true} addTimer={false}>
+                    <h2 className="text-center">Error: Unable to load crypto data.</h2>
+                </Page>
             )
         }
 
@@ -99,15 +83,15 @@ class Crypto extends Component {
         )[0];
 
         return (
-            <div>
-                <Head fetchMarketData={false} addTimer={false}/>
-                <Header/>
-                <div id="crypto">
-                    <CryptoContent data={Object.assign({}, currentCrypto, currentMarketData)}/>
-                    <CryptoSidebar id={currentMarketData.id} cryptoName={currentMarketData.name}/>
-                </div>
-                <Footer/>
-            </div>
+            <Page fetchMarketData={false}
+                  addTimer={false}
+                  contentClass="crypto">
+                <CryptoContent
+                    data={Object.assign({}, currentCrypto, currentMarketData)}/>
+                <CryptoSidebar
+                    id={currentMarketData.id}
+                    cryptoName={currentMarketData.name}/>
+            </Page>
         );
     }
 }

@@ -4,7 +4,7 @@ import MainMenu from '../navigation/MainMenu';
 class Header extends Component {
     render(){
         return (
-            <header id="site-header">
+            <header {...this.props}>
                 <MainMenu/>
                 {this.props.children}
             </header>

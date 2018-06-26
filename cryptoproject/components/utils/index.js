@@ -13,8 +13,8 @@ export const filterObject = (objectToFilter, objectToFilterOut) => {
     return filteredObject;
 };
 
-export const joinClassNames = (className1, className2) => {
-    return [className1, className2].join(' ');
+export const joinClassNames = (className1, className2 = '') => {
+    return (className2 === '') ? className1 : [className1, className2].join(' ');
 };
 
 export const calcTotalPercentChange = (startPrice, currentPrice) => {
