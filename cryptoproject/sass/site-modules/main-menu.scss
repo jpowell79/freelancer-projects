@@ -1,0 +1,184 @@
+/*----------------------------------------
+ * Main Menu
+ *----------------------------------------*/
+$menuBackground: rgba(255, 255, 255, .95);
+
+#main-menu {
+    font-family: $secondaryFont;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 0 $divider2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: $divider5;
+    width: 100%;
+    background-color: $menuBackground;
+    z-index: 900;
+    border-bottom: 1px solid rgba(34,36,38,.1);
+    box-shadow: 0 2px 20px -4px rgba(0,0,0,.3);
+
+    > nav {
+        display: flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        background-color: $menuBackground;
+        z-index: 900;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: $h5;
+        margin-left: $divider2;
+        transition: color .3s ease-out;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: $uiGreen;
+        }
+
+        &.active {
+            color: $uiGreen;
+        }
+    }
+
+    #main-menu-toggler {
+        display: none;
+    }
+}
+
+@media (max-width: $mediaSmall){
+    #main-menu {
+        nav {
+            position: absolute;
+            top: calc(#{$divider5} - 1px);
+            left: 0;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+            max-height: 0;
+            z-index: -1;
+
+            a {
+                justify-content: center;
+                opacity: 0;
+                margin: 0;
+                padding: $divider3 0;
+                font-size: $h4;
+                text-transform: uppercase;
+
+                &:last-child {
+                    padding-bottom: $divider3*2;
+                }
+            }
+        }
+
+        #main-menu-toggler {
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-end;
+            flex-grow: 1;
+            cursor: pointer;
+            z-index: 900;
+
+            &.active .mobile-menu-icon > div {
+                background: $uiGreen;
+            }
+
+            &:hover .mobile-menu-icon > div {
+                background: $uiGreen;
+            }
+
+            > .mobile-menu-icon {
+                align-self: center;
+            }
+        }
+
+        &.animate {
+            nav {
+                z-index: 899;
+                animation-duration: 1s;
+                animation-fill-mode: forwards;
+                animation-name: hide-menu;
+                animation-timing-function: cubic-bezier(.8,.01,.3,1);
+
+                a {
+                    animation-duration: 1s;
+                    animation-fill-mode: forwards;
+                    animation-name: hide-menu-items;
+                    animation-timing-function: ease-out;
+                }
+            }
+
+            &.reveal-items {
+                nav {
+                    visibility: visible;
+                    animation-name: reveal-menu;
+                    border-bottom: 1px solid rgba(34,36,38,.1);
+
+                    a {
+                        animation-name: reveal-menu-items;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes hide-menu {
+    0% {
+        max-height: 800px;
+    }
+
+    100% {
+        max-height: 0;
+        visibility: hidden;
+    }
+}
+
+@keyframes reveal-menu {
+    0% {
+        max-height: 0;
+    }
+
+    100% {
+        max-height: 800px;
+    }
+}
+
+@keyframes hide-menu-items {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes reveal-menu-items {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

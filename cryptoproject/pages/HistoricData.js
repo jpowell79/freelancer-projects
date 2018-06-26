@@ -7,10 +7,12 @@ import Footer from "../components/Footer";
 class HistoricData extends Component {
     render(){
         return (
-            <div id="historic-data" className="wrapper">
+            <div id="historic-data">
                 <Head fetchMarketData={false} addTimer={false}/>
                 <Header/>
-                <HistoricDataTable/>
+                <div className="wrapper">
+                    <HistoricDataTable/>
+                </div>
                 <Footer/>
             </div>
         );

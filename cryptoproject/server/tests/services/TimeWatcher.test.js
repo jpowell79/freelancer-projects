@@ -26,7 +26,7 @@ describe('StandardTimeWatcher', () => {
         expect(watcher.isWatching()).to.be.equal(false);
     });
 
-    it('Should not be watching after watch is called with valid time.', () => {
+    it('Should be watching after watch is called with valid time.', () => {
         let watcher = new TimeWatcher([{
             time: Date.now()+1000,
             id: 1

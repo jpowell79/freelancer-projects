@@ -1,0 +1,45 @@
+.mobile-menu-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    width: 26px;
+    height: 22px;
+    transform: rotate(0deg);
+    transition: color .3s ease-out;
+    cursor: pointer;
+
+    > div {
+        display: block;
+        height: 4px;
+        width: 100%;
+        background: $uiBlack;
+        border-radius: 9px;
+        opacity: 1;
+        left: 0;
+        transform: rotate(0deg);
+        transform-origin: left center;
+        transition: .25s ease-in-out;
+    }
+
+    &.open {
+        > div {
+            &:first-child {
+                transform: rotate(45deg);
+                top: -3px;
+                left: 8px;
+            }
+
+            &:nth-child(2){
+                width: 0;
+                opacity: 0;
+            }
+
+            &:nth-child(3){
+                transform: rotate(-45deg);
+                top: 39px;
+                left: 8px;
+            }
+        }
+    }
+}

@@ -4,43 +4,33 @@
 #crypto {
     display: grid;
     grid-template-areas:
-            "header header header"
             "content content content"
-            "sidebar sidebar sidebar"
-            "footer footer footer";
+            "sidebar sidebar sidebar";
     grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: $standardDivider;
-    padding: $smallDivider;
-    max-width: $wrapperWidth;
+    grid-gap: $divider2;
+    padding: $divider3;
+    max-width: $wrapper;
     margin: 0 auto;
 
     > * > .segment {
         margin: 0;
     }
-
-    #site-header {
-        grid-area: header;
-        margin-bottom: 0;
-    }
-
     #crypto-content {
         grid-area: content;
-        @include divideChildren($standardDivider);
+        @include divideChildren($divider2);
     }
 
     #crypto-sidebar {
         grid-area: sidebar;
-        @include divideChildren($standardDivider);
+        @include divideChildren($divider2);
     }
-
-    #site-footer {
-        grid-area: footer;
-        margin-top: 0;
+    > h2 {
+        grid-column: 1/4;
     }
 
     .loader {
-        position: absolute;
-        left: calc(50% - 60px);
+        margin: 0 auto;
+        grid-column: 2;
     }
 
     .loader-small {
@@ -52,9 +42,7 @@
 @media (min-width: $mediaMedium) {
     #crypto {
         grid-template-areas:
-                "header header header"
-                "content content sidebar"
-                "footer footer footer";
+                "content content sidebar";
 
         #crypto-content {
             #crypto-trade {
@@ -68,6 +56,6 @@
 
 @media (min-width: $mediaSmall) {
     #crypto {
-        padding: 0 $standardDivider;
+        padding: 0 $divider2;
     }
 }

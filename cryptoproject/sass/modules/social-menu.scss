@@ -10,11 +10,11 @@ $iconSize: 40px;
 .social-menu {
     display: flex;
     flex-wrap: wrap;
-    font-size: $headingMedium;
+    font-size: $h3;
 
     > * {
-        margin-right: $xSmallDivider;
-        margin-bottom: $xSmallDivider;
+        margin-right: $divider4;
+        margin-bottom: $divider4;
 
         i {
             display: block;

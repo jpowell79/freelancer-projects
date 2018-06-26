@@ -170,7 +170,7 @@ class CryptoContent extends Component {
                             <div className={titledSegmentHeader() + ' error'}>
                                 <h2>The Metamask plugin is required in order to trade</h2>
                             </div>
-                            <div className={titledSegmentContent('children-divider-md')}>
+                            <div className={titledSegmentContent('children-divider-2')}>
                                 <a href="https://metamask.io/">
                                     <img src={Paths.getImage('metamask', 'download')}/>
                                 </a>
@@ -187,7 +187,7 @@ class CryptoContent extends Component {
                             <div className={titledSegmentHeader()}>
                                 <h2>{name}<span className="small symbol">({symbol})</span></h2>
                             </div>
-                            <div className={titledSegmentContent('children-divider-md')}>
+                            <div className={titledSegmentContent('children-divider-2')}>
                                 <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
                                 <CryptoCountdown
                                     standardTimeCloses={standardTimeCloses}

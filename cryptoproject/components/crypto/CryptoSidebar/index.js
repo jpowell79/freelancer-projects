@@ -90,7 +90,7 @@ class CryptoSidebar extends Component {
                         <Twitter className="color-uiBlue"/>
                         <div className="content">Twitter Feed</div>
                     </h3>
-                    <div className={titledSegmentContent('children-divider-md')}>
+                    <div className={titledSegmentContent('children-divider-2')}>
                         {twitterFeeds.map((feed, i) => (
                             <div key={i}>
                                 <TwitterWidget feed={feed}/>

@@ -195,6 +195,20 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
+        "name": "showCryptoFinishPrice",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
         "name": "potProcessorAddress_16_20",
         "outputs": [
             {
@@ -660,6 +674,20 @@ module.exports = [
             {
                 "name": "",
                 "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "finishPriceRetrievalTime",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
             }
         ],
         "payable": false,

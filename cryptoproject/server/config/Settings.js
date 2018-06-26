@@ -1,9 +1,11 @@
-const settings = require('../../../site-settings');
-const SnapshotService = require('../../services/SnapshotService/');
-const DummyDatabase = require('../DummyDatabase');
-const HistoricDataArchvier = require('../HistoricDataArchiver');
-const log = require('../utils/log');
-const DatabaseCleaner = require('../databaseHelpers/DatabaseCleaner');
+const settings = require('../../site-settings');
+const SnapshotService = require('../services/SnapshotService/index');
+const DummyDatabase = require('../services/DummyDatabase/index');
+const HistoricDataArchvier = require('../services/HistoricDataArchiver/index');
+const log = require('../services/utils/log');
+const DatabaseCleaner = require('../services/databaseHelpers/DatabaseCleaner');
+const moment = require('moment');
+moment.locale('en');
 
 async function removeDatabase() {
     if(settings.REMOVE_DATABASE){
@@ -30,7 +32,7 @@ async function enableSnaphotService(){
                     `(it will relaunch every ${refreshRate/(1000*60)} minutes)`
                 );
 
-                if(response.watcher.objectsToWatch.length > 0){
+                if(snapshotService.extendedTimeWatcher.objectsToWatch.length > 0){
                     console.log('SnapshotService is now waiting for the following contracts:');
                     console.log(response.log);
                 } else {

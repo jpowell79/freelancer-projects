@@ -69,7 +69,7 @@ class CryptoBalance extends Component {
                     <div className="ui top attached padded bg-color-light-gray header">
                         <h2>Your account</h2>
                     </div>
-                    <div className="ui attached padded segment children-divider-md">
+                    <div className="ui attached padded segment children-divider-2">
                         <LoaderSmall/>
                     </div>
                 </section>
@@ -81,7 +81,7 @@ class CryptoBalance extends Component {
                 <div className={titledSegmentHeader()}>
                     <h2>Your account</h2>
                 </div>
-                <div className={titledSegmentContent('children-divider-md')}>
+                <div className={titledSegmentContent('children-divider-2')}>
                     <table className={definitionTable()}>
                         <tbody>
                             <tr>

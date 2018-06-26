@@ -39,7 +39,9 @@ class CoinMarketTable extends Component {
             this.props.dispatch(isLoadingCrypto(false));
             this.tablesorter.sortAtName("Rank");
         }).catch(err => {
+            console.log(err);
             AlertOptionPane.showErrorAlert({message: err.toString()});
+            this.props.dispatch(isLoadingCrypto(false));
         });
     }
 

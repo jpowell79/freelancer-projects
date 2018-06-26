@@ -51,6 +51,7 @@ class Crypto extends Component {
                 this.props.dispatch(isLoadingCrypto(false));
             }).catch(err => {
                 AlertOptionPane.showErrorAlert({message: err.toString()});
+                this.props.dispatch(isLoadingCrypto(false));
             });
     }
 
@@ -67,11 +68,26 @@ class Crypto extends Component {
             return (
                 <div>
                     <Head fetchMarketData={true} addTimer={false}/>
+                    <Header/>
                     <div id="crypto">
                         <Loader/>
                     </div>
+                    <Footer/>
                 </div>
             );
+        }
+
+        if(crypto.length === 0){
+            return (
+                <div>
+                    <Head fetchMarketData={true} addTimer={false}/>
+                    <Header/>
+                    <div id="crypto" className="text-center">
+                        <h2>Error: Unable to load crypto data.</h2>
+                    </div>
+                    <Footer/>
+                </div>
+            )
         }
 
         let currentCrypto = crypto.filter(cryptoObject =>
@@ -85,12 +101,12 @@ class Crypto extends Component {
         return (
             <div>
                 <Head fetchMarketData={false} addTimer={false}/>
+                <Header/>
                 <div id="crypto">
-                    <Header/>
                     <CryptoContent data={Object.assign({}, currentCrypto, currentMarketData)}/>
                     <CryptoSidebar id={currentMarketData.id} cryptoName={currentMarketData.name}/>
-                    <Footer/>
                 </div>
+                <Footer/>
             </div>
         );
     }

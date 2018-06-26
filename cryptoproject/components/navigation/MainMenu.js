@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import Paths from '../utils/Paths';
 import Link from 'next/link';
-import {joinClassNames} from "../utils";
 import {withRouter} from 'next/router';
+import {MobileMenuIcon} from "../icons";
+import $ from 'jquery';
 
 class MainMenu extends Component {
     constructor(props){
@@ -11,24 +12,42 @@ class MainMenu extends Component {
         this.getActiveClass = this.getActiveClass.bind(this);
     }
 
+    componentDidMount(){
+        this.$mainMenuToggler = $('#main-menu-toggler');
+        let $mobileMenuIcon = $('.mobile-menu-icon');
+        let $mainMenu = $('#main-menu');
+
+        this.$mainMenuToggler.on('click', () => {
+            $mainMenu.toggleClass('reveal-items');
+            $mainMenu.addClass('animate');
+            this.$mainMenuToggler.toggleClass('active');
+            $mobileMenuIcon.toggleClass('open');
+        });
+    }
+
+    componentWillUnmount(){
+        this.$mainMenuToggler.off('click');
+    }
+
     getActiveClass(page){
         return (this.props.router.route === page) ? " active" : "";
     }
 
     render(){
-        let {className, ...props} = this.props;
-
         return (
-            <nav {...props} className={joinClassNames("ui labeled stackable menu", className)}>
+            <nav id="main-menu" {...this.props}>
                 <Link href="/"><a><img src={Paths.getImage('logo', 'small')}/></a></Link>
-                <div className="right menu">
-                    <a className="item">Trade</a>
-                    <a className="item">How it Works</a>
-                    <a className="item">The Team</a>
+                <nav>
+                    <a>Trade</a>
+                    <a>How it Works</a>
+                    <a>The Team</a>
                     <Link href={Paths.getHistoricDataPage()}>
                         <a className={"item" + this.getActiveClass("/HistoricData")}>Historic Data</a>
                     </Link>
-                    <a className="item">Contact</a>
+                    <a>Contact</a>
+                </nav>
+                <div id="main-menu-toggler">
+                    <MobileMenuIcon/>
                 </div>
             </nav>
         );

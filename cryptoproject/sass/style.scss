@@ -3,24 +3,26 @@
 
 //Import resources
 @import "resources/variables";
-@import "resources/functions";
+@import "resources/mixins";
+
+//Import modules
+@import "modules/mobile-menu-icon";
+@import "modules/social-menu";
+@import "modules/visibility";
+@import "modules/attributes";
+@import "modules/headings";
+@import "modules/dividers";
+@import "modules/wrappers";
+@import "modules/loader";
+@import "modules/colors";
+@import "modules/alert";
 
 //Import site-modules
 @import "site-modules/global";
+@import "site-modules/main-menu";
 @import "site-modules/sortable-table";
 @import "site-modules/crypto";
 @import "site-modules/footer";
 @import "site-modules/header";
 @import "site-modules/page-title";
 @import "site-modules/semantic-ui-override";
-
-//Import modules
-@import "modules/social-menu";
-@import "modules/attributes";
-@import "modules/headings";
-@import "modules/dividers";
-@import "modules/visibility";
-@import "modules/wrappers";
-@import "modules/loader";
-@import "modules/colors";
-@import "modules/alert";

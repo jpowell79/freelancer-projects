@@ -9,6 +9,14 @@ export const LoaderSmall = ({className = "", ...props}) =>
 export const LoaderTiny = ({className = "", ...props}) =>
     <div {...props} className={joinClassNames('loader-tiny', className)}/>;
 
+export const MobileMenuIcon = ({className = "", ...props}) => (
+    <div {...props} className={joinClassNames("mobile-menu-icon", className)}>
+        <div/>
+        <div/>
+        <div/>
+    </div>
+);
+
 export const Sort = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames('sort icon', className)}/>;
 

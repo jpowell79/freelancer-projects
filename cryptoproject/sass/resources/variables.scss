@@ -8,9 +8,7 @@ $black     : #000000;
 $gray      : rgba(0,0,0,.03);
 $darkGray  : #888;
 
-//----------------------------------------------
-// 1.1 Semantic UI Colors
-//----------------------------------------------
+//1.1 Semantic UI Colors
 $uiBlue    : #2185d0;
 $uiIndigo  : #6610f2;
 $uiPurple  : #a333c8;
@@ -27,9 +25,7 @@ $uiViolet  : #6435c9;
 $uiBlack   : #1b1c1d;
 $uiThColor : #f9fafb;
 
-//----------------------------------------------
-// 1.2 Color Maps
-//----------------------------------------------
+//1.2 Color maps
 $darkColors: (
     (primary   $primary)
     (secondary $secondary)
@@ -61,6 +57,8 @@ $colors: join($darkColors, $lightColors);
 // 2.0 Fonts
 //----------------------------------------------
 $iconFont: Icons;
+$primaryFont: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+$secondaryFont: 'Montserrat', sans-serif;
 
 //----------------------------------------------
 // 3.0 Icons
@@ -73,34 +71,58 @@ $caretUpIcon: "\f0d8";
 //----------------------------------------------
 // 4.0 Site Variables
 //----------------------------------------------
-$headingXLarge   : 3rem;
-$headingLarge    : 2rem;
-$headingMedium   : 1.5rem;
-$headingSmall    : 1.25rem;
-$wrapperWidth    : 1200px;
-$largeDivider    : 2em;
-$standardDivider : 1.5em;
-$smallDivider    : 1em;
-$xSmallDivider   : 0.5em;
-
-$wrappers: (
-    (wrapper    $wrapperWidth)
-    (wrapper-md $wrapperWidth/1.5)
-    (wrapper-sm $wrapperWidth/2)
-);
-
-$dividers: (
-    (divider-lg $largeDivider)
-    (divider-md $standardDivider)
-    (divider-sm $smallDivider)
-    (divider-xs $xSmallDivider)
-);
+//4.1 Headings
+$display1: 6rem;
+$display2: 5rem;
+$display3: 4rem;
+$display4: 3rem;
+$h1: 2rem;
+$h2: 2rem;
+$h3: 1.5rem;
+$h4: 1.25rem;
+$h5: 1.15rem;
+$h6: 1rem;
 
 $headings: (
-    heading-xl: $headingXLarge,
-    heading-lg: $headingLarge,
-    heading-md: $headingMedium,
-    heading-sm: $headingSmall
+    display-1 : $display1,
+    display-2 : $display2,
+    display-3 : $display3,
+    display-4 : $display4,
+    h1        : $h1,
+    h2        : $h2,
+    h3        : $h3,
+    h4        : $h4,
+    h5        : $h5,
+    h6        : $h6
+);
+
+//4.2 Wrappers
+$wrapper : 1200px;
+$wrapper2: 992px;
+$wrapper3: 768px;
+$wrapper4: 576px;
+
+$wrappers: (
+    (wrapper   $wrapper)
+    (wrapper-1 $wrapper)
+    (wrapper-2 $wrapper2)
+    (wrapper-3 $wrapper3)
+    (wrapper-4 $wrapper4)
+);
+
+//4.3 Dividers
+$divider1: 2em;
+$divider2: 1.5em;
+$divider3: 1em;
+$divider4: 0.5em;
+$divider5: 75px;
+
+$dividers: (
+    (divider-1 $divider1)
+    (divider-2 $divider2)
+    (divider-3 $divider3)
+    (divider-4 $divider4)
+    (divider-5 $divider5)
 );
 
 //----------------------------------------------
@@ -118,9 +140,6 @@ $mediaSmall   : 768px;
 $mediaXSmall  : 576px;
 $mediaXXSmall : 0;
 
-//----------------------------------------------
-// 5.1 Media Query Map
-//----------------------------------------------
 $mediaQueries: (
     (lg  $mediaLarge)
     (md  $mediaMedium)

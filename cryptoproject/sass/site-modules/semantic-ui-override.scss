@@ -3,7 +3,7 @@
  *----------------------------------------*/
 .ui {
     &.table {
-        margin: 0 0 $standardDivider 0;
+        margin: 0 0 $divider2 0;
     }
 
     &.grid.two-column {
@@ -22,7 +22,7 @@
         }
 
         > .item {
-            padding: $xSmallDivider 0;
+            padding: $divider4 0;
         }
 
         > .item:first-child {
@@ -33,10 +33,10 @@
     &.header {
         position: relative;
         text-align: center;
-        margin-top: $smallDivider;
+        margin-top: $divider3;
 
         &.dividing {
-            padding-bottom: $smallDivider;
+            padding-bottom: $divider3;
         }
 
         &.huge {
@@ -49,12 +49,12 @@
 
         .symbol {
             vertical-align: text-top;
-            font-size: $headingMedium;
+            font-size: $h3;
             font-weight: lighter;
-            margin-left: $xSmallDivider;
+            margin-left: $divider4;
 
             &.small {
-                font-size: $headingSmall;
+                font-size: $h3;
             }
         }
     }
