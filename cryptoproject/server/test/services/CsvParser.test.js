@@ -3,6 +3,7 @@ const CsvParser = require('../../services/CsvParser');
 const moment = require('moment');
 
 let date = parseInt(moment().format('YYYYMMDD'), 10);
+let parsedDate = moment(date, 'YYYYMMDD').format('YYYY-MM-DD');
 
 let mockHistoricData = {
     name: 'Bitcoin',
@@ -13,14 +14,14 @@ let mockHistoricData = {
     date: date,
 };
 
-describe('CsvParser tests', () => {
+describe('CsvParser', () => {
     it('Should parse historic data correctly.', () => {
         expect(CsvParser.parse([
             mockHistoricData,
             mockHistoricData
         ])).to.be.equal(
             `${CsvParser.headings}` +
-            `Bitcoin,$6400,$6500,0.25,900,2018-06-24\n` +
-            `Bitcoin,$6400,$6500,0.25,900,2018-06-24`);
+            `Bitcoin,$6400,$6500,0.25,900,${parsedDate}\n` +
+            `Bitcoin,$6400,$6500,0.25,900,${parsedDate}`);
     });
 });

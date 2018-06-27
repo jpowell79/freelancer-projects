@@ -11,6 +11,12 @@ const enterTheGame = (index, {from, value}) => {
     });
 };
 
+const getFinishPriceRetrievalTime = (index) => {
+    return getContract(index).methods
+        .finishPriceRetrievalTime()
+        .call()
+};
+
 const getContract = (index) => {
     return new web3.eth.Contract(abi, CONTRACT_ADDRESSES[index]);
 };
@@ -54,5 +60,6 @@ module.exports = {
     fetchAllCryptoContracts,
     fetchCryptoContract,
     getContract,
+    getFinishPriceRetrievalTime,
     enterTheGame
 };

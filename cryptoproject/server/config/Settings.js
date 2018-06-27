@@ -17,13 +17,16 @@ async function enableSnaphotService(){
     if(settings.ENABLE_SNAPSHOT_SERVICE){
         log.sectionTitle('Starting SnapshotService');
 
-        let snapshotService = new SnapshotService({
-            onSnapshotSaved: (contract) => {
-                console.log(`SnapshotService: Historic data for contract ${contract.contractAddress} saved.`);
-            }
-        });
+        let snapshotService = new SnapshotService();
 
-        return snapshotService.launch()
+        return snapshotService.launch({
+                onSnapshotSaved: (contract) => {
+                    console.log(
+                        `SnapshotService: Historic data for contract ` +
+                        `${contract.contractAddress} saved.`
+                    );
+                }
+            })
             .then(response => {
                 let refreshRate = settings.SNAPSHOT_SERVICE_REFRESH_RATE;
 

@@ -1,7 +1,7 @@
 let expect = require('chai').expect;
 let TimeWatcher = require('../../services/TimeWatcher/');
 
-describe('StandardTimeWatcher', () => {
+describe('TimeWatcher', () => {
     it('Should not add times already expired', () => {
         let watcher = new TimeWatcher([{
             time: Date.now()-1000,
@@ -48,5 +48,5 @@ describe('StandardTimeWatcher', () => {
         }], notify);
 
         watcher.watch();
-    });
+    }).timeout(5000);
 });
