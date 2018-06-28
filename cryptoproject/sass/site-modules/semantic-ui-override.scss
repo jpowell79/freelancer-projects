@@ -79,6 +79,10 @@
             word-wrap: break-word;
         }
     }
+
+    a:hover {
+        color: darken($primary, 10%)!important;
+    }
 }
 
 @media (max-width: $mediaMedium){
