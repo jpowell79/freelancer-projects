@@ -60,7 +60,7 @@ class Crypto extends Component {
 
         if(isLoadingMarketData || isLoadingCrypto){
             return (
-                <Page fetchMarketData={true} addTimer={false}>
+                <Page fetchMarketData={true}>
                     <Loader/>
                 </Page>
             );
@@ -68,7 +68,7 @@ class Crypto extends Component {
 
         if(crypto.length === 0){
             return (
-                <Page fetchMarketData={true} addTimer={false}>
+                <Page fetchMarketData={true}>
                     <h2 className="text-center">Error: Unable to load crypto data.</h2>
                 </Page>
             )
@@ -83,9 +83,7 @@ class Crypto extends Component {
         )[0];
 
         return (
-            <Page fetchMarketData={false}
-                  addTimer={false}
-                  contentClass="crypto">
+            <Page contentClass="crypto">
                 <CryptoContent
                     data={Object.assign({}, currentCrypto, currentMarketData)}/>
                 <CryptoSidebar

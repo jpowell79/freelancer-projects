@@ -41,11 +41,20 @@ class MainMenu extends Component {
                     <a>Trade</a>
                     <a>How it Works</a>
                     <a>The Team</a>
+                    <Link href={Paths.getSmartContractsPage()}>
+                        <a className={"item" + this.getActiveClass(Paths.getSmartContractsPage(''))}>
+                            Smart Contracts
+                        </a>
+                    </Link>
                     <Link href={Paths.getHistoricDataPage()}>
-                        <a className={"item" + this.getActiveClass("/HistoricData")}>Historic Data</a>
+                        <a className={"item" + this.getActiveClass(Paths.getHistoricDataPage(''))}>
+                            Historic Data
+                        </a>
                     </Link>
                     <Link href={Paths.getDividendFundPage()}>
-                        <a className={"item" + this.getActiveClass("/DividendFund")}>Dividend Fund</a>
+                        <a className={"item" + this.getActiveClass(Paths.getDividendFundPage(''))}>
+                            Dividend Fund
+                        </a>
                     </Link>
                     <a>Contact</a>
                 </nav>

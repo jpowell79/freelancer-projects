@@ -12,7 +12,7 @@ import {
 class DividendFund extends Component {
     render(){
         return(
-            <Page fetchMarketData={false} addTimer={false} contentClass="wrapper">
+            <Page contentClass="wrapper">
                 <h2 className={titledSegmentHeader()}>
                     Dividend Fund
                 </h2>

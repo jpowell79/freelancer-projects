@@ -144,9 +144,7 @@ class HistoricData extends Component {
     
     render(){
         return (
-            <Page fetchMarketData={false}
-                  addTimer={false}
-                  contentClass="historic-data wrapper">
+            <Page contentClass="historic-data wrapper">
                 {(this.state.isLoadingHistoricData)
                     ? (
                         <Loader/>

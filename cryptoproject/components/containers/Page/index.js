@@ -16,12 +16,9 @@ class Page extends Component {
         head: null,
         header: null,
         footer: null,
-        contentClass: ''
-    };
-
-    static propTypes = {
-        addTimer: PropTypes.bool.isRequired,
-        fetchMarketData: PropTypes.bool.isRequired
+        contentClass: '',
+        addTimer: false,
+        fetchMarketData: false
     };
 
     constructor(props){

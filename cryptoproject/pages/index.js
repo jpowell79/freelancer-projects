@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Page from '../components/containers/Page';
-import {connect} from 'react-redux';
 import CoinMarketTable from '../components/tables/CoinMarketTable';
 import UserInfoTable from '../components/tables/UserInfoTable';
 import TradingInfoTable from '../components/tables/TradingInfoTable';
@@ -38,4 +37,4 @@ class Index extends Component {
     }
 }
 
-export default connect()(Index);
+export default Index;

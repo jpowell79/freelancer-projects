@@ -65,9 +65,8 @@ class Faq extends Component {
             <Accordion styled>
                 {FAQ.map((faq, i) => {
                     return (
-                        <div>
+                        <div key={i}>
                             <Accordion.Title
-                                key={i}
                                 active={activeIndex === i}
                                 index={i}
                                 onClick={this.handleClick}>

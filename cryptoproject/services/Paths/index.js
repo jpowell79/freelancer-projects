@@ -27,6 +27,10 @@ class Paths {
         return `${root}/DividendFund`;
     };
 
+    static getSmartContractsPage(root = '../..'){
+        return `${root}/SmartContracts`;
+    }
+
     static redirect = (res, url) => {
         if(res){
             res.writeHead(302, {
