@@ -1,3 +1,4 @@
+import React, {Component} from 'react';
 import App from 'next/app'
 import {initStore} from '../redux/store'
 
@@ -16,7 +17,7 @@ function getOrCreateStore(initialState) {
 }
 
 export default (App) => {
-    return class Redux extends React.Component {
+    return class Redux extends Component {
         static async getInitialProps (appContext) {
             const reduxStore = getOrCreateStore();
             appContext.ctx.reduxStore = reduxStore;

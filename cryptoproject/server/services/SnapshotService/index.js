@@ -5,7 +5,7 @@ const axiosGet = require('axios').get;
 const getFinishPriceRetrievalTime = require('../contract').getFinishPriceRetrievalTime;
 const fetchAllCryptoContracts = require('../contract').fetchAllCryptoContracts;
 const TimeWatcher = require('../TimeWatcher/');
-const CoinMarketCapApi = require('../../../components/CoinMarket/CoinMarketCapApi');
+const CoinMarketCapApi = require('../../../services/CoinMarketCapApi/');
 const createHistoricData = require('../databaseHelpers/HistoricDataHelper').create;
 
 function SnapshotService(){

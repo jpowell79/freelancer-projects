@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Paths from '../utils/Paths';
+import Paths from '../../services/Paths/';
 import Link from 'next/link';
 import {withRouter} from 'next/router';
 import {MobileMenuIcon} from "../icons";

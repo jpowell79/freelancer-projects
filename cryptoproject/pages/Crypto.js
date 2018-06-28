@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import Page from '../components/Page'
-import CryptoContent from '../components/crypto/CryptoContent';
-import CryptoSidebar from '../components/crypto/CryptoSidebar';
+import Page from '../components/containers/Page'
+import CryptoContent from '../components/containers/CryptoContent';
+import CryptoSidebar from '../components/containers/CryptoSidebar';
 import {
     updateCrypto,
     isLoadingCrypto
@@ -10,9 +10,9 @@ import {
 import {Loader} from "../components/icons";
 import {fetchCryptoContract} from "../server/services/contract";
 import {CONTRACT_ADDRESSES} from "../site-settings";
-import AlertOptionPane from "../components/Alert/AlertOptionPane";
+import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import {withRouter} from 'next/router';
-import Paths from '../components/utils/Paths';
+import Paths from '../services/Paths/';
 
 class Crypto extends Component {
     static defaultProps = {

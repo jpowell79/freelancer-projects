@@ -1,4 +1,4 @@
-import CoinMarketCapAPI from '../../../components/CoinMarket/CoinMarketCapApi';
+import CoinMarketCapAPI from '../../../services/CoinMarketCapApi/';
 
 describe('parseOptions test', () => {
     it('Returns an empty string without options', () => {

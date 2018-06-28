@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Page from '../components/Page';
-import HistoricDataTable from '../components/HistoricDataTable';
+import Page from '../components/containers/Page';
+import HistoricDataTable from '../components/tables/HistoricDataTable';
 
 class HistoricData extends Component {
     render(){

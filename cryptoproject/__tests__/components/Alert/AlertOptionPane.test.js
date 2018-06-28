@@ -1,5 +1,5 @@
 import React from 'react';
-import AlertOptionPane from '../../../components/Alert/AlertOptionPane';
+import AlertOptionPane from '../../../services/Alert/AlertOptionPane';
 import $ from 'jquery';
 
 describe('Rendering tests', () => {

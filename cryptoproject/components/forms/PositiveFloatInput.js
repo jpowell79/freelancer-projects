@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {filterObject} from "../utils";
-import {joinClassNames} from "../utils";
+import {filterObject} from "../../services/utils";
+import {joinClassNames} from "../../services/utils";
 
 class PositiveFloatInput extends Component {
     static defaultProps = {

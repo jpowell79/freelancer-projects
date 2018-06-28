@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import Page from '../components/Page';
-import DividendFundTable from '../components/DividendFundTable';
-import UserInfoTable from '../components/UserInfoTable';
+import Page from '../components/containers/Page';
+import DividendFundTable from '../components/tables/DividendFundTable';
+import UserInfoTable from '../components/tables/UserInfoTable';
 import DividendInfo from '../components/DividendInfo';
 import {
     titledSegmentContent,
     titledSegmentHeader
-} from "../components/utils/cssUtils";
+} from "../services/cssUtils/";
 
 class DividendFund extends Component {
     render(){

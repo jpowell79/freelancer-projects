@@ -1,6 +1,6 @@
 import {constants} from './constants';
 import {combineReducers} from 'redux';
-import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
+import CryptoTrade from "../components/crypto/CryptoTrade";
 
 const DEFAULT_ACCOUNT = {
     isLoading: true,
@@ -109,15 +109,6 @@ export const account = (state = {}, action) => {
 export const tradeTokens = (state = null, action) => {
     switch(action.type){
     case constants.UPDATE_TRADE_TOKENS:
-        return action.payload;
-    default:
-        return state;
-    }
-};
-
-export const isLoadingTradeTokens = (state = true, action) => {
-    switch(action.type){
-    case constants.IS_LOADING_TRADE_TOKENS:
         return action.payload;
     default:
         return state;

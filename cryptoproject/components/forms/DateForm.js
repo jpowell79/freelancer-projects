@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {twoColumnGrid} from "../utils/cssUtils";
+import {twoColumnGrid} from "../../services/cssUtils/";
 
 class DateForm extends Component {
     static propTypes = {

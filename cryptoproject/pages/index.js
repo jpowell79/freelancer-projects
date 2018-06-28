@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
-import Page from '../components/Page';
+import Page from '../components/containers/Page';
 import {connect} from 'react-redux';
-import CoinMarketTable from '../components/CoinMarket/CoinMarketTable';
-import UserInfoTable from '../components/UserInfoTable';
-import TradingInfoTable from '../components/TradingInfoTable';
+import CoinMarketTable from '../components/tables/CoinMarketTable';
+import UserInfoTable from '../components/tables/UserInfoTable';
+import TradingInfoTable from '../components/tables/TradingInfoTable';
 import {
     titledSegmentHeader,
-    titledSegmentContent
-} from "../components/utils/cssUtils";
+    titledSegmentContent,
+    twoColumnGrid
+} from "../services/cssUtils";
 
 class Index extends Component {
     render () {
@@ -31,7 +32,6 @@ class Index extends Component {
                         </div>
                     </div>
                 </div>
-                <UserInfo className={'divider-2'}/>
                 <CoinMarketTable/>
             </Page>
         )

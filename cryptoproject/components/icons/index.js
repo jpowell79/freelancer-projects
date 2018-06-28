@@ -1,4 +1,4 @@
-import {joinClassNames} from "../utils";
+import {joinClassNames} from "../../services/utils";
 
 export const Loader = ({className = "", ...props}) =>
     <div {...props} className={joinClassNames('loader', className)}/>;

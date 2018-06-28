@@ -1,5 +1,5 @@
 import React from 'react';
-import {joinClassNames} from "../utils";
+import {joinClassNames} from "../../services/utils";
 import {
     Telegram,
     Twitter,

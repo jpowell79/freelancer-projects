@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import FeedParser from "./FeedParser";
+import FeedParser from "../../services/FeedParser/";
 import PropTypes from "prop-types";
-import {clone, flatten, reduce, joinClassNames} from "../utils";
+import {clone, flatten, reduce, joinClassNames} from "../../services/utils";
 import {updateFeeds, isLoadingFeeds} from "../../redux/actions";
 import {connect} from 'react-redux';
 import {LoaderSmall} from '../icons';
-import Strings from '../utils/Strings';
+import Strings from '../../services/Strings/';
 
 class Feed extends Component {
     static defaultProps = {

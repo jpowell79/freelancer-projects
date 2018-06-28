@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import Alert from '../../../components/Alert/Alert';
-import AlertContent from '../../../components/Alert/AlertContent';
+import Alert from '../../../services/Alert/Alert';
+import AlertContent from '../../../services/Alert/AlertContent';
 import $ from 'jquery';
 
 class MockComponent extends Component {
