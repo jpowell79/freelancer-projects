@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import Page from '../components/containers/Page';
-import DividendFundTable from '../components/tables/DividendFundTable';
+import DividendFundTable from '../components/dividend/DividendFundTable';
+import DividendInfo from '../components/dividend/DividendInfo';
+import Faq from '../components/dividend/Faq';
 import UserInfoTable from '../components/tables/UserInfoTable';
-import DividendInfo from '../components/DividendInfo';
 import {
     titledSegmentContent,
     titledSegmentHeader
@@ -34,6 +35,14 @@ class DividendFund extends Component {
                         </h2>
                         <div className={titledSegmentContent()}>
                             <DividendInfo/>
+                        </div>
+                        <h2 className={titledSegmentHeader()}>
+                            Faq:
+                        </h2>
+                        <div className={titledSegmentContent()}>
+                            <div className="wrapper-4">
+                                <Faq/>
+                            </div>
                         </div>
                     </div>
                 </div>
