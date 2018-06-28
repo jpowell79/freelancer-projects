@@ -25,16 +25,16 @@ class DividendFund extends Component {
                             <DividendFundTable/>
                         </div>
                         <h2 className={titledSegmentHeader()}>
-                            Trader Info:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <UserInfoTable/>
-                        </div>
-                        <h2 className={titledSegmentHeader()}>
                             Dividend Info:
                         </h2>
                         <div className={titledSegmentContent()}>
                             <DividendInfo/>
+                        </div>
+                        <h2 className={titledSegmentHeader()}>
+                            Trader Info:
+                        </h2>
+                        <div className={titledSegmentContent()}>
+                            <UserInfoTable/>
                         </div>
                         <h2 className={titledSegmentHeader()}>
                             Faq:

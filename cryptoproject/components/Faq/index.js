@@ -22,11 +22,11 @@ const FAQ = [
         answer: (
             <div>
                 <span>Optio aspernatur velit consectetur commodi aut et et.</span>
-                <ul>
-                    <li>1. Aspernatur</li>
-                    <li>2. Dignissimos</li>
-                    <li>3. Optio</li>
-                </ul>
+                <ol>
+                    <li>Aspernatur</li>
+                    <li>Dignissimos</li>
+                    <li>Optio</li>
+                </ol>
             </div>
         )
     },
