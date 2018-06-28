@@ -44,6 +44,9 @@ class MainMenu extends Component {
                     <Link href={Paths.getHistoricDataPage()}>
                         <a className={"item" + this.getActiveClass("/HistoricData")}>Historic Data</a>
                     </Link>
+                    <Link href={Paths.getDividendFundPage()}>
+                        <a className={"item" + this.getActiveClass("/DividendFund")}>Dividend Fund</a>
+                    </Link>
                     <a>Contact</a>
                 </nav>
                 <div id="main-menu-toggler">

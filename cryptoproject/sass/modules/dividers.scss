@@ -6,3 +6,10 @@
         @include divideChildren($divider);
     }
 }
+
+@each $name, $divider in $dividers {
+    .#{$name}{
+        margin-top: $divider;
+        margin-bottom: $divider;
+    }
+}

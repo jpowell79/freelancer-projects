@@ -1,3 +1,5 @@
+import Strings from "../utils/Strings";
+
 export const cryptoNames = {
     bitcoin: "bitcoin",
     ethereum: "ethereum",
@@ -133,4 +135,78 @@ export const getTwitterFeeds = (cryptoName) => {
         console.error(`Twitter feeds for ${name} could not be found`);
         return [];
     }
+};
+
+export const calcTotalPercentChange = (startPrice, currentPrice) => {
+    if(startPrice === 0){
+        return "Unavailable";
+    }
+
+    let change = currentPrice-startPrice;
+    return ((change/startPrice)*100).toFixed(2);
+};
+
+export const mergeWithMarketData = (cryptoArray, marketData) => {
+    let cryptoNames = cryptoArray.map(data => data.name);
+
+    return marketData.filter(data =>
+        Strings.includesIgnoreCase(cryptoNames, data.name)
+    ).map(data => {
+        let correspondingCrypto = cryptoArray.filter(cryptoData =>
+            cryptoData.name.toLowerCase() === data.name.toLowerCase()
+        )[0];
+
+        return Object.assign({}, data, correspondingCrypto);
+    });
+};
+
+export const getHighestPercentTotal = (cryptoMarketData) => {
+    return cryptoMarketData.map(data => {
+        let value = calcTotalPercentChange(
+            data.startPrice, data.quotes.USD.price
+        );
+
+        return {
+            name: data.name,
+            value: parseFloat(value)
+        }
+    }).reduce((accumulator, current) => {
+        if(accumulator.value === undefined){
+            return current;
+        }
+
+        if(isNaN(current.value)){
+            return accumulator;
+        }
+
+        if(accumulator.value < current.value){
+            return current;
+        }
+
+        return accumulator;
+    });
+};
+
+export const getMostPopularCrypto = (cryptoArray) => {
+    return cryptoArray.reduce((accumulator, current) => {
+        if(accumulator.nrOfTrades < current.nrOfTrades){
+            return current;
+        }
+
+        return accumulator;
+    });
+};
+
+export const hasFinishPrice = ({
+    standardTimeCloses,
+    extendedTimeCloses,
+    finishPriceRetrievalTime
+}) => {
+    let standardTimeIsExpired = standardTimeCloses < Date.now();
+    let extendedTimeIsExpired = extendedTimeCloses < Date.now();
+    let finishPriceRetrievalTimeIsExpired = finishPriceRetrievalTime < Date.now();
+
+    return standardTimeIsExpired &&
+        extendedTimeIsExpired &&
+        finishPriceRetrievalTimeIsExpired;
 };

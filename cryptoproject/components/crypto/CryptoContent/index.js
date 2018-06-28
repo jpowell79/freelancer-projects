@@ -83,9 +83,9 @@ class CryptoContent extends Component {
             let address = '';
             this.props.dispatch(startTransaction());
 
-            web3.getAccountAddress().then(accountAddress => {
+            web3.fetchAccountAddress().then(accountAddress => {
                 address = accountAddress;
-                return web3.getBalance(accountAddress);
+                return web3.fetchEthBalance(accountAddress);
             }).then(balance => {
                 if(balance < tradeValue){
                     this.props.dispatch(updateTransactionStatus(notEnoughEth));

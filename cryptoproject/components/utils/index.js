@@ -17,15 +17,6 @@ export const joinClassNames = (className1, className2 = '') => {
     return (className2 === '') ? className1 : [className1, className2].join(' ');
 };
 
-export const calcTotalPercentChange = (startPrice, currentPrice) => {
-    if(startPrice === 0){
-        return "Unavailable";
-    }
-
-    let change = currentPrice-startPrice;
-    return ((change/startPrice)*100).toFixed(2);
-};
-
 export const clone = (object) => {
     return JSON.parse(JSON.stringify(object));
 };

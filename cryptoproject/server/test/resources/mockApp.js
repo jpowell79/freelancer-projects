@@ -1,6 +1,3 @@
-const next = require('next');
-const siteSettings = require('../../../site-settings');
-const Settings = require('../../config/Settings');
 const configMongo = require('../../config/configMongo');
 const configServer = require('../../config/configServer');
 

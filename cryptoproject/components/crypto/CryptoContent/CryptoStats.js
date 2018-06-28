@@ -1,7 +1,10 @@
 import React from 'react';
 import Strings from "../../utils/Strings";
-import {calcTotalPercentChange} from "../../utils";
 import {definitionTable} from "../../utils/cssUtils";
+import {
+    calcTotalPercentChange,
+    hasFinishPrice
+} from "../cryptoUtils";
 
 export const CryptoStats = ({
     rank,
@@ -11,7 +14,11 @@ export const CryptoStats = ({
     price,
     nrOfTrades,
     percent_change_24h,
-    pot
+    pot,
+    finishPriceRetrievalTime,
+    standardTimeCloses,
+    extendedTimeCloses,
+    finishPrice
 }) => {
     return (
         <section id="crypto-stats">
@@ -31,7 +38,7 @@ export const CryptoStats = ({
                     </tr>
                     <tr>
                         <td className="four wide column">Volume:</td>
-                        <td>{volume_24h}</td>
+                        <td>{Strings.toUSD(volume_24h)}</td>
                     </tr>
                     <tr>
                         <td className="four wide column">Current Price:</td>
@@ -52,6 +59,14 @@ export const CryptoStats = ({
                     <tr>
                         <td className="four wide column">Pot Size:</td>
                         <td>{pot}</td>
+                    </tr>
+                    <tr>
+                        <td className="four wide column">Finish Price:</td>
+                        <td>{(hasFinishPrice({
+                                standardTimeCloses,
+                                extendedTimeCloses,
+                                finishPriceRetrievalTime
+                            }) ? finishPrice : "Awaiting Result")}</td>
                     </tr>
                 </tbody>
             </table>

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import {twoColumnGrid} from "../utils/cssUtils";
 
 class DateForm extends Component {
     static propTypes = {
@@ -17,7 +18,7 @@ class DateForm extends Component {
     render(){
         return (
             <div className="date-form text-center">
-                <div className="ui padded stackable centered grid two-column">
+                <div className={twoColumnGrid()}>
                     <div className="eight wide column text-center">
                         <h4>Start Date:</h4>
                         <DatePicker

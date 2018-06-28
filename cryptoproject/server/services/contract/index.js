@@ -15,6 +15,9 @@ const getFinishPriceRetrievalTime = (index) => {
     return getContract(index).methods
         .finishPriceRetrievalTime()
         .call()
+        .then(retrevalTime => {
+            return parseInt(retrevalTime, 10) * 1000;
+        });
 };
 
 const getContract = (index) => {
@@ -33,7 +36,9 @@ const fetchCryptoContract = (index) => {
         methods.numberOfTrades().call(),
         methods.standardTimeCloses().call(),
         methods.extendedTimeCloses().call(),
-        methods.potBalance().call()
+        methods.potBalance().call(),
+        methods.finishPriceRetrievalTime().call(),
+        methods.showCryptoFinishPrice().call()
     ]).then(responses => {
         return {
             index: index,
@@ -45,7 +50,9 @@ const fetchCryptoContract = (index) => {
             nrOfTrades: parseInt(responses[5], 10),
             standardTimeCloses: parseInt(responses[6], 10)*1000,
             extendedTimeCloses: parseInt(responses[7], 10)*1000,
-            pot: (responses[8]/1000000000000000000).toFixed(2)
+            pot: (responses[8]/1000000000000000000).toFixed(2),
+            finishPriceRetrievalTime: parseInt(responses[9], 10) * 1000,
+            finishPrice: responses[10]
         };
     });
 };

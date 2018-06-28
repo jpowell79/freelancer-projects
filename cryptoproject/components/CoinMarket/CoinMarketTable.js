@@ -5,18 +5,18 @@ import $ from 'jquery';
 import TableSorter from '../TableSorter';
 import Strings from "../utils/Strings";
 import {hideOnMobile, sortableTable} from "../utils/cssUtils";
-import {calcTotalPercentChange} from "../utils";
 import Paths from "../utils/Paths";
-import {fetchAllCryptoContracts} from "../../server/services/contract";
-import {updateAllCrypto, isLoadingCrypto} from "../../redux/actions";
-import AlertOptionPane from "../Alert/AlertOptionPane";
 import {MAX_NR_OF_TRADES} from "../../site-settings";
 import {CoinMarketFlashCell} from "./CoinMarketFlashCell";
+import {
+    mergeWithMarketData,
+    calcTotalPercentChange
+} from "../crypto/cryptoUtils";
+import Dispatcher from '../Dispatcher';
 
 class CoinMarketTable extends Component {
     static defaultProps = {
-        marketData: [],
-        crypto: []
+        cryptoMarketData: []
     };
 
     constructor(props){
@@ -26,23 +26,18 @@ class CoinMarketTable extends Component {
             placeholderIcons: []
         };
 
-        this.prevProps = {marketData: []};
+        this.prevProps = {cryptoMarketData: []};
         this.renderMarketData = this.renderMarketData.bind(this);
     }
 
     componentDidMount(){
         this.tablesorter = new TableSorter($("#coin-market-table"));
-        this.props.dispatch(isLoadingCrypto(true));
 
-        fetchAllCryptoContracts().then((responses) => {
-            this.props.dispatch(updateAllCrypto(responses));
-            this.props.dispatch(isLoadingCrypto(false));
-            this.tablesorter.sortAtName("Rank");
-        }).catch(err => {
-            console.log(err);
-            AlertOptionPane.showErrorAlert({message: err.toString()});
-            this.props.dispatch(isLoadingCrypto(false));
-        });
+        new Dispatcher(this.props.dispatch)
+            .updateAllCrypto()
+            .then(() => {
+                this.tablesorter.sortAtName("Rank");
+            });
     }
 
     componentWillUnmount(){
@@ -65,28 +60,24 @@ class CoinMarketTable extends Component {
     }
 
     renderMarketData(){
-        return this.props.marketData.map((data, i) => {
-            let cryptoFilter = this.props.crypto.filter(cryptoData =>
-                cryptoData.name.toLowerCase() === data.name.toLowerCase()
-            );
-            if(cryptoFilter.length === 0) return false;
-            let crypto = cryptoFilter[0];
-            let usdQuotes = data.quotes.USD;
+        return this.props.cryptoMarketData.map((crypto, i) => {
+            let usdQuotes = crypto.quotes.USD;
             let totalPriceChange = calcTotalPercentChange(
                 parseFloat(crypto.startPrice),
                 parseFloat(usdQuotes.price)
             );
 
-            let prevData = this.prevProps.marketData.filter(
-                prevData => prevData.name === data.name
+            let prevData = this.prevProps.cryptoMarketData.filter(
+                prevData => prevData.name === crypto.name
             )[0];
-            prevData = (prevData === undefined) ? data : prevData;
+            prevData = (prevData === undefined) ? crypto : prevData;
             let prevUsdQuotes = prevData.quotes.USD;
             let prevTotalPriceChange = calcTotalPercentChange(
                 parseFloat(crypto.startPrice),
                 parseFloat(prevUsdQuotes.price)
             );
-            if(i === this.props.marketData.length-1){
+
+            if(i === this.props.cryptoMarketData.length-1){
                 this.prevProps = this.props;
             }
 
@@ -109,7 +100,7 @@ class CoinMarketTable extends Component {
                     <td>{crypto.rank}</td>
                     <td>{crypto.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>
-                    <td className={hideOnMobile()}>{usdQuotes.volume_24h}</td>
+                    <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.volume_24h)}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(crypto.startPrice)}</td>
                     <td className={hideOnMobile()}>
                         <CoinMarketFlashCell
@@ -182,7 +173,7 @@ class CoinMarketTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                {(this.props.marketData.length === 0 || this.props.isLoadingCrypto)
+                {(this.props.cryptoMarketData.length === 0 || this.props.isLoadingCrypto)
                     ? (
                         <tr>
                             <td colSpan={12}>
@@ -205,8 +196,7 @@ const mapStateToProps = (state) => {
     } = state;
 
     return {
-        crypto,
-        marketData,
+        cryptoMarketData: mergeWithMarketData(crypto, marketData),
         isLoadingCrypto
     };
 };

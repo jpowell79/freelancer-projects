@@ -38,7 +38,7 @@ function SnapshotService(){
             });
     };
 
-    let onExtendedTimeExpired = async (expiredContract) => {
+    let onExtendedTimeExpired = (expiredContract) => {
         let contract = filterExpiredContract(expiredContract);
 
         if(contract === undefined) return;

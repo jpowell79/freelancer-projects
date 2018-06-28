@@ -42,13 +42,21 @@ export const endTransaction = (transaction) => {
     }
 };
 
-export const updateAccount = ({isLoading = true, tradeTokens = null, address = null}) => {
+export const updateAccount = ({
+    isLoading = true,
+    tradeTokens = null,
+    address = null,
+    balance = null,
+    network = null
+}) => {
     return {
         type: constants.UPDATE_ACCOUNT,
         payload: {
             isLoading: isLoading,
             address: address,
-            tradeTokens: tradeTokens
+            tradeTokens: tradeTokens,
+            balance: balance,
+            network: network
         }
     }
 };

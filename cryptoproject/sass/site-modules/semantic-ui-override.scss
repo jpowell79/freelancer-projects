@@ -83,12 +83,9 @@
 
 @media (max-width: $mediaMedium){
     .ui {
-        &.grid.unstack-md>.column {
-            width: 100%!important;
-        }
-
-        &.grid.two-column {
+        &.grid.two-column.unstack-md {
             >.column {
+                width: 100%!important;
                 padding-left: 0;
                 padding-right: 0;
             }

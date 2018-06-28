@@ -5,7 +5,9 @@ import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 const DEFAULT_ACCOUNT = {
     isLoading: true,
     address: null,
-    tradeTokens: null
+    tradeTokens: null,
+    balance: null,
+    network: null
 };
 
 export const initialState = {
@@ -90,7 +92,9 @@ export const account = (state = {}, action) => {
             return {
                 isLoading: action.payload.isLoading,
                 tradeTokens: action.payload.tradeTokens,
-                address: DEFAULT_ACCOUNT.address
+                address: DEFAULT_ACCOUNT.address,
+                balance: action.payload.balance,
+                network: action.payload.network
             }
         }
 

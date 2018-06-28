@@ -7,10 +7,11 @@ import {LoaderSmall} from "../icons";
 import {
     hideOnMobile,
     sortableTable,
+    twoColumnGrid,
     titledSegmentHeader,
     titledSegmentContent
 } from "../utils/cssUtils";
-import {calcTotalPercentChange} from "../utils";
+import {calcTotalPercentChange} from "../crypto/cryptoUtils";
 import CsvParser from '../../server/services/CsvParser';
 import moment from 'moment';
 import Strings from '../utils/Strings';
@@ -171,7 +172,7 @@ class HistoricDataTable extends Component {
                 </table>
                 {(this.state.historicData.length > 0)
                     ? (
-                        <div className="ui padded stackable centered grid unstack-md two-column">
+                        <div className={twoColumnGrid('unstack-md')}>
                             <div className="eight wide column">
                                 <h2 className={titledSegmentHeader()}>
                                     Summary

@@ -1,63 +1,21 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {
-    resetAccount,
-    updateAccount
-} from "../../../redux/actions";
+import {resetAccount} from "../../../redux/actions";
 import {LoaderSmall} from "../../icons";
 import {
     definitionTable,
     titledSegmentHeader,
     titledSegmentContent
 } from "../../utils/cssUtils";
-import AlertOptionPane from "../../Alert/AlertOptionPane";
-import Settings from '../../../site-settings';
-import web3 from "../../../server/services/Web3";
+import Dispatcher from '../../Dispatcher';
 
 class CryptoBalance extends Component {
-    constructor(props){
-        super(props);
-
-        this.fetchTradeTokens = this.fetchTradeTokens.bind(this);
-    }
-
-    fetchTradeTokens(){
-        let address = '';
-        this.props.dispatch(updateAccount({isLoading: true}));
-
-        web3.getAccountAddress().then(accountAddress => {
-            if(accountAddress === undefined) return false;
-
-            address = accountAddress;
-
-            return web3.eth.call({
-                to: Settings.TOKEN_CONTRACT,
-                data: `0x70a08231000000000000000000000000${accountAddress.substring(2)}`
-            });
-        }).then(result => {
-            if(address !== ''){
-                let bn = web3.utils.toBN(result).toString();
-                let tokens = parseFloat(web3.utils.fromWei(bn, 'ether'));
-                this.props.dispatch(updateAccount({
-                    isLoading: false,
-                    tradeTokens: tokens,
-                    address: address
-                }));
-            } else {
-                this.props.dispatch(updateAccount({isLoading: false}));
-            }
-        }).catch(err => {
-            AlertOptionPane.showErrorAlert({message: err.toString()});
-            this.props.dispatch(updateAccount({isLoading: false}));
-        });
-    }
-
     componentWillUnmount(){
         this.props.dispatch(resetAccount());
     }
 
     componentDidMount(){
-        this.fetchTradeTokens();
+        new Dispatcher(this.props.dispatch).updateAccount();
     }
 
     render(){

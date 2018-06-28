@@ -59,6 +59,7 @@ case 'help':
     break;
 default:
     console.error(`Error: Unexpected argument ${process.argv[2]}`);
+    printHelp();
     process.exit(1);
     break;
 }

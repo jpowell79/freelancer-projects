@@ -23,6 +23,10 @@ class Paths {
         return `${root}/HistoricData`;
     };
 
+    static getDividendFundPage(root = '../..'){
+        return `${root}/DividendFund`;
+    };
+
     static redirect = (res, url) => {
         if(res){
             res.writeHead(302, {
