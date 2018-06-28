@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Page from '../components/containers/Page';
 import DividendFundTable from '../components/dividend/DividendFundTable';
 import DividendInfo from '../components/dividend/DividendInfo';
-import Faq from '../components/dividend/Faq';
+import Faq from '../components/Faq';
 import UserInfoTable from '../components/tables/UserInfoTable';
 import {
     titledSegmentContent,

@@ -113,33 +113,3 @@ module.exports.FEED_URLS = [
     'https://coinsutra.com/blog/feed/',
     'https://cryptoclarified.com/feed/'
 ];
-
-/*----------------------------------------
- * FAQ
- *----------------------------------------*/
-module.exports.FAQ = [
-    {
-        question: 'Delectus modi ratione omnis odit harum et sit?',
-        answer: 'Commodi quibusdam voluptas quidem aut corrupti aspernatur debitis ut ratione.'
-    },
-    {
-        question: 'Quae eius voluptatibus repellendus totam?',
-        answer:
-            'Vero minima quis itaque praesentium sed assumenda. Voluptatem sed enim. ' +
-            'Eos et omnis quaerat aliquid eum commodi dicta ipsum quam. Reprehenderit ' +
-            'esse enim ea et quia quidem est autem. Vero dignissimos quo nostrum qui ' +
-            'laboriosam quisquam dolores sit.'
-    },
-    {
-        question: 'Repellat a dolores unde repudiandae odio vel autem qui laboriosam?',
-        answer:
-            'Optio aspernatur velit consectetur commodi aut et et. Optio deleniti ' +
-            'similique architecto nemo dolor non. Est quis quasi adipisci soluta id.'
-    },
-    {
-        question: 'Sunt laborum quasi esse corporis est?',
-        answer:
-            'Eveniet mollitia omnis sapiente minima. Corrupti dignissimos provident ' +
-            'molestiae accusantium ut expedita quod cupiditate maxime.'
-    },
-];
