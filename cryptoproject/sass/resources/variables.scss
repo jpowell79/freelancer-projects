@@ -115,7 +115,7 @@ $divider1: 2em;
 $divider2: 1.5em;
 $divider3: 1em;
 $divider4: 0.5em;
-$divider5: 75px;
+$divider5: 0.25em;
 
 $dividers: (
     (divider-1 $divider1)
@@ -124,6 +124,17 @@ $dividers: (
     (divider-4 $divider4)
     (divider-5 $divider5)
 );
+
+$dividerList: (
+    $divider1
+    $divider2
+    $divider3
+    $divider4
+    $divider5
+);
+
+//4.4 Site Specific
+$menuHeight: 75px;
 
 //----------------------------------------------
 // 5.0 Media Queries

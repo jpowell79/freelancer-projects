@@ -6,6 +6,10 @@ import {LoaderSmall} from "../../icons/index";
 import Strings from '../../../services/Strings/index';
 
 class DividendFundTable extends Component {
+    static defaultProps = {
+        tableClass: definitionTable()
+    };
+
     state = {};
 
     componentDidMount(){
@@ -20,7 +24,7 @@ class DividendFundTable extends Component {
 
     render(){
         return (
-            <table className={definitionTable()}>
+            <table className={this.props.tableClass}>
                 {(this.state.dividend === undefined)
                     ? (
                         <tbody>

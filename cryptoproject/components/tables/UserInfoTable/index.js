@@ -5,6 +5,10 @@ import {LoaderSmall} from "../../icons/index";
 import Dispatcher from '../../../services/Dispatcher/index';
 
 class UserInfoTable extends Component {
+    static defaultProps = {
+        tableClass: definitionTable()
+    };
+
     componentDidMount(){
         new Dispatcher(this.props.dispatch).updateAccount();
     }
@@ -13,7 +17,7 @@ class UserInfoTable extends Component {
         let {account} = this.props;
 
         return (
-            <table className={definitionTable()}>
+            <table className={this.props.tableClass}>
                 {(account.isLoading)
                     ? (
                         <tbody>

@@ -10,6 +10,10 @@ import {
 import moment from 'moment';
 
 class TradingInfoTable extends Component {
+    static defaultProps = {
+        tableClass: definitionTable()
+    };
+
     render(){
         let {
             isLoadingCrypto,
@@ -17,7 +21,7 @@ class TradingInfoTable extends Component {
         } = this.props;
 
         return (
-            <table className={definitionTable()}>
+            <table className={this.props.tableClass}>
                 {(isLoadingCrypto)
                     ? (
                         <tbody>

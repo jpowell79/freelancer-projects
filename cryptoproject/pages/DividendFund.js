@@ -17,31 +17,39 @@ class DividendFund extends Component {
                     Dividend Fund
                 </h2>
                 <div className={titledSegmentContent()}>
-                    <div className="wrapper-2">
-                        <h2 className={titledSegmentHeader()}>
-                            Your dividend:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <DividendFundTable/>
+                    <div className="ui two column stackable grid">
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Your dividend:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <DividendFundTable tableClass="stacked-table"/>
+                            </div>
                         </div>
-                        <h2 className={titledSegmentHeader()}>
-                            Dividend Info:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <DividendInfo/>
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Dividend Info:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <DividendInfo/>
+                            </div>
                         </div>
-                        <h2 className={titledSegmentHeader()}>
-                            Trader Info:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <UserInfoTable/>
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Trader Info:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <UserInfoTable tableClass="stacked-table"/>
+                            </div>
                         </div>
-                        <h2 className={titledSegmentHeader()}>
-                            Faq:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <div className="wrapper-4">
-                                <Faq/>
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Faq:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <div className="wrapper-4">
+                                    <Faq/>
+                                </div>
                             </div>
                         </div>
                     </div>

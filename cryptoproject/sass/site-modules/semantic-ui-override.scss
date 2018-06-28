@@ -79,20 +79,16 @@
             word-wrap: break-word;
         }
     }
-
-    a:hover {
-        color: darken($primary, 10%)!important;
-    }
 }
 
 @media (max-width: $mediaMedium){
     .ui {
         &.grid.unstack-md {
-            >.column {
+            > .column {
                 width: 100%!important;
             }
 
-            &.two-column >.column {
+            &.two-column > .column {
                 padding-left: 0;
                 padding-right: 0;
             }

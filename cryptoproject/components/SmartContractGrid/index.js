@@ -3,6 +3,7 @@ import {Accordion, Icon} from 'semantic-ui-react';
 import {CONTRACT_ADDRESSES} from '../../site-settings';
 
 const TEMP_DIVIDEND = '0x0baebf4d24adb328a9a5f62c09a0ba108761dede';
+const TEMP_PRICING = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
 
 class SmartContractGrid extends Component {
     constructor(props){
@@ -43,7 +44,9 @@ class SmartContractGrid extends Component {
             <div className="ui padded segment">
                 <h2 className="ui header">
                     {contractName}_contract
-                    <a className='sub header' href={`https://etherscan.io/address/${address}`}>{address}</a>
+                    <div className="sub header">
+                        <a href={`https://etherscan.io/address/${address}`}>{address}</a>
+                    </div>
                 </h2>
                 <Accordion styled>
                     <Accordion.Title
@@ -61,8 +64,8 @@ class SmartContractGrid extends Component {
                                     {contractName}_pricing:
                                 </td>
                                 <td>
-                                    <a href={`https://etherscan.io/address/${address}`}>
-                                        {address}
+                                    <a href={`https://etherscan.io/address/${TEMP_PRICING}`}>
+                                        {TEMP_PRICING}
                                     </a>
                                 </td>
                             </tr>

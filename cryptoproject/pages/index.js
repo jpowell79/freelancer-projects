@@ -13,21 +13,23 @@ class Index extends Component {
     render () {
         return (
             <Page fetchMarketData={true} addTimer={true}>
-                <div className={twoColumnGrid('unstack-md')}>
-                    <div className="eight wide column">
-                        <h2 className={titledSegmentHeader()}>
-                            Your account:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <UserInfoTable/>
+                <div className="wrapper divider-2">
+                    <div className="ui two column stackable grid">
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Your account:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <UserInfoTable tableClass="stacked-table"/>
+                            </div>
                         </div>
-                    </div>
-                    <div className="eight wide column">
-                        <h2 className={titledSegmentHeader()}>
-                            Trading info:
-                        </h2>
-                        <div className={titledSegmentContent()}>
-                            <TradingInfoTable/>
+                        <div className="column">
+                            <h2 className={titledSegmentHeader()}>
+                                Trading info:
+                            </h2>
+                            <div className={titledSegmentContent()}>
+                                <TradingInfoTable tableClass="stacked-table"/>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -12,7 +12,7 @@ $menuBackground: rgba(255, 255, 255, .95);
     position: fixed;
     top: 0;
     left: 0;
-    height: $divider5;
+    height: $menuHeight;
     width: 100%;
     background-color: $menuBackground;
     z-index: 900;
@@ -59,7 +59,7 @@ $menuBackground: rgba(255, 255, 255, .95);
     #main-menu {
         nav {
             position: absolute;
-            top: calc(#{$divider5} - 1px);
+            top: calc(#{$menuHeight} - 1px);
             left: 0;
             text-align: center;
             flex-direction: column;
