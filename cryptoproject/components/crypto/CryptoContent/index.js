@@ -8,10 +8,10 @@ import {
     startTransaction,
     updateCrypto
 } from "../../../redux/actions";
-import CryptoBalance from '../../crypto/CryptoBalance';
-import {CryptoStats} from "../../crypto/CryptoStats";
-import CryptoCountdown from '../../crypto/CryptoCountdown';
-import CryptoTrade from "../../crypto/CryptoTrade";
+import CryptoBalance from './CryptoBalance';
+import {CryptoStats} from "./CryptoStats";
+import CryptoCountdown from './CryptoCountdown';
+import CryptoTrade from "./CryptoTrade";
 import {MAX_NR_OF_TRADES} from "../../../site-settings";
 import {
     titledSegmentHeader,

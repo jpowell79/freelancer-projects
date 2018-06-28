@@ -1,6 +1,6 @@
 import {constants} from './constants';
 import {combineReducers} from 'redux';
-import CryptoTrade from "../components/crypto/CryptoTrade";
+import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
 
 const DEFAULT_ACCOUNT = {
     isLoading: true,

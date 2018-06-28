@@ -1,10 +1,10 @@
 import React from 'react';
-import Strings from "../../services/Strings/index";
-import {definitionTable} from "../../services/cssUtils/index";
+import Strings from "../../../services/Strings/index";
+import {definitionTable} from "../../../services/cssUtils/index";
 import {
     calcTotalPercentChange,
     hasFinishPrice
-} from "../../services/cryptoUtils/index";
+} from "../../../services/cryptoUtils/index";
 
 export const CryptoStats = ({
     rank,

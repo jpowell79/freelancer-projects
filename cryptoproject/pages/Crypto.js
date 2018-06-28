@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Page from '../components/containers/Page'
-import CryptoContent from '../components/containers/CryptoContent';
-import CryptoSidebar from '../components/containers/CryptoSidebar';
+import CryptoContent from '../components/crypto/CryptoContent';
+import CryptoSidebar from '../components/crypto/CryptoSidebar';
 import {
     updateCrypto,
     isLoadingCrypto

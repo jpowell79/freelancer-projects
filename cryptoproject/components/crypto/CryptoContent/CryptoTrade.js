@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import PositiveFloatInput from '../forms/PositiveFloatInput';
+import PositiveFloatInput from '../../forms/PositiveFloatInput';
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {MAX_ETH, LOWEST_ETH} from "../../site-settings";
-import {LoaderSmall} from "../icons/index";
+import {MAX_ETH, LOWEST_ETH} from "../../../site-settings";
+import {LoaderSmall} from "../../icons/index";
 
 class CryptoTrade extends Component {
     static propTypes = {

@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {resetAccount} from "../../redux/actions";
-import {LoaderSmall} from "../icons/index";
+import {resetAccount} from "../../../redux/actions";
+import {LoaderSmall} from "../../icons/index";
 import {
     definitionTable,
     titledSegmentHeader,
     titledSegmentContent
-} from "../../services/cssUtils/index";
-import Dispatcher from '../../services/Dispatcher/index';
+} from "../../../services/cssUtils/index";
+import Dispatcher from '../../../services/Dispatcher/index';
 
 class CryptoBalance extends Component {
     componentWillUnmount(){
