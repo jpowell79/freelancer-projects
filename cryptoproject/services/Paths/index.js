@@ -5,8 +5,8 @@ export const IMAGES = `${STATIC}/images`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto_icons`;
 
 class Paths {
-    static getImage(name, size, root = '../..'){
-        return `${root}/${IMAGES}/${name}_${size}.png`;
+    static getImage(name, size, type = 'png', root = '../..'){
+        return `${root}/${IMAGES}/${name}_${size}.${type}`;
     };
 
     static getCryptoIcon(name, size, root = '../..'){
@@ -29,6 +29,10 @@ class Paths {
 
     static getSmartContractsPage(root = '../..'){
         return `${root}/SmartContracts`;
+    }
+
+    static getEtherScanUrl(address){
+        return `https://etherscan.io/address/${address}`;
     }
 
     static redirect = (res, url) => {

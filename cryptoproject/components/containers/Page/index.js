@@ -6,7 +6,6 @@ import {connect} from 'react-redux';
 import {isLoadingMarketData, updateMarketData} from "../../../redux/actions";
 import CoinMarketCapApi from "../../../services/CoinMarketCapApi/index";
 import axios from 'axios';
-import PropTypes from "prop-types";
 import '../../../sass/style.scss';
 import {TABLE_REFRESH_RATE} from "../../../site-settings";
 import AlertOptionPane from "../../../services/Alert/AlertOptionPane";
@@ -73,7 +72,7 @@ class Page extends Component {
                     <title>CoinMarketTable</title>
                     <meta name="viewport" content="initial-scale=1.0, width=device-width" />
                     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
-                    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet"/>
+                    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet"/>
                     <link rel="stylesheet" href="/_next/static/style.css"/>
                     <script src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"/>
                     {this.props.head}

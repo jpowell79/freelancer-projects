@@ -1,6 +1,18 @@
 /*----------------------------------------
  * Global
  *----------------------------------------*/
+body {
+    background-color: $gray;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, span {
+    font-family: $primaryFont;
+}
+
+.ui {
+    font-family: $primaryFont!important;
+}
+
 img {
     max-width: 100%;
 }

@@ -1,12 +1,12 @@
 //----------------------------------------------
 // 1.0 Colors
 //----------------------------------------------
-$primary   : #2185d0;
-$secondary : #1b1c1d;
+$primary   : #7ab200;
+$secondary : #33363f;
 $white     : #ffffff;
 $black     : #000000;
-$gray      : rgba(0,0,0,.03);
-$darkGray  : #888;
+$gray      : #F9F9F9;
+$darkGray  : #CFCFD0;
 
 //1.1 Semantic UI Colors
 $uiBlue    : #2185d0;
@@ -48,6 +48,7 @@ $darkColors: (
 
 $lightColors: (
     (white $white)
+    (gray $gray)
     (light-gray $gray)
 );
 
@@ -57,7 +58,7 @@ $colors: join($darkColors, $lightColors);
 // 2.0 Fonts
 //----------------------------------------------
 $iconFont: Icons;
-$primaryFont: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+$primaryFont: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 $secondaryFont: 'Montserrat', sans-serif;
 
 //----------------------------------------------
@@ -76,6 +77,7 @@ $display1: 6rem;
 $display2: 5rem;
 $display3: 4rem;
 $display4: 3rem;
+$display5: 2.5rem;
 $h1: 2rem;
 $h2: 2rem;
 $h3: 1.5rem;
@@ -88,6 +90,7 @@ $headings: (
     display-2 : $display2,
     display-3 : $display3,
     display-4 : $display4,
+    display-5 : $display5,
     h1        : $h1,
     h2        : $h2,
     h3        : $h3,
@@ -135,6 +138,7 @@ $dividerList: (
 
 //4.4 Site Specific
 $menuHeight: 75px;
+$segmentPadding: 4em;
 
 //----------------------------------------------
 // 5.0 Media Queries

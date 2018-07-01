@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Page from '../components/containers/Page'
-import CryptoContent from '../components/crypto/CryptoContent';
-import CryptoSidebar from '../components/crypto/CryptoSidebar';
+import CryptoContent from '../components/pages/crypto/CryptoContent/index';
+import CryptoSidebar from '../components/pages/crypto/CryptoSidebar/index';
 import {
     updateCrypto,
     isLoadingCrypto
 } from "../redux/actions";
-import {Loader} from "../components/icons";
+import {fullWidthSegment} from "../services/cssUtils";
+import {Loader} from "../components/modules/icons";
 import {fetchCryptoContract} from "../server/services/contract";
 import {CONTRACT_ADDRESSES} from "../site-settings";
-import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import {withRouter} from 'next/router';
 import Paths from '../services/Paths/';
 
@@ -20,7 +20,7 @@ class Crypto extends Component {
         crypto: []
     };
 
-    static async getInitialProps ({res, query}) {
+    static async getInitialProps({res, query}) {
         if(query.index === undefined){
             Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
@@ -44,7 +44,7 @@ class Crypto extends Component {
                 })));
                 this.props.dispatch(isLoadingCrypto(false));
             }).catch(err => {
-                AlertOptionPane.showErrorAlert({message: err.toString()});
+                console.error(err);
                 this.props.dispatch(isLoadingCrypto(false));
             });
     }
@@ -60,7 +60,7 @@ class Crypto extends Component {
 
         if(isLoadingMarketData || isLoadingCrypto){
             return (
-                <Page fetchMarketData={true}>
+                <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
                     <Loader/>
                 </Page>
             );
@@ -68,8 +68,10 @@ class Crypto extends Component {
 
         if(crypto.length === 0){
             return (
-                <Page fetchMarketData={true}>
-                    <h2 className="text-center">Error: Unable to load crypto data.</h2>
+                <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
+                    <div className="ui padded segment">
+                        <h2 className="text-center">Error: Unable to load crypto data.</h2>
+                    </div>
                 </Page>
             )
         }

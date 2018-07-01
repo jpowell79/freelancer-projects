@@ -5,7 +5,7 @@
 
 import React from 'react';
 import {render} from 'enzyme';
-import * as icons from '../../../components/icons';
+import * as icons from '../../../components/modules/icons';
 
 function getIconsArray({id = "", className = ""}) {
     return Object.keys(icons).map((key, i) => {

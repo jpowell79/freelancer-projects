@@ -1,6 +1,6 @@
 import React from 'react';
 import Alert from './Alert';
-import {ExclamationCircle, InfoCircle, CheckCircle} from "../../components/icons/index";
+import {ExclamationCircle, InfoCircle, CheckCircle} from "../../components/modules/icons/index";
 
 class AlertOptionPane {
     static showErrorAlert = ({

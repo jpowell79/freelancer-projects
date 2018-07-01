@@ -1,5 +1,5 @@
 import {constants} from './constants';
-import CryptoTrade from "../components/crypto/CryptoContent/CryptoTrade";
+import CryptoTrade from "../components/pages/crypto/CryptoContent/CryptoTrade";
 
 export const updateFeeds = (feeds) => {
     return {

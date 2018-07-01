@@ -13,6 +13,12 @@
         }
     }
 
+    &.white {
+        th {
+            background-color: $white!important;
+        }
+    }
+
     th {
         &.sortable:after {
             @include uiTableIcon($sortableIcon);

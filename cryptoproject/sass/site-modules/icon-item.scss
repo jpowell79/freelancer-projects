@@ -1,0 +1,29 @@
+/*----------------------------------------
+ * Icon Item
+ *----------------------------------------*/
+.icon-item {
+    i {
+        font-size: $display4;
+        display: table-cell;
+        margin: 0;
+        padding-top: 0;
+        padding-right: .28571429em;
+        vertical-align: middle;
+    }
+
+    .content {
+        display: table-cell;
+        padding: 0 0 0 .5em;
+        font-size: $h4;
+        vertical-align: middle;
+
+        > *:first-child {
+            margin: 0;
+        }
+
+        > *:last-child {
+            font-size: $h5;
+            font-weight: lighter;;
+        }
+    }
+}

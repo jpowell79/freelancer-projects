@@ -1,17 +1,17 @@
 import React, {Component} from 'react';
 import Page from '../components/containers/Page';
-import HistoricDataTable from '../components/tables/HistoricDataTable';
-import HistoricDataSummaryTable from '../components/tables/HistoricDataSummaryTable';
-import DateForm from '../components/forms/DateForm';
+import HistoricDataTable from '../components/pages/historic-data/HistoricDataTable';
+import HistoricDataSummary from '../components/pages/historic-data/HistoricDataSummary';
+import DateForm from '../components/modules/forms/DateForm';
 import axios from "axios/index";
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import urls from "../server/services/utils/urls";
 import Files from "../services/Files";
 import moment from "moment/moment";
+import {Loader} from "../components/modules/icons";
 import {calcTotalPercentChange} from "../services/cryptoUtils";
 import CsvParser from "../server/services/CsvParser";
-import {Loader} from "../components/icons";
-import {titledSegmentContent, titledSegmentHeader, twoColumnGrid} from "../services/cssUtils";
+import FullWidthSegment from "../components/containers/FullWidthSegment";
 
 class HistoricData extends Component {
     constructor(props){
@@ -24,7 +24,6 @@ class HistoricData extends Component {
         
         this.downloadCsv = this.downloadCsv.bind(this);
         this.getBestValueCrypto = this.getBestValueCrypto.bind(this);
-        this.renderSummaryAndDateForm = this.renderSummaryAndDateForm.bind(this);
     }
 
     componentDidMount(){
@@ -101,59 +100,57 @@ class HistoricData extends Component {
             return accumulator;
         });
     }
-
-    renderSummaryAndDateForm(){
-        return (
-            <div className={twoColumnGrid('unstack-md')}>
-                <div className="eight wide column">
-                    <h2 className={titledSegmentHeader()}>
-                        Summary
-                    </h2>
-                    <div className={titledSegmentContent()}>
-                        <HistoricDataSummaryTable
-                            bestValueCrypto={this.getBestValueCrypto()}
-                            totalNrOfTrades={this.state.historicData
-                                .map(data => data.nrOfTrades)
-                                .reduce((accumulator, currentValue) => {
-                                    return accumulator + currentValue;
-                                })
-                            }
-                            totalPotSize={parseFloat(this.state.historicData
-                                .map(data => data.pot)
-                                .reduce((accumulator, currentValue) => {
-                                    return accumulator + currentValue;
-                                }).toFixed(2))
-                            }
-                        />
-                    </div>
-                </div>
-                <div className="eight wide column">
-                    <h2 className={titledSegmentHeader()}>
-                        Download historic data
-                    </h2>
-                    <div className={titledSegmentContent()}>
-                        <DateForm
-                            onSubmit={this.downloadCsv}
-                            submitText="Download CSV"
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    }
     
     render(){
+        const {
+            centered,
+            bordered
+        } = FullWidthSegment.options;
+
+        const {
+            gray
+        } = FullWidthSegment.options.colors;
+
         return (
-            <Page contentClass="historic-data wrapper">
+            <Page contentClass="historic-data">
                 {(this.state.isLoadingHistoricData)
                     ? (
-                        <Loader/>
+                        <FullWidthSegment options={[centered]}>
+                            <Loader/>
+                        </FullWidthSegment>
                     ) : (
-                        <HistoricDataTable historicData={this.state.historicData}/>
+                        <FullWidthSegment>
+                            <HistoricDataTable historicData={this.state.historicData}/>
+                        </FullWidthSegment>
                     )}
                 {(this.state.historicData.length > 0)
                     ? (
-                        this.renderSummaryAndDateForm()
+                        <div>
+                            <FullWidthSegment options={[gray, bordered]} wrapper={1}>
+                                <HistoricDataSummary
+                                    bestValueCrypto={this.getBestValueCrypto()}
+                                    totalNrOfTrades={this.state.historicData
+                                        .map(data => data.nrOfTrades)
+                                        .reduce((accumulator, currentValue) => {
+                                            return accumulator + currentValue;
+                                        })
+                                    }
+                                    totalPotSize={parseFloat(this.state.historicData
+                                        .map(data => data.pot)
+                                        .reduce((accumulator, currentValue) => {
+                                            return accumulator + currentValue;
+                                        }).toFixed(2))
+                                    }
+                                />
+                            </FullWidthSegment>
+                            <FullWidthSegment options={[centered]} wrapper={4}>
+                                <h2 className="centered title">Download CSV</h2>
+                                <DateForm
+                                    onSubmit={this.downloadCsv}
+                                    submitText="Download CSV"
+                                />
+                            </FullWidthSegment>
+                        </div>
                     ) : null}
             </Page>
         );

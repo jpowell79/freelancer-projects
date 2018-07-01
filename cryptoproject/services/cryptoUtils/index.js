@@ -168,7 +168,8 @@ export const getHighestPercentTotal = (cryptoMarketData) => {
 
         return {
             name: data.name,
-            value: parseFloat(value)
+            value: parseFloat(value),
+            symbol: data.symbol
         }
     }).reduce((accumulator, current) => {
         if(accumulator.value === undefined){

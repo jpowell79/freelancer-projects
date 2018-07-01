@@ -14,13 +14,38 @@ export const definitionTable = (className = '') => {
 };
 
 export const titledSegmentHeader = (className = '') => {
-    return joinClassNames("ui top attached padded bg-color-light-gray header", className);
+    return joinClassNames("ui top attached padded header", className);
 };
 
 export const titledSegmentContent = (className = '') => {
     return joinClassNames(`ui attached padded segment`, className);
 };
 
+export const fullWidthSegment = (className = '') => {
+    return joinClassNames(`ui full width segment`, className);
+};
+
 export const twoColumnGrid = (className = '') => {
-    return joinClassNames(`ui padded stackable centered grid two-column`, className);
+    return joinClassNames(`ui relaxed two column stackable grid`, className);
+};
+
+export const COLORS = {
+    primary: 'primary',
+    secondary: 'secondary',
+    white: 'white',
+    black: 'black',
+    gray: 'gray',
+    uiBlue: 'uiBlue',
+    uiYellow: 'uiYellow',
+    uiOrange: 'uiOrange',
+    uiTeal: 'uiTeal',
+    uiRed: 'uiRed',
+    uiGreen: 'uiGreen',
+    uiPink: 'uiPink',
+    uiPurple: 'uiPurple',
+    uiIndigo: 'uiIndigo',
+    uiBrown: 'uiBrown',
+    uiOlive: 'uiOlive',
+    uiViolet: 'uiViolet',
+    uiBlack: 'uiBlack'
 };

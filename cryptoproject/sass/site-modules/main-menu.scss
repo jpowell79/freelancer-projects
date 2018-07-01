@@ -4,7 +4,6 @@
 $menuBackground: rgba(255, 255, 255, .95);
 
 #main-menu {
-    font-family: $secondaryFont;
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
@@ -17,6 +16,11 @@ $menuBackground: rgba(255, 255, 255, .95);
     background-color: $menuBackground;
     z-index: 900;
     border-bottom: 1px solid rgba(34,36,38,.1);
+
+    img {
+        width: 104px;
+        z-index: 9999;
+    }
 
     > nav {
         display: flex;

@@ -1,59 +1,54 @@
 import React, {Component} from 'react';
 import Page from '../components/containers/Page';
-import DividendFundTable from '../components/dividend/DividendFundTable';
-import DividendInfo from '../components/dividend/DividendInfo';
-import Faq from '../components/Faq';
-import UserInfoTable from '../components/tables/UserInfoTable';
-import {
-    titledSegmentContent,
-    titledSegmentHeader
-} from "../services/cssUtils/";
+import DividendInfo from '../components/pages/dividend-fund/DividendInfo';
+import Faq from '../components/pages/dividend-fund/Faq';
+import AccountDetails from '../components/pages/index/AccountDetails';
+import {PageTitle} from "../components/containers/PageTitle";
+import Paths from "../services/Paths";
+import DividendClaimWindow from "../components/pages/dividend-fund/DividendClaimWindow";
+import FullWidthSegment from "../components/containers/FullWidthSegment";
+
+const TEMP_DIVIDEND = '0x0baebf4d24adb328a9a5f62c09a0ba108761dede';
 
 class DividendFund extends Component {
     render(){
+        const {
+            bordered,
+            centered
+        } = FullWidthSegment.options;
+
+        const {
+            gray
+        } = FullWidthSegment.options.colors;
+
         return(
-            <Page contentClass="wrapper">
-                <h2 className={titledSegmentHeader()}>
-                    Dividend Fund
-                </h2>
-                <div className={titledSegmentContent()}>
-                    <div className="ui two column stackable grid">
-                        <div className="column">
-                            <h2 className={titledSegmentHeader()}>
-                                Your dividend:
-                            </h2>
-                            <div className={titledSegmentContent()}>
-                                <DividendFundTable tableClass="stacked-table"/>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <h2 className={titledSegmentHeader()}>
-                                Dividend Info:
-                            </h2>
-                            <div className={titledSegmentContent()}>
-                                <DividendInfo/>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <h2 className={titledSegmentHeader()}>
-                                Trader Info:
-                            </h2>
-                            <div className={titledSegmentContent()}>
-                                <UserInfoTable tableClass="stacked-table"/>
-                            </div>
-                        </div>
-                        <div className="column">
-                            <h2 className={titledSegmentHeader()}>
-                                Faq:
-                            </h2>
-                            <div className={titledSegmentContent()}>
-                                <div className="wrapper-4">
-                                    <Faq/>
-                                </div>
-                            </div>
-                        </div>
+            <Page>
+                <PageTitle title="Dividend Fund"/>
+                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                    <div className="ui padded segment">
+                        <h2>Account Details</h2>
+                        <AccountDetails/>
                     </div>
-                </div>
+                </FullWidthSegment>
+                <FullWidthSegment options={[centered]} wrapper={2}>
+                    <h2 className="no-margin-bottom">The dividend smart contract address is</h2>
+                    <h2 className="capitalized h2" style={{wordBreak: "break-all"}}><a
+                        href={Paths.getEtherScanUrl(TEMP_DIVIDEND)}>{
+                        TEMP_DIVIDEND
+                    }</a></h2>
+                </FullWidthSegment>
+                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                    <div className="ui padded segment">
+                        <DividendInfo/>
+                    </div>
+                </FullWidthSegment>
+                <FullWidthSegment options={[centered]}>
+                    <DividendClaimWindow/>
+                </FullWidthSegment>
+                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                    <h2 className="title centered">FAQ</h2>
+                    <Faq/>
+                </FullWidthSegment>
             </Page>
         );
     }

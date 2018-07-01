@@ -4,7 +4,6 @@ import {
     updateAllCrypto
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
-import AlertOptionPane from "../Alert/AlertOptionPane";
 import {fetchAllCryptoContracts} from "../../server/services/contract/index";
 
 class Dispatcher {
@@ -21,7 +20,7 @@ class Dispatcher {
             account.isLoading = false;
             this.dispatch(updateAccount(account));
         }).catch(err => {
-            AlertOptionPane.showErrorAlert({message: err.toString()});
+            console.error(err);
             this.dispatch(updateAccount({isLoading: false}));
         });
     }
@@ -33,7 +32,7 @@ class Dispatcher {
             this.dispatch(updateAllCrypto(responses));
             this.dispatch(isLoadingCrypto(false));
         }).catch(err => {
-            AlertOptionPane.showErrorAlert({message: err.toString()});
+            console.error(err);
             this.dispatch(isLoadingCrypto(false));
         });
     }

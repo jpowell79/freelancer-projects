@@ -2,17 +2,72 @@
  * Semantic UI Override
  *----------------------------------------*/
 .ui {
+    &.primary {
+        background-color: $primary!important;
+    }
+
+    &.inverted {
+        background: $secondary!important;
+    }
+
+    &.centered {
+        text-align: center;
+
+        &.statistics,
+        .statistics {
+            justify-content: center;
+        }
+    }
+
     &.table {
         margin: 0 0 $divider2 0;
     }
 
-    &.grid.two-column {
-        >.column:first-child {
-            padding-left: 0
+    &.lighter,
+    .lighter {
+        font-weight: lighter!important;
+    }
+
+    &.grid {
+        .two-column {
+            >.column:first-child {
+                padding-left: 0
+            }
+
+            >.column:last-child {
+                padding-right: 0;
+            }
         }
 
-        >.column:last-child {
-            padding-right: 0;
+        &.stackable.center.aligned.hugging {
+            > .column {
+                &:first-child {
+                    text-align: right;
+
+                    .content {
+                        display: flex;
+                        justify-content: flex-end;
+                    }
+                }
+
+                &:nth-child(2){
+                    text-align: center;
+
+                    .content {
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                &:last-child {
+                    text-align: left;
+
+                    .content {
+                        display: flex;
+                        justify-content: flex-start;
+                    }
+                }
+            }
         }
     }
 
@@ -60,7 +115,10 @@
     }
 
     &.statistics {
-        justify-content: center;
+        >.statistic>.value {
+            font-family: $primaryFont!important;
+            font-size: 3rem!important;
+        }
     }
 
     &.segment {
@@ -83,14 +141,36 @@
 
 @media (max-width: $mediaMedium){
     .ui {
-        &.grid.unstack-md {
-            > .column {
-                width: 100%!important;
+        &.grid {
+
+            &.unstack-md {
+                > .column {
+                    width: 100% !important;
+                }
+
+                &.two-column > .column {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
             }
 
-            &.two-column > .column {
-                padding-left: 0;
-                padding-right: 0;
+            &.stackable.center.aligned.hugging {
+                > .column {
+                    width: 100% !important;
+
+                    &:first-child,
+                    &:last-child {
+                        text-align: center;
+
+                        .content {
+                            justify-content: center;
+                        }
+                    }
+
+                    &:nth-child(2){
+                        order: -1;
+                    }
+                }
             }
         }
     }

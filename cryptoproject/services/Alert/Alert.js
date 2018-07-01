@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDom from 'react-dom';
 import ReactDomServer from 'react-dom/server';
-import {Times} from '../../components/icons/index';
+import {Times} from '../../components/modules/icons/index';
 import AlertContent from "./AlertContent";
 import $ from 'jquery';
 

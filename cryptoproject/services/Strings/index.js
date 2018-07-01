@@ -3,6 +3,10 @@ class Strings {
         return (boolean) ? "true" : "false";
     }
 
+    static isDefined(string){
+        return string !== undefined && string !== null && string !== '';
+    }
+
     static toUSD(string){
         let opts = {style: "decimal", currency: "USD"};
         return '$' + string.toLocaleString("en-US", opts);

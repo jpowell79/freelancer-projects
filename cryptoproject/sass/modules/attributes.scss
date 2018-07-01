@@ -14,6 +14,12 @@
 );
 
 @include semanticAttribute(
+    '.no-margin',
+    'margin',
+    '0'
+);
+
+@include semanticAttribute(
     '.no-padding',
     'padding',
     '0'
@@ -41,4 +47,16 @@
     '.justify-content-center',
     'justify-content',
     'center'
+);
+
+@include semanticAttribute(
+    '.bold',
+    'font-weight',
+    'bold'
+);
+
+@include semanticAttribute(
+    '.normal',
+    'font-weight',
+    'normal'
 );

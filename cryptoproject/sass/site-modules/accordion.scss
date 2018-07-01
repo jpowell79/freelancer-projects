@@ -1,0 +1,35 @@
+/*----------------------------------------
+ * Accordion
+ *----------------------------------------*/
+.ui.styled.accordion {
+    margin-top: $divider1;
+    width: 100%;
+
+    .title {
+        @include standardHoverEffect();
+        color: $black;
+
+        &:hover {
+            color: darken($primary, 10%);
+        }
+
+        i.dropdown {
+            display: table-cell;
+            font-size: 2rem;
+            vertical-align: middle;
+        }
+
+        .content {
+            display: table-cell;
+            padding: 0 0 0 .5em;
+            vertical-align: middle;
+            font-weight: lighter;
+            font-size: $h3;
+        }
+    }
+
+    .title + .content {
+        font-size: 1.5em;
+        font-weight: lighter;
+    }
+}

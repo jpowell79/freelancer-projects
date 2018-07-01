@@ -2,34 +2,25 @@
  * Page
  *----------------------------------------*/
 #page {
+    .page-title {
+        text-align: center;
+        font-size: $display3;
+        color: $primary;
+    }
+
     &-header {
         padding-top: $menuHeight;
-        margin-bottom: $divider2;
     }
 
     &-footer {
-        margin-top: $divider2;
-
-        > * {
-            max-width: $wrapper;
-            margin: 0 auto!important;
-        }
-
         .social-menu {
             &.round > * {
-                background-color: $darkGray;
+                background-color: rgba(255, 255, 255, .1);
+                color: $white;
 
                 &:hover {
                     background-color: darken($primary, 10%);
                 }
-            }
-        }
-
-        .ui.list > a.item {
-            color: $uiBlack;
-
-            &:hover {
-                color: $primary;
             }
         }
     }
@@ -39,6 +30,14 @@
         .loader-small {
             position: static;
             margin: 0 auto;
+        }
+    }
+}
+
+@media (max-width: $mediaSmall){
+    #page {
+        .page-title {
+            font-size: 3.5rem;
         }
     }
 }

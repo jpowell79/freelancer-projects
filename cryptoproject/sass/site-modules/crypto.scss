@@ -8,9 +8,9 @@
             "sidebar sidebar sidebar";
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: $divider2;
-    padding: $divider3;
-    max-width: $wrapper;
     margin: 0 auto;
+    padding: $divider2;
+    max-width: $wrapper;
 
     > * > .segment {
         margin: 0;
@@ -24,12 +24,16 @@
         grid-area: sidebar;
         @include divideChildren($divider2);
     }
+
+    .coinmarketcap-currency-widget {
+        background-color: $white;
+        border-radius: 10px;
+    }
 }
 
 @media (min-width: $mediaMedium) {
     .crypto {
-        grid-template-areas:
-                "content content sidebar";
+        grid-template-areas: "content content sidebar";
 
         #crypto-content {
             #crypto-trade {
@@ -43,6 +47,6 @@
 
 @media (min-width: $mediaSmall) {
     .crypto {
-        padding: 0 $divider2;
+        padding: 4em;
     }
 }

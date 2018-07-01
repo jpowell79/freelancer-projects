@@ -383,22 +383,22 @@
 
 .react-datepicker__day--selected, .react-datepicker__day--in-selecting-range, .react-datepicker__day--in-range {
   border-radius: 0.3rem;
-  background-color: #216ba5;
+  background-color: $primary;
   color: #fff;
 }
 
 .react-datepicker__day--selected:hover, .react-datepicker__day--in-selecting-range:hover, .react-datepicker__day--in-range:hover {
-  background-color: #1d5d90;
+  background-color: darken($primary, 10%);
 }
 
 .react-datepicker__day--keyboard-selected {
   border-radius: 0.3rem;
-  background-color: #2a87d0;
+  background-color: $primary;
   color: #fff;
 }
 
 .react-datepicker__day--keyboard-selected:hover {
-  background-color: #1d5d90;
+  background-color: darken($primary, 10%);
 }
 
 .react-datepicker__day--in-selecting-range:not(.react-datepicker__day--in-range) {
