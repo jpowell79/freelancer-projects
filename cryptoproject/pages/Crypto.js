@@ -7,6 +7,7 @@ import {
     updateCrypto,
     isLoadingCrypto
 } from "../redux/actions";
+import {mergeWithMarketData} from "../services/cryptoUtils";
 import {fullWidthSegment} from "../services/cssUtils";
 import {Loader} from "../components/modules/icons";
 import {fetchCryptoContract} from "../server/services/contract";
@@ -51,14 +52,11 @@ class Crypto extends Component {
 
     render() {
         const {
-            index,
-            crypto,
-            marketData,
-            isLoadingCrypto,
-            isLoadingMarketData
+            cryptoMarketData,
+            isLoadingCrypto
         } = this.props;
 
-        if(isLoadingMarketData || isLoadingCrypto){
+        if(isLoadingCrypto){
             return (
                 <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
                     <Loader/>
@@ -66,7 +64,7 @@ class Crypto extends Component {
             );
         }
 
-        if(crypto.length === 0){
+        if(cryptoMarketData.length === 0){
             return (
                 <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
                     <div className="ui padded segment">
@@ -76,21 +74,13 @@ class Crypto extends Component {
             )
         }
 
-        let currentCrypto = crypto.filter(cryptoObject =>
-            cryptoObject.index === index
-        )[0];
-
-        let currentMarketData = marketData.filter(data =>
-            data.name.toLowerCase() === currentCrypto.name.toLowerCase()
-        )[0];
-
         return (
             <Page contentClass="crypto">
                 <CryptoContent
-                    data={Object.assign({}, currentCrypto, currentMarketData)}/>
+                    data={cryptoMarketData[0]}/>
                 <CryptoSidebar
-                    id={currentMarketData.id}
-                    cryptoName={currentMarketData.name}/>
+                    id={cryptoMarketData[0].id}
+                    cryptoName={cryptoMarketData[0].name}/>
             </Page>
         );
     }
@@ -100,15 +90,12 @@ const mapStateToProps = (state) => {
     const {
         crypto,
         marketData,
-        isLoadingCrypto,
-        isLoadingMarketData
+        isLoadingCrypto
     } = state;
 
     return {
-        crypto,
-        marketData,
-        isLoadingCrypto,
-        isLoadingMarketData
+        cryptoMarketData: mergeWithMarketData(crypto, marketData),
+        isLoadingCrypto
     };
 };
 

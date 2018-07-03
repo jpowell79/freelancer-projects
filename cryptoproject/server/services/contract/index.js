@@ -1,9 +1,13 @@
-const abi = require('./abi');
+const cryptoAbi = require('./cryptoAbi');
+const dividendAbi = require('./dividendAbi');
 const web3 = require('../Web3');
-const CONTRACT_ADDRESSES = require("../../../site-settings").CONTRACT_ADDRESSES;
+const SETTINGS = require("../../../site-settings");
+const CONTRACT_ADDRESSES = SETTINGS.CONTRACT_ADDRESSES;
+const DIVIDEND_ADDRESS = SETTINGS.DIVIDEND_ADDRESS;
+
 
 const enterTheGame = (index, {from, value}) => {
-    const methods = getContract(index).methods;
+    const methods = getCryptoContract(index).methods;
 
     return methods.enterTheGame().send({
         from,
@@ -12,7 +16,7 @@ const enterTheGame = (index, {from, value}) => {
 };
 
 const getFinishPriceRetrievalTime = (index) => {
-    return getContract(index).methods
+    return getCryptoContract(index).methods
         .finishPriceRetrievalTime()
         .call()
         .then(retrevalTime => {
@@ -20,12 +24,12 @@ const getFinishPriceRetrievalTime = (index) => {
         });
 };
 
-const getContract = (index) => {
-    return new web3.eth.Contract(abi, CONTRACT_ADDRESSES[index]);
+const getCryptoContract = (index) => {
+    return new web3.eth.Contract(cryptoAbi, CONTRACT_ADDRESSES[index]);
 };
 
 const fetchCryptoContract = (index) => {
-    const methods = getContract(index).methods;
+    const methods = getCryptoContract(index).methods;
 
     return Promise.all([
         methods.admin().call(),
@@ -63,10 +67,41 @@ const fetchAllCryptoContracts = () => {
     ));
 };
 
+const fetchDividendContract = () => {
+    const methods = new web3.eth.Contract(dividendAbi, DIVIDEND_ADDRESS).methods;
+
+    return Promise.all([
+        methods.thisContractAddress().call(),
+        methods.showTotalTokenSupply().call(),
+        methods.claimWindow().call(),
+        methods.closeTime().call(),
+        methods.openTime().call(),
+        methods.totalDividendForThisClaimWindow().call(),
+        methods.dividendBlock().call()
+    ]).then(responses => {
+        return {
+            address: responses[0],
+            totalTokenSupply: parseFloat(responses[1]),
+            claimWindowIsOpen: responses[2],
+            closeTime: parseInt(responses[3], 10) * 1000,
+            openTime: parseInt(responses[4]),
+            value: parseFloat((parseFloat(responses[5])/1000000000000000000).toFixed(2)),
+            block: parseFloat(responses[6], 10)
+        }
+    });
+};
+
+const claimDividend = () => {
+    const methods = new web3.eth.Contract(dividendAbi, DIVIDEND_ADDRESS).methods;
+    return methods.claimDividend().call();
+};
+
 module.exports = {
     fetchAllCryptoContracts,
     fetchCryptoContract,
-    getContract,
+    fetchDividendContract,
+    getCryptoContract,
     getFinishPriceRetrievalTime,
+    claimDividend,
     enterTheGame
 };

@@ -9,7 +9,9 @@ import {
     Plug,
     MoneyBill
 } from "../../../modules/icons/index";
+import Settings from '../../../../site-settings';
 import Paths from "../../../../services/Paths/index";
+import Strings from "../../../../services/Strings/index";
 
 class AccountDetails extends Component {
     constructor(props){
@@ -66,7 +68,7 @@ class AccountDetails extends Component {
                     <div className="icon-item">
                         <MoneyBill className="display-5"/>
                         <div className="content">
-                            <h3>TEST123 Token Balance</h3>
+                            <h3>{Settings.TOKEN_NAME} Token Balance</h3>
                             <div>
                                 {account.tradeTokens}
                             </div>
@@ -86,9 +88,12 @@ class AccountDetails extends Component {
                     ? (
                         <LoaderSmall/>
                     )
-                    : (
-                        this.renderAccountDetails()
-                    )
+                    : (Strings.isDefined(account.address))
+                        ? (
+                            this.renderAccountDetails()
+                        ) : (
+                            <p className="h3">Error: Unable to detect your ethereum account.</p>
+                        )
                 }
             </div>
         );

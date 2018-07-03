@@ -1,4 +1,4 @@
-let expect = require('chai').expect;
+const expect = require('chai').expect;
 const CsvParser = require('../../services/CsvParser');
 const moment = require('moment');
 

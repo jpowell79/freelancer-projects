@@ -50,25 +50,3 @@
 @mixin standardHoverEffect(){
     transition: all .3s ease-out;
 }
-
-@mixin flashCell($backgroundColor, $color, $endColor){
-    0% {
-        background-color: transparentize($backgroundColor, 1);
-        color: darken($color, 100%);
-    }
-
-    10% {
-        background-color: $backgroundColor;
-        color: $color;
-    }
-
-    90% {
-        background-color: $backgroundColor;
-        color: $color;
-    }
-
-    100% {
-        background-color: transparentize($backgroundColor, 1);
-        color: $endColor;
-    }
-}

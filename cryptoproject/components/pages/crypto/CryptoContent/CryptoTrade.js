@@ -49,7 +49,7 @@ class CryptoTrade extends Component {
                 <div className="ui success message">
                     <div className="header">Your transaction has been approved!</div>
                     <span>You have successfully entered the game. Your transaction hash is </span>
-                    <a href={`https://etherscan.io/address/${transaction.transactionHash}`}>
+                    <a href={`${Paths.getEtherScanUrl(transaction.transactionHash)}`}>
                         {transaction.transactionHash}
                     </a>
                 </div>

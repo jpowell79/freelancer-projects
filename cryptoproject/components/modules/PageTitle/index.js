@@ -1,6 +1,6 @@
 import React from 'react';
-import {fullWidthSegment} from "../../../services/cssUtils";
-import {joinClassNames} from "../../../services/utils";
+import {fullWidthSegment} from "../../../services/cssUtils/index";
+import {joinClassNames} from "../../../services/utils/index";
 
 export const PageTitle = ({title, className = '', children = null, ...props}) => {
     return (

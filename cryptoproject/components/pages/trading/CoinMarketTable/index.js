@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import Link from 'next/link';
 import $ from 'jquery';
 import TableSorter from '../../../../services/TableSorter/index';
@@ -7,18 +6,14 @@ import Strings from "../../../../services/Strings/index";
 import {hideOnMobile, sortableTable} from "../../../../services/cssUtils/index";
 import Paths from "../../../../services/Paths/index";
 import {MAX_NR_OF_TRADES} from "../../../../site-settings";
-import {CoinMarketFlashCell} from "./CoinMarketFlashCell";
 import {
-    mergeWithMarketData,
+    getPreviousData,
     calcTotalPercentChange
 } from "../../../../services/cryptoUtils/index";
-import Dispatcher from '../../../../services/Dispatcher/index';
+import {defaultComparator} from "../../../../services/utils/index";
+import FlashCell from "../../../modules/FlashCell/index";
 
 class CoinMarketTable extends Component {
-    static defaultProps = {
-        cryptoMarketData: []
-    };
-
     constructor(props){
         super(props);
 
@@ -32,12 +27,7 @@ class CoinMarketTable extends Component {
 
     componentDidMount(){
         this.tablesorter = new TableSorter($("#coin-market-table"));
-
-        new Dispatcher(this.props.dispatch)
-            .updateAllCrypto()
-            .then(() => {
-                this.tablesorter.sortAtName("Rank");
-            });
+        this.tablesorter.sortAtName("Rank");
     }
 
     componentWillUnmount(){
@@ -55,31 +45,21 @@ class CoinMarketTable extends Component {
     }
 
     componentWillReceiveProps(){
-        //TODO: make this work without componentWillReceiveProps
         this.prevProps = this.props;
     }
 
     renderMarketData(){
         return this.props.cryptoMarketData.map((crypto, i) => {
-            let usdQuotes = crypto.quotes.USD;
-            let totalPriceChange = calcTotalPercentChange(
-                parseFloat(crypto.startPrice),
-                parseFloat(usdQuotes.price)
+            const usdQuotes = crypto.quotes.USD;
+            const totalPriceChange = calcTotalPercentChange(
+                crypto.startPrice, usdQuotes.price
             );
 
-            let prevData = this.prevProps.cryptoMarketData.filter(
-                prevData => prevData.name === crypto.name
-            )[0];
-            prevData = (prevData === undefined) ? crypto : prevData;
-            let prevUsdQuotes = prevData.quotes.USD;
-            let prevTotalPriceChange = calcTotalPercentChange(
-                parseFloat(crypto.startPrice),
-                parseFloat(prevUsdQuotes.price)
+            const prevData = getPreviousData(crypto, this.prevProps.cryptoMarketData);
+            const prevUsdQuotes = prevData.quotes.USD;
+            const prevTotalPriceChange = calcTotalPercentChange(
+                crypto.startPrice, prevUsdQuotes.price
             );
-
-            if(i === this.props.cryptoMarketData.length-1){
-                this.prevProps = this.props;
-            }
 
             return (
                 <tr key={i}>
@@ -103,28 +83,53 @@ class CoinMarketTable extends Component {
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.volume_24h)}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(crypto.startPrice)}</td>
                     <td className={hideOnMobile()}>
-                        <CoinMarketFlashCell
-                            keyName={`price ${i}`}
-                            value={usdQuotes.price}
-                            prevValue={prevUsdQuotes.price}>
+                        <FlashCell
+                            initialCompare={() => {
+                                return defaultComparator(usdQuotes.percent_change_1h, 0);
+                            }}
+                            value={parseFloat(usdQuotes.price.toFixed(3))}
+                            prevValue={parseFloat(prevUsdQuotes.price.toFixed(3))}>
                             {Strings.toUSD(usdQuotes.price)}
-                        </CoinMarketFlashCell>
+                        </FlashCell>
                     </td>
                     <td className={hideOnMobile()}>
-                        <CoinMarketFlashCell
+                        <FlashCell
+                            shouldCellAnimate={(compare, isInitialCompare) => {
+                                return usdQuotes.percent_change_24h !== prevUsdQuotes.percent_change_24h
+                                    && !isInitialCompare;
+                            }}
+                            comparator={(value) => {
+                                if(value < 0){
+                                    return -1;
+                                } else if(value > 0){
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            }}
                             value={usdQuotes.percent_change_24h}
-                            prevValue={prevUsdQuotes.percent_change_24h}
-                            addColor={true}>
+                            prevValue={prevUsdQuotes.percent_change_24h}>
                             {usdQuotes.percent_change_24h}
-                        </CoinMarketFlashCell>
+                        </FlashCell>
                     </td>
                     <td>
-                        <CoinMarketFlashCell
+                        <FlashCell
+                            shouldCellAnimate={(compare, isInitialCompare) => {
+                                return totalPriceChange !== prevTotalPriceChange && !isInitialCompare;
+                            }}
+                            comparator={(value) => {
+                                if(value < 0){
+                                    return -1;
+                                } else if(value > 0){
+                                    return 1;
+                                } else {
+                                    return 0;
+                                }
+                            }}
                             value={totalPriceChange}
-                            prevValue={prevTotalPriceChange}
-                            addColor={true}>
+                            prevValue={prevTotalPriceChange}>
                             {totalPriceChange}
-                        </CoinMarketFlashCell>
+                        </FlashCell>
                     </td>
                     <td className={hideOnMobile()}>{crypto.nrOfTrades}</td>
                     <td className={hideOnMobile()}>{crypto.pot}</td>
@@ -173,40 +178,11 @@ class CoinMarketTable extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                {(this.props.isLoadingCrypto)
-                    ? (
-                        <tr>
-                            <td colSpan={12}>
-                                <div className="loader-small"/>
-                            </td>
-                        </tr>
-                    )
-                    : (this.props.cryptoMarketData.length > 0)
-                        ? this.renderMarketData()
-                        : (
-                            <tr>
-                                <td colSpan={12}>
-                                    <p className="normal h3">Error: Unable to load crypto data.</p>
-                                </td>
-                            </tr>
-                        )}
+                    {this.renderMarketData()}
                 </tbody>
             </table>
         );
     }
 }
 
-const mapStateToProps = (state) => {
-    const {
-        crypto,
-        marketData,
-        isLoadingCrypto
-    } = state;
-
-    return {
-        cryptoMarketData: mergeWithMarketData(crypto, marketData),
-        isLoadingCrypto
-    };
-};
-
-export default connect(mapStateToProps)(CoinMarketTable);
+export default CoinMarketTable;

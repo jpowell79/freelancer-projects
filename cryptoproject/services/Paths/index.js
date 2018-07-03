@@ -1,4 +1,5 @@
 import Router from "next/router";
+import Settings from '../../site-settings';
 
 export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
@@ -31,8 +32,12 @@ class Paths {
         return `${root}/SmartContracts`;
     }
 
+    static getTradingPage(root = '../..'){
+        return `${root}/Trade`;
+    }
+
     static getEtherScanUrl(address){
-        return `https://etherscan.io/address/${address}`;
+        return `${Settings.ETHER_SCAN_URL}/${address}`;
     }
 
     static redirect = (res, url) => {

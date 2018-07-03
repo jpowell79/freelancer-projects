@@ -30,16 +30,28 @@ module.exports.CONTRACT_ADDRESSES = [
 ];
 
 /*----------------------------------------
+ * Dividend
+ *----------------------------------------*/
+module.exports.DIVIDEND_ADDRESS = '0xa91fcef9861efd6b6d2d26ec944f364b0f8cfab1';
+module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
+
+/*----------------------------------------
+ * Trade Token
+ *----------------------------------------*/
+module.exports.TOKEN_CONTRACT = '0x816240cc477357fa924092f71edd23dd53b2bf5d';
+module.exports.TOKEN_NAME = 'TEST234';
+
+/*----------------------------------------
  * Server Options
  *----------------------------------------*/
 module.exports.DEFAULT_PORT = 3000;
 module.exports.MONGODB_URI = 'mongodb://localhost/database';
 
 /*----------------------------------------
- * Web3 Development Settings
+ * Misc. Development Settings
  *----------------------------------------*/
-module.exports.TOKEN_CONTRACT = '0xe69faa73b3bb4cfca6cd83c1a8bfe52cbeb5877d';
 module.exports.HTTP_PROVIDER = 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv';
+module.exports.ETHER_SCAN_URL = 'https://kovan.etherscan.io/address';
 
 /*----------------------------------------
  * Misc. Database Options

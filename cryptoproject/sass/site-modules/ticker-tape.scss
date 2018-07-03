@@ -1,0 +1,32 @@
+/*----------------------------------------
+ * Ticker Tape
+ *----------------------------------------*/
+.ticker-tape {
+    display: flex;
+    justify-content: flex-start;
+    animation: tickerTape 10s linear infinite;
+    transform-origin: 0 0;
+
+    &:hover {
+        animation-play-state: paused;
+    }
+
+    > span {
+        display: flex;
+        align-items: center;
+    }
+
+    .ticker-tape-item {
+        width: 100px;
+    }
+}
+
+@keyframes tickerTape {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}

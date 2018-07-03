@@ -139,11 +139,11 @@ export const getTwitterFeeds = (cryptoName) => {
 
 export const calcTotalPercentChange = (startPrice, currentPrice) => {
     if(startPrice === 0){
-        return "Unavailable";
+        return 0;
     }
 
     let change = currentPrice-startPrice;
-    return ((change/startPrice)*100).toFixed(2);
+    return parseFloat(((change/startPrice)*100).toFixed(2));
 };
 
 export const mergeWithMarketData = (cryptoArray, marketData) => {
@@ -210,4 +210,22 @@ export const hasFinishPrice = ({
     return standardTimeIsExpired &&
         extendedTimeIsExpired &&
         finishPriceRetrievalTimeIsExpired;
+};
+
+export const getPreviousData = (data, prevCryptoMarketData) => {
+    const prevData = prevCryptoMarketData.filter(cryptoMarketData =>
+        cryptoMarketData.name === data.name
+    )[0];
+
+    return (prevData === undefined) ? data : prevData;
+};
+
+export const getPreviousPercentChange1h = (data, prevCryptoMarketData) => {
+    const prevData = this.prevProps.cryptoMarketData.filter(
+        prevData => prevData.name === data.name
+    )[0];
+
+    return (prevData === undefined)
+            ? data.quotes.USD.percent_change_1h
+            : prevData.quotes.USD.percent_change_1h;
 };

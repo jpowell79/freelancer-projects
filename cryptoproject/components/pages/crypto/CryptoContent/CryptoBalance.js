@@ -8,6 +8,7 @@ import {
     titledSegmentContent
 } from "../../../../services/cssUtils/index";
 import Dispatcher from '../../../../services/Dispatcher/index';
+import Paths from "../../../../services/Paths";
 
 class CryptoBalance extends Component {
     componentWillUnmount(){
@@ -49,7 +50,11 @@ class CryptoBalance extends Component {
                                 <td>
                                     {(account.address === null)
                                         ? 'Could not be detected.'
-                                        : account.address}
+                                        : (
+                                            <a href={Paths.getEtherScanUrl(account.address)}>{
+                                                account.address
+                                            }</a>
+                                        )}
                                 </td>
                             </tr>
                             <tr>

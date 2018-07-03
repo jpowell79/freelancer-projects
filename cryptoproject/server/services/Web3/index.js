@@ -25,7 +25,9 @@ function CustomWeb3(provider){
 
     this.fetchEthBalance = (accountAddress) => {
         return this.eth.getBalance(accountAddress)
-            .then(balance => balance/1000000000000000000)
+            .then(balance => {
+                return balance/1000000000000000000;
+            })
     };
 
     this.fetchTradeTokens = (accountAddress) => {
@@ -33,9 +35,8 @@ function CustomWeb3(provider){
             to: Settings.TOKEN_CONTRACT,
             data: `0x70a08231000000000000000000000000${accountAddress.substring(2)}`
         }).then(result => {
-            let bn = this.utils.toBN(result).toString();
-
-            return parseFloat(this.utils.fromWei(bn, 'ether'));
+            const bn = this.utils.toBN(result).toString();
+            return parseFloat(bn);
         });
     };
 

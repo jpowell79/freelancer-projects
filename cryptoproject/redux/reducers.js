@@ -18,10 +18,26 @@ export const initialState = {
         inProgress: false,
         tradeStatus: CryptoTrade.tradeStatus.idle
     },
+    dividend: {
+        isLoading: true
+    },
     account: DEFAULT_ACCOUNT,
     isLoadingFeeds: true,
     isLoadingMarketData: true,
     isLoadingCrypto: true,
+};
+
+export const dividend = (state = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_DIVIDEND:
+        return action.payload;
+    case constants.IS_LOADING_DIVIDEND:
+        return {
+            isLoading: action.payload
+        };
+    default:
+        return state;
+    }
 };
 
 export const feeds = (state = [], action) => {
@@ -139,6 +155,7 @@ export default combineReducers({
     feeds,
     account,
     transaction,
+    dividend,
     isLoadingMarketData,
     isLoadingFeeds,
     isLoadingCrypto,

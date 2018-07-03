@@ -20,7 +20,7 @@ export const MAIN_MENU = {
     links: [
         {
             name: 'Trade',
-            href: ''
+            href: Paths.getTradingPage()
         },
         {
             name: 'How it Works',

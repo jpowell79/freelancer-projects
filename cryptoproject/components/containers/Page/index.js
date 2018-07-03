@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Head from 'next/head';
+import Head from '../Head';
 import Header from '../Header/index';
 import Footer from '../Footer/index';
 import {connect} from 'react-redux';
@@ -45,8 +45,6 @@ class Page extends Component {
     }
 
     fetchMarketData(){
-        this.props.dispatch(isLoadingMarketData(true));
-
         axios.get(CoinMarketCapApi.ticker())
             .then(response => {
                 return Object.keys(response.data.data).map(dataKey =>
@@ -54,14 +52,12 @@ class Page extends Component {
                 );
             }).then(marketData => {
                 this.props.dispatch(updateMarketData(marketData));
-                this.props.dispatch(isLoadingMarketData(false));
             }).catch(err => {
                 if(this.props.addTimer) {
                     clearInterval(this.timer);
                 }
 
                 AlertOptionPane.showErrorAlert({message: err.toString()});
-                this.props.dispatch(isLoadingMarketData(false));
             });
     }
 
@@ -69,12 +65,6 @@ class Page extends Component {
         return (
             <section id="page">
                 <Head>
-                    <title>CoinMarketTable</title>
-                    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-                    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.1/semantic.min.css"/>
-                    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet"/>
-                    <link rel="stylesheet" href="/_next/static/style.css"/>
-                    <script src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"/>
                     {this.props.head}
                 </Head>
                 <Header id="page-header">

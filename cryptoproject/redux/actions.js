@@ -15,6 +15,20 @@ export const updateAllCrypto = (crypto) => {
     }
 };
 
+export const updateDividend = (dividendFund) => {
+    return {
+        type: constants.UPDATE_DIVIDEND,
+        payload: dividendFund
+    }
+};
+
+export const isLoadingDividend = (isLoading = true) => {
+    return {
+        type: constants.IS_LOADING_DIVIDEND,
+        payload: isLoading
+    }
+};
+
 export const startTransaction = () => {
     return {
         type: constants.START_TRANSACTION,

@@ -29,6 +29,10 @@ export const twoColumnGrid = (className = '') => {
     return joinClassNames(`ui relaxed two column stackable grid`, className);
 };
 
+export const doublingThreeColumnGrid = (className = '') => {
+    return joinClassNames('ui stackable three column doubling grid', className);
+};
+
 export const COLORS = {
     primary: 'primary',
     secondary: 'secondary',

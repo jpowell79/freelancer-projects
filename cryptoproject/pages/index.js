@@ -1,39 +1,49 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import Page from '../components/containers/Page';
-import CoinMarketTable from '../components/pages/index/CoinMarketTable';
-import AccountDetails from '../components/pages/index/AccountDetails';
-import TradingInfo from '../components/pages/index/TradingInfo';
 import FullWidthSegment from "../components/containers/FullWidthSegment";
+import CryptoTickerTape from "../components/pages/index/CryptoTickerTape";
+import {mergeWithMarketData} from "../services/cryptoUtils";
+import {LoaderSmall} from "../components/modules/icons";
+import Dispatcher from "../services/Dispatcher";
 
 class Index extends Component {
+    componentDidMount(){
+        new Dispatcher(this.props.dispatch).updateAllCrypto();
+    }
+
     render () {
         const {
-            skinny,
-            noWidthPadding,
-            bordered,
-            attached
-        } = FullWidthSegment.options;
-
-        const {
-            gray
-        } = FullWidthSegment.options.colors;
+            isLoadingCrypto,
+            cryptoMarketData
+        } = this.props;
 
         return (
             <Page fetchMarketData={true} addTimer={true}>
-                <FullWidthSegment options={[gray, skinny, attached, bordered]} wrapper={2}>
-                    <div className="ui padded segment">
-                        <h2>Account Details</h2>
-                        <AccountDetails/>
-                    </div>
-                </FullWidthSegment>
-                <TradingInfo/>
-                <FullWidthSegment options={[skinny, noWidthPadding]}>
-                    <h2 className="centered title">Crypto Table</h2>
-                    <CoinMarketTable/>
+                <FullWidthSegment>
+                    {(isLoadingCrypto)
+                        ? (
+                            <LoaderSmall/>
+                        ) : (
+                            <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>
+                        )}
                 </FullWidthSegment>
             </Page>
         )
     }
 }
 
-export default Index;
+const mapStateToProps = (state) => {
+    const {
+        crypto,
+        marketData,
+        isLoadingCrypto
+    } = state;
+
+    return {
+        cryptoMarketData: mergeWithMarketData(crypto, marketData),
+        isLoadingCrypto
+    };
+};
+
+export default connect(mapStateToProps)(Index);

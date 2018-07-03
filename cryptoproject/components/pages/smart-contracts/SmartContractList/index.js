@@ -3,6 +3,7 @@ import {Accordion} from 'semantic-ui-react';
 import {CONTRACT_ADDRESSES} from '../../../../site-settings';
 import {Dropdown} from "../../../modules/icons/index";
 import Paths from "../../../../services/Paths/index";
+import Settings from "../../../../site-settings";
 
 const TEMP_DIVIDEND = '0x0baebf4d24adb328a9a5f62c09a0ba108761dede';
 const TEMP_PRICING = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
@@ -61,11 +62,15 @@ class SmartContractList extends Component {
                         </div>
                     </Accordion.Title>
                     <Accordion.Content active={activeIndexes.includes(i)}>
-                        <h3 className="no-margin-bottom">{contractName} pricing: <a className="lighter" href={`https://etherscan.io/address/${TEMP_PRICING}`}>
-                            {TEMP_PRICING}
+                        <h3 className="no-margin-bottom">{contractName} pricing: <a className="lighter" href={
+                            `${Paths.getEtherScanUrl(Settings.PRICING_ADDRESS)}`
+                        }>
+                            {Settings.PRICING_ADDRESS}
                         </a></h3>
-                        <h3 style={{marginTop: ".75em"}}>Dividend contract: <a className="lighter" href={`https://etherscan.io/address/${TEMP_PRICING}`}>
-                            {TEMP_DIVIDEND}
+                        <h3 style={{marginTop: ".75em"}}>Dividend contract: <a className="lighter" href={
+                            `${Paths.getEtherScanUrl(Settings.DIVIDEND_ADDRESS)}`
+                        }>
+                            {Settings.DIVIDEND_ADDRESS}
                         </a></h3>
                     </Accordion.Content>
                 </Accordion>

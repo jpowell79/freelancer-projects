@@ -1,0 +1,80 @@
+/*----------------------------------------
+ * Flash Cell
+ *----------------------------------------*/
+.flash-cell {
+    animation-duration: 3s;
+    animation-fill-mode: both;
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 5px;
+    padding: $divider4/2 0;
+}
+
+.flash-cell--red {
+    @extend .flash-cell;
+    color: $uiRed;
+
+    &.animate {
+        animation-name: flash-red-cell;
+    }
+
+    &:after {
+        @include uiTableIcon($caretDownIcon);
+    }
+}
+
+.flash-cell--green {
+    @extend .flash-cell;
+    color: $uiGreen;
+
+    &.animate {
+        animation-name: flash-green-cell;
+    }
+
+    &:after {
+        @include uiTableIcon($caretUpIcon);
+    }
+}
+
+#crypto-ticker-tape {
+    .flash-cell,
+    .flash-cell--red,
+    .flash-cell--green {
+        display: inline-block;
+        width: auto;
+        border-radius: 0;
+        margin: $divider4/4 0 0 0;
+        padding: 0 $divider4/2 0 0;
+    }
+}
+
+@mixin flashCell($backgroundColor, $color, $endColor){
+    0% {
+        background-color: transparentize($backgroundColor, 1);
+        color: darken($color, 100%);
+    }
+
+    10% {
+        background-color: $backgroundColor;
+        color: $color;
+    }
+
+    90% {
+        background-color: $backgroundColor;
+        color: $color;
+    }
+
+    100% {
+        background-color: transparentize($backgroundColor, 1);
+        color: $endColor;
+    }
+}
+
+@keyframes flash-red-cell {
+    @include flashCell($uiRed, $white, $uiRed);
+}
+
+@keyframes flash-green-cell {
+    @include flashCell($uiGreen, $white, $uiGreen);
+}

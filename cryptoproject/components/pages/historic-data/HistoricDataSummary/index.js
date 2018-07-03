@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 class HistoricDataSummary extends Component {
     static defaultProps = {
-        bestValueCrypto: {},
-        isLoadingMarketData: true
+        bestValueCrypto: {}
     };
 
     static propTypes = {

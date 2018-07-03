@@ -1,5 +1,5 @@
 /*----------------------------------------
- * Full Width Segments
+ * Full Width/Height Segments
  *----------------------------------------*/
 .ui.segment.full {
     padding: $segmentPadding;
@@ -80,7 +80,7 @@
 
 @each $name, $color in $darkColors {
     .ui.segment {
-        &.full.width {
+        &.full {
             &.#{$name}{
                 background-color: $color;
             }
@@ -90,7 +90,7 @@
 
 @each $name, $color in $lightColors {
     .ui.segment {
-        &.full.width {
+        &.full {
             &.#{$name}{
                 background-color: $color;
             }

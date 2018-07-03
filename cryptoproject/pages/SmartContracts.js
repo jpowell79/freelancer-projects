@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Page from '../components/containers/Page';
 import SmartContractList from "../components/pages/smart-contracts/SmartContractList";
-import {PageTitle} from "../components/containers/PageTitle";
+import {PageTitle} from "../components/modules/PageTitle";
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 
 class SmartContracts extends Component {
