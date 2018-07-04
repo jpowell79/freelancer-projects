@@ -3,17 +3,12 @@ import {connect} from 'react-redux';
 import Page from '../components/containers/Page'
 import CryptoContent from '../components/pages/crypto/CryptoContent/index';
 import CryptoSidebar from '../components/pages/crypto/CryptoSidebar/index';
-import {
-    updateCrypto,
-    isLoadingCrypto
-} from "../redux/actions";
 import {mergeWithMarketData} from "../services/cryptoUtils";
 import {fullWidthSegment} from "../services/cssUtils";
-import {Loader} from "../components/modules/icons";
-import {fetchCryptoContract} from "../server/services/contract";
 import {CONTRACT_ADDRESSES} from "../site-settings";
 import {withRouter} from 'next/router';
 import Paths from '../services/Paths/';
+import Dispatcher from "../services/Dispatcher";
 
 class Crypto extends Component {
     static defaultProps = {
@@ -21,7 +16,7 @@ class Crypto extends Component {
         crypto: []
     };
 
-    static async getInitialProps({res, query}) {
+    static async getInitialProps({res, reduxStore, query}) {
         if(query.index === undefined){
             Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
@@ -32,41 +27,19 @@ class Crypto extends Component {
             Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
         }
 
-        return {index: parseInt(query.index, 10)};
-    }
+        let dispatcher = new Dispatcher(reduxStore.dispatch);
+        await dispatcher.fetchMarketData();
+        await dispatcher.fetchCryptoContract(index);
 
-    componentDidMount(){
-        this.props.dispatch(isLoadingCrypto(true));
-
-        fetchCryptoContract(this.props.index)
-            .then(response => {
-                this.props.dispatch(updateCrypto(Object.assign({}, response, {
-                    index: this.props.index
-                })));
-                this.props.dispatch(isLoadingCrypto(false));
-            }).catch(err => {
-                console.error(err);
-                this.props.dispatch(isLoadingCrypto(false));
-            });
+        return {index};
     }
 
     render() {
-        const {
-            cryptoMarketData,
-            isLoadingCrypto
-        } = this.props;
-
-        if(isLoadingCrypto){
-            return (
-                <Page fetchMarketData={true} contentClass={fullWidthSegment('gray')}>
-                    <Loader/>
-                </Page>
-            );
-        }
+        const {cryptoMarketData} = this.props;
 
         if(cryptoMarketData.length === 0){
             return (
-                <Page fetchMarketData={true} contentClass={fullWidthSegment('gray')}>
+                <Page contentClass={fullWidthSegment('gray')}>
                     <div className="ui padded segment">
                         <h2 className="text-center">Error: Unable to load crypto data.</h2>
                     </div>
@@ -75,7 +48,7 @@ class Crypto extends Component {
         }
 
         return (
-            <Page contentClass="crypto">
+            <Page contentClass="crypto" addTimer={true}>
                 <CryptoContent
                     data={cryptoMarketData[0]}/>
                 <CryptoSidebar
@@ -89,13 +62,11 @@ class Crypto extends Component {
 const mapStateToProps = (state) => {
     const {
         crypto,
-        marketData,
-        isLoadingCrypto
+        marketData
     } = state;
 
     return {
-        cryptoMarketData: mergeWithMarketData(crypto, marketData),
-        isLoadingCrypto
+        cryptoMarketData: mergeWithMarketData(crypto, marketData)
     };
 };
 

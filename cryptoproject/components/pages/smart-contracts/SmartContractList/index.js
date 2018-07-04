@@ -5,9 +5,6 @@ import {Dropdown} from "../../../modules/icons/index";
 import Paths from "../../../../services/Paths/index";
 import Settings from "../../../../site-settings";
 
-const TEMP_DIVIDEND = '0x0baebf4d24adb328a9a5f62c09a0ba108761dede';
-const TEMP_PRICING = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
-
 class SmartContractList extends Component {
     constructor(props){
         super(props);

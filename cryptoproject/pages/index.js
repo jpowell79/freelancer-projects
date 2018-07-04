@@ -4,26 +4,26 @@ import Page from '../components/containers/Page';
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 import CryptoTickerTape from "../components/pages/index/CryptoTickerTape";
 import {mergeWithMarketData} from "../services/cryptoUtils";
-import {LoaderSmall} from "../components/modules/icons";
 import Dispatcher from "../services/Dispatcher";
 
 class Index extends Component {
-    componentDidMount(){
-        new Dispatcher(this.props.dispatch).updateAllCrypto();
+    static async getInitialProps({reduxStore}){
+        let dispatcher = new Dispatcher(reduxStore.dispatch);
+        await dispatcher.updateAllCrypto();
+        await dispatcher.fetchMarketData();
+
+        return {};
     }
 
     render () {
-        const {
-            isLoadingCrypto,
-            cryptoMarketData
-        } = this.props;
+        const {cryptoMarketData} = this.props;
 
         return (
-            <Page fetchMarketData={true} addTimer={true}>
+            <Page addTimer={true}>
                 <FullWidthSegment>
-                    {(isLoadingCrypto)
+                    {(cryptoMarketData.length <= 0)
                         ? (
-                            <LoaderSmall/>
+                            <p className="centered h3">Error: Unable to load crypto data.</p>
                         ) : (
                             <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>
                         )}
@@ -36,13 +36,11 @@ class Index extends Component {
 const mapStateToProps = (state) => {
     const {
         crypto,
-        marketData,
-        isLoadingCrypto
+        marketData
     } = state;
 
     return {
-        cryptoMarketData: mergeWithMarketData(crypto, marketData),
-        isLoadingCrypto
+        cryptoMarketData: mergeWithMarketData(crypto, marketData)
     };
 };
 

@@ -13,8 +13,10 @@ import {Loader} from "../components/modules/icons";
 import Strings from "../services/Strings";
 
 class DividendFund extends Component {
-    componentDidMount() {
-        new Dispatcher(this.props.dispatch).updateDividendFund();
+    static async getInitialProps({reduxStore}){
+        let dispatcher = new Dispatcher(reduxStore.dispatch);
+        await dispatcher.updateDividendFund();
+        return {};
     }
 
     render() {
@@ -41,32 +43,32 @@ class DividendFund extends Component {
                         <AccountDetails/>
                     </div>
                 </FullWidthSegment>
-                {(dividend.isLoading || account.isLoading)
+                {(account.isLoading)
                     ? (
                         <FullWidthSegment options={[centered]} wrapper={2}>
                             <Loader/>
                         </FullWidthSegment>
                     ) : (Strings.isDefined(dividend.address) && Strings.isDefined(account.address))
                         ? (
-                        [
-                            <FullWidthSegment key={1} options={[centered]} wrapper={2}>
-                                <h2 className="no-margin-bottom">The dividend smart contract address is</h2>
-                                <h2 className="capitalized h2" style={{wordBreak: "break-all"}}><a
-                                    href={Paths.getEtherScanUrl(dividend.address)}>{
-                                    dividend.address
-                                }</a></h2>
-                            </FullWidthSegment>,
-                            <FullWidthSegment key={2} options={[gray, bordered]} wrapper={2}>
-                                <div className="ui padded segment">
-                                    <DividendInfo/>
-                                </div>
-                            </FullWidthSegment>,
-                            <FullWidthSegment key={3} options={[centered]} wrapper={2}>
-                                <DividendClaimWindow/>
-                            </FullWidthSegment>
-                        ]
+                            <React.Fragment>
+                                <FullWidthSegment options={[centered]} wrapper={2}>
+                                    <h2 className="no-margin-bottom">The dividend smart contract address is</h2>
+                                    <h2 className="capitalized h2" style={{wordBreak: "break-all"}}><a
+                                        href={Paths.getEtherScanUrl(dividend.address)}>{
+                                        dividend.address
+                                    }</a></h2>
+                                </FullWidthSegment>
+                                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                                    <div className="ui padded segment">
+                                        <DividendInfo/>
+                                    </div>
+                                </FullWidthSegment>
+                                <FullWidthSegment options={[centered]} wrapper={2}>
+                                    <DividendClaimWindow/>
+                                </FullWidthSegment>
+                            </React.Fragment>
                         ) : (
-                            <FullWidthSegment key={3} options={[centered]} wrapper={2}>
+                            <FullWidthSegment options={[centered]} wrapper={2}>
                                 <p className="h2">Error: Unable to load dividend information.</p>
                             </FullWidthSegment>
                         )}

@@ -14,6 +14,7 @@ export const initialState = {
     crypto: [],
     marketData: [],
     feeds: [],
+    isLoadingFeeds: true,
     transaction: {
         inProgress: false,
         tradeStatus: CryptoTrade.tradeStatus.idle
@@ -21,10 +22,16 @@ export const initialState = {
     dividend: {
         isLoading: true
     },
-    account: DEFAULT_ACCOUNT,
-    isLoadingFeeds: true,
-    isLoadingMarketData: true,
-    isLoadingCrypto: true,
+    account: DEFAULT_ACCOUNT
+};
+
+export const isLoadingFeeds = (state = true, action) => {
+    switch(action.type){
+    case constants.IS_LOADING_FEEDS:
+        return action.payload;
+    default:
+        return state;
+    }
 };
 
 export const dividend = (state = {}, action) => {
@@ -43,15 +50,6 @@ export const dividend = (state = {}, action) => {
 export const feeds = (state = [], action) => {
     switch(action.type){
     case constants.UPDATE_FEEDS:
-        return action.payload;
-    default:
-        return state;
-    }
-};
-
-export const isLoadingFeeds = (state = true, action) => {
-    switch(action.type){
-    case constants.IS_LOADING_FEEDS:
         return action.payload;
     default:
         return state;
@@ -86,15 +84,6 @@ export const transaction = (state = {}, action) => {
     case constants.UPDATE_TRANSACTION_STATUS:
         return action.payload;
     case constants.END_TRANSACTION:
-        return action.payload;
-    default:
-        return state;
-    }
-};
-
-export const isLoadingCrypto = (state = true, action) => {
-    switch(action.type){
-    case constants.IS_LOADING_CRYPTO:
         return action.payload;
     default:
         return state;
@@ -140,23 +129,12 @@ export const marketData = (state = {}, action) => {
     }
 };
 
-export const isLoadingMarketData = (state = true, action) => {
-    switch(action.type){
-    case constants.IS_LOADING_MARKET_DATA:
-        return action.payload;
-    default:
-        return state;
-    }
-};
-
 export default combineReducers({
     crypto,
     marketData,
     feeds,
+    isLoadingFeeds,
     account,
     transaction,
-    dividend,
-    isLoadingMarketData,
-    isLoadingFeeds,
-    isLoadingCrypto,
+    dividend
 });

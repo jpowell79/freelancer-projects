@@ -16,8 +16,7 @@ class CryptoTickerTape extends Component {
 
     render(){
         const {
-            cryptoMarketData,
-            isLoadingCrypto
+            cryptoMarketData
         } = this.props;
 
         const {
@@ -25,7 +24,7 @@ class CryptoTickerTape extends Component {
         } = FullWidthSegment.options;
 
         return (
-            (cryptoMarketData.length > 0 && !isLoadingCrypto)
+            (cryptoMarketData.length > 0)
                 ? (
                     <FullWidthSegment id="crypto-ticker-tape" options={[skinny]}>
                         <TickerTape items={cryptoMarketData.map((data, i) => {

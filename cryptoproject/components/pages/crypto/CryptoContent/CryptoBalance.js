@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {resetAccount} from "../../../../redux/actions";
 import {LoaderSmall} from "../../../modules/icons/index";
 import {
     definitionTable,
@@ -11,10 +10,6 @@ import Dispatcher from '../../../../services/Dispatcher/index';
 import Paths from "../../../../services/Paths";
 
 class CryptoBalance extends Component {
-    componentWillUnmount(){
-        this.props.dispatch(resetAccount());
-    }
-
     componentDidMount(){
         new Dispatcher(this.props.dispatch).updateAccount();
     }

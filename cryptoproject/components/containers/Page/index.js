@@ -3,12 +3,9 @@ import Head from '../Head';
 import Header from '../Header/index';
 import Footer from '../Footer/index';
 import {connect} from 'react-redux';
-import {isLoadingMarketData, updateMarketData} from "../../../redux/actions";
-import CoinMarketCapApi from "../../../services/CoinMarketCapApi/index";
-import axios from 'axios';
 import '../../../sass/style.scss';
 import {TABLE_REFRESH_RATE} from "../../../site-settings";
-import AlertOptionPane from "../../../services/Alert/AlertOptionPane";
+import Dispatcher from "../../../services/Dispatcher";
 
 class Page extends Component {
     static defaultProps = {
@@ -20,20 +17,19 @@ class Page extends Component {
         fetchMarketData: false
     };
 
-    constructor(props){
-        super(props);
-
-        this.fetchMarketData = this.fetchMarketData.bind(this);
-    }
-
     componentDidMount(){
-        if(this.props.fetchMarketData){
-            this.fetchMarketData();
-        }
+        this.dispatcher = new Dispatcher(this.props.dispatch);
 
         if(this.props.addTimer){
             this.timer = setInterval(() => {
-                this.fetchMarketData();
+                this.dispatcher.fetchMarketData(this.props.dispatch)
+                    .catch(err => {
+                        if(this.props.addTimer) {
+                            clearInterval(this.timer);
+                        }
+
+                        console.error(err);
+                    });
             }, TABLE_REFRESH_RATE);
         }
     }
@@ -42,23 +38,6 @@ class Page extends Component {
         if(this.props.addTimer) {
             clearInterval(this.timer);
         }
-    }
-
-    fetchMarketData(){
-        axios.get(CoinMarketCapApi.ticker())
-            .then(response => {
-                return Object.keys(response.data.data).map(dataKey =>
-                    response.data.data[dataKey]
-                );
-            }).then(marketData => {
-                this.props.dispatch(updateMarketData(marketData));
-            }).catch(err => {
-                if(this.props.addTimer) {
-                    clearInterval(this.timer);
-                }
-
-                AlertOptionPane.showErrorAlert({message: err.toString()});
-            });
     }
 
     render(){

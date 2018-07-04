@@ -1,6 +1,9 @@
 import {constants} from './constants';
 import CryptoTrade from "../components/pages/crypto/CryptoContent/CryptoTrade";
 
+/*----------------------------------------
+ * Feeds
+ *----------------------------------------*/
 export const updateFeeds = (feeds) => {
     return {
         type: constants.UPDATE_FEEDS,
@@ -8,6 +11,16 @@ export const updateFeeds = (feeds) => {
     }
 };
 
+export const isLoadingFeeds = (isLoading) => {
+    return {
+        type: constants.IS_LOADING_FEEDS,
+        payload: isLoading
+    }
+};
+
+/*----------------------------------------
+ * Crypto
+ *----------------------------------------*/
 export const updateAllCrypto = (crypto) => {
     return {
         type: constants.UPDATE_ALL_CRYPTO,
@@ -15,6 +28,16 @@ export const updateAllCrypto = (crypto) => {
     }
 };
 
+export const updateCrypto = (crypto) => {
+    return {
+        type: constants.UPDATE_CRYPTO,
+        payload: crypto
+    }
+};
+
+/*----------------------------------------
+ * Dividend
+ *----------------------------------------*/
 export const updateDividend = (dividendFund) => {
     return {
         type: constants.UPDATE_DIVIDEND,
@@ -29,6 +52,9 @@ export const isLoadingDividend = (isLoading = true) => {
     }
 };
 
+/*----------------------------------------
+ * Transaction
+ *----------------------------------------*/
 export const startTransaction = () => {
     return {
         type: constants.START_TRANSACTION,
@@ -56,6 +82,9 @@ export const endTransaction = (transaction) => {
     }
 };
 
+/*----------------------------------------
+ * Account
+ *----------------------------------------*/
 export const updateAccount = ({
     isLoading = true,
     tradeTokens = null,
@@ -75,43 +104,12 @@ export const updateAccount = ({
     }
 };
 
-export const resetAccount = () => {
-    return {
-        type: constants.RESET_ACCOUNT
-    }
-};
-
-export const isLoadingFeeds = (isLoading) => {
-    return {
-        type: constants.IS_LOADING_FEEDS,
-        payload: isLoading
-    }
-};
-
-export const updateCrypto = (crypto) => {
-    return {
-        type: constants.UPDATE_CRYPTO,
-        payload: crypto
-    }
-};
-
+/*----------------------------------------
+ * Market Data
+ *----------------------------------------*/
 export const updateMarketData = (marketData) => {
     return {
         type: constants.UPDATE_MARKET_DATA,
         payload: marketData
-    }
-};
-
-export const isLoadingMarketData = (isLoading) => {
-    return {
-        type: constants.IS_LOADING_MARKET_DATA,
-        payload: isLoading
-    }
-};
-
-export const isLoadingCrypto = (isLoading) => {
-    return {
-        type: constants.IS_LOADING_CRYPTO,
-        payload: isLoading
     }
 };

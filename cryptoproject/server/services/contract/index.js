@@ -5,7 +5,6 @@ const SETTINGS = require("../../../site-settings");
 const CONTRACT_ADDRESSES = SETTINGS.CONTRACT_ADDRESSES;
 const DIVIDEND_ADDRESS = SETTINGS.DIVIDEND_ADDRESS;
 
-
 const enterTheGame = (index, {from, value}) => {
     const methods = getCryptoContract(index).methods;
 

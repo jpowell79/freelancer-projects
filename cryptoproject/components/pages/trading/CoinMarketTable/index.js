@@ -27,7 +27,6 @@ class CoinMarketTable extends Component {
 
     componentDidMount(){
         this.tablesorter = new TableSorter($("#coin-market-table"));
-        this.tablesorter.sortAtName("Rank");
     }
 
     componentWillUnmount(){

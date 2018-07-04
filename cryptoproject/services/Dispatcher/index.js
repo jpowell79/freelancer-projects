@@ -1,15 +1,18 @@
 import {
-    isLoadingCrypto,
     updateAccount,
     updateAllCrypto,
     updateDividend,
-    isLoadingDividend
+    updateCrypto,
+    updateMarketData
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
 import {
     fetchAllCryptoContracts,
     fetchDividendContract
 } from "../../server/services/contract/index";
+import {fetchCryptoContract} from "../../server/services/contract";
+import axios from "axios";
+import CoinMarketCapApi from "../CoinMarketCapApi";
 
 class Dispatcher {
     constructor(dispatch){
@@ -18,9 +21,34 @@ class Dispatcher {
         this.updateAccount = this.updateAccount.bind(this);
         this.updateAllCrypto = this.updateAllCrypto.bind(this);
         this.updateDividendFund = this.updateDividendFund.bind(this);
+        this.fetchCryptoContract = this.fetchCryptoContract.bind(this);
+        this.fetchMarketData = this.fetchMarketData.bind(this);
     }
 
-    updateAccount(){
+    async fetchMarketData(){
+        return (
+            axios.get(CoinMarketCapApi.ticker())
+                .then(response => {
+                    return Object.keys(response.data.data).map(dataKey =>
+                        response.data.data[dataKey]
+                    );
+                }).then(marketData => {
+                    this.dispatch(updateMarketData(marketData));
+                })
+        );
+    }
+
+    async fetchCryptoContract(index){
+        return fetchCryptoContract(index)
+            .then(response => {
+                this.dispatch(updateCrypto(Object.assign({}, response, {index})));
+            }).catch(err => {
+                console.error(err);
+                this.dispatch(updateCrypto({}));
+            });
+    }
+
+    async updateAccount(){
         this.dispatch(updateAccount({
             isLoading: true
         }));
@@ -34,28 +62,21 @@ class Dispatcher {
         });
     }
 
-    updateDividendFund(){
-        this.dispatch(isLoadingDividend(true));
-
+    async updateDividendFund(){
         return fetchDividendContract().then(responses => {
             this.dispatch(updateDividend(
                 Object.assign({}, responses, {isLoading: false}
             )));
         }).catch(err => {
             console.error(err);
-            this.dispatch(isLoadingDividend(false));
         })
     }
 
-    updateAllCrypto(){
-        this.dispatch(isLoadingCrypto(true));
-
+    async updateAllCrypto(){
         return fetchAllCryptoContracts().then((responses) => {
             this.dispatch(updateAllCrypto(responses));
-            this.dispatch(isLoadingCrypto(false));
         }).catch(err => {
             console.error(err);
-            this.dispatch(isLoadingCrypto(false));
         });
     }
 }

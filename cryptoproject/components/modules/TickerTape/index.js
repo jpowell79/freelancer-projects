@@ -13,8 +13,8 @@ class TickerTape extends Component {
 
         return (
             <div className="ticker-tape" style={{
-                animationDuration: `${(items.length)}s`,
-                width: `${items.length*100}px`
+                animationDuration: `${(items.length*2)}s`,
+                width: `${items.length*115}px`
             }}>
                 <span>
                     {items.map((item, i) => {
