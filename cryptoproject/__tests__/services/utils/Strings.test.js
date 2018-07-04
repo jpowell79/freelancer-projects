@@ -1,4 +1,4 @@
-import Strings from '../../../services/Strings/';
+import Strings from '../../../services/Strings/index';
 
 it('Should turn false boolean into false string', () => {
     expect(Strings.booleanToString(false)).toBe('false');

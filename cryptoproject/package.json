@@ -65,6 +65,7 @@
   "jest": {
     "collectCoverageFrom": [
       "components/**/*.{js,jsx}",
+      "services/**/*.{js,jsx}",
       "redux/**/*.{js,jsx}"
     ],
     "testPathIgnorePatterns": [
