@@ -28,7 +28,7 @@ export const MAIN_MENU = {
         },
         {
             name: 'The Team',
-            href: ''
+            href: Paths.getTheTeamPage()
         },
         {
             name: 'Smart Contracts',

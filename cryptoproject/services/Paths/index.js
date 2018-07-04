@@ -3,12 +3,17 @@ import Settings from '../../site-settings';
 
 export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
+export const TEAM_IMAGES = `${IMAGES}/team`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto_icons`;
 
 class Paths {
     static getImage(name, size, type = 'png', root = '../..'){
         return `${root}/${IMAGES}/${name}_${size}.${type}`;
     };
+
+    static getTeamImage(name, type = 'png', root = '../..'){
+        return `${root}/${TEAM_IMAGES}/${name}.${type}`;
+    }
 
     static getCryptoIcon(name, size, root = '../..'){
         let parsedName = name.toLowerCase().replace(/ /g,'');
@@ -34,6 +39,10 @@ class Paths {
 
     static getTradingPage(root = '../..'){
         return `${root}/Trade`;
+    }
+
+    static getTheTeamPage(root = '../..'){
+        return `${root}/TheTeam`;
     }
 
     static getEtherScanUrl(address){
