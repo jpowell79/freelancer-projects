@@ -19,9 +19,9 @@ app.prepare().then(() => {
 }).then(() => {
     const PORT = process.env.PORT || siteSettings.DEFAULT_PORT;
 
-    server.listen(PORT, () => {
+    server.listen(PORT, siteSettings.HOST, () => {
         log.sectionTitle('Starting Application');
-        console.log(`The application is running on http://localhost:${PORT}/\n`);
+        console.log(`The application is running on http://${siteSettings.HOST}:${PORT}/\n`);
         log.apiPoints();
         log.endOfSection();
     });

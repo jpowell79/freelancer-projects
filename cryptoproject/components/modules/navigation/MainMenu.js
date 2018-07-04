@@ -18,6 +18,7 @@ class MainMenu extends Component {
         let $mainMenu = $('#main-menu');
 
         this.$mainMenuToggler.on('click', () => {
+            $('body').toggleClass('alert-open');
             $mainMenu.toggleClass('reveal-items');
             $mainMenu.addClass('animate');
             this.$mainMenuToggler.toggleClass('active');

@@ -5,7 +5,7 @@ import AccountDetails from '../components/pages/trading/AccountDetails';
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 import {mergeWithMarketData} from "../services/cryptoUtils";
 import CoinMarketTable from "../components/pages/trading/CoinMarketTable";
-import {TradingCountDown} from "../components/pages/trading/TradingCountDown";
+import {TradingCountdown} from "../components/pages/trading/TradingCountdown";
 import {TradingStats} from "../components/pages/trading/TradingsStats";
 import Dispatcher from "../services/Dispatcher";
 import {LoaderSmall} from "../components/modules/icons";
@@ -54,7 +54,7 @@ class Trade extends Component {
                         ) : (
                             <React.Fragment>
                                 <FullWidthSegment options={[skinny]} wrapper={1}>
-                                    <TradingCountDown cryptoMarketData={cryptoMarketData}/>
+                                    <TradingCountdown cryptoMarketData={cryptoMarketData}/>
                                 </FullWidthSegment>
                                 <FullWidthSegment options={[skinny, gray, bordered, centered]} wrapper={1}>
                                     <div className="ui padded segment">

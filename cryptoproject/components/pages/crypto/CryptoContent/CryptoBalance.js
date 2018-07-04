@@ -76,7 +76,7 @@ class CryptoBalance extends Component {
                         : (
                             <div className="ui error message">
                                 {(account.address === null)
-                                    ? "Please check your connection to metamask."
+                                    ? "Please check the connection to your ethereum account."
                                     : "You are not eligible to trade during the extended trading period."}
                             </div>
                         )}

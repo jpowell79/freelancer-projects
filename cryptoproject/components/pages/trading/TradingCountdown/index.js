@@ -2,7 +2,7 @@ import React from 'react';
 import {joinClassNames} from "../../../../services/utils";
 import CryptoCountdown from "../../crypto/CryptoContent/CryptoCountdown";
 
-export const TradingCountDown = ({cryptoMarketData, className, ...props}) => {
+export const TradingCountdown = ({cryptoMarketData, className, ...props}) => {
     return (
         <CryptoCountdown
             {...props}

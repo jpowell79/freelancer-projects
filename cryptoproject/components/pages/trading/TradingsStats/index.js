@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {joinClassNames} from "../../../../services/utils";
 import {doublingThreeColumnGrid} from "../../../../services/cssUtils";
 import {
@@ -6,9 +6,9 @@ import {
     getMostPopularCrypto
 } from "../../../../services/cryptoUtils/index";
 
-export const TradingStats = ({cryptoMarketData, className, ...props}) => {
+export const TradingStats = ({cryptoMarketData, className, id = "trading-stats", ...props}) => {
     return (
-        <div {...props} className={joinClassNames(
+        <div {...props} id={id} className={joinClassNames(
             doublingThreeColumnGrid('center aligned'),
             className)
         }>

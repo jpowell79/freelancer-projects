@@ -90,7 +90,9 @@ class DividendClaimWindow extends Component {
                         marginRight: "auto",
                         marginTop: "2em"
                     }}>
-                        <LoaderSmall/>
+                        <div>
+                            <LoaderSmall/>
+                        </div>
                         <div className="content">
                             <div className="header text-left">Waiting for transaction to be completed...</div>
                         </div>

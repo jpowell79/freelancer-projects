@@ -125,7 +125,7 @@ class HistoricData extends Component {
                     )}
                 {(this.state.historicData.length > 0)
                     ? (
-                        <div>
+                        <React.Fragment>
                             <FullWidthSegment options={[gray, bordered]} wrapper={1}>
                                 <HistoricDataSummary
                                     bestValueCrypto={this.getBestValueCrypto()}
@@ -150,7 +150,7 @@ class HistoricData extends Component {
                                     submitText="Download CSV"
                                 />
                             </FullWidthSegment>
-                        </div>
+                        </React.Fragment>
                     ) : null}
             </Page>
         );

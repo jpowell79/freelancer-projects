@@ -45,10 +45,11 @@ module.exports.TOKEN_NAME = 'TEST234';
  * Server Options
  *----------------------------------------*/
 module.exports.DEFAULT_PORT = 3000;
+module.exports.HOST = 'localhost';
 module.exports.MONGODB_URI = 'mongodb://localhost/database';
 
 /*----------------------------------------
- * Misc. Development Settings
+ * Ethereum Network Settings
  *----------------------------------------*/
 module.exports.HTTP_PROVIDER = 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv';
 module.exports.ETHER_SCAN_URL = 'https://kovan.etherscan.io/address';

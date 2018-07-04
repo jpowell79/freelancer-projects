@@ -58,7 +58,7 @@ class Crypto extends Component {
 
         if(isLoadingCrypto){
             return (
-                <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
+                <Page fetchMarketData={true} contentClass={fullWidthSegment('gray')}>
                     <Loader/>
                 </Page>
             );
@@ -66,7 +66,7 @@ class Crypto extends Component {
 
         if(cryptoMarketData.length === 0){
             return (
-                <Page fetchMarketData={true} contentClass={fullWidthSegment('light-gray')}>
+                <Page fetchMarketData={true} contentClass={fullWidthSegment('gray')}>
                     <div className="ui padded segment">
                         <h2 className="text-center">Error: Unable to load crypto data.</h2>
                     </div>

@@ -2,6 +2,8 @@
  * Page
  *----------------------------------------*/
 #page {
+    overflow-x: hidden;
+
     .page-title {
         text-align: center;
         font-size: $display3;

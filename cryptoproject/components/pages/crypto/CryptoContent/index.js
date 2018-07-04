@@ -164,49 +164,35 @@ class CryptoContent extends Component {
                         <div className="sub header"><a href={`${Paths.getEtherScanUrl(contractAddress)}`}>{contractAddress}</a></div>
                     </h2>
                 </section>
-                {!web3.hasMetaMask()
-                    ?  (
-                        <section id="metamask-not-found">
-                            <div className={titledSegmentHeader() + ' error'}>
-                                <h2>The Metamask plugin is required in order to trade</h2>
-                            </div>
-                            <div className={titledSegmentContent('children-divider-2')}>
-                                <a href="https://metamask.io/">
-                                    <img src={Paths.getImage('metamask', 'download')}/>
-                                </a>
-                            </div>
-                        </section>
-                    ) : (
-                        <React.Fragment>
-                            <CryptoBalance/>
-                            <section id="crypto-details">
-                                <div className={titledSegmentHeader()}>
-                                    <h2>{name}<span className="small symbol">({symbol})</span></h2>
-                                </div>
-                                <div className={titledSegmentContent('children-divider-2')}>
-                                    <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
-                                    <CryptoCountdown
-                                        standardTimeCloses={standardTimeCloses}
-                                        extendedTimeCloses={extendedTimeCloses}
-                                        onStandardTimeZero={() => {
-                                            this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                                standardTimeCloses: 0
-                                            })));
-                                        }}
-                                        onExtendedTimeZero={() => {
-                                            this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                                extendedTimeCloses: 0
-                                            })));
-                                        }}
-                                    />
-                                    <CryptoTrade
-                                        isOpen={this.isOpen()}
-                                        isLocked={this.isLocked()}
-                                        handleTrade={this.handleTrade}/>
-                                </div>
-                            </section>
-                        </React.Fragment>
-                    )}
+                <React.Fragment>
+                    <CryptoBalance/>
+                    <section id="crypto-details">
+                        <div className={titledSegmentHeader()}>
+                            <h2>{name}<span className="small symbol">({symbol})</span></h2>
+                        </div>
+                        <div className={titledSegmentContent('children-divider-2')}>
+                            <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
+                            <CryptoCountdown
+                                standardTimeCloses={standardTimeCloses}
+                                extendedTimeCloses={extendedTimeCloses}
+                                onStandardTimeZero={() => {
+                                    this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                        standardTimeCloses: 0
+                                    })));
+                                }}
+                                onExtendedTimeZero={() => {
+                                    this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                        extendedTimeCloses: 0
+                                    })));
+                                }}
+                            />
+                            <CryptoTrade
+                                isOpen={this.isOpen()}
+                                isLocked={this.isLocked()}
+                                handleTrade={this.handleTrade}/>
+                        </div>
+                    </section>
+                </React.Fragment>
             </section>
         );
     }

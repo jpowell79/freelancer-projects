@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {MAX_ETH, LOWEST_ETH} from "../../../../site-settings";
 import {LoaderSmall} from "../../../modules/icons/index";
+import Paths from "../../../../services/Paths";
 
 class CryptoTrade extends Component {
     static propTypes = {
@@ -57,7 +58,9 @@ class CryptoTrade extends Component {
         case CryptoTrade.tradeStatus.inProgress:
             return (
                 <div className="ui icon info message">
-                    <LoaderSmall/>
+                    <div>
+                        <LoaderSmall/>
+                    </div>
                     <div className="content">
                         <div className="header">Waiting for transaction confirmation</div>
                         <span>Please allow up to 30 seconds for the transaction to
