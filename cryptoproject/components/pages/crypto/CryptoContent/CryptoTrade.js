@@ -27,11 +27,13 @@ class CryptoTrade extends Component {
         super(props);
 
         this.state = {
-            hasCorrectInput: true
+            hasCorrectInput: true,
+            tradeButtonIsEnabled: true
         };
 
         this.renderTradeForm = this.renderTradeForm.bind(this);
         this.renderTradeTransactionMessage = this.renderTradeTransactionMessage.bind(this);
+        this.handleTrade = this.handleTrade.bind(this);
     }
 
     static isValidTrade(tradeValue){
@@ -101,6 +103,19 @@ class CryptoTrade extends Component {
         }
     }
 
+    handleTrade(event){
+        event.preventDefault();
+
+        this.setState({
+            tradeButtonIsEnabled: false
+        });
+
+        this.props.handleTrade(this.state.tradeValue)
+            .then(() => {
+                this.setState({tradeButtonIsEnabled: true});
+            });
+    }
+
     renderTradeForm(){
         let {
             tradeValue,
@@ -135,12 +150,17 @@ class CryptoTrade extends Component {
                     />
                     {(isOpen)
                         ? (
-                            <button
-                                className="ui primary submit button"
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    handleTrade(tradeValue);
-                                }}>Trade</button>
+                            (this.state.tradeButtonIsEnabled)
+                                ? (
+                                    <button
+                                        className="ui primary submit button"
+                                        onClick={this.handleTrade}>Trade</button>
+                                ) : (
+                                    <button
+                                        disabled
+                                        className="ui primary submit button"
+                                        onClick={this.handleTrade}>Trade</button>
+                                )
                         )
                         : <button disabled className="ui submit button">Locked</button>}
                 </div>

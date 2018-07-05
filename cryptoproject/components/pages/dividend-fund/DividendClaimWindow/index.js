@@ -12,10 +12,12 @@ class DividendClaimWindow extends Component {
 
         this.state = {
             isClaimingDividend: false,
-            dividendClaimed: false
+            dividendClaimed: false,
+            claimButtonIsEnabled: true
         };
 
         this.canMakeClaim = this.canMakeClaim.bind(this);
+        this.claimDividend = this.claimDividend.bind(this);
     }
 
     canMakeClaim(){
@@ -31,6 +33,21 @@ class DividendClaimWindow extends Component {
         return claimWindowIsOpen &&
             tokenSupplyExists &&
             hasTradeTokens;
+    }
+
+    claimDividend(){
+        this.setState({
+            isClaimingDividend: true,
+            claimButtonIsEnabled: false
+        });
+
+        claimDividend().then(response => {
+            console.log(response);
+            this.setState({
+                isClaimingDividend: false,
+                dividendClaimed: true
+            });
+        });
     }
 
     render(){
@@ -67,21 +84,18 @@ class DividendClaimWindow extends Component {
                     ? (
                         <React.Fragment>
                             <h2>Click the claim button to claim your dividend</h2>
-                            <button
-                                className="ui huge primary button"
-                                onClick={() => {
-                                    this.setState({
-                                        isClaimingDividend: true
-                                    });
-
-                                    claimDividend().then(response => {
-                                        console.log(response);
-                                        this.setState({
-                                            isClaimingDividend: false,
-                                            dividendClaimed: true
-                                        });
-                                    });
-                                }}>Claim</button>
+                            {(this.state.claimButtonIsEnabled) ? (
+                                    <button
+                                        className="ui huge primary button"
+                                        onClick={this.claimDividend}>Claim</button>
+                                )
+                                : (
+                                    <button
+                                        disabled
+                                        className="ui huge primary button"
+                                        onClick={this.claimDividend}>Claim</button>
+                                )
+                            }
                         </React.Fragment>
                     ) : null}
                 {this.state.isClaimingDividend && (

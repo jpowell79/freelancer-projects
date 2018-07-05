@@ -67,7 +67,7 @@ class CryptoContent extends Component {
             hasExtendedTimeLeft;
     }
 
-    handleTrade(tradeValue){
+    async handleTrade(tradeValue){
         let {
             incorrectEth,
             notEnoughEth,
@@ -83,7 +83,7 @@ class CryptoContent extends Component {
             let address = '';
             this.props.dispatch(startTransaction());
 
-            web3.fetchAccountAddress().then(accountAddress => {
+            return web3.fetchAccountAddress().then(accountAddress => {
                 address = accountAddress;
                 return web3.fetchEthBalance(accountAddress);
             }).then(balance => {
