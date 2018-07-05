@@ -12,14 +12,6 @@ import {
 
 class TheTeam extends Component {
     render(){
-        const {
-            bordered
-        } = FullWidthSegment.options;
-
-        const {
-            gray
-        } = FullWidthSegment.options.colors;
-
         return (
             <Page>
                 <PageTitle title="The Team" className="text-center">

@@ -10,4 +10,26 @@
 .elegant {
     font-size: $h2;
     font-weight: lighter;
+
+    a {
+        font-weight: normal;
+    }
+
+    p,
+    span,
+    ol,
+    li {
+        font-size: $h3;
+    }
+
+    ol,
+    ul {
+        li {
+            margin-bottom: 5px;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+    }
 }

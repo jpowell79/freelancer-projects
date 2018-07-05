@@ -45,6 +45,10 @@ class Paths {
         return `${root}/TheTeam`;
     }
 
+    static getHowItWorksPage(root = '../..'){
+        return `${root}/HowItWorks`;
+    }
+
     static getEtherScanAddressUrl(address){
         return `${Settings.ETHER_SCAN_URL}/address/${address}`;
     }

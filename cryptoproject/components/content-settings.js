@@ -24,7 +24,7 @@ export const MAIN_MENU = {
         },
         {
             name: 'How it Works',
-            href: ''
+            href: Paths.getHowItWorksPage()
         },
         {
             name: 'The Team',
