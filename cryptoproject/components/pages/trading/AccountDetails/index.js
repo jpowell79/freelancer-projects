@@ -35,7 +35,7 @@ class AccountDetails extends Component {
                         <div className="content">
                             <h3>Ethereum Address</h3>
                             <div style={{wordBreak: "break-all"}}>
-                                <a href={Paths.getEtherScanUrl(account.address)}>{
+                                <a href={Paths.getEtherScanUrl(account.address)} target="_blank">{
                                     account.address
                                 }</a>
                             </div>

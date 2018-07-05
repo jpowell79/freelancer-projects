@@ -46,7 +46,7 @@ class CryptoBalance extends Component {
                                     {(account.address === null)
                                         ? 'Could not be detected.'
                                         : (
-                                            <a href={Paths.getEtherScanUrl(account.address)}>{
+                                            <a href={Paths.getEtherScanUrl(account.address)} target="_blank">{
                                                 account.address
                                             }</a>
                                         )}

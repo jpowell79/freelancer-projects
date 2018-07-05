@@ -49,6 +49,10 @@ class Paths {
         return `${Settings.ETHER_SCAN_URL}/${address}`;
     }
 
+    static getTransactionHashUrl(address){
+        return `${Settings.ETHER_SCAN_URL}/tx/${address}`;
+    }
+
     static redirect = (res, url) => {
         if(res){
             res.writeHead(302, {

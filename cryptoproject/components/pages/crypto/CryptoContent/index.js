@@ -161,7 +161,11 @@ class CryptoContent extends Component {
                 <section id="crypto-contract-address" className="ui segment header">
                     <h2 className="ui header no-margin-top">
                         This smart contract address is:
-                        <div className="sub header"><a href={`${Paths.getEtherScanUrl(contractAddress)}`}>{contractAddress}</a></div>
+                        <div className="sub header">
+                            <a href={`${Paths.getEtherScanUrl(contractAddress)}`} target="_blank">{
+                                contractAddress
+                            }</a>
+                        </div>
                     </h2>
                 </section>
                 <React.Fragment>

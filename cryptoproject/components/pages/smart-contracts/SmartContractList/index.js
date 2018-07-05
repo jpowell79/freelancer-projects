@@ -45,7 +45,7 @@ class SmartContractList extends Component {
                 <h2 className="ui header display-5">
                     <a href={`${Paths.getCryptoPage()}?index=${i}`}>{contractName}_contract</a>
                     <div className="sub header h3 lighter">
-                        <a href={Paths.getEtherScanUrl(address)}>{address}</a>
+                        <a href={Paths.getEtherScanUrl(address)} target="_blank">{address}</a>
                     </div>
                 </h2>
                 <Accordion styled>
