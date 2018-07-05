@@ -14,11 +14,13 @@ class MainMenu extends Component {
 
     componentDidMount(){
         this.$mainMenuToggler = $('#main-menu-toggler');
-        let $mobileMenuIcon = $('.mobile-menu-icon');
-        let $mainMenu = $('#main-menu');
+        const $mobileMenuIcon = $('.mobile-menu-icon');
+        const $mainMenu = $('#main-menu');
+        const $body = $('body');
 
         this.$mainMenuToggler.on('click', () => {
-            $('body').toggleClass('alert-open');
+            $body.toggleClass('alert-open');
+            $body.toggleClass('alert-scrollbar-filler');
             $mainMenu.toggleClass('reveal-items');
             $mainMenu.addClass('animate');
             this.$mainMenuToggler.toggleClass('active');
