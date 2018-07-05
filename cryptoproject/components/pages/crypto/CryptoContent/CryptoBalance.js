@@ -11,7 +11,15 @@ import Paths from "../../../../services/Paths";
 
 class CryptoBalance extends Component {
     componentDidMount(){
-        new Dispatcher(this.props.dispatch).updateAccount();
+        this.dispatcher = new Dispatcher(this.props.dispatch);
+        this.dispatcher.updateAccount();
+        this.dispatcher.subscribeToAccountUpdate({
+            getCompareAddress: () => this.props.account.address
+        });
+    }
+
+    componentWillUnmount(){
+        this.dispatcher.unsubscribe();
     }
 
     render(){

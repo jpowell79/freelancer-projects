@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import Countdown from 'react-countdown-now';
 import PropTypes from "prop-types";
+import HideFragment from '../../../modules/HideFragment';
 
 class CryptoCountdown extends Component {
     static defaultProps = {
@@ -71,24 +72,26 @@ class CryptoCountdown extends Component {
 
     render(){
         return (
-            <div id="crypto-countdown" className={this.props.className}>
-                {this.props.standardTimeRenderer(
-                    <Countdown
-                        date={this.props.standardTimeCloses}
-                        onComplete={this.props.onStandardTimeZero}
-                        renderer={CryptoCountdown.countdownRenderer}
-                    />,
-                    'Standard trade time closes in'
-                )}
-                {this.props.extendedTimeRenderer(
-                    <Countdown
-                        date={this.props.extendedTimeCloses}
-                        onComplete={this.props.onExtendedTimeZero}
-                        renderer={CryptoCountdown.countdownRenderer}
-                    />,
-                    'Extended trade time closes in'
-                )}
-            </div>
+            <HideFragment>
+                <div id="crypto-countdown" className={this.props.className}>
+                    {this.props.standardTimeRenderer(
+                        <Countdown
+                            date={this.props.standardTimeCloses}
+                            onComplete={this.props.onStandardTimeZero}
+                            renderer={CryptoCountdown.countdownRenderer}
+                        />,
+                        'Standard trade time closes in'
+                    )}
+                    {this.props.extendedTimeRenderer(
+                        <Countdown
+                            date={this.props.extendedTimeCloses}
+                            onComplete={this.props.onExtendedTimeZero}
+                            renderer={CryptoCountdown.countdownRenderer}
+                        />,
+                        'Extended trade time closes in'
+                    )}
+                </div>
+            </HideFragment>
         );
     }
 }

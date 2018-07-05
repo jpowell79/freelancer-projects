@@ -13,6 +13,7 @@ import {
 import {fetchCryptoContract} from "../../server/services/contract";
 import axios from "axios";
 import CoinMarketCapApi from "../CoinMarketCapApi";
+import Web3 from "../../server/services/Web3";
 
 class Dispatcher {
     constructor(dispatch){
@@ -23,6 +24,8 @@ class Dispatcher {
         this.updateDividendFund = this.updateDividendFund.bind(this);
         this.fetchCryptoContract = this.fetchCryptoContract.bind(this);
         this.fetchMarketData = this.fetchMarketData.bind(this);
+        this.subscribeToAccountUpdate = this.subscribeToAccountUpdate.bind(this);
+        this.unsubscribe = this.unsubscribe.bind(this);
     }
 
     async fetchMarketData(){
@@ -78,6 +81,27 @@ class Dispatcher {
         }).catch(err => {
             console.error(err);
         });
+    }
+
+    subscribeToAccountUpdate({getCompareAddress}){
+        this.handleAccountUpdate = (data) => {
+            let address = (data.selectedAddress === undefined)
+                ? null : data.selectedAddress.toLowerCase();
+            let accountAddress = (getCompareAddress() === null)
+                ? null : getCompareAddress().toLowerCase();
+
+            if(address !== accountAddress){
+                this.updateAccount();
+            }
+        };
+
+        if(Web3.hasMetaMask()){
+            Web3.onMetamaskUpdate(this.handleAccountUpdate);
+        }
+    }
+
+    unsubscribe(){
+        Web3.unsubscribeToMetmaskUpdate(this.handleAccountUpdate);
     }
 }
 

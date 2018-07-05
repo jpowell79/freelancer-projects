@@ -12,6 +12,7 @@ import {
 import Settings from '../../../../site-settings';
 import Paths from "../../../../services/Paths/index";
 import Strings from "../../../../services/Strings/index";
+import Web3 from '../../../../server/services/Web3';
 
 class AccountDetails extends Component {
     constructor(props){
@@ -21,7 +22,15 @@ class AccountDetails extends Component {
     }
 
     componentDidMount() {
-        new Dispatcher(this.props.dispatch).updateAccount();
+        this.dispatcher = new Dispatcher(this.props.dispatch);
+        this.dispatcher.updateAccount();
+        this.dispatcher.subscribeToAccountUpdate({
+            getCompareAddress: () => this.props.account.address
+        });
+    }
+
+    componentWillUnmount(){
+        this.dispatcher.unsubscribe();
     }
 
     renderAccountDetails(){

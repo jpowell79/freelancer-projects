@@ -17,10 +17,6 @@ class CoinMarketTable extends Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            placeholderIcons: []
-        };
-
         this.prevProps = {cryptoMarketData: []};
         this.renderMarketData = this.renderMarketData.bind(this);
     }
@@ -62,20 +58,7 @@ class CoinMarketTable extends Component {
 
             return (
                 <tr key={i}>
-                    <td><img
-                        src={(this.state.placeholderIcons.includes(`Icon ${i}`))
-                            ? Paths.getCryptoIcon('placeholder', 'icon')
-                            : Paths.getCryptoIcon(crypto.name, 'icon')}
-                        onError={() => {
-                            this.setState((prevState) => {
-                                return {
-                                    placeholderIcons: [
-                                        ...prevState.placeholderIcons,
-                                        `Icon ${i}`
-                                    ]
-                                }
-                            });
-                        }}/></td>
+                    <td><img src={Paths.getCryptoIcon(crypto.name, 'icon')}/></td>
                     <td>{crypto.rank}</td>
                     <td>{crypto.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>

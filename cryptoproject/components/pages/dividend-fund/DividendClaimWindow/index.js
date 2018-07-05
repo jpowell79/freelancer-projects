@@ -5,6 +5,7 @@ import Countdown from 'react-countdown-now';
 import Strings from "../../../../services/Strings";
 import {LoaderSmall} from "../../../modules/icons";
 import {claimDividend} from '../../../../server/services/contract';
+import HideFragment from '../../../modules/HideFragment';
 
 class DividendClaimWindow extends Component {
     constructor(props){
@@ -75,11 +76,13 @@ class DividendClaimWindow extends Component {
                     (dividend.claimWindowIsOpen) ? "OPEN" : "CLOSED"
                 }</h3>
                 <h2>{claimWindowText}</h2>
-                <Countdown
-                    date={time}
-                    onComplete={() => {}}
-                    renderer={CryptoCountdown.countdownRenderer}
-                />
+                <HideFragment>
+                    <Countdown
+                        date={time}
+                        onComplete={() => {}}
+                        renderer={CryptoCountdown.countdownRenderer}
+                    />
+                </HideFragment>
                 {(this.canMakeClaim())
                     ? (
                         <React.Fragment>

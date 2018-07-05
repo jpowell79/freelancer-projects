@@ -47,13 +47,14 @@ class Crypto extends Component {
             )
         }
 
+        const data = cryptoMarketData.filter(crypto =>
+            crypto.index === this.props.index
+        )[0];
+
         return (
             <Page contentClass="crypto" addTimer={true}>
-                <CryptoContent
-                    data={cryptoMarketData[0]}/>
-                <CryptoSidebar
-                    id={cryptoMarketData[0].id}
-                    cryptoName={cryptoMarketData[0].name}/>
+                <CryptoContent data={data}/>
+                <CryptoSidebar id={data.id} cryptoName={data.name}/>
             </Page>
         );
     }

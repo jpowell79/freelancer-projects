@@ -39,7 +39,7 @@ class DividendFund extends Component {
                 <PageTitle title="Dividend Fund"/>
                 <FullWidthSegment options={[gray, bordered]} wrapper={2}>
                     <div className="ui padded segment">
-                        <h2>Account Details</h2>
+                        <h2>Your Account Details</h2>
                         <AccountDetails/>
                     </div>
                 </FullWidthSegment>

@@ -17,6 +17,14 @@ function CustomWeb3(provider){
         return this.currentProvider.isMetaMask !== undefined;
     };
 
+    this.onMetamaskUpdate = (callback) => {
+        this.currentProvider.publicConfigStore.on('update', callback);
+    };
+
+    this.unsubscribeToMetmaskUpdate = (callback) => {
+        this.currentProvider.publicConfigStore.unsubscribe(callback);
+    };
+
     this.fetchAccountAddress = () => {
         return this.eth.getAccounts().then(accounts => {
             return accounts[0];
