@@ -16,8 +16,8 @@ class DividendInfo extends Component {
         if(!Strings.isDefined(account.address)) return null;
 
         const share = (account.tradeTokens > 0)
-            ? round(dividend.totalTokenSupply/account.tradeTokens, 2) : 0;
-        const claim = (share > 0) ? dividend.value/share : 0;
+            ? round(account.tradeTokens/dividend.totalTokenSupply, 2) : 0;
+        const claim = (share > 0) ? round(dividend.value * share, 2) : 0;
 
         return (
             <div className="ui very relaxed list text-center">
@@ -28,7 +28,7 @@ class DividendInfo extends Component {
                     <p className="h4">The current dividend stands at <span className="bold">{dividend.value}</span> Eth.</p>
                 </div>
                 <div className="item">
-                    <p className="h4">You will be entitled to <span className="bold">{share}%</span> share of the dividend.</p>
+                    <p className="h4">You will be entitled to <span className="bold">{share*100}%</span> share of the dividend.</p>
                 </div>
                 <div className="item">
                     <p className="h4">You would be entitled to claim <span className="bold">{claim}</span> Eth.</p>
