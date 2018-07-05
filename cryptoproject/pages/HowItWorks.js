@@ -9,8 +9,41 @@ import Link from 'next/link';
 import Paths from "../services/Paths";
 import {twoColumnGrid} from "../services/cssUtils";
 
+const Iframe = ({src}) => {
+    return <iframe style={{
+        width: "100%",
+        minHeight: "65vh"
+    }} src={src}/>;
+};
+
 class HowItWorks extends Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+            activeIndex: -1
+        };
+
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(e, titleProps){
+        const { index } = titleProps;
+        const activeIndex = (index === this.state.activeIndex) ? -1 : index;
+
+        this.setState({activeIndex});
+    }
+
     static renderArticle(){
+        const {
+            bordered,
+            skinny
+        } = FullWidthSegment.options;
+
+        const {
+            gray
+        } = FullWidthSegment.options.colors;
+
         return (
             <article className="elegant article">
                 <p className="bold">Up to speed on crypto now?</p>
@@ -22,7 +55,7 @@ class HowItWorks extends Component {
                     CryptoTrade harnesses pari-mutuel betting to pool together all bets across
                     all cryptocurrencies, and the winning pot of money is then shared amongst the winners.
                 </p>
-                <FullWidthSegment options={['bordered', 'gray', 'skinny']}>
+                <FullWidthSegment options={[bordered, gray, skinny]}>
                     <div className="ui segment">
                         <div className={twoColumnGrid()}>
                             <div className="column">
@@ -40,6 +73,8 @@ class HowItWorks extends Component {
                         </div>
                     </div>
                 </FullWidthSegment>
+
+
                 <p className="title">Got all that?</p>
                 <p>
                     Ok so let’s now say that 100 other people each bet 1eth each on Ethereum,
@@ -58,6 +93,8 @@ class HowItWorks extends Component {
                     That’s also 100 eth for every crypto, so a total of 2,000 eth in the betting
                     pot.
                 </p>
+
+
                 <p className="title">Still with us?</p>
                 <p>
                     Right so to recap, you bet on Bitcoin, you own 1% of the Bitcoin pot, and
@@ -93,6 +130,8 @@ class HowItWorks extends Component {
                     Well you bet 1 eth on Bitcoin, so congratulations, you were part of the
                     winning crypto pot!
                 </p>
+
+
                 <p className="title">So what’s next?</p>
                 <p>
                     Well you own 1% of the winning pot, and the total pot was 2000 eth, so
@@ -108,6 +147,7 @@ class HowItWorks extends Component {
                         amongst the TOTE234 token holders.
                     </li>
                 </ul>
+
 
                 <p className="title">How much do I get?</p>
                 <p>So you are entitled to a chunk of the 95% right… let’s do the math….</p>
@@ -128,14 +168,20 @@ class HowItWorks extends Component {
                     else did, so quite rightly, you are entitled to a bigger chunk of
                     the winnings.
                 </p>
-                <p>So using the same example, you bet 5 eth but 99 other players bet 1 eth.</p>
-                <p>Therefore the total amount bet on Bitcoin was 104 eth</p>
+                <p>
+                    So using the same example, you bet 5 eth but 99 other players bet 1 eth.
+                    Therefore the total amount bet on Bitcoin was 104 eth.
+                </p>
                 <p className="math">5/104 = 0.0481</p>
                 <p>To get a percentage value, you simply multiply this value by 100</p>
                 <p className="math">0.0481 x 100 = 4.81%</p>
-                <p>You therefore own 4.81% of the Bitcoin pot</p>
-                <p>So in terms of your entitlement of a total 1900 eth pot:</p>
+                <p>
+                    You therefore own 4.81% of the Bitcoin pot. So in terms of your entitlement
+                    of a total 1900 eth pot:
+                </p>
                 <p className="math">4.81% of 1900 is 91.39 eth!</p>
+
+
                 <p className="title">Anything else I need to know?</p>
                 <p>Well there are some simple rules to follow when playing CryptoTrade:</p>
                 <ol>
@@ -144,14 +190,19 @@ class HowItWorks extends Component {
                     <li>Total maximum number of bets per crypto: {Settings.MAX_NR_OF_TRADES}</li>
                 </ol>
                 <p>
-                    Anyone with a valid Ethereum wallet and enough eth can play the game during the standard trading period, which is currently set at 154 hours from the start of each game. At the 154th hour, the game is locked to everyone except Trade234 token holders.
-                    Trade234 token holders are able to trade for an additional 4 hours after the standard trading window (up to the 158th hour)
-                    After 158 hours the game is completely locked, and no further trades are accepted
+                    Anyone with a valid Ethereum wallet and enough eth can play the game during
+                    the standard trading period, which is currently set at 154 hours from the
+                    start of each game. At the 154th hour, the game is locked to everyone except
+                    Trade234 token holders. Trade234 token holders are able to trade for an additional
+                    4 hours after the standard trading window (up to the 158th hour) After 158 hours
+                    the game is completely locked, and no further trades are accepted.
                 </p>
-                <p>
-                    PLEASE DO NOT ATTEMPT TO SEND ETH TO THE CRYPTO POT CONTRACTS
-                    OUTSIDE OF THE OFFICIAL DAPP ON OUR WEBSITE
-                </p>
+                <div className="ui centered message">
+                    <p className="h6 bold">
+                        PLEASE DO NOT ATTEMPT TO SEND ETH TO THE CRYPTO POT CONTRACTS
+                        OUTSIDE OF THE OFFICIAL DAPP ON OUR WEBSITE.
+                    </p>
+                </div>
                 <p>
                     At the 166th hour, the game calls for a random number via <a
                     href="http://www.random.org">www.random.org</a> and the number will be between
@@ -164,7 +215,7 @@ class HowItWorks extends Component {
                     back to their natural levels. Our “RandomNumber” smart contract is fully open
                     to the public on our github page, so you are able to see exactly how we retrieve
                     the random number. We also discuss how the final price can be independently verified
-                    using the coinmarketCap API.
+                    using the CoinMarketCap API.
                 </p>
                 <p>
                     Once the final prices are in, the smart contract cycles through every
@@ -176,6 +227,8 @@ class HowItWorks extends Component {
                     winners, and the remaining 5% is sent to the dividend fund. Once all
                     transfers have been made, the game resets, and is ready to play once more.
                 </p>
+
+
                 <p className="title">What about the dividend?</p>
                 <p>
                     All TEST234 token holders are entitled to a share of the dividend fund.
@@ -188,6 +241,10 @@ class HowItWorks extends Component {
     }
 
     render(){
+        const {
+            skinny
+        } = FullWidthSegment.options;
+
         return (
             <Page>
                 <PageTitle title="How it works" className="elegant text-center">
@@ -198,93 +255,98 @@ class HowItWorks extends Component {
                     <div className="wrapper-2">
                         <Accordion styled>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 0}
+                                index={0}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What are Crypto Currencies?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 0}>
+                                <Iframe src="https://en.wikipedia.org/wiki/Cryptocurrency"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
+                                active={this.state.activeIndex === 1}
                                 index={1}
-                                onClick={() => {}}>
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What is Ethereum?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 1}>
+                                <Iframe src="https://en.wikipedia.org/wiki/Ethereum"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 2}
+                                index={2}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     How do I obtain Ethereum?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 2}>
+                                <Iframe src="https://www.cryptocompare.com/mining/guides/how-to-buy-ethereum/"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 3}
+                                index={3}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What is a blockchain?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 3}>
+                                <Iframe src="https://en.wikipedia.org/wiki/Blockchain"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 4}
+                                index={4}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What are smart contracts?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 4}>
+                                <Iframe src="https://en.wikipedia.org/wiki/Smart_contract"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 5}
+                                index={5}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What are Ethereum ERC20 Tokens?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 5}>
+                                <Iframe src="https://en.wikipedia.org/wiki/ERC20"/>
                             </Accordion.Content>
                             <Accordion.Title
-                                active={1}
-                                index={1}
-                                onClick={() => {}}>
+                                active={this.state.activeIndex === 6}
+                                index={6}
+                                onClick={this.handleClick}>
                                 <Dropdown/>
                                 <div className="content">
                                     What is Metamask?
                                 </div>
                             </Accordion.Title>
-                            <Accordion.Content>
-                                <h3 className="no-margin-bottom">pricing:</h3>
+                            <Accordion.Content active={this.state.activeIndex === 6}>
+                                <iframe
+                                    width="560"
+                                    height="315"
+                                    src="https://www.youtube.com/embed/6Gf_kRE4MJU"
+                                    frameBorder="0"
+                                    allow="autoplay; encrypted-media" allowFullScreen/>
                             </Accordion.Content>
                         </Accordion>
                     </div>
                 </PageTitle>
-                <FullWidthSegment wrapper={2} options={['skinny']}>
+                <FullWidthSegment wrapper={2} options={[skinny]}>
                     {HowItWorks.renderArticle()}
                 </FullWidthSegment>
             </Page>
