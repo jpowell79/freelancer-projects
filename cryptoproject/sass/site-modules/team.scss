@@ -1,0 +1,38 @@
+/*----------------------------------------
+ * Team
+ *----------------------------------------*/
+.team {
+    text-align: center;
+
+    > div {
+        > img {
+            border-radius: 50%;
+        }
+
+        > .name {
+            margin-bottom: $divider5;
+        }
+
+        > .role {
+            margin-top: 0;
+            margin-bottom: $divider3;
+            text-transform: uppercase;
+        }
+
+        > .description {
+            margin-bottom: 10px;
+        }
+
+        > .read-more {
+            font-weight: bold;
+        }
+
+        > .social-menu {
+            margin-top: $divider3;
+
+            > a {
+                background-color: $secondary;
+            }
+        }
+    }
+}

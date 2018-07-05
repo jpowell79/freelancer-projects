@@ -33,6 +33,10 @@ export const doublingThreeColumnGrid = (className = '') => {
     return joinClassNames('ui stackable three column doubling grid', className);
 };
 
+export const doublingFourColumnGrid = (className = '') => {
+    return joinClassNames('ui stackable four column doubling grid', className);
+};
+
 export const COLORS = {
     primary: 'primary',
     secondary: 'secondary',
