@@ -45,7 +45,7 @@ class SmartContractList extends Component {
                 <h2 className="ui header display-5">
                     <a href={`${Paths.getCryptoPage()}?index=${i}`}>{contractName}_contract</a>
                     <div className="sub header h3 lighter">
-                        <a href={Paths.getEtherScanUrl(address)} target="_blank">{address}</a>
+                        <a href={Paths.getEtherScanAddressUrl(address)} target="_blank">{address}</a>
                     </div>
                 </h2>
                 <Accordion styled>
@@ -60,12 +60,12 @@ class SmartContractList extends Component {
                     </Accordion.Title>
                     <Accordion.Content active={activeIndexes.includes(i)}>
                         <h3 className="no-margin-bottom">{contractName} pricing: <a className="lighter" href={
-                            `${Paths.getEtherScanUrl(Settings.PRICING_ADDRESS)}`
+                            `${Paths.getEtherScanAddressUrl(Settings.PRICING_ADDRESS)}`
                         }>
                             {Settings.PRICING_ADDRESS}
                         </a></h3>
                         <h3 style={{marginTop: ".75em"}}>Dividend contract: <a className="lighter" href={
-                            `${Paths.getEtherScanUrl(Settings.DIVIDEND_ADDRESS)}`
+                            `${Paths.getEtherScanAddressUrl(Settings.DIVIDEND_ADDRESS)}`
                         }>
                             {Settings.DIVIDEND_ADDRESS}
                         </a></h3>

@@ -54,7 +54,7 @@ class DividendFund extends Component {
                                 <FullWidthSegment options={[centered]} wrapper={2}>
                                     <h2 className="no-margin-bottom">The dividend smart contract address is</h2>
                                     <h2 className="capitalized h2" style={{wordBreak: "break-all"}}><a
-                                        href={Paths.getEtherScanUrl(dividend.address)}>{
+                                        href={Paths.getEtherScanAddressUrl(dividend.address)}>{
                                         dividend.address
                                     }</a></h2>
                                 </FullWidthSegment>

@@ -19,6 +19,7 @@ class CryptoTrade extends Component {
         incorrectEth: "incorrectEth",
         notEnoughEth: "notEnoughEth",
         notEnoughTradeTokens: "notEnoughTradeTokens",
+        tradeFailed: "tradeFailed",
         success: "success",
         error: "error"
     };
@@ -52,7 +53,7 @@ class CryptoTrade extends Component {
                 <div className="ui success message">
                     <div className="header">Your transaction has been approved!</div>
                     <span>You have successfully entered the game. Your transaction hash is </span>
-                    <a href={`${Paths.getTransactionHashUrl(transaction.transactionHash)}`} target="_blank">
+                    <a href={`${Paths.getEtherScanTransactionUrl(transaction.transactionHash)}`} target="_blank">
                         {transaction.transactionHash}
                     </a>
                 </div>
@@ -68,6 +69,16 @@ class CryptoTrade extends Component {
                         <span>Please allow up to 30 seconds for the transaction to
                             be processed and written to the Ethereum blockchain.</span>
                     </div>
+                </div>
+            );
+        case CryptoTrade.tradeStatus.tradeFailed:
+            return (
+                <div className="ui error message">
+                    <div className="header">Trade Failed</div>
+                    <span>We were unable to process your trade. Please ensure </span>
+                    <span>your gas price and gas limit values are appropriate </span>
+                    <span>for the trade and that you clicked on the SUBMIT </span>
+                    <span>button in the MetaMask popup.</span>
                 </div>
             );
         case CryptoTrade.tradeStatus.incorrectEth:
@@ -118,13 +129,11 @@ class CryptoTrade extends Component {
 
     renderTradeForm(){
         let {
-            tradeValue,
             hasCorrectInput
         } = this.state;
 
         let {
-            isOpen,
-            handleTrade
+            isOpen
         } = this.props;
 
         return (

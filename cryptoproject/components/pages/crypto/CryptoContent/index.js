@@ -71,6 +71,7 @@ class CryptoContent extends Component {
         let {
             incorrectEth,
             notEnoughEth,
+            tradeFailed,
             inProgress,
             success,
             error,
@@ -86,6 +87,11 @@ class CryptoContent extends Component {
             return web3.fetchAccountAddress().then(accountAddress => {
                 address = accountAddress;
                 return web3.fetchEthBalance(accountAddress);
+            }).catch(() => {
+                this.props.dispatch(endTransaction({
+                    inProgress: false,
+                    tradeStatus: error
+                }));
             }).then(balance => {
                 if(balance < tradeValue){
                     this.props.dispatch(updateTransactionStatus(notEnoughEth));
@@ -121,7 +127,7 @@ class CryptoContent extends Component {
             }).catch(() => {
                 this.props.dispatch(endTransaction({
                     inProgress: false,
-                    tradeStatus: error
+                    tradeStatus: tradeFailed
                 }));
             });
         }
@@ -162,7 +168,7 @@ class CryptoContent extends Component {
                     <h2 className="ui header no-margin-top">
                         This smart contract address is:
                         <div className="sub header">
-                            <a href={`${Paths.getEtherScanUrl(contractAddress)}`} target="_blank">{
+                            <a href={`${Paths.getEtherScanAddressUrl(contractAddress)}`} target="_blank">{
                                 contractAddress
                             }</a>
                         </div>

@@ -45,11 +45,11 @@ class Paths {
         return `${root}/TheTeam`;
     }
 
-    static getEtherScanUrl(address){
-        return `${Settings.ETHER_SCAN_URL}/${address}`;
+    static getEtherScanAddressUrl(address){
+        return `${Settings.ETHER_SCAN_URL}/address/${address}`;
     }
 
-    static getTransactionHashUrl(address){
+    static getEtherScanTransactionUrl(address){
         return `${Settings.ETHER_SCAN_URL}/tx/${address}`;
     }
 
