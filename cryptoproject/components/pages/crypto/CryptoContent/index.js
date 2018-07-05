@@ -144,7 +144,7 @@ class CryptoContent extends Component {
                 <section id="crypto-content-header" className="ui padded segment items">
                     <div className="item">
                         <div className="image">
-                            <img src={Paths.getCryptoIcon(name, 'medium')}
+                            <img src={Paths.getCryptoIcon(symbol, 'medium')}
                             />
                         </div>
                         <div className="middle aligned content no-padding text-center">

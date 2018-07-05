@@ -90,9 +90,11 @@ const fetchDividendContract = () => {
     });
 };
 
-const claimDividend = () => {
+const claimDividend = (address) => {
     const methods = new web3.eth.Contract(dividendAbi, DIVIDEND_ADDRESS).methods;
-    return methods.claimDividend().call();
+    return methods.claimDividend().send({
+        from: address
+    });
 };
 
 module.exports = {

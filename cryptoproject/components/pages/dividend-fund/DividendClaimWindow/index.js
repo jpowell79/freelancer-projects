@@ -8,17 +8,24 @@ import {claimDividend} from '../../../../server/services/contract';
 import HideFragment from '../../../modules/HideFragment';
 
 class DividendClaimWindow extends Component {
+    static claimStatus = {
+        idle: "idle",
+        inProgress: "inProgress",
+        success: "success",
+        error: "error"
+    };
+
     constructor(props){
         super(props);
 
         this.state = {
-            isClaimingDividend: false,
-            dividendClaimed: false,
+            claimStatus: DividendClaimWindow.claimStatus.idle,
             claimButtonIsEnabled: true
         };
 
         this.canMakeClaim = this.canMakeClaim.bind(this);
         this.claimDividend = this.claimDividend.bind(this);
+        this.renderClaimStatusMessage = this.renderClaimStatusMessage.bind(this);
     }
 
     canMakeClaim(){
@@ -37,18 +44,96 @@ class DividendClaimWindow extends Component {
     }
 
     claimDividend(){
+        const {
+            inProgress,
+            success,
+            error
+        } = DividendClaimWindow.claimStatus;
+
+
         this.setState({
-            isClaimingDividend: true,
+            claimStatus: inProgress,
             claimButtonIsEnabled: false
         });
 
-        claimDividend().then(response => {
-            console.log(response);
-            this.setState({
-                isClaimingDividend: false,
-                dividendClaimed: true
+        return claimDividend(this.props.account.address)
+            .then(response => {
+                console.log(response);
+                
+                this.setState({
+                    claimStatus: success
+                });
+            }).catch((err, more) => {
+                console.error(err);
+
+                const errorString = err.toString();
+
+                if(errorString.includes('out of gas')){
+                    this.errorMessage = 'The transaction ran out of gas.';
+                } else if(errorString.includes('User denied')){
+                    this.errorMessage = '';
+                } else if(errorString.includes('gas is too low')) {
+                    this.errorMessage = 'The transaction gas is too low.';
+                } else {
+                    this.errorMessage = 'Something went wrong with the transaction.';
+                }
+
+                this.setState({
+                    claimStatus: error,
+                    claimButtonIsEnabled: true
+                });
             });
-        });
+    }
+
+    renderClaimStatusMessage(){
+        const {
+            inProgress,
+            success,
+            error
+        } = DividendClaimWindow.claimStatus;
+
+        switch(this.state.claimStatus){
+        case inProgress:
+            return (
+                <div className="ui icon info message wrapper-4" style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: "2em"
+                }}>
+                    <div>
+                        <LoaderSmall/>
+                    </div>
+                    <div className="content">
+                        <div className="header text-left">Waiting for transaction to be completed...</div>
+                    </div>
+                </div>
+            );
+        case error:
+            return (
+                <div className="ui error message wrapper-4 text-left" style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: "2em"
+                }}>
+                    <div className="header">Dividend claim cancelled</div>
+                    <div className="content">
+                        {this.errorMessage}
+                    </div>
+                </div>
+            );
+        case success:
+            return (
+                <div className="ui success message wrapper-4" style={{
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginTop: "2em"
+                }}>
+                    <div className="header">Your dividend share was successfully claimed!</div>
+                </div>
+            );
+        default:
+            return null;
+        }
     }
 
     render(){
@@ -101,29 +186,7 @@ class DividendClaimWindow extends Component {
                             }
                         </React.Fragment>
                     ) : null}
-                {this.state.isClaimingDividend && (
-                    <div className="ui icon info message wrapper-4" style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        marginTop: "2em"
-                    }}>
-                        <div>
-                            <LoaderSmall/>
-                        </div>
-                        <div className="content">
-                            <div className="header text-left">Waiting for transaction to be completed...</div>
-                        </div>
-                    </div>
-                )}
-                {this.state.dividendClaimed && (
-                    <div className="ui success message wrapper-4" style={{
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        marginTop: "2em"
-                    }}>
-                        <div className="header">Your dividend share was successfully claimed!</div>
-                    </div>
-                )}
+                {this.renderClaimStatusMessage()}
             </div>
         );
     }

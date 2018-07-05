@@ -4,7 +4,7 @@ import Settings from '../../site-settings';
 export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
 export const TEAM_IMAGES = `${IMAGES}/team`;
-export const CRYPTO_ICONS = `${IMAGES}/crypto_icons`;
+export const CRYPTO_ICONS = `${IMAGES}/crypto-icons`;
 
 class Paths {
     static getImage(name, size, type = 'png', root = '../..'){
@@ -15,8 +15,8 @@ class Paths {
         return `${root}/${TEAM_IMAGES}/${name}.${type}`;
     }
 
-    static getCryptoIcon(name, size, root = '../..'){
-        let parsedName = name.toLowerCase().replace(/ /g,'');
+    static getCryptoIcon(symbol, size, root = '../..'){
+        let parsedName = symbol.toUpperCase();
 
         return `${root}/${CRYPTO_ICONS}/${parsedName}_${size}.png`;
     };

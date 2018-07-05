@@ -58,7 +58,7 @@ class CoinMarketTable extends Component {
 
             return (
                 <tr key={i}>
-                    <td><img src={Paths.getCryptoIcon(crypto.name, 'icon')}/></td>
+                    <td><img src={Paths.getCryptoIcon(crypto.symbol, 'icon')}/></td>
                     <td>{crypto.rank}</td>
                     <td>{crypto.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(usdQuotes.market_cap)}</td>
