@@ -137,6 +137,15 @@
             word-wrap: break-word;
         }
     }
+
+    input,
+    textarea {
+        border: 1px solid $darkGray!important;
+
+        &:focus {
+            border: 1px solid #85b7d9!important;
+        }
+    }
 }
 
 @media (max-width: $mediaMedium){

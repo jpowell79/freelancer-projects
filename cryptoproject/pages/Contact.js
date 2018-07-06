@@ -2,8 +2,10 @@ import React, {Component} from 'react';
 import Page from '../components/containers/Page';
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 import {PageTitle} from "../components/modules/PageTitle";
-import axios from 'axios';
-import urls from '../server/services/utils/urls';
+import ContactForm from "../components/modules/ContactForm";
+import axios from "axios/index";
+import urls from "../server/services/utils/urls";
+import RecaptchaWidget from "../components/modules/widgets/RecaptchaWidget";
 
 class Contact extends Component {
     constructor(props){
@@ -24,7 +26,7 @@ class Contact extends Component {
 
     render(){
         return (
-            <Page addTimer={true}>
+            <Page addTimer={true} head={RecaptchaWidget.SCRIPT}>
                 <PageTitle title="Contact Form" className="elegant text-center">
                     <p className="h3 wrapper-3">
                         We welcome any questions, comments, suggestions or general enquires.
@@ -32,52 +34,7 @@ class Contact extends Component {
                     </p>
                 </PageTitle>
                 <FullWidthSegment options={['skinny']} wrapper={3}>
-                    <form className="ui form">
-                        <div className="field">
-                            <label>Name (required)</label>
-                            <input type="text" onChange={event => {
-                                this.setState({
-                                    name: event.target.value
-                                });
-                            }}/>
-                        </div>
-                        <div className="field">
-                            <label>Email (required)</label>
-                            <input type="text" onChange={event => {
-                                this.setState({
-                                    email: event.target.value
-                                });
-                            }}/>
-                        </div>
-                        <div className="field">
-                            <label>Website</label>
-                            <input type="text" defaultValue="http://" onChange={event => {
-                                this.setState({
-                                    website: event.target.value
-                                });
-                            }}/>
-                        </div>
-                        <div className="field">
-                            <label>Message</label>
-                            <textarea cols={5} onChange={event => {
-                                this.setState({
-                                    message: event.target.value
-                                });
-                            }}/>
-                        </div>
-                        <button className="ui primary button" onClick={(event) => {
-                            event.preventDefault();
-
-                            axios.post(urls.email, {
-                                name: this.state.name,
-                                email: this.state.email,
-                                website: this.state.website,
-                                message: this.state.message
-                            }).then(response => {
-                                console.log(response);
-                            });
-                        }}>Send E-mail</button>
-                    </form>
+                    <ContactForm/>
                 </FullWidthSegment>
                 <FullWidthSegment/>
             </Page>

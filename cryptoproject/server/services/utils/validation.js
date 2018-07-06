@@ -1,4 +1,4 @@
 module.exports.looksLikeEmail = (string) => {
-    return /\S+@\S+/.test(string);
+    return /\S+@\S+\.\S+/.test(string);
 };
 

@@ -116,6 +116,28 @@ module.exports.MAX_BITCOIN_FEEDS_PER_URL = 3;
  * ReCaptcha
  *----------------------------------------*/
 module.exports.RECAPTCHA_SITE_KEY = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';
+module.exports.RECAPTCHA_SECRET_KEY = '6LcVbGIUAAAAAJebHtHYG4kFtHLaN-jeGgr6jZC8';
+
+/*----------------------------------------
+ * Email
+ * https://nodemailer.com/about/
+ *----------------------------------------*/
+module.exports.EMAIL_SETTINGS = {
+    IS_ETHEREAL_ACCOUNT: true,
+    TRANSPORTER: {
+        host: 'smtp.ethereal.email',
+        port: 587,
+        secure: false, //true for 465, false for other ports
+        auth: {
+            user: 'iobsn5ywkd34j7zf@ethereal.email',
+            pass: 'vmSJNFJDweBFUG9qZb'
+        },
+        tls: {
+            rejectUnauthorized: false
+        }
+    },
+    RECEIVER: 'smnrkssn@hotmail.se'
+};
 
 //Rules for fetching feeds other than Bitcoin.
 module.exports.MAX_FEEDS = 3;

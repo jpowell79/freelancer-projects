@@ -11,6 +11,7 @@ module.exports = (db, app) => {
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(bodyParser.json());
     server.use(validate(server, {}));
+    server.enable('trust proxy');
 
     server.use((req, res, next) => {
         req.db = db;
