@@ -61,12 +61,12 @@ class SmartContractList extends Component {
                     <Accordion.Content active={activeIndexes.includes(i)}>
                         <h3 className="no-margin-bottom">{contractName} pricing: <a className="lighter" href={
                             `${Paths.getEtherScanAddressUrl(Settings.PRICING_ADDRESS)}`
-                        }>
+                        } target="_blank">
                             {Settings.PRICING_ADDRESS}
                         </a></h3>
                         <h3 style={{marginTop: ".75em"}}>Dividend contract: <a className="lighter" href={
                             `${Paths.getEtherScanAddressUrl(Settings.DIVIDEND_ADDRESS)}`
-                        }>
+                        } target="_blank">
                             {Settings.DIVIDEND_ADDRESS}
                         </a></h3>
                     </Accordion.Content>

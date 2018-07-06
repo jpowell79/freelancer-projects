@@ -12,6 +12,7 @@ import Dispatcher from "../services/Dispatcher";
 class Trade extends Component {
     static async getInitialProps({reduxStore}){
         let dispatcher = new Dispatcher(reduxStore.dispatch);
+
         await dispatcher.updateAllCrypto();
         await dispatcher.fetchMarketData();
 

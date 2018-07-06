@@ -44,7 +44,7 @@ export const MAIN_MENU = {
         },
         {
             name: 'Contact',
-            href: ''
+            href: Paths.getContactPage()
         }
     ]
 };

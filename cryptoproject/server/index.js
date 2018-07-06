@@ -6,7 +6,7 @@ const configServer = require('./config/configServer');
 const log = require('./services/utils/log');
 
 const app = next({
-    dev: process.env.NODE_ENV !== 'production'
+    dev: process.argv[2] !== 'production'
 });
 
 let server;

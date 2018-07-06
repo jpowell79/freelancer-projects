@@ -18,7 +18,7 @@ $menuBackground: $white;
     border-bottom: 1px solid rgba(34,36,38,.1);
 
     img {
-        width: 104px;
+        max-height: calc(#{$menuHeight} - 20px);
         z-index: 9999;
     }
 

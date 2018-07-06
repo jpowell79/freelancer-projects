@@ -112,6 +112,11 @@ module.exports.LOWEST_ETH = 0.1;
 module.exports.MAX_BITCOIN_FEEDS = 12;
 module.exports.MAX_BITCOIN_FEEDS_PER_URL = 3;
 
+/*----------------------------------------
+ * ReCaptcha
+ *----------------------------------------*/
+module.exports.RECAPTCHA_SITE_KEY = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';
+
 //Rules for fetching feeds other than Bitcoin.
 module.exports.MAX_FEEDS = 3;
 module.exports.MAX_FEEDS_PER_URL = 2;

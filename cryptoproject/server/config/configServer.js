@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const glob = require('glob');
 const urls = require('../services/utils/urls');
+const validate = require('form-validate');
 
 module.exports = (db, app) => {
     const server = express();
@@ -9,6 +10,7 @@ module.exports = (db, app) => {
     server.set('json spaces', 4);
     server.use(bodyParser.urlencoded({ extended: false }));
     server.use(bodyParser.json());
+    server.use(validate(server, {}));
 
     server.use((req, res, next) => {
         req.db = db;
