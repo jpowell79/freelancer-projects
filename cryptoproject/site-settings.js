@@ -168,3 +168,12 @@ module.exports.FEED_URLS = [
     'https://coinsutra.com/blog/feed/',
     'https://cryptoclarified.com/feed/'
 ];
+
+
+/*----------------------------------------
+ * PageLoader
+ *----------------------------------------*/
+module.exports.SLOW_PAGES = [
+    '/',
+    '/Trade'
+];

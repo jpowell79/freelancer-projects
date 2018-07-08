@@ -1,0 +1,32 @@
+/*----------------------------------------
+ * Page Loader
+ *----------------------------------------*/
+#page-loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #FFF;
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 99999;
+    animation-name: pageLoader;
+    animation-duration: .25s;
+    animation-fill-mode: forwards;
+}
+
+.page-loader-active {
+    overflow: hidden;
+}
+
+@keyframes pageLoader {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
