@@ -27,4 +27,38 @@ describe('Rest API', () => {
                 done();
             });
     }).timeout(10000);
+
+    it(`Should not send email with a POST request to ${urls.email} using invalid grecaptcha`, (done) => {
+        request(app)
+            .post(urls.email)
+            .send({
+                name: 'Foo',
+                email: 'Foo@example.com',
+                website: '',
+                message: '',
+                grecaptcha: 'bar'
+            })
+            .end((err, res) => {
+                expect(res.body.emailSendData.error).to.be.equal('Grecaptcha not verified.');
+                expect(res.body.grecaptchaValidation.success).to.be.equal(false);
+                done();
+            });
+    }).timeout(10000);
+
+    it(`Should not send email with a POST request to ${urls.email} when name or email is left blank`, (done) => {
+        request(app)
+            .post(urls.email)
+            .send({
+                name: '',
+                email: '',
+                website: '',
+                message: '',
+                grecaptcha: 'bar'
+            })
+            .end((err, res) => {
+                expect(res.body.emailSendData.error).to.be.equal('Invalid fields detected.');
+                expect(res.body.fields.errors.length).to.be.equal(2);
+                done();
+            });
+    }).timeout(10000);
 });

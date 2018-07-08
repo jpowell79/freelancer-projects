@@ -28,7 +28,7 @@ class CryptoBalance extends Component {
         if(account.isLoading){
             return (
                 <section id="crypto-balance">
-                    <div className="ui top attached padded bg-color-light-gray header">
+                    <div className="ui top attached padded header">
                         <h2>Your account</h2>
                     </div>
                     <div className="ui attached padded segment children-divider-2">

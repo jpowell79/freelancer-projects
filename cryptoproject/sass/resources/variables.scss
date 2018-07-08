@@ -1,12 +1,25 @@
 //----------------------------------------------
 // 1.0 Colors
 //----------------------------------------------
-$primary   : #7ab200;
-$secondary : #33363f;
-$white     : #ffffff;
-$black     : #000000;
-$gray      : #F9F9F9;
-$darkGray  : #CFCFD0;
+$primary      : #7ab200;
+$primary2     : transparentize($primary, .50);
+$primary3     : transparentize($primary, .75);
+$primary4     : transparentize($primary, .95);
+$darkPrimary  : desaturate($primary, 20%);
+$darkPrimary2 : desaturate($primary, 40%);
+$darkPrimary3 : desaturate($primary, 60%);
+$darkPrimary4 : darken($primary, 25%);
+$auxilary     : #db2828;
+$auxilary2    : lighten($auxilary, 15%);
+$auxilary3    : lighten($auxilary, 28%);
+$auxilary4    : lighten($auxilary, 43%);
+$secondary    : #33363f;
+$white        : #ffffff;
+$black        : #000000;
+$gray         : #F9F9F9;
+$gray2        : #f3f5f6;
+$gray3        : #f0f2f4;
+$darkGray     : #CFCFD0;
 
 //1.1 Semantic UI Colors
 $uiBlue    : #2185d0;
@@ -27,29 +40,42 @@ $uiThColor : #f9fafb;
 
 //1.2 Color maps
 $darkColors: (
-    (primary   $primary)
-    (secondary $secondary)
-    (black     $black)
-    (uiBlue    $uiBlue)
-    (uiYellow  $uiYellow)
-    (uiOrange  $uiOrange)
-    (uiTeal    $uiTeal)
-    (uiRed     $uiRed)
-    (uiGreen   $uiGreen)
-    (uiGray    $uiGray)
-    (uiPink    $uiPink)
-    (uiPurple  $uiPurple)
-    (uiIndigo  $uiIndigo)
-    (uiBrown   $uiBrown)
-    (uiOlive   $uiOlive)
-    (uiViolet  $uiViolet)
-    (uiBlack   $uiBlack)
+    (primary      $primary)
+    (primary2     $primary2)
+    (primary3     $primary3)
+    (primary4     $primary4)
+    (darkPrimary  $darkPrimary)
+    (darkPrimary2 $darkPrimary2)
+    (darkPrimary3 $darkPrimary3)
+    (darkPrimary4 $darkPrimary4)
+    (auxilary      $auxilary)
+    (auxilary2     $auxilary2)
+    (auxilary3     $auxilary3)
+    (auxilary4     $auxilary4)
+    (secondary    $secondary)
+    (black        $black)
+    (uiBlue       $uiBlue)
+    (uiYellow     $uiYellow)
+    (uiOrange     $uiOrange)
+    (uiTeal       $uiTeal)
+    (uiRed        $uiRed)
+    (uiGreen      $uiGreen)
+    (uiGray       $uiGray)
+    (uiPink       $uiPink)
+    (uiPurple     $uiPurple)
+    (uiIndigo     $uiIndigo)
+    (uiBrown      $uiBrown)
+    (uiOlive      $uiOlive)
+    (uiViolet     $uiViolet)
+    (uiBlack      $uiBlack)
 );
 
 $lightColors: (
     (white $white)
     (gray $gray)
-    (light-gray $gray)
+    (gray1 $gray)
+    (gray2 $gray2)
+    (gray3 $gray3)
 );
 
 $colors: join($darkColors, $lightColors);

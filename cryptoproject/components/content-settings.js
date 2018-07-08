@@ -14,7 +14,10 @@ import Paths from "../services/Paths";
  *----------------------------------------*/
 export const MAIN_MENU = {
     logo: {
-        src: Paths.getImage('logo', 'small'),
+        src: Paths.getImage({
+            name: 'logo',
+            size: 'small'
+        }),
         href: '/'
     },
     links: [

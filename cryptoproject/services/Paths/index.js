@@ -4,52 +4,60 @@ import Settings from '../../site-settings';
 export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
 export const TEAM_IMAGES = `${IMAGES}/team`;
+export const FILES = `${STATIC}/files`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto-icons`;
+export const ROOT = '';
 
 class Paths {
-    static getImage(name, size, type = 'png', root = '../..'){
-        return `${root}/${IMAGES}/${name}_${size}.${type}`;
+    static getImage({name, size = '', type = 'png', root = ROOT}){
+        const parsedSize = (size === '') ? '' : `_${size}`;
+
+        return `${root}/${IMAGES}/${name}${parsedSize}.${type}`;
     };
 
-    static getTeamImage(name, type = 'png', root = '../..'){
+    static getFile({name, type, root = ROOT}){
+        return `${root}/${FILES}/${name}.${type}`;
+    }
+
+    static getTeamImage({name, type = 'png', root = ROOT}){
         return `${root}/${TEAM_IMAGES}/${name}.${type}`;
     }
 
-    static getCryptoIcon(symbol, size, root = '../..'){
+    static getCryptoIcon({symbol, size, type = 'png', root = ROOT}){
         let parsedName = symbol.toUpperCase();
 
-        return `${root}/${CRYPTO_ICONS}/${parsedName}_${size}.png`;
+        return `${root}/${CRYPTO_ICONS}/${parsedName}_${size}.${type}`;
     };
 
-    static getCryptoPage(root = '../..'){
+    static getCryptoPage(root = ROOT){
         return `${root}/Crypto`;
     };
 
-    static getHistoricDataPage(root = '../..'){
+    static getHistoricDataPage(root = ROOT){
         return `${root}/HistoricData`;
     };
 
-    static getDividendFundPage(root = '../..'){
+    static getDividendFundPage(root = ROOT){
         return `${root}/DividendFund`;
     };
 
-    static getSmartContractsPage(root = '../..'){
+    static getSmartContractsPage(root = ROOT){
         return `${root}/SmartContracts`;
     }
 
-    static getTradingPage(root = '../..'){
+    static getTradingPage(root = ROOT){
         return `${root}/Trade`;
     }
 
-    static getTheTeamPage(root = '../..'){
+    static getTheTeamPage(root = ROOT){
         return `${root}/TheTeam`;
     }
 
-    static getHowItWorksPage(root = '../..'){
+    static getHowItWorksPage(root = ROOT){
         return `${root}/HowItWorks`;
     }
 
-    static getContactPage(root = '../..'){
+    static getContactPage(root = ROOT){
         return `${root}/Contact`;
     }
 

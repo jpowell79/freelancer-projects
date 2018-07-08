@@ -44,7 +44,9 @@
     "react-datepicker": "^1.5.0",
     "react-dom": "^16.4.0",
     "react-redux": "^5.0.7",
+    "react-reveal": "^1.2.2",
     "react-semantic-ui": "^0.2.0",
+    "react-vertical-timeline-component": "^2.1.2",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.3.0",
@@ -62,7 +64,7 @@
     "archive": "node scripts.js archive",
     "dev": "nodemon -w server -w package.json server/index.js",
     "build": "next build",
-    "start": "node server/index.js production"
+    "start": "nodemon -w server -w package.json server/index.js production"
   },
   "jest": {
     "collectCoverageFrom": [

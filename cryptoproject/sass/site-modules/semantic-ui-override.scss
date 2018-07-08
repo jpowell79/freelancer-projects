@@ -6,6 +6,10 @@
         background-color: $primary!important;
     }
 
+    &.auxilary {
+        background-color: $auxilary!important;
+    }
+
     &.inverted {
         background: $secondary!important;
     }
@@ -114,11 +118,32 @@
         }
     }
 
+    &.break-all,
+    .break-all {
+        word-break: break-all;
+    }
+
     &.statistics {
+        &.huge {
+            > .statistic {
+                > .value {
+                    font-size: $display4!important;
+                }
+
+                > .label {
+                    font-size: $h4!important;
+                }
+            }
+        }
+
         >.statistic>.value {
             font-family: $primaryFont!important;
-            font-size: 3rem!important;
+            font-size: $display4!important;
         }
+    }
+
+    &.button a:hover {
+        color: inherit;
     }
 
     &.segment {
@@ -187,6 +212,21 @@
 
 @media (min-width: $mediaSmall){
     .ui {
+        &.statistics {
+            &.huge {
+                > .statistic {
+                    > .value {
+                        font-size: $display1!important;
+                    }
+
+                    > .label {
+                        font-size: $h3!important;
+                        font-weight: lighter;
+                    }
+                }
+            }
+        }
+
         &.header {
             .symbol {
                 position: absolute;

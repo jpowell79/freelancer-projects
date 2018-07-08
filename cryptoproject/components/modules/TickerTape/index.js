@@ -8,11 +8,12 @@ class TickerTape extends Component {
 
     render(){
         const {
-            items
+            items,
+            ...props
         } = this.props;
 
         return (
-            <div className="ticker-tape" style={{
+            <div {...props} className="ticker-tape" style={{
                 animationDuration: `${(items.length*2)}s`,
                 width: `${items.length*115}px`
             }}>

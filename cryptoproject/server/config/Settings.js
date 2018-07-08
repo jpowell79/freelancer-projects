@@ -48,7 +48,9 @@ async function enableSnaphotService(){
 
                 setInterval(() => {
                     console.log('SnapshotService: Relaunching...');
-                    snapshotService.reLaunch();
+                    snapshotService.reLaunch().catch(err => {
+                        console.error(err);
+                    });
                 }, refreshRate);
 
                 log.endOfSection();
@@ -80,6 +82,9 @@ module.exports.load = async function load(){
             return loadDummyDatabase();
         }).then(() => {
             return enableSnaphotService();
+        }).catch(err => {
+            console.error(err);
+            process.exit(1);
         }).then(() => {
             return archiveHistoricData();
         });

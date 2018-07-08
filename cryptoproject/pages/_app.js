@@ -2,6 +2,9 @@ import App, {Container} from 'next/app';
 import React from 'react';
 import withReduxStore from '../lib/with-redux-store';
 import { Provider } from 'react-redux';
+import config from 'react-reveal/globals';
+
+config({ ssrFadeout: true });
 
 class MyApp extends App {
     render () {

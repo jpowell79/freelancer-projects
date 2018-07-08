@@ -29,17 +29,20 @@ module.exports.CONTRACT_ADDRESSES = [
     '0xf1e4fa00e0905b7e64dfc3e9fda68f5ba19792be'
 ];
 
+
 /*----------------------------------------
  * Dividend
  *----------------------------------------*/
 module.exports.DIVIDEND_ADDRESS = '0xa91fcef9861efd6b6d2d26ec944f364b0f8cfab1';
 module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
 
+
 /*----------------------------------------
  * Trade Token
  *----------------------------------------*/
 module.exports.TOKEN_CONTRACT = '0x816240cc477357fa924092f71edd23dd53b2bf5d';
 module.exports.TOKEN_NAME = 'TEST234';
+
 
 /*----------------------------------------
  * Server Options
@@ -48,17 +51,20 @@ module.exports.DEFAULT_PORT = 3000;
 module.exports.HOST = 'localhost';
 module.exports.MONGODB_URI = 'mongodb://localhost/database';
 
+
 /*----------------------------------------
  * Ethereum Network Settings
  *----------------------------------------*/
 module.exports.HTTP_PROVIDER = 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv';
 module.exports.ETHER_SCAN_URL = 'https://kovan.etherscan.io';
 
+
 /*----------------------------------------
  * Misc. Database Options
  *----------------------------------------*/
 module.exports.REMOVE_DATABASE = false; //On server start
 module.exports.ARCHIVED_DATA_RESPONSE_LIMIT = 10000;
+
 
 /*----------------------------------------
  * Dummy Database
@@ -73,6 +79,7 @@ module.exports.LOAD_DUMMY_DATABASE = false; //On server start
 module.exports.DUMMY_HISTORIC_DATA_TO_GENERATE = 20;
 module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
 
+
 /*----------------------------------------
  * Historic Data Archiver
  * ---------------------------------------
@@ -81,6 +88,7 @@ module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
  *----------------------------------------*/
 module.exports.ENABLE_ARCHIVE_OLD_DATA = false; //On server start
 module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 7 };
+
 
 /*----------------------------------------
  * Snapshot Service
@@ -94,10 +102,12 @@ module.exports.ENABLE_SNAPSHOT_SERVICE = true;
 //Says how often the snapshot service should update it's known smart contracts.
 module.exports.SNAPSHOT_SERVICE_REFRESH_RATE = 1000 * 60 * 60; //Milliseconds
 
+
 /*----------------------------------------
  * Table
  *----------------------------------------*/
 module.exports.TABLE_REFRESH_RATE = 1000 * 30; //Milliseconds
+
 
 /*----------------------------------------
  * Trade
@@ -106,17 +116,13 @@ module.exports.MAX_NR_OF_TRADES = 1000;
 module.exports.MAX_ETH = 10;
 module.exports.LOWEST_ETH = 0.1;
 
-/*----------------------------------------
- * Feeds
- *----------------------------------------*/
-module.exports.MAX_BITCOIN_FEEDS = 12;
-module.exports.MAX_BITCOIN_FEEDS_PER_URL = 3;
 
 /*----------------------------------------
  * ReCaptcha
  *----------------------------------------*/
 module.exports.RECAPTCHA_SITE_KEY = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';
 module.exports.RECAPTCHA_SECRET_KEY = '6LcVbGIUAAAAAJebHtHYG4kFtHLaN-jeGgr6jZC8';
+
 
 /*----------------------------------------
  * Email
@@ -136,8 +142,17 @@ module.exports.EMAIL_SETTINGS = {
             rejectUnauthorized: false
         }
     },
+    //Note, it will actually send the email to an ethereal proxy server
+    //during testing and not an actual email to this address.
     RECEIVER: 'smnrkssn@hotmail.se'
 };
+
+
+/*----------------------------------------
+ * Feeds
+ *----------------------------------------*/
+module.exports.MAX_BITCOIN_FEEDS = 12;
+module.exports.MAX_BITCOIN_FEEDS_PER_URL = 3;
 
 //Rules for fetching feeds other than Bitcoin.
 module.exports.MAX_FEEDS = 3;

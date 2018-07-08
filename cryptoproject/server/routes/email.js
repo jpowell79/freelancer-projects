@@ -119,6 +119,19 @@ module.exports = (server) => {
                     return validateFields(req);
                 }).then(validatedFields => {
                     fields = validatedFields;
+
+                    if(fields.errors !== undefined){
+                        return {
+                            error: 'Invalid fields detected.'
+                        }
+                    }
+
+                    if(!grecaptchaValidation.success){
+                        return {
+                            error: 'Grecaptcha not verified.'
+                        }
+                    }
+
                     return sendEmail(validatedFields);
                 }).then(emailSendData => {
                     res.send({
@@ -126,7 +139,7 @@ module.exports = (server) => {
                         emailSendData,
                         grecaptchaValidation
                     });
-                }).catch(err => {
+                }).catch(() => {
                     res.send({
                         grecaptchaValidation: {
                             success: false

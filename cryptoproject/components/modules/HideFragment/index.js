@@ -1,8 +1,8 @@
 import React, {Component, Fragment} from 'react';
 
 /**
- * Hides an element during the intial server/client side
- * rendering to help keeping them equal.
+ * Hides an element which may change between the initial server and client
+ * side rendering.
  */
 class HideFragment extends Component {
     state = {

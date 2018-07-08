@@ -28,6 +28,10 @@ class Files {
             location.href = 'data:application/octet-stream,' + encodeURIComponent(content);
         }
     };
+
+    static open(filePath){
+        window.open(filePath, '_blank');
+    }
 }
 
 export default Files;

@@ -17,6 +17,26 @@ export const MobileMenuIcon = ({className = "", ...props}) => (
     </div>
 );
 
+export const Lightbulb = ({className = "", ...props}) => (
+    <i {...props} className={joinClassNames("lightbulb outline icon", className)}/>
+);
+
+export const CodeFile = ({className = "", ...props}) => (
+    <i {...props} className={joinClassNames("code file outline icon", className)}/>
+);
+
+export const ReactIcon = ({className = "", ...props}) => (
+    <i {...props} className={joinClassNames("react icon", className)}/>
+);
+
+export const Rocket = ({className = "", ...props}) => (
+    <i {...props} className={joinClassNames("rocket icon", className)}/>
+);
+
+export const Globe = ({className = "", ...props}) => (
+    <i {...props} className={joinClassNames("globe icon", className)}/>
+);
+
 export const Dropdown = ({className = "", ...props}) => (
     <i {...props} className={joinClassNames("dropdown icon", className)}/>
 );

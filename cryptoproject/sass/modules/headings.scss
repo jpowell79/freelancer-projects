@@ -7,4 +7,8 @@
         'font-size',
         $heading
     );
+
+    .ui.statistics > .statistic > .#{$name}.value {
+        font-size: $heading!important;
+    }
 }

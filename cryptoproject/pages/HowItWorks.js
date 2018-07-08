@@ -68,7 +68,10 @@ class HowItWorks extends Component {
                                 </p>
                             </div>
                             <div className="column text-center">
-                                <img src={Paths.getImage('chart', 'small')}/>
+                                <img src={Paths.getImage({
+                                    name: 'chart',
+                                    size: 'small'
+                                })}/>
                             </div>
                         </div>
                     </div>

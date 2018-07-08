@@ -18,18 +18,20 @@ class Crypto extends Component {
 
     static async getInitialProps({res, reduxStore, query}) {
         if(query.index === undefined){
-            Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
+            Paths.redirect(res, `${Paths.getCryptoPage()}?index=0`);
         }
 
         let index = parseInt(query.index, 10);
 
         if(index < 0 || isNaN(query.index) || index >= CONTRACT_ADDRESSES.length){
-            Paths.redirect(res, `${Paths.getCryptoPage('')}?index=0`);
+            Paths.redirect(res, `${Paths.getCryptoPage()}?index=0`);
         }
 
-        let dispatcher = new Dispatcher(reduxStore.dispatch);
-        await dispatcher.fetchMarketData();
-        await dispatcher.fetchCryptoContract(index);
+        if(index < CONTRACT_ADDRESSES.length){
+            let dispatcher = new Dispatcher(reduxStore.dispatch);
+            await dispatcher.fetchMarketData();
+            await dispatcher.fetchCryptoContract(index);
+        }
 
         return {index};
     }

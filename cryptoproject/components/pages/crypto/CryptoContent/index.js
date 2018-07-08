@@ -144,8 +144,10 @@ class CryptoContent extends Component {
                 <section id="crypto-content-header" className="ui padded segment items">
                     <div className="item">
                         <div className="image">
-                            <img src={Paths.getCryptoIcon(symbol, 'medium')}
-                            />
+                            <img src={Paths.getCryptoIcon({
+                                symbol: symbol,
+                                size: 'medium'
+                            })}/>
                         </div>
                         <div className="middle aligned content no-padding text-center">
                             <h2 className="ui huge header no-margin-top">
@@ -173,20 +175,22 @@ class CryptoContent extends Component {
                         </div>
                         <div className={titledSegmentContent('children-divider-2')}>
                             <CryptoStats {...Object.assign(this.props.data, this.props.data.quotes.USD)}/>
-                            <CryptoCountdown
-                                standardTimeCloses={standardTimeCloses}
-                                extendedTimeCloses={extendedTimeCloses}
-                                onStandardTimeZero={() => {
-                                    this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                        standardTimeCloses: 0
-                                    })));
-                                }}
-                                onExtendedTimeZero={() => {
-                                    this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                                        extendedTimeCloses: 0
-                                    })));
-                                }}
-                            />
+                            <HideFragment>
+                                <CryptoCountdown
+                                    standardTimeCloses={standardTimeCloses}
+                                    extendedTimeCloses={extendedTimeCloses}
+                                    onStandardTimeZero={() => {
+                                        this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                            standardTimeCloses: 0
+                                        })));
+                                    }}
+                                    onExtendedTimeZero={() => {
+                                        this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
+                                            extendedTimeCloses: 0
+                                        })));
+                                    }}
+                                />
+                            </HideFragment>
                             <CryptoTrade
                                 isOpen={this.isOpen()}
                                 isLocked={this.isLocked()}

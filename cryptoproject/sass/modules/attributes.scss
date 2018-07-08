@@ -38,6 +38,12 @@
 );
 
 @include semanticAttribute(
+    '.text-right',
+    'text-align',
+    'right'
+);
+
+@include semanticAttribute(
     '.standard-divider',
     'margin-top',
     $divider2

@@ -27,6 +27,10 @@ class Feed extends Component {
         className: PropTypes.string
     };
 
+    static FEEDNAMI_SCRIPT = (
+        <script src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"/>
+    );
+
     constructor(props){
         super(props);
 
