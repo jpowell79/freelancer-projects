@@ -83,7 +83,7 @@ const fetchDividendContract = () => {
             totalTokenSupply: parseFloat(responses[1]),
             claimWindowIsOpen: responses[2],
             closeTime: parseInt(responses[3], 10) * 1000,
-            openTime: parseInt(responses[4]),
+            openTime: parseInt(responses[4]) * 1000,
             value: parseFloat((parseFloat(responses[5])/1000000000000000000).toFixed(2)),
             block: parseFloat(responses[6], 10)
         }

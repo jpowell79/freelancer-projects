@@ -1,0 +1,45 @@
+/*----------------------------------------
+ * Sticky on scroll
+ *----------------------------------------*/
+@media (min-width: $mediaMedium) {
+    .sticky-on-scroll {
+        #page-header {
+            padding: 0;
+        }
+
+        &.not-sticky {
+            #main-menu {
+                position: absolute;
+                top: $segmentPadding/2;
+                color: #FFF;
+                background-color: rgba(0, 0, 0, 0);
+
+                > nav {
+                    background-color: rgba(0, 0, 0, 0);
+                }
+
+                a:hover {
+                    color: inherit;
+                }
+            }
+        }
+
+        &.sticky {
+            #main-menu {
+                animation-name: fixateMenu;
+                animation-duration: .25s;
+                animation-fill-mode: forwards;
+            }
+        }
+    }
+}
+
+@keyframes fixateMenu {
+    0% {
+        height: 0;
+    }
+
+    100% {
+        height: $menuHeight;
+    }
+}

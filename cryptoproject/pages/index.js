@@ -16,6 +16,8 @@ import {PreIcoLaunch} from "../components/pages/index/PreIcoLaunch";
 import {TokenCountdown} from "../components/pages/index/TokenCountdown";
 import Files from "../services/Files";
 import Link from 'next/link';
+import {stickyOnScroll} from "../services/cssUtils";
+import Waypoint, {handleStickyOnScroll} from "../components/modules/Waypoint";
 
 class Index extends Component {
     static async getInitialProps({reduxStore}){
@@ -37,31 +39,20 @@ class Index extends Component {
         } = FullWidthSegment.options;
 
         const {
-            gray,
             gray2
         } = FullWidthSegment.options.colors;
 
         const {cryptoMarketData} = this.props;
 
         return (
-            <Page contentClass="home" addTimer={true}>
-                <FullWidthSegment options={[halfHeight]} className="color-white" style={{
-                    position: "relative",
+            <Page pageClass={stickyOnScroll()} addTimer={true} header={
+                <FullWidthSegment options={[halfHeight]} className="color-white parallax" style={{
                     backgroundImage: `url('${Paths.getImage({
                         name: 'header',
                         type: 'jpg'
                     })}')`,
-                    backgroundAttachment: "fixed",
-                    backgroundPosition: "50% 50%",
-                    backgroundSize: "cover"
                 }}>
-                    <div className="wrapper-3" style={{
-                        textAlign: "center",
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        transform: "translate(-50%, -50%)"
-                    }}>
+                    <div className="position-center text-center">
                         <h1 className="display-3">CryptoTrade</h1>
                         <p className="elegant">
                             CryptoTrade harnesses the power of pari-mutuel betting and Ethereum
@@ -74,7 +65,9 @@ class Index extends Component {
                     </div>
                     <div className="overlay-secondary"/>
                 </FullWidthSegment>
-                <FullWidthSegment options={[gray2, bordered, centered]} wrapper={3}>
+            }>
+                <Waypoint element={"#token-launch"} handler={handleStickyOnScroll}/>
+                <FullWidthSegment id="token-launch" options={[gray2, bordered, centered]} wrapper={3}>
                     <TokenCountdown
                         title="Token Launch Start"
                         date={0}
@@ -95,7 +88,7 @@ class Index extends Component {
                     <PreIcoLaunch/>
                 </FullWidthSegment>
                 {(cryptoMarketData.length > 0) && (
-                    <FullWidthSegment options={[gray, skinny, bordered]}>
+                    <FullWidthSegment options={[gray2, skinny, bordered]}>
                         <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>
                     </FullWidthSegment>
                 )}

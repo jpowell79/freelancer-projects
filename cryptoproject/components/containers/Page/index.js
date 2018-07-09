@@ -13,6 +13,7 @@ class Page extends Component {
         header: null,
         footer: null,
         contentClass: '',
+        pageClass: '',
         addTimer: false,
         fetchMarketData: false
     };
@@ -42,7 +43,7 @@ class Page extends Component {
 
     render(){
         return (
-            <section id="page">
+            <section id="page" className={this.props.pageClass}>
                 <Head>
                     {this.props.head}
                 </Head>

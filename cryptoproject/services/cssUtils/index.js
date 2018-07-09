@@ -37,6 +37,10 @@ export const doublingFourColumnGrid = (className = '') => {
     return joinClassNames('ui stackable four column doubling grid', className);
 };
 
+export const stickyOnScroll = (className = '') => {
+    return joinClassNames("sticky-on-scroll not-sticky", className);
+};
+
 export const COLORS = {
     primary: 'primary',
     primary2: 'primary2',
