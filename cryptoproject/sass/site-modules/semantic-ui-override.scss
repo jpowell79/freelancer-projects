@@ -136,9 +136,13 @@
             }
         }
 
-        >.statistic>.value {
-            font-family: $primaryFont!important;
-            font-size: $display4!important;
+        >.statistic {
+            margin: 0 0.5em 2em;
+
+            >.value {
+                font-family: $primaryFont!important;
+                font-size: $display4!important;
+            }
         }
     }
 
@@ -213,6 +217,10 @@
 @media (min-width: $mediaSmall){
     .ui {
         &.statistics {
+            .statistic {
+                margin: 0 1.5em 2em;
+            }
+
             &.huge {
                 > .statistic {
                     > .value {

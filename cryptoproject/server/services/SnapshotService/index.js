@@ -167,10 +167,6 @@ function SnapshotService(){
                             this.extendedTimeWatcher.stopWatching();
                         }
 
-                        if(this.retrievalTimeWatcher.isWatching()){
-                            this.retrievalTimeWatcher.stopWatching();
-                        }
-
                         clearInterval(timer);
                         resolve();
                     }
@@ -178,10 +174,6 @@ function SnapshotService(){
             } else {
                 if(this.extendedTimeWatcher.isWatching()){
                     this.extendedTimeWatcher.stopWatching();
-                }
-
-                if(this.retrievalTimeWatcher.isWatching()){
-                    this.retrievalTimeWatcher.stopWatching();
                 }
 
                 resolve();

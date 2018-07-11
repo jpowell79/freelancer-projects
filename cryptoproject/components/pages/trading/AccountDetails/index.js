@@ -12,7 +12,6 @@ import {
 import Settings from '../../../../site-settings';
 import Paths from "../../../../services/Paths/index";
 import Strings from "../../../../services/Strings/index";
-import Web3 from '../../../../server/services/Web3';
 
 class AccountDetails extends Component {
     constructor(props){

@@ -2,7 +2,7 @@ import React from 'react';
 import {twoColumnGrid} from "../../../../services/cssUtils";
 import Paths from "../../../../services/Paths";
 
-export const PreIcoLaunch = () => {
+export const PurchaseInEther = () => {
     return (
         <div className={twoColumnGrid()}>
             <div className="column" style={{
@@ -10,7 +10,7 @@ export const PreIcoLaunch = () => {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <table className="list-table text-left">
+                <table className="list-table">
                     <tbody>
                     <tr>
                         <td className="h2 bold content">Token symbol:</td>

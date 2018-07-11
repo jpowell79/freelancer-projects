@@ -26,7 +26,7 @@ class HistoricDataTable extends Component {
             return (
                 <tr key={i}>
                     <td>{
-                        Strings.toDateTimeString(new Date(data.timestamp))
+                        Strings.toDateString(new Date(data.timestamp))
                     }</td>
                     <td>{data.name}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(data.startPrice)}</td>

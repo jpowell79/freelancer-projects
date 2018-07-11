@@ -1,7 +1,31 @@
+/*----------------------------------------
+ * List Table
+ *----------------------------------------*/
 .list-table {
+    text-align: left;
     margin: $divider2 0;
 
     td {
         padding: $divider4 $divider5;
+    }
+}
+
+@media (max-width: $mediaSmall) {
+    .list-table {
+        text-align: center;
+
+        tr {
+            display: block;
+            width: auto;
+
+            td:first-child {
+                border-bottom: 1px solid lighten($darkGray, 10%);
+            }
+        }
+
+        td {
+            width: 100%;
+            display: block;
+        }
     }
 }

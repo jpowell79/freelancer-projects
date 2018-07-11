@@ -42,12 +42,12 @@ class ContactForm extends Component {
 
         if(!Strings.isDefined(name)){
             validation.fieldsWithErrors.push('name');
-            validation.errors.push('Please your name.');
+            validation.errors.push('Please enter your name.');
         }
 
         if(!Strings.isDefined(email)){
             validation.fieldsWithErrors.push('email');
-            validation.errors.push('Please your email.');
+            validation.errors.push('Please enter your email.');
         } else if(!looksLikeEmail(email)){
             validation.errors.push('Please enter a valid email address.');
             validation.fieldsWithErrors.push('email');

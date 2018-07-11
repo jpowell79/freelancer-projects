@@ -194,7 +194,8 @@ class CryptoContent extends Component {
                             <CryptoTrade
                                 isOpen={this.isOpen()}
                                 isLocked={this.isLocked()}
-                                handleTrade={this.handleTrade}/>
+                                handleTrade={this.handleTrade}
+                            />
                         </div>
                     </section>
                 </React.Fragment>

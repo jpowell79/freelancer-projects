@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import Settings from '../../../../site-settings';
 import PropTypes from 'prop-types';
 import {joinClassNames} from "../../../../services/utils/index";
+import $ from "jquery";
 
 class RecaptchaWidget extends Component {
     static defaultProps = {
@@ -18,11 +19,23 @@ class RecaptchaWidget extends Component {
         size: PropTypes.oneOf(['compact', 'normal'])
     };
 
-    static SCRIPT = (
-        <script
-            id="google-recaptcha-script"
-            src='https://www.google.com/recaptcha/api.js'/>
-    );
+    componentDidMount(){
+        if($('#google-recaptcha-script').length === 0){
+            $('body').append(
+                `<script
+                    id="google-recaptcha-script"
+                    src='https://www.google.com/recaptcha/api.js'></script>`
+            );
+        }
+    }
+
+    componentWillUnmount(){
+        const $googleRecaptchaScript = $('#google-recaptcha-script');
+
+        if($googleRecaptchaScript.length > 0) {
+            $googleRecaptchaScript.remove();
+        }
+    }
 
     render(){
         const {

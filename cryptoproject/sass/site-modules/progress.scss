@@ -1,0 +1,42 @@
+/*----------------------------------------
+ * Progress Bar
+ *----------------------------------------*/
+.ui.progress {
+    &.describing {
+        margin: $divider1*1.5 0;
+
+        .description {
+            margin: 0;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: -#{$divider2};
+        }
+
+        .start {
+            margin: 0;
+            position: absolute;
+            left: 0;
+            bottom: -#{$divider2};
+        }
+
+        .end {
+            margin: 0;
+            position: absolute;
+            right: 0;
+            bottom: -#{$divider2};
+        }
+    }
+
+    &.light {
+        background: rgba(255, 255, 255, .2);
+    }
+
+    &.primary {
+        background: rgba(255, 255, 255, .2)!important;
+
+        .bar {
+            background-color: $primary;
+        }
+    }
+}

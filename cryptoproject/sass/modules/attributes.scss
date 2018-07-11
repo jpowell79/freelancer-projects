@@ -26,6 +26,12 @@
 );
 
 @include semanticAttribute(
+    '.no-padding-bottom',
+    'padding-bottom',
+    '0'
+);
+
+@include semanticAttribute(
     '.text-center',
     'text-align',
     'center'

@@ -2,8 +2,14 @@ const cryptoAbi = require('./cryptoAbi');
 const dividendAbi = require('./dividendAbi');
 const web3 = require('../Web3');
 const SETTINGS = require("../../../site-settings");
-const CONTRACT_ADDRESSES = SETTINGS.CONTRACT_ADDRESSES;
-const DIVIDEND_ADDRESS = SETTINGS.DIVIDEND_ADDRESS;
+const {
+    DEBUG_MODE,
+    CONTRACT_ADDRESSES,
+    DIVIDEND_ADDRESS,
+    DEBUG_FINISH_PRICE_RETRIEVAL_TIME,
+    DEBUG_SMART_CONTRACT,
+    DEBUG_DIVIDEND
+} = SETTINGS;
 
 const enterTheGame = (index, {from, value}) => {
     const methods = getCryptoContract(index).methods;
@@ -20,6 +26,11 @@ const getFinishPriceRetrievalTime = (index) => {
         .call()
         .then(retrevalTime => {
             return parseInt(retrevalTime, 10) * 1000;
+        })
+        .then(retrievalTime => {
+            return (DEBUG_MODE)
+                ? DEBUG_FINISH_PRICE_RETRIEVAL_TIME(retrievalTime)
+                : retrievalTime;
         });
 };
 
@@ -48,7 +59,7 @@ const fetchCryptoContract = (index) => {
             admin: responses[0],
             name: responses[1],
             contractAddress: responses[2],
-            rank: responses[3],
+            rank: parseInt(responses[3], 10),
             startPrice: responses[4]/100000,
             nrOfTrades: parseInt(responses[5], 10),
             standardTimeCloses: parseInt(responses[6], 10)*1000,
@@ -57,6 +68,8 @@ const fetchCryptoContract = (index) => {
             finishPriceRetrievalTime: parseInt(responses[9], 10) * 1000,
             finishPrice: responses[10]
         };
+    }).then(contract => {
+        return (DEBUG_MODE) ? DEBUG_SMART_CONTRACT(contract) : contract;
     });
 };
 
@@ -83,10 +96,12 @@ const fetchDividendContract = () => {
             totalTokenSupply: parseFloat(responses[1]),
             claimWindowIsOpen: responses[2],
             closeTime: parseInt(responses[3], 10) * 1000,
-            openTime: parseInt(responses[4]) * 1000,
+            openTime: parseInt(responses[4], 10) * 1000,
             value: parseFloat((parseFloat(responses[5])/1000000000000000000).toFixed(2)),
             block: parseFloat(responses[6], 10)
         }
+    }).then(dividend => {
+        return (DEBUG_MODE) ? DEBUG_DIVIDEND(dividend) : dividend;
     });
 };
 

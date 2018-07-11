@@ -9,13 +9,6 @@ import Link from 'next/link';
 import Paths from "../services/Paths";
 import {twoColumnGrid} from "../services/cssUtils";
 
-const Iframe = ({src}) => {
-    return <iframe style={{
-        width: "100%",
-        minHeight: "65vh"
-    }} src={src}/>;
-};
-
 class HowItWorks extends Component {
     constructor(props){
         super(props);
@@ -250,8 +243,8 @@ class HowItWorks extends Component {
 
         return (
             <Page>
-                <PageTitle title="How it works" className="elegant text-center">
-                    <p className="h3">
+                <PageTitle title="How it works" className="elegant">
+                    <p className="h3 text-center">
                         Before you read about how CryptoTrade works, you may
                         find it useful to familiarise yourself with the following:
                     </p>
@@ -267,7 +260,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 0}>
-                                <Iframe src="https://en.wikipedia.org/wiki/Cryptocurrency"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 1}
@@ -279,7 +272,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 1}>
-                                <Iframe src="https://en.wikipedia.org/wiki/Ethereum"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 2}
@@ -291,7 +284,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 2}>
-                                <Iframe src="https://www.cryptocompare.com/mining/guides/how-to-buy-ethereum/"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 3}
@@ -303,7 +296,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 3}>
-                                <Iframe src="https://en.wikipedia.org/wiki/Blockchain"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 4}
@@ -315,7 +308,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 4}>
-                                <Iframe src="https://en.wikipedia.org/wiki/Smart_contract"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 5}
@@ -327,7 +320,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 5}>
-                                <Iframe src="https://en.wikipedia.org/wiki/ERC20"/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                             <Accordion.Title
                                 active={this.state.activeIndex === 6}
@@ -339,12 +332,7 @@ class HowItWorks extends Component {
                                 </div>
                             </Accordion.Title>
                             <Accordion.Content active={this.state.activeIndex === 6}>
-                                <iframe
-                                    width="560"
-                                    height="315"
-                                    src="https://www.youtube.com/embed/6Gf_kRE4MJU"
-                                    frameBorder="0"
-                                    allow="autoplay; encrypted-media" allowFullScreen/>
+                                <p>Insert content here</p>
                             </Accordion.Content>
                         </Accordion>
                     </div>

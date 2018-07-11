@@ -9,12 +9,15 @@ import {WhatIsCryptoTrade} from "../components/pages/index/WhatIsCryptoTrade";
 import {WhatAreTokens} from "../components/pages/index/WhatAreTokens";
 import {TokenInfo} from "../components/pages/index/TokenInfo";
 import {CryptoTradeTimeline} from "../components/pages/index/CryptoTradeTimeline";
+import {
+    PreIcoLaunch,
+    IcoLaunch,
+    PostIcoLaunch
+} from "../components/pages/index/LaunchPhase";
 import Settings from '../site-settings';
 import Zoom from 'react-reveal/Zoom';
 import Paths from "../services/Paths";
-import {PreIcoLaunch} from "../components/pages/index/PreIcoLaunch";
-import {TokenCountdown} from "../components/pages/index/TokenCountdown";
-import Files from "../services/Files";
+import {PurchaseInEther} from "../components/pages/index/PurchaseInEther";
 import Link from 'next/link';
 import {stickyOnScroll} from "../services/cssUtils";
 import Waypoint, {handleStickyOnScroll} from "../components/modules/Waypoint";
@@ -30,7 +33,6 @@ class Index extends Component {
 
     render () {
         const {
-            halfHeight,
             skinny,
             padded,
             bordered,
@@ -45,47 +47,10 @@ class Index extends Component {
         const {cryptoMarketData} = this.props;
 
         return (
-            <Page pageClass={stickyOnScroll()} addTimer={true} header={
-                <FullWidthSegment options={[halfHeight]} className="color-white parallax" style={{
-                    backgroundImage: `url('${Paths.getImage({
-                        name: 'header',
-                        type: 'jpg'
-                    })}')`,
-                }}>
-                    <div className="position-center text-center">
-                        <h1 className="display-3">CryptoTrade</h1>
-                        <p className="elegant">
-                            CryptoTrade harnesses the power of pari-mutuel betting and Ethereum
-                            smart contracts to bet on the performance of leading crypto-currencies
-                            over a fixed period.
-                        </p>
-                        <button className="ui primary huge button">
-                            <Link href={Paths.getTradingPage()}><a>Trade Now</a></Link>
-                        </button>
-                    </div>
-                    <div className="overlay-secondary"/>
-                </FullWidthSegment>
-            }>
-                <Waypoint element={"#token-launch"} handler={handleStickyOnScroll}/>
-                <FullWidthSegment id="token-launch" options={[gray2, bordered, centered]} wrapper={3}>
-                    <TokenCountdown
-                        title="Token Launch Start"
-                        date={0}
-                        onTimeZero={() => {}}/>
-                    <div className="divider-1">
-                        <button
-                            className="ui huge primary button"
-                            onClick={() => {
-                                Files.open(Paths.getFile({
-                                    name: 'whitepaper',
-                                    type: 'pdf'
-                                }));
-                            }}
-                        >Whitepaper</button>
-                    </div>
-                </FullWidthSegment>
-                <FullWidthSegment options={[centered]} wrapper={3}>
-                    <PreIcoLaunch/>
+            <Page pageClass={stickyOnScroll()} addTimer={true} header={<PreIcoLaunch/>}>
+                <Waypoint element="#ico-launch" handler={handleStickyOnScroll}/>
+                <FullWidthSegment id="ico-launch" options={[centered]} wrapper={3}>
+                    <PurchaseInEther/>
                 </FullWidthSegment>
                 {(cryptoMarketData.length > 0) && (
                     <FullWidthSegment options={[gray2, skinny, bordered]}>

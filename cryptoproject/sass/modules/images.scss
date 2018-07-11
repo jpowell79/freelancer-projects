@@ -2,8 +2,8 @@
  * Images
  *----------------------------------------*/
 .parallax {
-    position: relative;
-    background-attachment: fixed;
-    background-position: 50% 50%;
-    background-size: cover;
+    position: relative!important;
+    background-attachment: fixed!important;
+    background-position: 50% 50%!important;
+    background-size: cover!important;
 }

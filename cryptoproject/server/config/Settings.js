@@ -1,7 +1,8 @@
+require('../services/utils/padEnd');
 const settings = require('../../site-settings');
 const SnapshotService = require('../services/SnapshotService/index');
 const DummyDatabase = require('../services/DummyDatabase/index');
-const HistoricDataArchvier = require('../services/HistoricDataArchiver/index');
+const HistoricDataArchiverService = require('../services/HistoricDataArchiver/Service');
 const log = require('../services/utils/log');
 const DatabaseCleaner = require('../services/databaseHelpers/DatabaseCleaner');
 const moment = require('moment');
@@ -65,15 +66,13 @@ async function loadDummyDatabase(){
 }
 
 async function archiveHistoricData(){
-    if(settings.ENABLE_ARCHIVE_OLD_DATA){
-        let days = settings.ARCHIVE_DATA_OLDER_THAN.days;
-        log.sectionTitle(`Archiving data older than ${days} days`);
-        return HistoricDataArchvier.archiveDataOlderThan(days)
-            .then(response => {
-                console.log(`Archived ${response.length} entries`);
-                log.endOfSection();
-                return "OK";
-            });
+    if(settings.ENABLE_ARCHIVER_SERVICE){
+        let hours = settings.ARCHIVER_REFRESH_RATE/(1000*60*60);
+
+        log.sectionTitle('Starting HistoricDataArchiverService');
+        new HistoricDataArchiverService();
+        console.log(`Service started. It will update every ${hours} hours`);
+        log.endOfSection();
     }
 }
 
@@ -82,10 +81,10 @@ module.exports.load = async function load(){
             return loadDummyDatabase();
         }).then(() => {
             return enableSnaphotService();
+        }).then(() => {
+            return archiveHistoricData();
         }).catch(err => {
             console.error(err);
             process.exit(1);
-        }).then(() => {
-            return archiveHistoricData();
         });
 };

@@ -12,8 +12,16 @@ import {Loader} from "../components/modules/icons";
 import {calcTotalPercentChange} from "../services/cryptoUtils";
 import CsvParser from "../server/services/CsvParser";
 import FullWidthSegment from "../components/containers/FullWidthSegment";
+import Dispatcher from "../services/Dispatcher";
+import {connect} from 'react-redux';
 
 class HistoricData extends Component {
+    static async getInitialProps({reduxStore}){
+        let dispatcher = new Dispatcher(reduxStore.dispatch);
+        await dispatcher.updateDividendFund();
+        return {};
+    }
+
     constructor(props){
         super(props);
 
@@ -28,14 +36,13 @@ class HistoricData extends Component {
 
     componentDidMount(){
         axios.get(urls.historicData).then(response => {
+            console.log(response);
             this.setState({
                 isLoadingHistoricData: false,
                 historicData: response.data
             });
         }).catch(err => {
-            AlertOptionPane.showErrorAlert({
-                message: err.toString()
-            });
+            console.error(err);
 
             this.setState({
                 isLoadingHistoricData: false
@@ -128,6 +135,7 @@ class HistoricData extends Component {
                         <React.Fragment>
                             <FullWidthSegment options={[gray, bordered]} wrapper={1}>
                                 <HistoricDataSummary
+                                    dividend={this.props.dividend.value}
                                     bestValueCrypto={this.getBestValueCrypto()}
                                     totalNrOfTrades={this.state.historicData
                                         .map(data => data.nrOfTrades)
@@ -157,4 +165,10 @@ class HistoricData extends Component {
     }
 }
 
-export default HistoricData;
+const mapStateToProps = (state) => {
+    const {dividend} = state;
+
+    return {dividend};
+};
+
+export default connect(mapStateToProps)(HistoricData);

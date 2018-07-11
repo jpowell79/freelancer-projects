@@ -66,7 +66,7 @@ export const CryptoStats = ({
                                 standardTimeCloses,
                                 extendedTimeCloses,
                                 finishPriceRetrievalTime
-                            }) ? finishPrice : "Awaiting Result")}</td>
+                            }) ? Strings.toUSD(finishPrice) : "Awaiting Result")}</td>
                     </tr>
                 </tbody>
             </table>

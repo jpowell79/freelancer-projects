@@ -29,6 +29,44 @@ module.exports.CONTRACT_ADDRESSES = [
     '0xf1e4fa00e0905b7e64dfc3e9fda68f5ba19792be'
 ];
 
+/*----------------------------------------
+ * Contract Debug Mode
+ * ---------------------------------------
+ * Makes it possible to override the values
+ * returned when a smart contract is
+ * fetched.
+ *----------------------------------------*/
+module.exports.DEBUG_MODE = false; //Says if the DEBUG functions should be used or not.
+module.exports.DEBUG_SMART_CONTRACT = (contract) => {
+    return {
+        index: contract.index,
+        admin: contract.admin,
+        name: contract.name,
+        contractAddress: contract.contractAddress,
+        rank: contract.rank,
+        startPrice: contract.startPrice,
+        nrOfTrades: contract.nrOfTrades,
+        standardTimeCloses: Date.now() + 1000 * 30,
+        extendedTimeCloses: Date.now() + 1000 * 60,
+        pot: contract.pot,
+        finishPriceRetrievalTime: contract.finishPriceRetrievalTime,
+        finishPrice: contract.finishPrice
+    };
+};
+module.exports.DEBUG_DIVIDEND = (dividend) => {
+    return {
+        address: dividend.address,
+        totalTokenSupply: dividend.totalTokenSupply,
+        claimWindowIsOpen: true,
+        closeTime: Date.now() - 1000 * 60,
+        openTime: Date.now() + 1000 * 60 * 5,
+        value: dividend.value,
+        block: dividend.block
+    }
+};
+module.exports.DEBUG_FINISH_PRICE_RETRIEVAL_TIME = (finishPriceRetrievalTime) => {
+    return Date.now() + 1000 * 60;
+};
 
 /*----------------------------------------
  * Dividend
@@ -86,7 +124,8 @@ module.exports.DUMMY_ARCHIVED_HISTORIC_DATA_TO_GENERATE = 2000;
  * Archives data older than a specific
  * amount of days.
  *----------------------------------------*/
-module.exports.ENABLE_ARCHIVE_OLD_DATA = false; //On server start
+module.exports.ENABLE_ARCHIVER_SERVICE = true;
+module.exports.ARCHIVER_REFRESH_RATE = 1000 * 60 * 60 * 24; //Milliseconds
 module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 7 };
 
 
