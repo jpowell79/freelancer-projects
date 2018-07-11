@@ -65,7 +65,7 @@ the older under `/api/archive/historic-data`.
 An example response from making a GET request 
 to one of these API’s could look like the 
 following:
-```json
+```javascript
 [
     {
         "_id": 0,
@@ -93,7 +93,7 @@ This tool waits for the extended time and finish
 price retrieval time in the smart contracts to 
 expire and then saves data to the historic data 
 table. The service starts along with the server 
-(unless disabled in [**site-settings.js**](./site-settings.js)) and will 
+(unless disabled in [site-settings.js](./site-settings.js)) and will 
 report which contracts it’s waiting for. Once 
 every hour the service will automatically refresh
 it’s known smart contracts. More specifically 
@@ -110,7 +110,7 @@ run in the background if enabled. At the writing
 moment it will check the recent historic data 
 once a day and move it to the archive if it’s 
 older than 7 days. The archiver can be configured 
-in [**site-settings.js**](./site-settings.js) and 
+in [site-settings.js](./site-settings.js) and 
 also be triggered manually by running; 
 `node scripts.js archive`
 
@@ -118,7 +118,7 @@ also be triggered manually by running;
 The contact form makes use of the 
 [nodemailer](https://nodemailer.com/about/) which
 has a smtp connection that can be configured 
-in [**site-settings.js**](./site-settings.js). 
+in [site-settings.js](./site-settings.js). 
 
 To secure against spam the contact form makes use of the 
 Google Recaptcha. The validation of which happens 
@@ -163,7 +163,7 @@ Contains all the styling for the application.
 
 <h2 id="styling">Styling</h2>
 The custom styling in the application is wrapped 
-around the [**variables.scss**](./sass/resources/variables.scss) file. This 
+around the [variables.scss](./sass/resources/variables.scss) file. This 
 file defines colors, size of headings, wrappers, 
 media queries and much more. Changing any variable
 value in this file will automatically trigger the
@@ -179,7 +179,7 @@ Basically any element using the green primary
 color would turn red instead.
 
 <h3 id="useful-styles">Useful Styles</h3>
-Almost every attribute defined in the [**variables.scss**](./sass/resources/variables.scss)
+Almost every attribute defined in the [variables.scss](./sass/resources/variables.scss)
 file has an associated style with it. These include:
 <ol>
     <li>
@@ -222,7 +222,7 @@ file has an associated style with it. These include:
 <h2 id="launch-phases">Launch Phases</h2>
 There exists one React Component for each launch 
 phase which are all imported on the 
-[**home page**](/pages/index.js). To change
+[home page](/pages/index.js). To change
 between the different phases simply swap out the
 page header component to another phase. For example 
 rendering the PreIcoLaunch looks like the following: 
@@ -246,21 +246,21 @@ The components for the different phases being:
 The following services and components are 
 especially worth looking more into due to their 
 frequency of use in the site.
-* [**Contract:**](./server/services/contract/index.js)
+* [Contract:](./server/services/contract/index.js)
 Defines how data from smart contracts should be fetched and transformed.
-* [**PageTitle:**](./components/modules/PageTitle/index.js)
+* [PageTitle:](./components/modules/PageTitle/index.js)
 Defines the title for a page with styling matching
 the other pages.
-* [**FullWidthSegment:**](./components/containers/FullWidthSegment/index.js)
+* [FullWidthSegment:](./components/containers/FullWidthSegment/index.js)
 A customized version of the Semantic UI segment which
 spans across the entire width of the screen.
-* [**AlertOptionPane:**](./services/Alert/AlertOptionPane.js)
+* [AlertOptionPane:](./services/Alert/AlertOptionPane.js)
 Is a tool I created in a previous project to 
 easily create styled popups. 
 [More details.](http://people.cs.umu.se/~c15knn/wiki/index.php?title=Alerts)
-* [**Dispatcher:**](./services/Dispatcher/index.js)
+* [Dispatcher:](./services/Dispatcher/index.js)
 Incapsulates the logic of commonly used methods of updating data in the Redux store.
-* [**Paths:**](./services/Paths/index.js)
+* [Paths:](./services/Paths/index.js)
 Defines the paths to pages as well as static and external resources.
-* [**Content Settings:**](./components/content-settings.js)
+* [Content Settings:](./components/content-settings.js)
 Defines the content for the Menus, Footer and FAQ.
