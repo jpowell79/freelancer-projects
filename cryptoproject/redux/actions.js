@@ -36,19 +36,19 @@ export const updateCrypto = (crypto) => {
 };
 
 /*----------------------------------------
- * Dividend
+ * Token Holder Claim
  *----------------------------------------*/
-export const updateDividend = (dividendFund) => {
+export const updateTokenHolderClaim = (dividendFund) => {
     return {
-        type: constants.UPDATE_DIVIDEND,
+        type: constants.UPDATE_TOKEN_HOLDER_CLAIM,
         payload: dividendFund
     }
 };
 
-export const isLoadingDividend = (isLoading = true) => {
+export const updateClaimInfo = (claimInfo) => {
     return {
-        type: constants.IS_LOADING_DIVIDEND,
-        payload: isLoading
+        type: constants.UPDATE_CLAIM_INFO,
+        payload: claimInfo
     }
 };
 

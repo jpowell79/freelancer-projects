@@ -42,8 +42,8 @@ export const MAIN_MENU = {
             href: Paths.getHistoricDataPage()
         },
         {
-            name: 'Dividend Fund',
-            href: Paths.getDividendFundPage()
+            name: 'Token Holder Claim',
+            href: Paths.getTokenHolderClaimPage()
         },
         {
             name: 'Contact',

@@ -64,10 +64,10 @@ class SmartContractList extends Component {
                         } target="_blank">
                             {Settings.PRICING_ADDRESS}
                         </a></h3>
-                        <h3 style={{marginTop: ".75em"}}>Dividend contract: <a className="lighter" href={
-                            `${Paths.getEtherScanAddressUrl(Settings.DIVIDEND_ADDRESS)}`
+                        <h3 style={{marginTop: ".75em"}}>Token holder claim contract: <a className="lighter" href={
+                            `${Paths.getEtherScanAddressUrl(Settings.TOKEN_HOLDER_CLAIM_ADDRESS)}`
                         } target="_blank">
-                            {Settings.DIVIDEND_ADDRESS}
+                            {Settings.TOKEN_HOLDER_CLAIM_ADDRESS}
                         </a></h3>
                     </Accordion.Content>
                 </Accordion>

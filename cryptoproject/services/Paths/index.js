@@ -37,8 +37,8 @@ class Paths {
         return `${root}/HistoricData`;
     };
 
-    static getDividendFundPage(root = ROOT){
-        return `${root}/DividendFund`;
+    static getTokenHolderClaimPage(root = ROOT){
+        return `${root}/TokenHolderClaim`;
     };
 
     static getSmartContractsPage(root = ROOT){

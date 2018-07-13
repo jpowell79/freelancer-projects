@@ -19,10 +19,20 @@ export const initialState = {
         inProgress: false,
         tradeStatus: CryptoTrade.tradeStatus.idle
     },
-    dividend: {
+    tokenHolderClaim: {
         isLoading: true
     },
-    account: DEFAULT_ACCOUNT
+    account: DEFAULT_ACCOUNT,
+    claimInfo: {}
+};
+
+export const claimInfo = (state = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_CLAIM_INFO:
+        return action.payload;
+    default:
+        return state;
+    }
 };
 
 export const isLoadingFeeds = (state = true, action) => {
@@ -34,14 +44,10 @@ export const isLoadingFeeds = (state = true, action) => {
     }
 };
 
-export const dividend = (state = {}, action) => {
+export const tokenHolderClaim = (state = {}, action) => {
     switch(action.type){
-    case constants.UPDATE_DIVIDEND:
+    case constants.UPDATE_TOKEN_HOLDER_CLAIM:
         return action.payload;
-    case constants.IS_LOADING_DIVIDEND:
-        return {
-            isLoading: action.payload
-        };
     default:
         return state;
     }
@@ -136,5 +142,6 @@ export default combineReducers({
     isLoadingFeeds,
     account,
     transaction,
-    dividend
+    tokenHolderClaim,
+    claimInfo
 });

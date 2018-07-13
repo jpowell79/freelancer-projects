@@ -4,10 +4,11 @@ import CryptoCountdown from "../../crypto/CryptoContent/CryptoCountdown";
 import Countdown from 'react-countdown-now';
 import Strings from "../../../../services/Strings";
 import {LoaderSmall} from "../../../modules/icons";
-import {claimDividend} from '../../../../server/services/contract';
+import {claimEth} from '../../../../server/services/contract';
 import HideFragment from '../../../modules/HideFragment';
+import Dispatcher from "../../../../services/Dispatcher";
 
-class DividendClaimWindow extends Component {
+class TokenHolderClaimWindow extends Component {
     static claimStatus = {
         idle: "idle",
         inProgress: "inProgress",
@@ -19,51 +20,71 @@ class DividendClaimWindow extends Component {
         super(props);
 
         this.state = {
-            claimStatus: DividendClaimWindow.claimStatus.idle,
+            claimStatus: TokenHolderClaimWindow.claimStatus.idle,
             claimButtonIsEnabled: true
         };
 
         this.canMakeClaim = this.canMakeClaim.bind(this);
-        this.claimDividend = this.claimDividend.bind(this);
+        this.claimEth = this.claimEth.bind(this);
         this.renderClaimStatusMessage = this.renderClaimStatusMessage.bind(this);
+    }
+
+    componentDidMount(){
+        this.dispatcher = new Dispatcher(this.props.dispatch);
     }
 
     canMakeClaim(){
         const {
-            dividend,
+            claimInfo,
+            tokenHolderClaim,
             account
         } = this.props;
 
-        const claimWindowIsOpen = dividend.claimWindowIsOpen;
-        const tokenSupplyExists = dividend.totalTokenSupply > 0;
-        const hasTradeTokens = account.tradeTokens > 0;
+        const claimWindowIsOpen = tokenHolderClaim.claimWindowIsOpen;
+        const hasAccountAddress = Strings.isDefined(account.address);
+        const hasNotMadeClaim = !claimInfo.hasMadeClaim;
+        const hasEntitlement = claimInfo.entitlementEth > 0;
 
-        return claimWindowIsOpen &&
-            tokenSupplyExists &&
-            hasTradeTokens;
+        return (
+            claimWindowIsOpen &&
+            hasAccountAddress &&
+            hasNotMadeClaim &&
+            hasEntitlement
+        );
     }
 
-    claimDividend(){
+    claimEth(){
         const {
             inProgress,
             success,
             error
-        } = DividendClaimWindow.claimStatus;
-
+        } = TokenHolderClaimWindow.claimStatus;
 
         this.setState({
             claimStatus: inProgress,
             claimButtonIsEnabled: false
         });
 
-        return claimDividend(this.props.account.address)
+        let claimResponse;
+
+        return claimEth(this.props.account.address)
             .then(response => {
+                claimResponse = response;
                 console.log(response);
-                
+
+                return this.dispatcher.updateClaimInfo(
+                    this.props.account.address,
+                    this.props.tokenHolderClaim.claimBlock
+                );
+            }).then(() => {
+                return this.dispatcher.updateTokenHolderClaim();
+            }).then(() => {
+                //TODO: Show transaction hash from claimResponse
+
                 this.setState({
                     claimStatus: success
                 });
-            }).catch((err, more) => {
+            }).catch((err) => {
                 console.error(err);
 
                 const errorString = err.toString();
@@ -90,7 +111,7 @@ class DividendClaimWindow extends Component {
             inProgress,
             success,
             error
-        } = DividendClaimWindow.claimStatus;
+        } = TokenHolderClaimWindow.claimStatus;
 
         switch(this.state.claimStatus){
         case inProgress:
@@ -115,7 +136,7 @@ class DividendClaimWindow extends Component {
                     marginRight: "auto",
                     marginTop: "2em"
                 }}>
-                    <div className="header">Dividend claim cancelled</div>
+                    <div className="header">Token holder claim cancelled</div>
                     <div className="content">
                         {this.errorMessage}
                     </div>
@@ -128,7 +149,7 @@ class DividendClaimWindow extends Component {
                     marginRight: "auto",
                     marginTop: "2em"
                 }}>
-                    <div className="header">Your dividend share was successfully claimed!</div>
+                    <div className="header">Your token holder share was successfully claimed!</div>
                 </div>
             );
         default:
@@ -139,49 +160,55 @@ class DividendClaimWindow extends Component {
     render(){
         const {
             account,
-            dividend
+            tokenHolderClaim,
+            claimInfo
         } = this.props;
 
-        if(account.isLoading || dividend.isLoading) return null;
-        if(!Strings.isDefined(dividend.address)) return null;
+        if(account.isLoading) return null;
+        if(!Strings.isDefined(tokenHolderClaim.address)) return null;
         if(!Strings.isDefined(account.address)) return null;
+        if(claimInfo.claimBlockTokenBalance === undefined) return null;
 
-        const now = Date.now();
-        const time = (dividend.closeTime > now)
-            ? dividend.closeTime : dividend.openTime;
-        const claimWindowText = (dividend.closeTime > now)
+        const time = (tokenHolderClaim.claimWindowIsOpen)
+            ? tokenHolderClaim.closeTime : tokenHolderClaim.openTime;
+        const claimWindowText = (tokenHolderClaim.claimWindowIsOpen)
             ? "The claim window will close in" : "The claim window will open in";
 
-        //TODO: What happens when a time expires?
-
         return (
-            <div id="dividend-claim-window">
-                <h2 className="no-margin-bottom">The dividend fund claim window is currently</h2>
+            <div id="token-holder-claim-window">
+                <h2 className="no-margin-bottom">The token holder claim window is currently</h2>
                 <h3 className="capitalized">{
-                    (dividend.claimWindowIsOpen) ? "OPEN" : "CLOSED"
+                    (tokenHolderClaim.claimWindowIsOpen) ? "OPEN" : "CLOSED"
                 }</h3>
                 <h2>{claimWindowText}</h2>
                 <HideFragment>
                     <Countdown
                         date={time}
-                        onComplete={() => {}}
+                        onComplete={() => {
+                            this.dispatcher.updateClaimInfo(
+                                this.props.account.address,
+                                this.props.tokenHolderClaim.claimBlock
+                            ).then(() => {
+                                return this.dispatcher.updateTokenHolderClaim();
+                            });
+                        }}
                         renderer={CryptoCountdown.countdownRenderer}
                     />
                 </HideFragment>
                 {(this.canMakeClaim())
                     ? (
                         <React.Fragment>
-                            <h2>Click the claim button to claim your dividend</h2>
+                            <h2>Click the claim button to claim your entitlement</h2>
                             {(this.state.claimButtonIsEnabled) ? (
                                     <button
                                         className="ui huge primary button"
-                                        onClick={this.claimDividend}>Claim</button>
+                                        onClick={this.claimEth}>Claim</button>
                                 )
                                 : (
                                     <button
                                         disabled
                                         className="ui huge primary button"
-                                        onClick={this.claimDividend}>Claim</button>
+                                        onClick={this.claimEth}>Claim</button>
                                 )
                             }
                         </React.Fragment>
@@ -194,14 +221,16 @@ class DividendClaimWindow extends Component {
 
 const mapStateToProps = (state) => {
     const {
-        dividend,
+        claimInfo,
+        tokenHolderClaim,
         account
     } = state;
 
     return {
-        dividend,
+        claimInfo,
+        tokenHolderClaim,
         account
     };
 };
 
-export default connect(mapStateToProps)(DividendClaimWindow);
+export default connect(mapStateToProps)(TokenHolderClaimWindow);

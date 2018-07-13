@@ -49,8 +49,8 @@ class HistoricDataSummary extends Component {
                 <div className="column">
                     <div className="ui statistics justify-content-center">
                         <div className="statistic">
-                            <div className="value">{this.props.dividend}</div>
-                            <div className="label h4 lighter">Dividend Value</div>
+                            <div className="value">{this.props.tokenHolderClaim.totalEth}</div>
+                            <div className="label h4 lighter">Token Holder Claim Value</div>
                         </div>
                     </div>
                 </div>

@@ -26,6 +26,12 @@
 );
 
 @include semanticAttribute(
+    '.no-padding-top',
+    'padding-top',
+    '0'
+);
+
+@include semanticAttribute(
     '.no-padding-bottom',
     'padding-bottom',
     '0'

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {LoaderSmall} from "../../../modules/icons/index";
 import Dispatcher from '../../../../services/Dispatcher/index';
@@ -14,6 +14,17 @@ import Paths from "../../../../services/Paths/index";
 import Strings from "../../../../services/Strings/index";
 
 class AccountDetails extends Component {
+    static defaultProps = {
+        titleElement: null,
+        onErrorRenderer: () => {
+            return (
+                <p className="h3">
+                    We were unable to detect your ethereum account.
+                </p>
+            );
+        }
+    };
+
     constructor(props){
         super(props);
 
@@ -33,57 +44,63 @@ class AccountDetails extends Component {
     }
 
     renderAccountDetails(){
-        const {account} = this.props;
+        const {
+            account,
+            titleElement
+        } = this.props;
 
         return (
-            <div className={twoColumnGrid()}>
-                <div className="column">
-                    <div className="icon-item">
-                        <AddressCard/>
-                        <div className="content">
-                            <h3>Ethereum Address</h3>
-                            <div style={{wordBreak: "break-all"}}>
-                                <a href={Paths.getEtherScanAddressUrl(account.address)} target="_blank">{
-                                    account.address
-                                }</a>
+            <Fragment>
+                {titleElement}
+                <div className={twoColumnGrid()}>
+                    <div className="column">
+                        <div className="icon-item">
+                            <AddressCard/>
+                            <div className="content">
+                                <h3>Ethereum Address</h3>
+                                <div style={{wordBreak: "break-all"}}>
+                                    <a href={Paths.getEtherScanAddressUrl(account.address)} target="_blank">{
+                                        account.address
+                                    }</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="column">
+                        <div className="icon-item">
+                            <Plug/>
+                            <div className="content">
+                                <h3>Network Connection</h3>
+                                <div>
+                                    {account.network}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="column">
+                        <div className="icon-item">
+                            <Ethereum/>
+                            <div className="content">
+                                <h3>Eth Balance</h3>
+                                <div>
+                                    {account.balance}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="column">
+                        <div className="icon-item">
+                            <MoneyBill className="display-5"/>
+                            <div className="content">
+                                <h3>{Settings.TOKEN_NAME} Token Balance</h3>
+                                <div>
+                                    {account.tradeTokens}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="column">
-                    <div className="icon-item">
-                        <Plug/>
-                        <div className="content">
-                            <h3>Network Connection</h3>
-                            <div>
-                                {account.network}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="icon-item">
-                        <Ethereum/>
-                        <div className="content">
-                            <h3>Eth Balance</h3>
-                            <div>
-                                {account.balance}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div className="column">
-                    <div className="icon-item">
-                        <MoneyBill className="display-5"/>
-                        <div className="content">
-                            <h3>{Settings.TOKEN_NAME} Token Balance</h3>
-                            <div>
-                                {account.tradeTokens}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </Fragment>
         );
     }
 
@@ -100,7 +117,7 @@ class AccountDetails extends Component {
                         ? (
                             this.renderAccountDetails()
                         ) : (
-                            <p className="h3">Error: Unable to detect your ethereum account.</p>
+                            this.props.onErrorRenderer()
                         )
                 }
             </div>

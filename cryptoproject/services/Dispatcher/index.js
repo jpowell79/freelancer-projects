@@ -1,14 +1,16 @@
 import {
     updateAccount,
     updateAllCrypto,
-    updateDividend,
+    updateTokenHolderClaim,
     updateCrypto,
-    updateMarketData
+    updateMarketData,
+    updateClaimInfo
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
 import {
     fetchAllCryptoContracts,
-    fetchDividendContract
+    fetchTokenHolderClaimContract,
+    fetchClaimInformation
 } from "../../server/services/contract/index";
 import {fetchCryptoContract} from "../../server/services/contract";
 import axios from "axios";
@@ -21,7 +23,7 @@ class Dispatcher {
 
         this.updateAccount = this.updateAccount.bind(this);
         this.updateAllCrypto = this.updateAllCrypto.bind(this);
-        this.updateDividendFund = this.updateDividendFund.bind(this);
+        this.updateTokenHolderClaim = this.updateTokenHolderClaim.bind(this);
         this.fetchCryptoContract = this.fetchCryptoContract.bind(this);
         this.fetchMarketData = this.fetchMarketData.bind(this);
         this.subscribeToAccountUpdate = this.subscribeToAccountUpdate.bind(this);
@@ -65,14 +67,25 @@ class Dispatcher {
         });
     }
 
-    async updateDividendFund(){
-        return fetchDividendContract().then(responses => {
-            this.dispatch(updateDividend(
+    async updateClaimInfo(address, claimBlock){
+        return fetchClaimInformation(address, claimBlock)
+            .then(claimInfo => {
+                this.dispatch(updateClaimInfo(claimInfo));
+            }).catch(err => {
+                this.dispatch(updateClaimInfo({}));
+                console.error(err);
+            });
+    }
+
+    async updateTokenHolderClaim(){
+        return fetchTokenHolderClaimContract().then(responses => {
+            this.dispatch(updateTokenHolderClaim(
                 Object.assign({}, responses, {isLoading: false}
             )));
         }).catch(err => {
+            this.dispatch(updateTokenHolderClaim({}));
             console.error(err);
-        })
+        });
     }
 
     async updateAllCrypto(){

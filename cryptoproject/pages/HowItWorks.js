@@ -230,7 +230,7 @@ class HowItWorks extends Component {
                     All TEST234 token holders are entitled to a share of the dividend fund.
                     This can be claimed on a quarterly basis, and the amount owed is correlated
                     to the number of tokens owned. For further details, please visit
-                    our <Link href={Paths.getDividendFundPage()}><a>dividend page</a></Link>.
+                    our <Link href={Paths.getTokenHolderClaimPage()}><a>dividend page</a></Link>.
                 </p>
             </article>
         );

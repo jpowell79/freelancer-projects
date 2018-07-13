@@ -53,33 +53,47 @@ module.exports.DEBUG_SMART_CONTRACT = (contract) => {
         finishPrice: contract.finishPrice
     };
 };
-module.exports.DEBUG_DIVIDEND = (dividend) => {
+
+module.exports.DEBUG_TOKEN_HOLDER_CLAIM = (claim) => {
     return {
-        address: dividend.address,
-        totalTokenSupply: dividend.totalTokenSupply,
-        claimWindowIsOpen: true,
-        closeTime: Date.now() - 1000 * 60,
-        openTime: Date.now() + 1000 * 60 * 5,
-        value: dividend.value,
-        block: dividend.block
-    }
+        address: claim.address,
+        claimBlock: claim.claimBlock,
+        claimWindowIsOpen: false,
+        claimWindowNumber: claim.claimWindowNumber,
+        totalEth: claim.totalEth,
+        openTime: Date.now() + claim.timeUntilWindowCloses,
+        closeTime: Date.now() + claim.timeUntilWindowOpens,
+        claimWindowTimeOpened: claim.claimWindowTimeOpened,
+        timeUntilWindowCloses: claim.timeUntilWindowCloses,
+        claimWindowTimeCloses: claim.claimWindowTimeOpened,
+        timeUntilWindowOpens: claim.timeUntilWindowCloses,
+        totalTokenSupply: claim.totalTokenSupply
+    };
+};
+module.exports.DEBUG_CLAIM_INFORMATION = (claimInfo) => {
+    return {
+        claimBlockTokenBalance: claimInfo.claimBlockTokenBalance,
+        entitlementPercentage: claimInfo.entitlementPercentage,
+        entitlementEth: 0.01,
+        hasMadeClaim: false
+    };
 };
 module.exports.DEBUG_FINISH_PRICE_RETRIEVAL_TIME = (finishPriceRetrievalTime) => {
     return Date.now() + 1000 * 60;
 };
 
 /*----------------------------------------
- * Dividend
+ * Token holder claim address
  *----------------------------------------*/
-module.exports.DIVIDEND_ADDRESS = '0xa91fcef9861efd6b6d2d26ec944f364b0f8cfab1';
+module.exports.TOKEN_HOLDER_CLAIM_ADDRESS = '0xbc98af5aae78f2b5842f1206558d1f1df563fe4a';
 module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
 
 
 /*----------------------------------------
  * Trade Token
  *----------------------------------------*/
-module.exports.TOKEN_CONTRACT = '0x816240cc477357fa924092f71edd23dd53b2bf5d';
-module.exports.TOKEN_NAME = 'TEST234';
+module.exports.TOKEN_CONTRACT = '0x3e9838C0063DB4541E1d225509662257a0baf4Fc';
+module.exports.TOKEN_NAME = 'TEST777';
 
 
 /*----------------------------------------

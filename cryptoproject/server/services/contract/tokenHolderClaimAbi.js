@@ -21,6 +21,10 @@ module.exports = [
             {
                 "name": "result",
                 "type": "string"
+            },
+            {
+                "name": "proof",
+                "type": "bytes"
             }
         ],
         "name": "__callback",
@@ -39,10 +43,6 @@ module.exports = [
             {
                 "name": "result",
                 "type": "string"
-            },
-            {
-                "name": "proof",
-                "type": "bytes"
             }
         ],
         "name": "__callback",
@@ -63,7 +63,7 @@ module.exports = [
     {
         "constant": false,
         "inputs": [],
-        "name": "claimDividend",
+        "name": "claimEth",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -104,7 +104,7 @@ module.exports = [
                 "type": "uint256"
             }
         ],
-        "name": "manuallySetClaimWindowNumber",
+        "name": "manuallySetClaimBlock",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -118,7 +118,7 @@ module.exports = [
                 "type": "uint256"
             }
         ],
-        "name": "manuallySetDividendBlock",
+        "name": "manuallySetClaimWindowNumber",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -141,7 +141,7 @@ module.exports = [
                 "type": "bool"
             }
         ],
-        "name": "pauseDividend",
+        "name": "pauseClaim",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -227,15 +227,15 @@ module.exports = [
         "type": "function"
     },
     {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
         "inputs": [],
         "payable": true,
         "stateMutability": "payable",
         "type": "constructor"
-    },
-    {
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "fallback"
     },
     {
         "constant": true,
@@ -273,7 +273,7 @@ module.exports = [
                 "type": "address"
             }
         ],
-        "name": "checkAnyCallerTokenBalanceAtDividendBlock",
+        "name": "checkAnyCallerTokenBalanceAtClaimBlock",
         "outputs": [
             {
                 "name": "",
@@ -301,6 +301,20 @@ module.exports = [
             {
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "checkClaimStatusOfCaller",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
             }
         ],
         "payable": false,
@@ -343,7 +357,21 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
-        "name": "checkTokenBalanceOfCallerAtDividendBlock",
+        "name": "checkTokenBalanceOfCallerAtClaimBlock",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "claimBlock",
         "outputs": [
             {
                 "name": "",
@@ -376,7 +404,7 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
-        "name": "ClaimsMadeForLastWindow",
+        "name": "claimsMadeForLastWindow",
         "outputs": [
             {
                 "name": "",
@@ -488,67 +516,53 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
+        "name": "contractCreationBlockNumber",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "contractCreationBlockTime",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "contractIsPaused",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
         "name": "currentClaimWindowFinalValue",
         "outputs": [
             {
                 "name": "",
                 "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "dividendBlock",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "dividendContractCreationBlockNumber",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "dividendContractCreationBlockTime",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "dividendIsPaused",
-        "outputs": [
-            {
-                "name": "",
-                "type": "bool"
             }
         ],
         "payable": false,
@@ -619,7 +633,7 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
-        "name": "showDividendFundBalance",
+        "name": "showClaimFundBalance",
         "outputs": [
             {
                 "name": "",
@@ -703,7 +717,7 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
-        "name": "totalDividendForThisClaimWindow",
+        "name": "totalEthForThisClaimWindow",
         "outputs": [
             {
                 "name": "",
@@ -727,6 +741,24 @@ module.exports = [
         "payable": false,
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "address"
+            }
+        ],
+        "name": "viewEthEntitlementOfAnyCaller",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
     }
 ];
-

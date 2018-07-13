@@ -72,7 +72,7 @@
 
 @media (max-width: $mediaSmall){
     .ui.segment {
-        &.full {
+        &.full:not(.widthless) {
             padding: $segmentPadding/2!important;
         }
     }

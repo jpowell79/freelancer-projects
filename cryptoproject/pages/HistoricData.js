@@ -1,7 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import Page from '../components/containers/Page';
 import HistoricDataTable from '../components/pages/historic-data/HistoricDataTable';
 import HistoricDataSummary from '../components/pages/historic-data/HistoricDataSummary';
+import AccountDetails from '../components/pages/trading/AccountDetails';
 import DateForm from '../components/modules/forms/DateForm';
 import axios from "axios/index";
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
@@ -14,11 +15,14 @@ import CsvParser from "../server/services/CsvParser";
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 import Dispatcher from "../services/Dispatcher";
 import {connect} from 'react-redux';
+import Strings from "../services/Strings";
+import Settings from '../site-settings';
+import {PageTitle} from "../components/modules/PageTitle";
 
 class HistoricData extends Component {
     static async getInitialProps({reduxStore}){
         let dispatcher = new Dispatcher(reduxStore.dispatch);
-        await dispatcher.updateDividendFund();
+        await dispatcher.updateTokenHolderClaim();
         return {};
     }
 
@@ -32,6 +36,7 @@ class HistoricData extends Component {
         
         this.downloadCsv = this.downloadCsv.bind(this);
         this.getBestValueCrypto = this.getBestValueCrypto.bind(this);
+        this.renderHistoricData = this.renderHistoricData.bind(this);
     }
 
     componentDidMount(){
@@ -107,8 +112,8 @@ class HistoricData extends Component {
             return accumulator;
         });
     }
-    
-    render(){
+
+    renderHistoricData(){
         const {
             centered,
             bordered
@@ -119,7 +124,7 @@ class HistoricData extends Component {
         } = FullWidthSegment.options.colors;
 
         return (
-            <Page contentClass="historic-data">
+            <Fragment>
                 {(this.state.isLoadingHistoricData)
                     ? (
                         <FullWidthSegment options={[centered]}>
@@ -132,10 +137,10 @@ class HistoricData extends Component {
                     )}
                 {(this.state.historicData.length > 0)
                     ? (
-                        <React.Fragment>
+                        <Fragment>
                             <FullWidthSegment options={[gray, bordered]} wrapper={1}>
                                 <HistoricDataSummary
-                                    dividend={this.props.dividend.value}
+                                    tokenHolderClaim={this.props.tokenHolderClaim}
                                     bestValueCrypto={this.getBestValueCrypto()}
                                     totalNrOfTrades={this.state.historicData
                                         .map(data => data.nrOfTrades)
@@ -158,17 +163,59 @@ class HistoricData extends Component {
                                     submitText="Download CSV"
                                 />
                             </FullWidthSegment>
-                        </React.Fragment>
+                        </Fragment>
                     ) : null}
+            </Fragment>
+        );
+    }
+    
+    render(){
+        const {
+            bordered
+        } = FullWidthSegment.options;
+
+        const {
+            gray
+        } = FullWidthSegment.options.colors;
+
+        return (
+            <Page contentClass="historic-data">
+                <PageTitle title="Historic Data"/>
+                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                    <div className="ui padded segment">
+                        <AccountDetails
+                            titleElement={<h2>Your Account Details</h2>}
+                            onErrorRenderer={() => {
+                                return (
+                                    <div className="text-center">
+                                        <h2>The Historical data service is provided for {Settings.TOKEN_NAME} token holders only.</h2>
+                                        <p className="h4">
+                                            Unfortunately, we are unable to detect that you possess any tokens.
+                                            Please ensure you are logged into MetaMask and that your wallet
+                                            address contains tokens to use this service.
+                                        </p>
+                                    </div>
+                                );
+                            }}
+                        />
+                    </div>
+                </FullWidthSegment>
+                {Strings.isDefined(this.props.account.address) && this.renderHistoricData()}
             </Page>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    const {dividend} = state;
+    const {
+        tokenHolderClaim,
+        account
+    } = state;
 
-    return {dividend};
+    return {
+        tokenHolderClaim,
+        account
+    };
 };
 
 export default connect(mapStateToProps)(HistoricData);
