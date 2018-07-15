@@ -16,6 +16,7 @@ import Strings from "../../../../services/Strings/index";
 class AccountDetails extends Component {
     static defaultProps = {
         titleElement: null,
+        renderer: null,
         onErrorRenderer: () => {
             return (
                 <p className="h3">
@@ -107,6 +108,9 @@ class AccountDetails extends Component {
     render() {
         const {account} = this.props;
 
+        const renderer = (this.props.renderer !== null)
+            ? this.props.renderer : this.renderAccountDetails;
+
         return (
             <div id="account-details">
                 {(account.isLoading)
@@ -115,7 +119,7 @@ class AccountDetails extends Component {
                     )
                     : (Strings.isDefined(account.address))
                         ? (
-                            this.renderAccountDetails()
+                            renderer(account, this.renderAccountDetails)
                         ) : (
                             this.props.onErrorRenderer()
                         )

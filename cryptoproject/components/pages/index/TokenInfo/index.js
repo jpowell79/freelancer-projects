@@ -14,7 +14,7 @@ export const TokenInfo = ({cryptoMarketData = []}) => {
             <div className="column">
                 <div className="ui centered statistics">
                     <div className="ui statistic no-margin">
-                        <div className="value">{Strings.toUSD(crypto.price)}</div>
+                        <div className="value display-5">{Strings.toUSD(crypto.price)}</div>
                         <div className="capitalized h4 normal">Current Price</div>
                     </div>
                 </div>
@@ -22,7 +22,7 @@ export const TokenInfo = ({cryptoMarketData = []}) => {
             <div className="column">
                 <div className="ui centered statistics break-all">
                     <div className="ui statistic no-margin">
-                        <div className="value">{Strings.toUSD(crypto.market_cap)}</div>
+                        <div className="value display-5">{Strings.toUSD(crypto.market_cap)}</div>
                         <div className="capitalized h3 normal">Market Cap</div>
                     </div>
                 </div>
@@ -30,7 +30,7 @@ export const TokenInfo = ({cryptoMarketData = []}) => {
             <div className="column">
                 <div className="ui centered statistics break-all">
                     <div className="ui statistic no-margin">
-                        <div className="value">{Strings.toUSD(crypto.volume_24h)}</div>
+                        <div className="value display-5">{Strings.toUSD(crypto.volume_24h)}</div>
                         <div className="capitalized h3 normal">Volume</div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {joinClassNames} from "../../../../services/utils";
 import CryptoCountdown from "../../crypto/CryptoContent/CryptoCountdown";
+import {dontShowOnMobile} from "../../../../services/cssUtils";
 
 export const TradingCountdown = ({cryptoMarketData, className, ...props}) => {
     return (
@@ -20,7 +21,7 @@ export const TradingCountdown = ({cryptoMarketData, className, ...props}) => {
                                 {countdown}
                             </div>
                         </div>
-                        <div className="two wide column">
+                        <div className={dontShowOnMobile('two wide column')}>
                             <div className="ui large icon header">
                                 <i className="clock outline icon"/>
                             </div>

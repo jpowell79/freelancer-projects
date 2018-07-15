@@ -340,6 +340,7 @@ class HowItWorks extends Component {
                 <FullWidthSegment wrapper={2} options={[skinny]}>
                     {HowItWorks.renderArticle()}
                 </FullWidthSegment>
+                <FullWidthSegment/>
             </Page>
         );
     }

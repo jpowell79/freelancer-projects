@@ -7,6 +7,7 @@ import {LoaderSmall} from "../../../modules/icons";
 import {claimEth} from '../../../../server/services/contract';
 import HideFragment from '../../../modules/HideFragment';
 import Dispatcher from "../../../../services/Dispatcher";
+import Paths from "../../../../services/Paths";
 
 class TokenHolderClaimWindow extends Component {
     static claimStatus = {
@@ -65,12 +66,9 @@ class TokenHolderClaimWindow extends Component {
             claimButtonIsEnabled: false
         });
 
-        let claimResponse;
-
         return claimEth(this.props.account.address)
             .then(response => {
-                claimResponse = response;
-                console.log(response);
+                this.transactionHash = response.transactionHash;
 
                 return this.dispatcher.updateClaimInfo(
                     this.props.account.address,
@@ -79,8 +77,6 @@ class TokenHolderClaimWindow extends Component {
             }).then(() => {
                 return this.dispatcher.updateTokenHolderClaim();
             }).then(() => {
-                //TODO: Show transaction hash from claimResponse
-
                 this.setState({
                     claimStatus: success
                 });
@@ -149,7 +145,14 @@ class TokenHolderClaimWindow extends Component {
                     marginRight: "auto",
                     marginTop: "2em"
                 }}>
-                    <div className="header">Your token holder share was successfully claimed!</div>
+                    <div className="header">
+                        Your token holder share was successfully claimed!
+                    </div>
+                    <div className="content">
+                        Your transaction hash is <a className="break-all" href={
+                            `${Paths.getEtherScanTransactionUrl(this.transactionHash)}`
+                        } target="_blank">{this.transactionHash}</a>
+                    </div>
                 </div>
             );
         default:

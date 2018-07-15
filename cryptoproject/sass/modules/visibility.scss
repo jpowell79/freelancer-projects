@@ -24,9 +24,29 @@
         .hide-#{$name}{
             @include vanish();
         }
+    }
+}
 
+@each $name, $size in $mediaQueries {
+    @media (min-width: $size) {
         .show-#{$name}{
             @include forceReveal();
+        }
+    }
+}
+
+@each $name, $size in $mediaQueries {
+    @media (min-width: $size) {
+        .dont-display-#{$name}{
+            display: none!important;
+        }
+    }
+}
+
+@each $name, $size in $mediaQueries {
+    @media (min-width: $size) {
+        .display-#{$name}{
+            display: block!important;
         }
     }
 }

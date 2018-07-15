@@ -1,15 +1,18 @@
 const cryptoAbi = require('./cryptoAbi');
 const tokenHolderClaimAbi = require('./tokenHolderClaimAbi');
+const tokenSaleAbi = require('./tokenSaleAbi');
 const web3 = require('../Web3');
 const SETTINGS = require("../../../site-settings");
 const {
     DEBUG_MODE,
     CONTRACT_ADDRESSES,
     TOKEN_HOLDER_CLAIM_ADDRESS,
+    TOKEN_SALE_CONTRACT_ADDRESS,
     DEBUG_FINISH_PRICE_RETRIEVAL_TIME,
     DEBUG_SMART_CONTRACT,
     DEBUG_TOKEN_HOLDER_CLAIM,
-    DEBUG_CLAIM_INFORMATION
+    DEBUG_CLAIM_INFORMATION,
+    DEBUG_TOKEN_SALE
 } = SETTINGS;
 
 const enterTheGame = (index, {from, value}) => {
@@ -150,9 +153,48 @@ const fetchClaimInformation = (address, claimBlock) => {
 };
 
 const claimEth = (address) => {
-    const methods = new web3.eth.Contract(tokenHolderClaimAbi, TOKEN_HOLDER_CLAIM_ADDRESS).methods;
+    const methods = new web3.eth.Contract(
+        tokenHolderClaimAbi,
+        TOKEN_HOLDER_CLAIM_ADDRESS
+    ).methods;
+
     return methods.claimEth().send({
         from: address
+    });
+};
+
+const fetchTokenSaleContract = () => {
+    const methods = new web3.eth.Contract(
+        tokenSaleAbi,
+        TOKEN_SALE_CONTRACT_ADDRESS
+    ).methods;
+
+    return Promise.all([
+        methods.thisContractAddress().call(),
+        methods.timeComplete().call(),
+        methods.amountRaised().call(),
+        methods.maximumRaised().call()
+    ]).then(responses => {
+        return {
+            address: responses[0],
+            completeTime: parseInt(responses[1], 10) * 1000,
+            amountRaised: parseFloat(responses[2])/1000000000000000000,
+            maximumRaised: parseFloat(responses[3])/1000000000000000000
+        }
+    }).then(tokenSale => {
+        return (DEBUG_MODE) ? DEBUG_TOKEN_SALE(tokenSale) : tokenSale;
+    });
+};
+
+const buyTokens = ({address, value}) => {
+    const methods = new web3.eth.Contract(
+        tokenSaleAbi,
+        TOKEN_SALE_CONTRACT_ADDRESS
+    ).methods;
+
+    return methods.buyTokens(address).send({
+        from: address,
+        value: web3.utils.toWei(value, 'ether')
     });
 };
 
@@ -161,8 +203,10 @@ module.exports = {
     fetchCryptoContract,
     fetchTokenHolderClaimContract,
     fetchClaimInformation,
+    fetchTokenSaleContract,
     getCryptoContract,
     getFinishPriceRetrievalTime,
     claimEth,
+    buyTokens,
     enterTheGame
 };

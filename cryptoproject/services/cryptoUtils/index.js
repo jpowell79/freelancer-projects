@@ -147,14 +147,18 @@ export const calcTotalPercentChange = (startPrice, currentPrice) => {
 };
 
 export const mergeWithMarketData = (cryptoArray, marketData) => {
-    let cryptoNames = cryptoArray.map(data => data.name);
+    const cryptoNames = cryptoArray
+        .map(data => data.name)
+        .filter(name => Strings.isDefined(name));
 
     return marketData.filter(data =>
         Strings.includesIgnoreCase(cryptoNames, data.name)
     ).map(data => {
-        let correspondingCrypto = cryptoArray.filter(cryptoData =>
-            cryptoData.name.toLowerCase() === data.name.toLowerCase()
-        )[0];
+        const correspondingCrypto = cryptoArray
+            .filter(cryptoData => Strings.isDefined(cryptoData.name))
+            .filter(cryptoData =>
+                cryptoData.name.toLowerCase() === data.name.toLowerCase()
+            )[0];
 
         return Object.assign({}, data, correspondingCrypto);
     });
@@ -218,14 +222,4 @@ export const getPreviousData = (data, prevCryptoMarketData) => {
     )[0];
 
     return (prevData === undefined) ? data : prevData;
-};
-
-export const getPreviousPercentChange1h = (data, prevCryptoMarketData) => {
-    const prevData = this.prevProps.cryptoMarketData.filter(
-        prevData => prevData.name === data.name
-    )[0];
-
-    return (prevData === undefined)
-            ? data.quotes.USD.percent_change_1h
-            : prevData.quotes.USD.percent_change_1h;
 };

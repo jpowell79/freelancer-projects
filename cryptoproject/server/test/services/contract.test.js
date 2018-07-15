@@ -4,7 +4,6 @@ const contract = require('../../services/contract');
 describe('Token Holder Claim Contract tests', () => {
     it('Returns expected types', (done) => {
         contract.fetchTokenHolderClaimContract().then(response => {
-            console.log(response);
             expect(response).to.be.an('object');
             expect(response.address).to.be.a('string');
             expect(response.claimBlock).to.be.a('number');
@@ -25,7 +24,6 @@ describe('Token Holder Claim Contract tests', () => {
                 response.claimBlock
             );
         }).then(claimInfo => {
-            console.log(claimInfo);
             expect(claimInfo.claimBlockTokenBalance).to.be.a('number');
             expect(claimInfo.entitlementPercentage).to.be.a('number');
             expect(claimInfo.entitlementEth).to.be.a('number');
@@ -33,4 +31,18 @@ describe('Token Holder Claim Contract tests', () => {
             done();
         });
     }).timeout(1000 * 10);
+});
+
+
+describe('Token Sale Contract tests', () => {
+    it('Returns expected types', (done) => {
+        contract.fetchTokenSaleContract()
+            .then(tokenSale => {
+                expect(tokenSale.address).to.be.a('string');
+                expect(tokenSale.completeTime).to.be.a('number');
+                expect(tokenSale.amountRaised).to.be.a('number');
+                expect(tokenSale.maximumRaised).to.be.a('number');
+                done();
+            });
+    });
 });

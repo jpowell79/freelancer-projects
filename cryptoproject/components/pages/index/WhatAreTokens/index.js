@@ -7,7 +7,7 @@ export const WhatAreTokens = () => {
     const TOKEN_NAME = Settings.TOKEN_NAME;
 
     return (
-        <div className={twoColumnGrid()}>
+        <div className={twoColumnGrid('unstack-md')}>
             <div className="column" style={{alignSelf: "center"}}>
                 <article className="elegant article">
                     <h2>What are {TOKEN_NAME} Tokens?</h2>

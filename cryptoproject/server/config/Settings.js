@@ -6,6 +6,8 @@ const HistoricDataArchiverService = require('../services/HistoricDataArchiver/Se
 const log = require('../services/utils/log');
 const DatabaseCleaner = require('../services/databaseHelpers/DatabaseCleaner');
 const moment = require('moment');
+const CryptoDataService = require('../services/CryptoDataService');
+const os = require('os');
 moment.locale('en');
 
 async function removeDatabase() {
@@ -76,6 +78,32 @@ async function archiveHistoricData(){
     }
 }
 
+async function enableCryptoDataService(){
+    if(settings.ENABLE_CRYPTO_DATA_SERVICE){
+        log.sectionTitle('Starting CryptoDataService');
+        return new CryptoDataService().launch()
+            .then(() => {
+                console.log(
+                    `Service started. It will update every ` +
+                    `${settings.CRYPTO_DATA_SERVICE_REFRESH_RATE/1000} seconds`
+                );
+                log.endOfSection();
+            });
+    }
+}
+
+module.exports.getProxy = () => {
+    const ethernet = os.networkInterfaces().Ethernet;
+
+    if(!ethernet) return null;
+
+    const proxy = ethernet
+        .filter(ip => ip.family === 'IPv4')
+        .map(ip => ip.address)[0];
+
+    return (proxy) ? proxy : null;
+};
+
 module.exports.load = async function load(){
     return removeDatabase().then(() => {
             return loadDummyDatabase();
@@ -83,6 +111,8 @@ module.exports.load = async function load(){
             return enableSnaphotService();
         }).then(() => {
             return archiveHistoricData();
+        }).then(() => {
+            return enableCryptoDataService();
         }).catch(err => {
             console.error(err);
             process.exit(1);

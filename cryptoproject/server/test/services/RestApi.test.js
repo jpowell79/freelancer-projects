@@ -28,6 +28,15 @@ describe('Rest API', () => {
             });
     }).timeout(10000);
 
+    it(`GETS ${urls.cryptoData}`, (done) => {
+        request(app).get(urls.cryptoData)
+            .end((err, res) => {
+                console.log(res);
+                expect(res.statusCode).to.be.equal(200);
+                done();
+            });
+    }).timeout(10000);
+
     it(`Should not send email with a POST request to ${urls.email} using invalid grecaptcha`, (done) => {
         request(app)
             .post(urls.email)

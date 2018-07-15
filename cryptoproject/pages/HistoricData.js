@@ -18,6 +18,7 @@ import {connect} from 'react-redux';
 import Strings from "../services/Strings";
 import Settings from '../site-settings';
 import {PageTitle} from "../components/modules/PageTitle";
+import Web3 from '../server/services/Web3';
 
 class HistoricData extends Component {
     static async getInitialProps({reduxStore}){
@@ -53,6 +54,19 @@ class HistoricData extends Component {
                 isLoadingHistoricData: false
             });
         });
+    }
+
+    static renderNoAccessMessage(){
+        return (
+            <div className="text-center">
+                <h2>The Historical data service is provided for {Settings.TOKEN_NAME} token holders only.</h2>
+                <p className="h4">
+                    Unfortunately, we are unable to detect that you possess any tokens.
+                    Please ensure you are logged into MetaMask and that your wallet
+                    address contains tokens to use this service.
+                </p>
+            </div>
+        );
     }
 
     downloadCsv(startDate, endDate){
@@ -116,7 +130,8 @@ class HistoricData extends Component {
     renderHistoricData(){
         const {
             centered,
-            bordered
+            bordered,
+            noWidthPadding
         } = FullWidthSegment.options;
 
         const {
@@ -131,8 +146,10 @@ class HistoricData extends Component {
                             <Loader/>
                         </FullWidthSegment>
                     ) : (
-                        <FullWidthSegment>
-                            <HistoricDataTable historicData={this.state.historicData}/>
+                        <FullWidthSegment options={[noWidthPadding]}>
+                            <HistoricDataTable
+                                historicData={this.state.historicData}
+                            />
                         </FullWidthSegment>
                     )}
                 {(this.state.historicData.length > 0)
@@ -156,13 +173,15 @@ class HistoricData extends Component {
                                     }
                                 />
                             </FullWidthSegment>
-                            <FullWidthSegment options={[centered]} wrapper={4}>
-                                <h2 className="centered title">Download CSV</h2>
-                                <DateForm
-                                    onSubmit={this.downloadCsv}
-                                    submitText="Download CSV"
-                                />
-                            </FullWidthSegment>
+                            {Web3.hasMetaMask() && (
+                                <FullWidthSegment options={[centered]} wrapper={4}>
+                                    <h2 className="centered title">Download CSV</h2>
+                                    <DateForm
+                                        onSubmit={this.downloadCsv}
+                                        submitText="Download CSV"
+                                    />
+                                </FullWidthSegment>
+                            )}
                         </Fragment>
                     ) : null}
             </Fragment>
@@ -171,7 +190,8 @@ class HistoricData extends Component {
     
     render(){
         const {
-            bordered
+            bordered,
+            skinny
         } = FullWidthSegment.options;
 
         const {
@@ -181,26 +201,23 @@ class HistoricData extends Component {
         return (
             <Page contentClass="historic-data">
                 <PageTitle title="Historic Data"/>
-                <FullWidthSegment options={[gray, bordered]} wrapper={2}>
+                <FullWidthSegment options={[gray, bordered, skinny]} wrapper={2}>
                     <div className="ui padded segment">
                         <AccountDetails
-                            titleElement={<h2>Your Account Details</h2>}
-                            onErrorRenderer={() => {
-                                return (
-                                    <div className="text-center">
-                                        <h2>The Historical data service is provided for {Settings.TOKEN_NAME} token holders only.</h2>
-                                        <p className="h4">
-                                            Unfortunately, we are unable to detect that you possess any tokens.
-                                            Please ensure you are logged into MetaMask and that your wallet
-                                            address contains tokens to use this service.
-                                        </p>
-                                    </div>
-                                );
+                            titleElement={<h2 className="h3">Your Account Details</h2>}
+                            renderer={(account, renderDetails) => {
+                                if(account.tradeTokens > 0){
+                                    return renderDetails();
+                                }
+
+                                return HistoricData.renderNoAccessMessage();
                             }}
+                            onErrorRenderer={HistoricData.renderNoAccessMessage}
                         />
                     </div>
                 </FullWidthSegment>
-                {Strings.isDefined(this.props.account.address) && this.renderHistoricData()}
+                {(this.props.account.tradeTokens > 0) && Strings.isDefined(this.props.account.address)
+                    ? this.renderHistoricData() : null}
             </Page>
         );
     }

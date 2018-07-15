@@ -85,3 +85,15 @@
 .rc-anchor {
     background-color: #FFF!important;
 }
+
+@media (max-width: $mediaSmall) {
+    .article {
+        .math {
+            padding-left: 20px;
+        }
+
+        ol {
+            padding-left: 10px;
+        }
+    }
+}

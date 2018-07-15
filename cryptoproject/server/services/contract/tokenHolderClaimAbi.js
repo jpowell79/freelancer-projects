@@ -227,6 +227,28 @@ module.exports = [
         "type": "function"
     },
     {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_claimnumber",
+                "type": "uint256"
+            },
+            {
+                "name": "_windowopen",
+                "type": "bool"
+            },
+            {
+                "name": "_totaleth",
+                "type": "uint256"
+            }
+        ],
+        "name": "testMakingClaims",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
         "payable": true,
         "stateMutability": "payable",
         "type": "fallback"
@@ -376,6 +398,25 @@ module.exports = [
             {
                 "name": "",
                 "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "claimedstatus",
+        "outputs": [
+            {
+                "name": "",
+                "type": "bool"
             }
         ],
         "payable": false,

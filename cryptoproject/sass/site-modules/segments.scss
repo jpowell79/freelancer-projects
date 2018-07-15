@@ -25,10 +25,10 @@
     }
 
     &.height {
-        height: 100vh;
+        min-height: 100vh;
 
         &.half {
-            height: 50vh;
+            min-height: 50vh;
         }
     }
 
@@ -74,6 +74,10 @@
     .ui.segment {
         &.full:not(.widthless) {
             padding: $segmentPadding/2!important;
+
+            &.skinny {
+                padding: $segmentPadding/4!important;
+            }
         }
     }
 }

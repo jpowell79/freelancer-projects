@@ -43,6 +43,12 @@
             }
         }
 
+        .centered.column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
         &.stackable.center.aligned.hugging {
             > .column {
                 &:first-child {
@@ -124,14 +130,15 @@
     }
 
     &.statistics {
-        &.huge {
+        &.huge,
+        &.large {
             > .statistic {
                 > .value {
-                    font-size: $display4!important;
+                    font-size: $display5!important;
                 }
 
                 > .label {
-                    font-size: $h4!important;
+                    font-size: $h6!important;
                 }
             }
         }
@@ -141,7 +148,11 @@
 
             >.value {
                 font-family: $primaryFont!important;
-                font-size: $display4!important;
+                font-size: $display5!important;
+            }
+
+            > .label {
+                font-size: $h6!important;
             }
         }
     }
@@ -173,6 +184,33 @@
 
         &:focus {
             border: 1px solid #85b7d9!important;
+        }
+    }
+}
+
+@media (max-width: $mediaLarge) {
+    .ui {
+        &.grid {
+            &.unstack-lg {
+                &.reverse-order {
+                    > .column:first-child {
+                        order: 2;
+                    }
+
+                    > .column:last-child {
+                        order: 1;
+                    }
+                }
+
+                > .column {
+                    width: 100% !important;
+                }
+
+                &.two-column > .column {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
         }
     }
 }
@@ -214,6 +252,17 @@
     }
 }
 
+@media (max-width: $mediaSmall) {
+    .ui {
+        &.stackable.grid {
+            > .column:not(.why-semantic-ui) {
+                padding-left: 0!important;
+                padding-right: 0!important;
+            }
+        }
+    }
+}
+
 @media (min-width: $mediaSmall){
     .ui {
         &.statistics {
@@ -229,6 +278,19 @@
 
                     > .label {
                         font-size: $h3!important;
+                        font-weight: lighter;
+                    }
+                }
+            }
+
+            &.large {
+                > .statistic {
+                    > .value {
+                        font-size: $display2!important;
+                    }
+
+                    > .label {
+                        font-size: $h4!important;
                         font-weight: lighter;
                     }
                 }

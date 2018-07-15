@@ -53,6 +53,16 @@ export const updateClaimInfo = (claimInfo) => {
 };
 
 /*----------------------------------------
+ * Token Sale
+ *----------------------------------------*/
+export const updateTokenSale = (tokenSale) => {
+    return {
+        type: constants.UPDATE_TOKEN_SALE,
+        payload: tokenSale
+    }
+};
+
+/*----------------------------------------
  * Transaction
  *----------------------------------------*/
 export const startTransaction = () => {

@@ -18,11 +18,24 @@ app.prepare().then(() => {
     return Settings.load();
 }).then(() => {
     const PORT = process.env.PORT || siteSettings.DEFAULT_PORT;
+    const PROXY = (siteSettings.PROXY) ? siteSettings.PROXY : Settings.getProxy();
+
+    log.sectionTitle('Starting Application');
 
     server.listen(PORT, siteSettings.HOST, () => {
-        log.sectionTitle('Starting Application');
-        console.log(`The application is running on http://${siteSettings.HOST}:${PORT}/\n`);
-        log.apiPoints();
-        log.endOfSection();
+        console.log('You can now view the client in the browser.');
+        console.log(`${'Local:'.padEnd(17)} http://${siteSettings.HOST}:${PORT}/`);
+
+        if(PROXY !== null){
+            server.listen(PORT, PROXY, () => {
+                console.log(`${'On Your Network:'.padEnd(17)} http://${PROXY}:${PORT}/\n`);
+                log.apiPoints();
+                log.endOfSection();
+            });
+        } else {
+            console.log('\n');
+            log.apiPoints();
+            log.endOfSection();
+        }
     });
 });

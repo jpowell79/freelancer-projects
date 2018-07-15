@@ -81,13 +81,25 @@ module.exports.DEBUG_CLAIM_INFORMATION = (claimInfo) => {
 module.exports.DEBUG_FINISH_PRICE_RETRIEVAL_TIME = (finishPriceRetrievalTime) => {
     return Date.now() + 1000 * 60;
 };
+module.exports.DEBUG_TOKEN_SALE = (tokenSale) => {
+    return {
+        address: tokenSale.address,
+        completeTime: tokenSale.completeTime,
+        amountRaised: 3975,
+        maximumRaised: tokenSale.maximumRaised
+    };
+};
 
 /*----------------------------------------
  * Token holder claim address
  *----------------------------------------*/
-module.exports.TOKEN_HOLDER_CLAIM_ADDRESS = '0xbc98af5aae78f2b5842f1206558d1f1df563fe4a';
+module.exports.TOKEN_HOLDER_CLAIM_ADDRESS = '0xd473fc1cee590f3132a3f66fd5726a8dfb94740e';
 module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
 
+/*----------------------------------------
+ * Token Sale Contract
+ *----------------------------------------*/
+module.exports.TOKEN_SALE_CONTRACT_ADDRESS = '0xdd2215ca36085de9deccfa8aa7bde7f76d3e0441';
 
 /*----------------------------------------
  * Trade Token
@@ -102,6 +114,7 @@ module.exports.TOKEN_NAME = 'TEST777';
 module.exports.DEFAULT_PORT = 3000;
 module.exports.HOST = 'localhost';
 module.exports.MONGODB_URI = 'mongodb://localhost/database';
+module.exports.PROXY = null;
 
 
 /*----------------------------------------
@@ -142,6 +155,12 @@ module.exports.ENABLE_ARCHIVER_SERVICE = true;
 module.exports.ARCHIVER_REFRESH_RATE = 1000 * 60 * 60 * 24; //Milliseconds
 module.exports.ARCHIVE_DATA_OLDER_THAN = { days: 7 };
 
+
+/*----------------------------------------
+ * Crypto Data Service
+ * ---------------------------------------*/
+module.exports.ENABLE_CRYPTO_DATA_SERVICE = true;
+module.exports.CRYPTO_DATA_SERVICE_REFRESH_RATE = 1000 * 30; //Milliseconds
 
 /*----------------------------------------
  * Snapshot Service

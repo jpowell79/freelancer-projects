@@ -33,3 +33,19 @@
         font-weight: lighter;
     }
 }
+
+@media (max-width: $mediaSmall) {
+    .ui.styled.accordion {
+        .title {
+            i.dropdown {
+                display: table-cell;
+                font-size: $h4;
+                vertical-align: middle;
+            }
+
+            .content {
+                font-size: $h5;
+            }
+        }
+    }
+}

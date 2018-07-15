@@ -23,7 +23,17 @@ export const initialState = {
         isLoading: true
     },
     account: DEFAULT_ACCOUNT,
-    claimInfo: {}
+    claimInfo: {},
+    tokenSale: {}
+};
+
+export const tokenSale = (state = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_TOKEN_SALE:
+        return action.payload;
+    default:
+        return state;
+    }
 };
 
 export const claimInfo = (state = {}, action) => {
@@ -143,5 +153,6 @@ export default combineReducers({
     account,
     transaction,
     tokenHolderClaim,
+    tokenSale,
     claimInfo
 });

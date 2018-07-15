@@ -1,5 +1,6 @@
 const ArchivedHistoricDataHelper = require('./ArchivedHistoricDataHelper');
 const HistoricDataHelper = require('./HistoricDataHelper');
+const CryptoData = require('../../models/crypto-data');
 const log = require('../utils/log');
 
 function cleanDatabase(){
@@ -11,8 +12,14 @@ function cleanDatabase(){
             return ArchivedHistoricDataHelper.removeAll()
         })
         .then(() => {
+            console.log('Removing crypto data...');
+            return CryptoData.find().exec();
+        }).then(response => {
+            return Promise.all(response.map(data => {
+                return CryptoData.deleteOne({_id: data._id}).exec();
+            }));
+        }).then(() => {
             log.endOfSection();
-            return "OK";
         });
 }
 

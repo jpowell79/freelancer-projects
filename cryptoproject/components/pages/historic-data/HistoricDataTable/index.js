@@ -47,8 +47,8 @@ class HistoricDataTable extends Component {
                     <th>Name</th>
                     <th className={hideOnMobile()}>Start Price</th>
                     <th className={hideOnMobile()}>Finish Price</th>
-                    <th>Pot size</th>
-                    <th>Nr. Trades</th>
+                    <th>Pot</th>
+                    <th>Trades</th>
                 </tr>
                 </thead>
                 <tbody>

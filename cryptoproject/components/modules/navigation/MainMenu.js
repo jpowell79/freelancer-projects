@@ -4,6 +4,7 @@ import {withRouter} from 'next/router';
 import {MobileMenuIcon} from "../icons/index";
 import $ from 'jquery';
 import {MAIN_MENU} from "../../content-settings";
+import Web3 from '../../../server/services/Web3';
 
 class MainMenu extends Component {
     constructor(props){
@@ -18,6 +19,10 @@ class MainMenu extends Component {
         const $mainMenu = $('#main-menu');
 
         this.$mainMenuToggler.on('click', () => {
+            if(!Web3.hasMetaMask()){
+                $('body').toggleClass('mobile-menu-open');
+            }
+
             $mainMenu.toggleClass('reveal-items');
             $mainMenu.addClass('animate');
             this.$mainMenuToggler.toggleClass('active');
@@ -27,6 +32,7 @@ class MainMenu extends Component {
 
     componentWillUnmount(){
         this.$mainMenuToggler.off('click');
+        $('body').removeClass('mobile-menu-open');
     }
 
     getActiveClass(page){

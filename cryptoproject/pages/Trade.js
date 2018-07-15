@@ -10,8 +10,8 @@ import {TradingStats} from "../components/pages/trading/TradingsStats";
 import Dispatcher from "../services/Dispatcher";
 
 class Trade extends Component {
-    static async getInitialProps({reduxStore}){
-        let dispatcher = new Dispatcher(reduxStore.dispatch);
+    static async getInitialProps({req, reduxStore}){
+        let dispatcher = new Dispatcher(reduxStore.dispatch, req);
 
         await dispatcher.updateAllCrypto();
         await dispatcher.fetchMarketData();
@@ -38,7 +38,7 @@ class Trade extends Component {
             <Page addTimer={true}>
                 <FullWidthSegment options={[gray, skinny, attached, bordered]} wrapper={2}>
                     <div className="ui padded segment">
-                        <h2>Your Account Details</h2>
+                        <h2 className="h3">Your Account Details</h2>
                         <AccountDetails/>
                     </div>
                 </FullWidthSegment>

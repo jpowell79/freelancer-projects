@@ -4,22 +4,27 @@ import {
     updateTokenHolderClaim,
     updateCrypto,
     updateMarketData,
-    updateClaimInfo
+    updateClaimInfo,
+    updateTokenSale
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
 import {
     fetchAllCryptoContracts,
     fetchTokenHolderClaimContract,
-    fetchClaimInformation
+    fetchClaimInformation,
+    fetchTokenSaleContract
 } from "../../server/services/contract/index";
 import {fetchCryptoContract} from "../../server/services/contract";
 import axios from "axios";
 import CoinMarketCapApi from "../CoinMarketCapApi";
-import Web3 from "../../server/services/Web3";
+import urls from '../../server/services/utils/urls';
+import {isServer} from "../utils";
+import Settings from '../../site-settings';
 
 class Dispatcher {
-    constructor(dispatch){
+    constructor(dispatch, request = null){
         this.dispatch = dispatch;
+        this.request = request;
 
         this.updateAccount = this.updateAccount.bind(this);
         this.updateAllCrypto = this.updateAllCrypto.bind(this);
@@ -89,8 +94,46 @@ class Dispatcher {
     }
 
     async updateAllCrypto(){
-        return fetchAllCryptoContracts().then((responses) => {
-            this.dispatch(updateAllCrypto(responses));
+        const dispatchUpdateAllCrypto = (responses) => {
+            if(responses.data.length > 0){
+                this.dispatch(updateAllCrypto(responses.data[0].cryptoData));
+            } else {
+                this.dispatch(updateAllCrypto([]));
+            }
+        };
+
+        if(!Settings.ENABLE_CRYPTO_DATA_SERVICE){
+            return fetchAllCryptoContracts()
+                .then(responses => {
+                    this.dispatch(updateAllCrypto(responses));
+                }).catch(err => {
+                    console.error(err);
+                });
+        } else if(isServer()){
+            const session = (this.request) ? this.request.session : null;
+            const url = (this.request.headers && this.request.headers.host)
+                ? 'http://' + this.request.headers.host : window.location.origin;
+
+            return axios({
+                method: 'get',
+                url: url + urls.cryptoData,
+                credentials: 'same-origin',
+                data: {'session': session}
+            }).then(dispatchUpdateAllCrypto).catch(err => {
+                console.error(err);
+            });
+        } else {
+            return axios(urls.cryptoData)
+                .then(dispatchUpdateAllCrypto)
+                .catch(err => {
+                    console.error(err);
+                });
+        }
+    }
+
+    async updateTokenSale(){
+        return fetchTokenSaleContract().then(tokenSale => {
+            this.dispatch(updateTokenSale(tokenSale));
         }).catch(err => {
             console.error(err);
         });
@@ -108,13 +151,15 @@ class Dispatcher {
             }
         };
 
-        if(Web3.hasMetaMask()){
-            Web3.onMetamaskUpdate(this.handleAccountUpdate);
+        if(web3.hasMetaMask()){
+            web3.onMetamaskUpdate(this.handleAccountUpdate);
         }
     }
 
     unsubscribe(){
-        Web3.unsubscribeToMetmaskUpdate(this.handleAccountUpdate);
+        if(web3.hasMetaMask()){
+            web3.unsubscribeToMetmaskUpdate(this.handleAccountUpdate);
+        }
     }
 }
 

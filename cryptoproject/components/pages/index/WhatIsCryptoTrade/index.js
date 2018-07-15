@@ -4,7 +4,7 @@ import {twoColumnGrid} from "../../../../services/cssUtils";
 
 export const WhatIsCryptoTrade = () => {
     return (
-        <div className={twoColumnGrid()}>
+        <div className={twoColumnGrid('unstack-md')}>
             <div className="column" style={{alignSelf: "center"}}>
                 <img src={Paths.getImage({
                     name: 'what_is_cryptotrade',

@@ -30,7 +30,8 @@ class TokenHolderClaim extends Component {
         const {
             bordered,
             centered,
-            attached
+            attached,
+            skinny
         } = FullWidthSegment.options;
 
         const {
@@ -47,10 +48,10 @@ class TokenHolderClaim extends Component {
         return (
             <Page>
                 <PageTitle title="Token Holder Claim" className={joinClassNames(bordered, attached)}/>
-                <FullWidthSegment options={[gray]} wrapper={2}>
+                <FullWidthSegment options={[gray, skinny]} wrapper={2}>
                     <div className="ui padded segment">
                         {(Strings.isDefined(account.address)) && (
-                            <h2>Your Account Details</h2>
+                            <h2 className="h3">Your Account Details</h2>
                         )}
                         <AccountDetails onErrorRenderer={() => {
                             return (

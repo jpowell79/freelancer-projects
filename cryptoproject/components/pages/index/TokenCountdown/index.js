@@ -4,7 +4,7 @@ import Countdown from 'react-countdown-now';
 export const TokenCountdown = ({title, date, onCountdownZero}) => {
     const countdownRenderer = ({days, hours, minutes, seconds}) => {
         return (
-            <div className="ui huge statistics">
+            <div className="ui large statistics">
                 <div className="statistic">
                     <div className="value">{days}</div>
                     <div className="label">Days</div>
@@ -27,7 +27,7 @@ export const TokenCountdown = ({title, date, onCountdownZero}) => {
 
     return (
         <div className="text-center">
-            <h2 className="display-3 lighter">{title}</h2>
+            <h2 className="display-4 lighter">{title}</h2>
             <div className="content" style={{
                 display: "flex",
                 justifyContent: "center"

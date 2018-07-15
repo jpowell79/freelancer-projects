@@ -59,7 +59,19 @@ $menuBackground: $white;
     }
 }
 
-@media (max-width: $mediaMedium){
+@media (max-width: $mediaLarge){
+    .mobile-menu-open {
+        position: fixed;
+        left: auto;
+        right: auto;
+        top: 0;
+
+        #page-content,
+        #page-footer {
+            opacity: 0!important;
+            visibility: hidden!important;
+        }
+    }
 
     #main-menu {
         nav {
@@ -73,6 +85,7 @@ $menuBackground: $white;
             z-index: -1;
 
             a {
+                display: none;
                 width: 100%;
                 justify-content: center;
                 opacity: 0;
@@ -112,15 +125,16 @@ $menuBackground: $white;
         &.animate {
             nav {
                 flex-direction: row;
-                overflow-y: hidden;
                 overflow-x: hidden;
-                z-index: 899;
+                overflow-y: hidden;
+                z-index: -1;
                 animation-duration: 1s;
                 animation-fill-mode: forwards;
                 animation-name: hide-menu;
                 animation-timing-function: cubic-bezier(.8,.01,.3,1);
 
                 a {
+                    display: block;
                     animation-duration: 1s;
                     animation-fill-mode: forwards;
                     animation-name: hide-menu-items;
@@ -130,6 +144,8 @@ $menuBackground: $white;
 
             &.reveal-items {
                 nav {
+                    z-index: 899;
+                    overflow-y: auto;
                     visibility: visible;
                     animation-name: reveal-menu;
                     border-bottom: 1px solid rgba(34,36,38,.1);
@@ -149,19 +165,19 @@ $menuBackground: $white;
     }
 
     100% {
+        overflow-y: hidden;
         max-height: 0;
-        visibility: hidden;
     }
 }
 
 @keyframes reveal-menu {
     0% {
+        overflow-y: hidden;
         max-height: 0;
     }
 
     100% {
-        max-height: 100vh;
-        overflow-y: visible;
+        max-height: calc(100vh - #{$menuHeight});
     }
 }
 

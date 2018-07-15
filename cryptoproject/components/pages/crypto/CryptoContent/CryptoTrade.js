@@ -121,7 +121,7 @@ class CryptoTrade extends Component {
             tradeButtonIsEnabled: false
         });
 
-        this.props.handleTrade(this.state.tradeValue)
+        this.props.handleTrade(this.state.purchaseValue)
             .then(() => {
                 this.setState({tradeButtonIsEnabled: true});
             });
@@ -152,7 +152,7 @@ class CryptoTrade extends Component {
                         }}
                         onCorrectInput={(event) => {
                             this.setState({
-                                tradeValue: event.target.value,
+                                purchaseValue: event.target.value,
                                 hasCorrectInput: true
                             });
                         }}

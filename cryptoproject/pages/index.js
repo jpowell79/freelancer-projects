@@ -10,8 +10,8 @@ import {WhatAreTokens} from "../components/pages/index/WhatAreTokens";
 import {TokenInfo} from "../components/pages/index/TokenInfo";
 import {CryptoTradeTimeline} from "../components/pages/index/CryptoTradeTimeline";
 import {
-    PreIcoLaunch,
     IcoLaunch,
+    PreIcoLaunch,
     PostIcoLaunch
 } from "../components/pages/index/LaunchPhase";
 import Settings from '../site-settings';
@@ -19,14 +19,15 @@ import Zoom from 'react-reveal/Zoom';
 import Paths from "../services/Paths";
 import {PurchaseInEther} from "../components/pages/index/PurchaseInEther";
 import Link from 'next/link';
-import {stickyOnScroll} from "../services/cssUtils";
-import Waypoint, {handleStickyOnScroll} from "../components/modules/Waypoint";
+import {twoColumnGrid} from "../services/cssUtils";
 
 class Index extends Component {
-    static async getInitialProps({reduxStore}){
-        let dispatcher = new Dispatcher(reduxStore.dispatch);
+    static async getInitialProps({req, reduxStore}){
+        const dispatcher = new Dispatcher(reduxStore.dispatch, req);
+
         await dispatcher.updateAllCrypto();
         await dispatcher.fetchMarketData();
+        await dispatcher.updateTokenSale();
 
         return {};
     }
@@ -44,14 +45,26 @@ class Index extends Component {
             gray2
         } = FullWidthSegment.options.colors;
 
-        const {cryptoMarketData} = this.props;
+        const {
+            cryptoMarketData,
+            tokenSale
+        } = this.props;
 
         return (
-            <Page pageClass={stickyOnScroll()} addTimer={true} header={<PreIcoLaunch/>}>
-                <Waypoint element="#ico-launch" handler={handleStickyOnScroll}/>
-                <FullWidthSegment id="ico-launch" options={[centered]} wrapper={3}>
-                    <PurchaseInEther/>
+            <Page addTimer={true} header={
+                <FullWidthSegment wrapper={1}>
+                    <div className={twoColumnGrid('unstack-lg reverse-order')}>
+                        <div className="centered column">
+                            <div style={{flex: 1}}>
+                                <PurchaseInEther tokenSaleAddress={tokenSale.address}/>
+                            </div>
+                        </div>
+                        <div className="centered column">
+                            <IcoLaunch tokenSale={tokenSale}/>
+                        </div>
+                    </div>
                 </FullWidthSegment>
+            }>
                 {(cryptoMarketData.length > 0) && (
                     <FullWidthSegment options={[gray2, skinny, bordered]}>
                         <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>
@@ -72,7 +85,7 @@ class Index extends Component {
                         <WhatAreTokens/>
                     </Zoom>
                 </FullWidthSegment>
-                <FullWidthSegment options={[bordered, centered]} wrapper={1}>
+                <FullWidthSegment options={[bordered, centered]} wrapper={2}>
                     <div className="title">
                         <h2 className="capitalized color-black bold display-5">
                             {Settings.TOKEN_NAME} Token Info
@@ -95,11 +108,13 @@ class Index extends Component {
 const mapStateToProps = (state) => {
     const {
         crypto,
-        marketData
+        marketData,
+        tokenSale
     } = state;
 
     return {
-        cryptoMarketData: mergeWithMarketData(crypto, marketData)
+        cryptoMarketData: mergeWithMarketData(crypto, marketData),
+        tokenSale
     };
 };
 

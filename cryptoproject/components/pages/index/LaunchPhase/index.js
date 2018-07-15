@@ -2,43 +2,37 @@ import React from 'react';
 import Paths from "../../../../services/Paths";
 import Files from "../../../../services/Files";
 import {TokenCountdown} from '../TokenCountdown';
-import BackgroundSegment from "../../../containers/BackgroundSegment";
 import FullWidthSegment from "../../../containers/FullWidthSegment";
+import TokenPurchase from '../TokenPurchase';
+import HideFragment from "../../../modules/HideFragment";
 
-const LaunchPhase = ({title, height = "50vh", children}) => {
+const LaunchPhase = ({title, completeTime, children}) => {
     return (
-        <BackgroundSegment imageUrl={Paths.getImage({
-            name: 'header',
-            type: 'jpg'
-        })} className="parallax color-white" style={{height}}>
-            <div className="position-center text-center wrapper" style={{
-                padding: "2em",
-                width: "100%"
-            }}>
+        <div className="text-center">
+            <HideFragment>
                 <TokenCountdown
                     title={title}
-                    date={0}
+                    date={completeTime}
                     onTimeZero={() => {}}/>
                 {children}
-            </div>
-            <div className="overlay-secondary"/>
-        </BackgroundSegment>
+            </HideFragment>
+        </div>
     );
 };
 
-const EthRaised = () => {
+const EthRaised = ({amountRaised, maximumRaised}) => {
     return (
-        <div className="ui describing light error progress">
+        <div className="ui describing error progress">
             <h3 className="description normal">
                 Raised: <span className="bold">
-                    4372.0 Eth
+                    {amountRaised}
                 </span>
             </h3>
             <div className="bar" style={{
-                width: "38%"
+                width: `${(amountRaised/maximumRaised)*100}%`
             }}/>
             <h3 className="start normal">0 ETH</h3>
-            <h3 className="end normal">5000 ETH</h3>
+            <h3 className="end normal">{maximumRaised} ETH</h3>
         </div>
     );
 };
@@ -46,7 +40,7 @@ const EthRaised = () => {
 const WhitePaperButton = () => {
     return (
         <button
-            className="ui huge primary button"
+            className="ui large primary button"
             onClick={() => {
                 Files.open(Paths.getFile({
                     name: 'whitepaper',
@@ -57,36 +51,52 @@ const WhitePaperButton = () => {
     );
 };
 
-export const PreIcoLaunch = () => {
+export const PreIcoLaunch = ({tokenSale}) => {
     return (
-        <LaunchPhase title="Token Launch Start">
+        <LaunchPhase
+            title="Token Launch Start"
+            completeTime={tokenSale.completeTime}>
             <WhitePaperButton/>
         </LaunchPhase>
     );
 };
 
-export const IcoLaunch = () => {
+
+export const IcoLaunch = ({tokenSale}) => {
+    const {
+        skinny,
+        noWidthPadding
+    } = FullWidthSegment.options;
+
     return (
-        <LaunchPhase title="Token Sale Ends" height="62.5vh">
+        <LaunchPhase
+            title="Token Sale Ends"
+            completeTime={tokenSale.completeTime}>
             <div className="wrapper-4">
-                <button className="ui huge primary button">Contribute</button>
-                <FullWidthSegment options={['transparent', 'no-padding-bottom']}>
-                    <EthRaised/>
+                <TokenPurchase/>
+                <FullWidthSegment options={[skinny, noWidthPadding]} className="no-padding-bottom">
+                    <EthRaised
+                        amountRaised={tokenSale.amountRaised}
+                        maximumRaised={tokenSale.maximumRaised}
+                    />
                     <WhitePaperButton/>
                 </FullWidthSegment>
             </div>
         </LaunchPhase>
-    )
+    );
 };
 
-export const PostIcoLaunch = () => {
+export const PostIcoLaunch = ({tokenSale}) => {
     return (
-        <LaunchPhase title="Token Sale Complete" height="60vh">
+        <LaunchPhase
+            title="Token Sale Complete"
+            completeTime={tokenSale.completeTime}>
             <div className="wrapper-4">
-                <FullWidthSegment options={['transparent', 'no-padding-bottom']}>
-                    <EthRaised/>
-                    <WhitePaperButton/>
-                </FullWidthSegment>
+                <EthRaised
+                    amountRaised={tokenSale.amountRaised}
+                    maximumRaised={tokenSale.maximumRaised}
+                />
+                <WhitePaperButton/>
             </div>
         </LaunchPhase>
     )
