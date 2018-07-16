@@ -4,7 +4,8 @@ const glob = require('glob');
 const urls = require('../services/utils/urls');
 const validate = require('form-validate');
 
-module.exports = (db, app) => {
+module.exports = (app, db = null) => {
+    global.db = db;
     const server = express();
 
     server.set('json spaces', 4);

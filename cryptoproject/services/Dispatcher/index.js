@@ -5,7 +5,8 @@ import {
     updateCrypto,
     updateMarketData,
     updateClaimInfo,
-    updateTokenSale
+    updateTokenSale,
+    databaseConnectionDetected
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
 import {
@@ -18,13 +19,12 @@ import {fetchCryptoContract} from "../../server/services/contract";
 import axios from "axios";
 import CoinMarketCapApi from "../CoinMarketCapApi";
 import urls from '../../server/services/utils/urls';
-import {isServer} from "../utils";
+import {isClient} from "../utils";
 import Settings from '../../site-settings';
 
 class Dispatcher {
-    constructor(dispatch, request = null){
+    constructor(dispatch){
         this.dispatch = dispatch;
-        this.request = request;
 
         this.updateAccount = this.updateAccount.bind(this);
         this.updateAllCrypto = this.updateAllCrypto.bind(this);
@@ -93,7 +93,16 @@ class Dispatcher {
         });
     }
 
-    async updateAllCrypto(){
+    async updateAllCrypto({request, hasDatabase}){
+        if(!hasDatabase || !Settings.ENABLE_CRYPTO_DATA_SERVICE){
+            return fetchAllCryptoContracts()
+                .then(responses => {
+                    this.dispatch(updateAllCrypto(responses));
+                }).catch(err => {
+                    console.error(err);
+                });
+        }
+
         const dispatchUpdateAllCrypto = (responses) => {
             if(responses.data.length > 0){
                 this.dispatch(updateAllCrypto(responses.data[0].cryptoData));
@@ -102,17 +111,15 @@ class Dispatcher {
             }
         };
 
-        if(!Settings.ENABLE_CRYPTO_DATA_SERVICE){
-            return fetchAllCryptoContracts()
-                .then(responses => {
-                    this.dispatch(updateAllCrypto(responses));
-                }).catch(err => {
+        if(isClient()){
+            return axios(urls.cryptoData)
+                .then(dispatchUpdateAllCrypto)
+                .catch(err => {
                     console.error(err);
                 });
-        } else if(isServer()){
-            const session = (this.request) ? this.request.session : null;
-            const url = (this.request.headers && this.request.headers.host)
-                ? 'http://' + this.request.headers.host : window.location.origin;
+        } else {
+            const session = (request) ? request.session : null;
+            const url = `http://${request.headers.host}`;
 
             return axios({
                 method: 'get',
@@ -122,12 +129,6 @@ class Dispatcher {
             }).then(dispatchUpdateAllCrypto).catch(err => {
                 console.error(err);
             });
-        } else {
-            return axios(urls.cryptoData)
-                .then(dispatchUpdateAllCrypto)
-                .catch(err => {
-                    console.error(err);
-                });
         }
     }
 

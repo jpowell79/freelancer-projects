@@ -115,7 +115,10 @@ class AccountDetails extends Component {
             <div id="account-details">
                 {(account.isLoading)
                     ? (
-                        <LoaderSmall/>
+                        <Fragment>
+                            <LoaderSmall/>
+                            <h3 className="text-center">Listening for account changes...</h3>
+                        </Fragment>
                     )
                     : (Strings.isDefined(account.address))
                         ? (

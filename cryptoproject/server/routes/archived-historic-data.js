@@ -29,6 +29,11 @@ function onNormalRequest(res){
 
 module.exports = (server) => {
     server.use(urls.archivedHistoricData + '(/:from-:to)?', (req, res) => {
+        if(req.db === null){
+            res.send('Database not connected.');
+            return;
+        }
+
         let {from, to} = req.params;
 
         if(from !== undefined && to !== undefined){

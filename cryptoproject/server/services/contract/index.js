@@ -58,10 +58,13 @@ const fetchCryptoContract = (index) => {
         methods.finishPriceRetrievalTime().call(),
         methods.showCryptoFinishPrice().call()
     ]).then(responses => {
+        const name = (responses[1] !== null)
+            ? responses[1].replace("cryptoname_", "") : null;
+
         return {
             index: index,
             admin: responses[0],
-            name: responses[1],
+            name: name,
             contractAddress: responses[2],
             rank: parseInt(responses[3], 10),
             startPrice: responses[4]/100000,

@@ -31,7 +31,6 @@ describe('Rest API', () => {
     it(`GETS ${urls.cryptoData}`, (done) => {
         request(app).get(urls.cryptoData)
             .end((err, res) => {
-                console.log(res);
                 expect(res.statusCode).to.be.equal(200);
                 done();
             });

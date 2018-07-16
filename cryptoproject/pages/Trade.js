@@ -10,10 +10,13 @@ import {TradingStats} from "../components/pages/trading/TradingsStats";
 import Dispatcher from "../services/Dispatcher";
 
 class Trade extends Component {
-    static async getInitialProps({req, reduxStore}){
+    static async getInitialProps({req, reduxStore, hasDatabase}){
         let dispatcher = new Dispatcher(reduxStore.dispatch, req);
 
-        await dispatcher.updateAllCrypto();
+        await dispatcher.updateAllCrypto({
+            request: req,
+            hasDatabase
+        });
         await dispatcher.fetchMarketData();
 
         return {};

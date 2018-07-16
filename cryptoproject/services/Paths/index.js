@@ -5,6 +5,7 @@ export const STATIC = `static`;
 export const IMAGES = `${STATIC}/images`;
 export const TEAM_IMAGES = `${IMAGES}/team`;
 export const FILES = `${STATIC}/files`;
+export const ICONS = `${IMAGES}/icons`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto-icons`;
 export const ROOT = '';
 
@@ -27,6 +28,10 @@ class Paths {
         let parsedName = symbol.toUpperCase();
 
         return `${root}/${CRYPTO_ICONS}/${parsedName}_${size}.${type}`;
+    };
+
+    static getIcon({name, type = 'png', root = ROOT}){
+        return `${root}/${ICONS}/${name}.${type}`;
     };
 
     static getCryptoPage(root = ROOT){

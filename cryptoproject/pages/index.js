@@ -22,10 +22,13 @@ import Link from 'next/link';
 import {twoColumnGrid} from "../services/cssUtils";
 
 class Index extends Component {
-    static async getInitialProps({req, reduxStore}){
-        const dispatcher = new Dispatcher(reduxStore.dispatch, req);
+    static async getInitialProps({req, reduxStore, hasDatabase}){
+        const dispatcher = new Dispatcher(reduxStore.dispatch, req, hasDatabase);
 
-        await dispatcher.updateAllCrypto();
+        await dispatcher.updateAllCrypto({
+            request: req,
+            hasDatabase
+        });
         await dispatcher.fetchMarketData();
         await dispatcher.updateTokenSale();
 
@@ -55,7 +58,7 @@ class Index extends Component {
                 <FullWidthSegment wrapper={1}>
                     <div className={twoColumnGrid('unstack-lg reverse-order')}>
                         <div className="centered column">
-                            <div style={{flex: 1}}>
+                            <div className="ui padded bg-color-gray segment" style={{flex: 1}}>
                                 <PurchaseInEther tokenSaleAddress={tokenSale.address}/>
                             </div>
                         </div>

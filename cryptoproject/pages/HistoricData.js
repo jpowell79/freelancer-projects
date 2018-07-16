@@ -21,10 +21,10 @@ import {PageTitle} from "../components/modules/PageTitle";
 import Web3 from '../server/services/Web3';
 
 class HistoricData extends Component {
-    static async getInitialProps({reduxStore}){
+    static async getInitialProps({reduxStore, hasDatabase}){
         let dispatcher = new Dispatcher(reduxStore.dispatch);
         await dispatcher.updateTokenHolderClaim();
-        return {};
+        return {hasDatabase};
     }
 
     constructor(props){
@@ -41,19 +41,20 @@ class HistoricData extends Component {
     }
 
     componentDidMount(){
-        axios.get(urls.historicData).then(response => {
-            console.log(response);
-            this.setState({
-                isLoadingHistoricData: false,
-                historicData: response.data
-            });
-        }).catch(err => {
-            console.error(err);
+        if(this.props.hasDatabase){
+            axios.get(urls.historicData).then(response => {
+                this.setState({
+                    isLoadingHistoricData: false,
+                    historicData: response.data
+                });
+            }).catch(err => {
+                console.error(err);
 
-            this.setState({
-                isLoadingHistoricData: false
+                this.setState({
+                    isLoadingHistoricData: false
+                });
             });
-        });
+        }
     }
 
     static renderNoAccessMessage(){
@@ -138,6 +139,14 @@ class HistoricData extends Component {
             gray
         } = FullWidthSegment.options.colors;
 
+        if(!this.props.hasDatabase){
+            return (
+                <FullWidthSegment options={[noWidthPadding]}>
+                    <HistoricDataTable historicData={[]}/>
+                </FullWidthSegment>
+            );
+        }
+
         return (
             <Fragment>
                 {(this.state.isLoadingHistoricData)
@@ -216,8 +225,11 @@ class HistoricData extends Component {
                         />
                     </div>
                 </FullWidthSegment>
-                {(this.props.account.tradeTokens > 0) && Strings.isDefined(this.props.account.address)
-                    ? this.renderHistoricData() : null}
+                {
+                    ((this.props.account.tradeTokens > 0) &&
+                    Strings.isDefined(this.props.account.address))
+                        ? this.renderHistoricData() : null
+                }
             </Page>
         );
     }

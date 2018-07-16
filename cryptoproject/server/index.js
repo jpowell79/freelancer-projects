@@ -1,7 +1,8 @@
 const next = require('next');
 const siteSettings = require('../site-settings');
+const DatabaseSettings = require('./config/DatabaseSettings');
 const Settings = require('./config/Settings');
-const configMongo = require('./config/configMongo');
+const configMongoose = require('./config/configMongoose');
 const configServer = require('./config/configServer');
 const log = require('./services/utils/log');
 
@@ -10,17 +11,26 @@ const app = next({
 });
 
 let server;
+let mongoose;
 
 app.prepare().then(() => {
-    let db = configMongo();
-    server = configServer(db, app);
+    mongoose = configMongoose();
+    const MONGODB_URI = process.env.MONGODB_URI || siteSettings.MONGODB_URI;
 
-    return Settings.load();
+    return mongoose.connect(MONGODB_URI);
+}).then(() => {
+    const db = mongoose.connection;
+    server = configServer(app, db);
+
+    return DatabaseSettings.load();
+}, () => {
+    server = configServer(app);
 }).then(() => {
     const PORT = process.env.PORT || siteSettings.DEFAULT_PORT;
     const PROXY = (siteSettings.PROXY) ? siteSettings.PROXY : Settings.getProxy();
+    const databaseInfo = (global.db === null) ? "without database" : "with database";
 
-    log.sectionTitle('Starting Application');
+    log.sectionTitle(`Starting Application ${databaseInfo}`);
 
     server.listen(PORT, siteSettings.HOST, () => {
         console.log('You can now view the client in the browser.');
@@ -38,4 +48,7 @@ app.prepare().then(() => {
             log.endOfSection();
         }
     });
+}).catch(err => {
+    console.error(err);
+    process.exit(1);
 });

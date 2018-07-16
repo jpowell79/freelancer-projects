@@ -34,7 +34,10 @@ function CryptoDataService(){
                     }).exec();
                 }
             }).then(() => {
-                this.timer = setTimeout(updateCryptoData, Settings.TABLE_REFRESH_RATE);
+                this.timer = setTimeout(
+                    updateCryptoData,
+                    Settings.CRYPTO_DATA_SERVICE_REFRESH_RATE
+                );
             }).catch(err => {
                 console.error(err);
                 process.exit(1);

@@ -23,10 +23,17 @@ class CoinMarketTable extends Component {
 
     componentDidMount(){
         this.tablesorter = new TableSorter($("#coin-market-table"));
+        this.timer = setInterval(() => {
+            if(this.props.cryptoMarketData.length > 0){
+                this.tablesorter.sortAtName("Rank");
+                clearInterval(this.timer);
+            }
+        }, 100);
     }
 
     componentWillUnmount(){
         this.tablesorter.turnOffSorting();
+        clearInterval(this.timer);
     }
 
     componentDidUpdate(){
