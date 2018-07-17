@@ -2,31 +2,31 @@
  * Smart Contracts
  *----------------------------------------*/
 module.exports.CONTRACT_ADDRESSES = [
-    '0x78936217f1886e45f623416439ddf4d37d41df43',
-    '0x28472ed0be7f9e3a935a0023d786f16650ea704c',
-    '0x58715117bd754174772a8d889abdd465bb40c1c1',
-    '0x633dcc9713ccdff54cec0fbad407a045399f6aa0',
-    '0xb956aa2b245a0c8aff10efcfe0b4e1832c7db7b0',
-    '0x06ea478f7fc061910c55bf32201c9a98c1a97cd8',
-    '0xc445dc809886fbfdfd8f6a8a1cd9773daba5f160',
-    '0xb884d9adac3674b191d14ccc3f232a4e5a1692e3',
-    '0x4e7bd5a927a0c128aecce0b820a92a1767643ac6',
-    '0xcaa1ec7c3c0d4bda13eadf8b7d77fef8bfeadc79',
-    '0xb3413345296827c169295e9da86f3f4ff9fbcf92',
-    '0x2d5e3913c888c77b4206d7af5144ac43c56fa6c0',
-    '0x429107fd9b681aa5934ab11f70340f061448f183',
-    '0x28ef1ae5b7ef31583ffcb9689eb4bc3ee0ce9f39',
-    '0xcd5498ad00caeeefe35c5ba6ca2815a603557930',
-    '0xe10ead18b3bc04f2e52d7434e0179e0309f90189',
-    '0x193dc89a770a7784d0fd349aac0f074d0bbf68a4',
-    '0x6dea0ef68288654fcf907a505999701a45044cf2',
-    '0x2e38a5e6229ceaaf8fd7204a07440e523b152c86',
-    '0x5e37d14ddcd71495e36ce599aa9eb2ff5c6456e7',
-    '0x1c5cf8fd05334a17d58527c692bf36d5effd1e4e',
-    '0xfa8d9d0ce11cee006dd80f9706b10446a9292c99',
-    '0xdc11833f7c3159e04dda05166cde727b4b17bf1a',
-    '0xea982706208d6a63ccc2b450d9587c0bd5bf77a8',
-    '0xf1e4fa00e0905b7e64dfc3e9fda68f5ba19792be'
+    '0xf4e3adc51d711e7992623e5d779904330abeb992',
+    '0xea4b8d220fbec8eb8dab84e2fa043ea207ce3b0d',
+    '0xeba024d127bd19bca3a6c703fb2345586f50d479',
+    '0x1df822043d01c1fedf6c04dfc76e661519270624',
+    '0x8d6f0a8fab8c9f9d3fbfb08cdccc084bbda51d27',
+    '0x5b2eed835c6e7ed9d56c140ccac9f810c774b16a',
+    '0x910f187fb9d1f7f8899177762cfc54c14b849737',
+    '0xa999666814aa6c1d2ffb2140abe7c1dda49e46aa',
+    '0x1dcd96cad3489c4489b80c5682cfe2fdb4f6699a',
+    '0x2e6def03eb8782d3064a4ef5e16d8388a3ec807e',
+    '0x2a7d90a74924507b6a2aa81e2ef2298109ca40fd',
+    '0x3f4dd14742f14535356d65ddac3c9fb3bc16a032',
+    '0x3c60618e2cc904790c0c54ad6890ec8739cce457',
+    '0x83918d8a7f0d078fcc1e76f4078c3f426a4f13a2',
+    '0x0f23dd722a785c5609d7a82072737573a04a7954',
+    '0xcddb9febdf849fad7884878de7e6c4cd76daabff',
+    '0x0b0f92322b9a0a93c82787b2035f8182b8312bef',
+    '0x5de3a1b933e63ffa6b8e312997e12426bd55cb93',
+    '0xbb65bb7301738b85de09a454dac6fd41e9359e7a',
+    '0x34e16f8473ad20a51153211155823ac74afebb14',
+    '0x57ba0d28bf90b18e946e5ec41e7931bd21c96c40',
+    '0x9e5c87abb72515708edfdbbc795ebc8b35c918fc',
+    '0x926ca09b2d3d2f5fc60ca1bad9ba8ce8f4dc9dc5',
+    '0xd698e866f65b1ce5a122e7d6a1caf7a2f71e56ab',
+    '0xee093b54d0c1e71c05431b075226284f8c9a45b5',
 ];
 
 /*----------------------------------------
@@ -45,7 +45,7 @@ module.exports.DEBUG_SMART_CONTRACT = (contract) => {
         contractAddress: contract.contractAddress,
         rank: contract.rank,
         startPrice: contract.startPrice,
-        nrOfTrades: contract.nrOfTrades,
+        nrOfBets: contract.nrOfBets,
         standardTimeCloses: Date.now() + 1000 * 30,
         extendedTimeCloses: Date.now() + 1000 * 60,
         pot: contract.pot,
@@ -114,6 +114,7 @@ module.exports.TOKEN_NAME = 'TEST777';
 module.exports.DEFAULT_PORT = 3000;
 module.exports.HOST = 'localhost';
 module.exports.MONGODB_URI = 'mongodb://localhost/database';
+//If left as null the server will try to use the default IPv4 address as a Proxy instead.
 module.exports.PROXY = null;
 
 
@@ -167,7 +168,7 @@ module.exports.CRYPTO_DATA_SERVICE_REFRESH_RATE = 1000 * 30; //Milliseconds
  * ---------------------------------------
  * Runs in the background and saves information
  * from smart contracts into the historical
- * database when their standard time expires.
+ * database when their extended time expires.
  *----------------------------------------*/
 module.exports.ENABLE_SNAPSHOT_SERVICE = true;
 
@@ -186,7 +187,7 @@ module.exports.TABLE_REFRESH_RATE = 1000 * 30; //Milliseconds
  *----------------------------------------*/
 module.exports.MAX_NR_OF_TRADES = 1000;
 module.exports.MAX_ETH = 10;
-module.exports.LOWEST_ETH = 0.1;
+module.exports.LOWEST_ETH = 0.05;
 
 
 /*----------------------------------------

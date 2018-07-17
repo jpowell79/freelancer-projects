@@ -8,7 +8,7 @@ function parse(historicalDataArray){
         'startPrice',
         'finishPrice',
         'pot',
-        'nrOfTrades',
+        'nrOfBets',
         'date'
     ];
 

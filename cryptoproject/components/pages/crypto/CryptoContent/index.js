@@ -48,12 +48,12 @@ class CryptoContent extends Component {
 
     isOpen(){
         let {
-            nrOfTrades,
+            nrOfBets,
             standardTimeCloses,
             extendedTimeCloses
         } = this.props.data;
 
-        let hasEnoughTrades = (nrOfTrades < MAX_NR_OF_TRADES);
+        let hasEnoughTrades = (nrOfBets < MAX_NR_OF_TRADES);
         let hasStandardTimeLeftOrTradeTokens =
             (Date.now() < standardTimeCloses) ||
             (this.props.account.tradeTokens !== null && this.props.account.tradeTokens > 0);
@@ -117,7 +117,7 @@ class CryptoContent extends Component {
                     transaction.tradeStatus = success;
                     this.props.dispatch(endTransaction(transaction));
                     this.props.dispatch(updateCrypto(Object.assign(this.props.data, {
-                        nrOfTrades: this.props.data.nrOfTrades+1,
+                        nrOfBets: this.props.data.nrOfBets+1,
                         pot: this.props.data.pot + tradeValue
                     })));
                 }

@@ -168,8 +168,8 @@ class HistoricData extends Component {
                                 <HistoricDataSummary
                                     tokenHolderClaim={this.props.tokenHolderClaim}
                                     bestValueCrypto={this.getBestValueCrypto()}
-                                    totalNrOfTrades={this.state.historicData
-                                        .map(data => data.nrOfTrades)
+                                    totalnrOfBets={this.state.historicData
+                                        .map(data => data.nrOfBets)
                                         .reduce((accumulator, currentValue) => {
                                             return accumulator + currentValue;
                                         })

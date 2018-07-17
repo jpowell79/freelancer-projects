@@ -34,7 +34,7 @@ export const TradingStats = ({cryptoMarketData, className, id = "trading-stats",
                     <div className="ui statistic no-margin">
                         <div className="lighter value">{
                             cryptoMarketData
-                                .map(data => data.nrOfTrades)
+                                .map(data => data.nrOfBets)
                                 .reduce((accumulator, current) => {
                                     return accumulator + current;
                                 })

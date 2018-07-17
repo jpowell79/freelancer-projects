@@ -15,7 +15,7 @@ const generateContracts = (extendedTime, amount) => {
             contractAddress: '',
             rank: 0,
             startPrice: 0,
-            nrOfTrades: 0,
+            nrOfBets: 0,
             standardTimeCloses: 0,
             extendedTimeCloses: extendedTime,
             pot: 0

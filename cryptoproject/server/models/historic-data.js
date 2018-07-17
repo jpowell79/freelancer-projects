@@ -22,7 +22,7 @@ const historicDataSchema = new Schema(
             type: Number,
             required: true
         },
-        nrOfTrades: {
+        nrOfBets: {
             type: Number,
             required: true
         }

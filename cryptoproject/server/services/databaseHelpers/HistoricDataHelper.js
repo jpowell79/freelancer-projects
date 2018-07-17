@@ -8,7 +8,7 @@ async function create(smartContract, finishPrice = 0){
         startPrice: smartContract.startPrice,
         finishPrice: finish,
         pot: smartContract.pot,
-        nrOfTrades: smartContract.nrOfTrades
+        nrOfBets: smartContract.nrOfBets
     });
 
     return historicData.save();

@@ -32,7 +32,7 @@ class HistoricDataTable extends Component {
                     <td className={hideOnMobile()}>{Strings.toUSD(data.startPrice)}</td>
                     <td className={hideOnMobile()}>{Strings.toUSD(data.finishPrice)}</td>
                     <td>{data.pot}</td>
-                    <td>{data.nrOfTrades}</td>
+                    <td>{data.nrOfBets}</td>
                 </tr>
             );
         });

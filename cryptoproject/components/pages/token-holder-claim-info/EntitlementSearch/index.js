@@ -2,6 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import Dispatcher from "../../../../services/Dispatcher";
 import {updateClaimInfo} from "../../../../redux/actions";
+import Strings from "../../../../services/Strings";
 
 class EntitlementSearch extends Component {
     constructor(props){
@@ -18,8 +19,11 @@ class EntitlementSearch extends Component {
     handleAddressSubmitted(event){
         event.preventDefault();
 
-        if(this.state.address === '') {
-            this.setState({error: ''});
+        if(this.state.address === '' ||
+            !this.state.address.startsWith('0x') ||
+            this.state.address.length !== 42
+        ){
+            this.setState({error: 'The wallet address should start with 0x and be 42 characters long.'});
             return;
         }
 
@@ -65,7 +69,7 @@ class EntitlementSearch extends Component {
                         className="ui primary button"
                         onClick={this.handleAddressSubmitted}>Submit</button>
                 </form>
-                {(claimInfo.address !== undefined) ? (
+                {(claimInfo.address !== undefined && !Strings.isDefined(this.state.error)) ? (
                     <div className="h4 divider-3 no-margin-bottom">
                         <p>
                             The address of <strong>{claimInfo.address}</strong> held <strong>{
@@ -74,7 +78,14 @@ class EntitlementSearch extends Component {
                             of <strong>{claimInfo.entitlementEth}</strong> Eth.
                         </p>
                     </div>
-                ) : this.state.error}
+                ) : (
+                    (Strings.isDefined(this.state.error))
+                        ? (
+                            <div className="ui error message">
+                                {this.state.error}
+                            </div>
+                        ) : null
+                )}
             </Fragment>
         );
     }

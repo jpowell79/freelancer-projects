@@ -194,7 +194,7 @@ export const getHighestPercentTotal = (cryptoMarketData) => {
 
 export const getMostPopularCrypto = (cryptoArray) => {
     return cryptoArray.reduce((accumulator, current) => {
-        if(accumulator.nrOfTrades < current.nrOfTrades){
+        if(accumulator.nrOfBets < current.nrOfBets){
             return current;
         }
 

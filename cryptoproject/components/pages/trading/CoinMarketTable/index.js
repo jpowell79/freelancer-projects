@@ -123,10 +123,10 @@ class CoinMarketTable extends Component {
                             {totalPriceChange}
                         </FlashCell>
                     </td>
-                    <td className={hideOnMobile()}>{crypto.nrOfTrades}</td>
+                    <td className={hideOnMobile()}>{crypto.nrOfBets}</td>
                     <td className={hideOnMobile()}>{crypto.pot}</td>
                     <td>
-                        {(crypto.nrOfTrades < MAX_NR_OF_TRADES)
+                        {(crypto.nrOfBets < MAX_NR_OF_TRADES)
                             ? (
                                 <button className="ui primary button">
                                     <Link href={{

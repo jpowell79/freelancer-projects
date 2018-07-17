@@ -72,7 +72,7 @@ following:
         "startPrice": 3902,
         "finishPrice": 546,
         "pot": 0.88,
-        "nrOfTrades": 176,
+        "nrOfBets": 176,
         "timestamp": "2018-06-24T17:15:03.295Z"
     }
 ]

@@ -54,7 +54,7 @@ class Index extends Component {
         } = this.props;
 
         return (
-            <Page addTimer={true} header={
+            <Page addTimer={true}>
                 <FullWidthSegment wrapper={1}>
                     <div className={twoColumnGrid('unstack-lg reverse-order')}>
                         <div className="centered column">
@@ -67,7 +67,6 @@ class Index extends Component {
                         </div>
                     </div>
                 </FullWidthSegment>
-            }>
                 {(cryptoMarketData.length > 0) && (
                     <FullWidthSegment options={[gray2, skinny, bordered]}>
                         <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>

@@ -10,7 +10,7 @@ let mockHistoricData = {
     startPrice: 6400,
     finishPrice: 6500,
     pot: 0.25,
-    nrOfTrades: 900,
+    nrOfBets: 900,
     date: date,
 };
 

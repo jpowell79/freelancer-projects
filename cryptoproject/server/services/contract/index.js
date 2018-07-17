@@ -18,7 +18,7 @@ const {
 const enterTheGame = (index, {from, value}) => {
     const methods = getCryptoContract(index).methods;
 
-    return methods.enterTheGame().send({
+    return methods.enterGame().send({
         from,
         value: web3.utils.toWei(value, 'ether')
     });
@@ -51,7 +51,7 @@ const fetchCryptoContract = (index) => {
         methods.thisContractAddress().call(),
         methods.showRank().call(),
         methods.showCryptoStartPrice().call(),
-        methods.numberOfTrades().call(),
+        methods.numberOfBets().call(),
         methods.standardTimeCloses().call(),
         methods.extendedTimeCloses().call(),
         methods.potBalance().call(),
@@ -68,7 +68,7 @@ const fetchCryptoContract = (index) => {
             contractAddress: responses[2],
             rank: parseInt(responses[3], 10),
             startPrice: responses[4]/100000,
-            nrOfTrades: parseInt(responses[5], 10),
+            nrOfBets: parseInt(responses[5], 10),
             standardTimeCloses: parseInt(responses[6], 10)*1000,
             extendedTimeCloses: parseInt(responses[7], 10)*1000,
             pot: (responses[8]/1000000000000000000).toFixed(2),

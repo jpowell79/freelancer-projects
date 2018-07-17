@@ -8,7 +8,7 @@ const generateDummyHistoricData = () => {
         startPrice: random(1, 10000),
         finishPrice: random(1, 10000),
         pot: random(1, 100)/100,
-        nrOfTrades: random(0, 1200)
+        nrOfBets: random(0, 1200)
     }
 };
 
@@ -18,7 +18,7 @@ const generateDummyArchivedHistoricData = () => {
         startPrice: random(1, 10000),
         finishPrice: random(1, 10000),
         pot: random(1, 100)/100,
-        nrOfTrades: random(0, 1200),
+        nrOfBets: random(0, 1200),
         date: parseInt(
             moment(Date.now() - 1000 * 60 * 60 * 24 *
                 random(settings.ARCHIVE_DATA_OLDER_THAN.days, 900)

@@ -12,7 +12,7 @@ export const CryptoStats = ({
     market_cap,
     volume_24h,
     price,
-    nrOfTrades,
+    nrOfBets,
     percent_change_24h,
     pot,
     finishPriceRetrievalTime,
@@ -54,7 +54,7 @@ export const CryptoStats = ({
                     </tr>
                     <tr>
                         <td className="four wide column">Number of Trades:</td>
-                        <td>{nrOfTrades}</td>
+                        <td>{nrOfBets}</td>
                     </tr>
                     <tr>
                         <td className="four wide column">Pot Size:</td>

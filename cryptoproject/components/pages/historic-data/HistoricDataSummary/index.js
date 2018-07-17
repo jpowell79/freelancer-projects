@@ -7,7 +7,7 @@ class HistoricDataSummary extends Component {
     };
 
     static propTypes = {
-        totalNrOfTrades: PropTypes.number.isRequired,
+        totalnrOfBets: PropTypes.number.isRequired,
         totalPotSize: PropTypes.number.isRequired
     };
 
@@ -17,7 +17,7 @@ class HistoricDataSummary extends Component {
                 <div className="column">
                     <div className="ui statistics justify-content-center">
                         <div className="statistic">
-                            <div className="value">{this.props.totalNrOfTrades}</div>
+                            <div className="value">{this.props.totalnrOfBets}</div>
                             <div className="label h4 lighter">Total number of trades</div>
                         </div>
                     </div>

@@ -9,7 +9,7 @@ async function create(data, dateCreated = 0){
         startPrice: data.startPrice,
         finishPrice: data.finishPrice,
         pot: data.pot,
-        nrOfTrades: data.nrOfTrades,
+        nrOfBets: data.nrOfBets,
         date: date
     });
 
