@@ -59,11 +59,20 @@ class EntitlementSearch extends Component {
                 <form className="ui form">
                     <div className={(this.state.error !== null) ? "field error" : "field"}>
                         <h3>Ethereum Wallet address</h3>
-                        <input type="text" onChange={event => {
-                            this.setState({
-                                address: event.target.value
-                            });
-                        }}/>
+                        <input type="text" style={{
+                            fontFamily: "Consolas, monaco, monospace",
+                            fontSize: "16px",
+                            width: "406px",
+                            maxWidth: "100%"
+                        }}
+                       value={this.state.address}
+                       onChange={event => {
+                           if(event.target.value.length <= 42){
+                               this.setState({
+                                   address: event.target.value
+                               });
+                           }
+                       }}/>
                     </div>
                     <button
                         className="ui primary button"
@@ -73,7 +82,7 @@ class EntitlementSearch extends Component {
                     <div className="h4 divider-3 no-margin-bottom">
                         <p>
                             The address of <strong>{claimInfo.address}</strong> held <strong>{
-                            claimInfo.claimBlockTokenBalance}</strong> tokens
+                            Strings.commaSeparate(claimInfo.claimBlockTokenBalance)}</strong> tokens
                             at the current claim block and would therefore be entitle to a claim
                             of <strong>{claimInfo.entitlementEth}</strong> Eth.
                         </p>
