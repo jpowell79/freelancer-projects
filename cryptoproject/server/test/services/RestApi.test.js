@@ -43,6 +43,7 @@ describe('Rest API', () => {
                 name: 'Foo',
                 email: 'Foo@example.com',
                 website: '',
+                walletAddress: '',
                 message: '',
                 grecaptcha: 'bar'
             })
@@ -60,6 +61,7 @@ describe('Rest API', () => {
                 name: '',
                 email: '',
                 website: '',
+                walletAddress: '',
                 message: '',
                 grecaptcha: 'bar'
             })

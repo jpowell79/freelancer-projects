@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Page from '../components/containers/Page';
 import FullWidthSegment from "../components/containers/FullWidthSegment";
 import {PageTitle} from "../components/modules/PageTitle";
-import ContactForm from "../components/modules/ContactForm";
+import ContactForm from "../components/modules/forms/ContactForm";
 
 class Contact extends Component {
     render(){

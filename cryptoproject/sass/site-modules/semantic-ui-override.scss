@@ -2,6 +2,24 @@
  * Semantic UI Override
  *----------------------------------------*/
 .ui {
+    &.form {
+        .field {
+            position: relative;
+
+            .counter + textarea,
+            .counter + input {
+                padding-right: 50px!important;
+            }
+
+            .counter {
+                position: absolute;
+                color: $uiBlack;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    }
+
     &.primary {
         background-color: $primary!important;
     }

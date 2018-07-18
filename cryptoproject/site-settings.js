@@ -196,7 +196,6 @@ module.exports.LOWEST_ETH = 0.05;
 module.exports.RECAPTCHA_SITE_KEY = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';
 module.exports.RECAPTCHA_SECRET_KEY = '6LcVbGIUAAAAAJebHtHYG4kFtHLaN-jeGgr6jZC8';
 
-
 /*----------------------------------------
  * Email
  * https://nodemailer.com/about/
@@ -219,6 +218,14 @@ module.exports.EMAIL_SETTINGS = {
     //during testing and not an actual email to this address.
     RECEIVER: 'smnrkssn@hotmail.se'
 };
+
+/*----------------------------------------
+ * Contact Form validation
+ *----------------------------------------*/
+module.exports.MAX_NAME_LENGTH = 64;
+module.exports.MAX_EMAIL_LENGTH = 64;
+module.exports.MAX_WEBSITE_LENGTH = 64;
+module.exports.MAX_MESSAGE_LENGTH = 512;
 
 
 /*----------------------------------------

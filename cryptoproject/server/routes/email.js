@@ -23,26 +23,28 @@ const validateFields = (req) => {
             .validate('name', {
                 length: {
                     min: 1,
-                    max: 1000
+                    max: Settings.MAX_NAME_LENGTH
                 }
-            })
-            .validate('email', {
+            }).validate('email', {
                 length: {
                     min: 1,
-                    max: 1000
+                    max: Settings.MAX_EMAIL_LENGTH
                 },
                 email: true
-            })
-            .validate('website', {
+            }).validate('website', {
                 length: {
                     min: 0,
-                    max: 1000
+                    max: Settings.MAX_WEBSITE_LENGTH
                 }
-            })
-            .validate('message', {
+            }).validate('walletAddress', {
                 length: {
                     min: 0,
-                    max: 100000
+                    max: 42
+                }
+            }).validate('message', {
+                length: {
+                    min: 0,
+                    max: Settings.MAX_MESSAGE_LENGTH
                 }
             }).getErrors(errors => {
                 if(errors.length > 0){
@@ -55,6 +57,7 @@ const validateFields = (req) => {
                         email: req.Validator.getValue('email'),
                         website: req.Validator.getValue('website'),
                         message: req.Validator.getValue('message'),
+                        walletAddress: req.Validator.getValue('walletAddress')
                     });
                 }
             });
@@ -69,7 +72,11 @@ const sendEmail = (validatedFields) => {
     } = Settings.EMAIL_SETTINGS;
 
     const transporter = nodemailer.createTransport(TRANSPORTER);
-
+    const wallet = (validatedFields.walletAddress.startsWith('0x') &&
+        validatedFields.walletAddress.length === 42) ? (
+            `<p><strong>Ethereum Wallet:</strong> ` +
+            `${validatedFields.walletAddress}</p>`
+    ) : '';
     const website = (validatedFields.website === '') ? ''
         : (
             `<p><strong>Website:</strong> ` +
@@ -85,7 +92,7 @@ const sendEmail = (validatedFields) => {
         from: validatedFields.email,
         to: RECEIVER,
         subject: `CryptoTrade message from ${validatedFields.name}`,
-        html: website + message
+        html: wallet + website + message
     };
 
     return new Promise(resolve => {
