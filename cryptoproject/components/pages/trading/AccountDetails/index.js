@@ -6,8 +6,7 @@ import {twoColumnGrid} from "../../../../services/cssUtils/index";
 import {
     AddressCard,
     Ethereum,
-    Plug,
-    MoneyBill
+    Plug
 } from "../../../modules/icons/index";
 import Settings from '../../../../site-settings';
 import Paths from "../../../../services/Paths/index";
@@ -91,11 +90,15 @@ class AccountDetails extends Component {
                     </div>
                     <div className="column">
                         <div className="icon-item">
-                            <MoneyBill className="display-5"/>
+                            <div className="image">
+                                <img style={{display: "inline-block"}} src={Paths.getIcon({
+                                    name: 'crypto_trade_token'
+                                })}/>
+                            </div>
                             <div className="content">
                                 <h3>{Settings.TOKEN_NAME} Token Balance</h3>
                                 <div>
-                                    {account.tradeTokens}
+                                    {Strings.commaSeparate(account.tradeTokens)}
                                 </div>
                             </div>
                         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Settings from "../../../../site-settings";
 import {
     CodeFile,
+    Ethereum,
     Globe,
     Lightbulb,
     ReactIcon,
@@ -11,7 +12,6 @@ import {
     VerticalTimeline,
     VerticalTimelineElement
 } from "react-vertical-timeline-component";
-import Paths from "../../../../services/Paths";
 
 export const CryptoTradeTimeline = () => {
     return (
@@ -53,13 +53,7 @@ export const CryptoTradeTimeline = () => {
             </VerticalTimelineElement>
             <VerticalTimelineElement
                 date="Q1 2019"
-                icon={
-                    <div className="image">
-                        <img className="color-uiGreen small" src={Paths.getIcon({
-                            name: 'crypto_trade_token'
-                        })}/>
-                    </div>
-                }>
+                icon={<Ethereum/>}>
                 <h3 className="no-margin-bottom">
                     {Settings.TOKEN_NAME} holders receive dividends
                 </h3>

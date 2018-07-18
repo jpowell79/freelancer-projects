@@ -12,6 +12,11 @@ class Strings {
         return '$' + string.toLocaleString("en-US", opts);
     };
 
+    static commaSeparate(string){
+        let opts = {style: "decimal", currency: "USD"};
+        return string.toLocaleString("en-US", opts);
+    }
+
     static includesIgnoreCase(stringArray, string){
         for(let i = 0; i < stringArray.length; i++){
             if(stringArray[i].toLowerCase() === string.toLowerCase()){
@@ -44,21 +49,6 @@ class Strings {
         if (minutes.length === 1) minutes = "0" + minutes;
 
         return `${Strings.toDateString(date)} - ${hours}:${minutes}`;
-    }
-
-    static escapeHTML(string) {
-        let htmlEscapes = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#x27;',
-            '/': '&#x2F;'
-        };
-
-        let htmlEscaper = /[&<>"'\/]/g;
-
-        return ('' + string).replace(htmlEscaper, (match) => htmlEscapes[match]);
     }
 }
 

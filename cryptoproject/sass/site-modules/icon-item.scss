@@ -2,7 +2,8 @@
  * Icon Item
  *----------------------------------------*/
 .icon-item {
-    i {
+    i,
+    .image {
         font-size: $display4;
         display: table-cell;
         margin: 0;
