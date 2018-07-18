@@ -36,7 +36,7 @@ module.exports.CONTRACT_ADDRESSES = [
  * returned when a smart contract is
  * fetched.
  *----------------------------------------*/
-module.exports.DEBUG_MODE = true; //Says if the DEBUG functions should be used or not.
+module.exports.DEBUG_MODE = false; //Says if the DEBUG functions should be used or not.
 module.exports.DEBUG_SMART_CONTRACT = (contract) => {
     return {
         index: contract.index,
