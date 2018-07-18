@@ -11,7 +11,7 @@ class Contact extends Component {
         } = FullWidthSegment.options;
 
         return (
-            <Page addTimer={true}>
+            <Page addTimer={true} pageClass="contact-form">
                 <PageTitle title="Contact Form" className="elegant text-center">
                     <p className="h3 wrapper-3">
                         We welcome any questions, comments, suggestions or general enquires.

@@ -6,6 +6,7 @@ export const IMAGES = `${STATIC}/images`;
 export const TEAM_IMAGES = `${IMAGES}/team`;
 export const FILES = `${STATIC}/files`;
 export const ICONS = `${IMAGES}/icons`;
+export const FAVICON = `${IMAGES}/favicon`;
 export const CRYPTO_ICONS = `${IMAGES}/crypto-icons`;
 export const ROOT = '';
 
@@ -33,6 +34,10 @@ class Paths {
     static getIcon({name, type = 'png', root = ROOT}){
         return `${root}/${ICONS}/${name}.${type}`;
     };
+
+    static getFaviconFile({name, type = 'png', root = ROOT}){
+        return `${root}/${FAVICON}/${name}.${type}`;
+    }
 
     static getCryptoPage(root = ROOT){
         return `${root}/Crypto`;

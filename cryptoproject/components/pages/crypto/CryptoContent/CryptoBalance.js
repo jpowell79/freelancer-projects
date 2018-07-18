@@ -55,28 +55,31 @@ class CryptoBalance extends Component {
                                     {(account.address === null)
                                         ? 'Could not be detected.'
                                         : (
-                                            <a href={Paths.getEtherScanAddressUrl(account.address)} target="_blank">{
-                                                account.address
-                                            }</a>
+                                            <a href={Paths.getEtherScanAddressUrl(account.address)}
+                                               target="_blank">{account.address}</a>
                                         )}
                                 </td>
                             </tr>
-                            <tr>
-                                <td className="four wide column">
-                                    Eth balance:
-                                </td>
-                                <td>
-                                    {account.balance}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td className="four wide column">
-                                    Trade tokens:
-                                </td>
-                                <td>
-                                    {Strings.commaSeparate(account.tradeTokens)}
-                                </td>
-                            </tr>
+                            {Strings.isDefined(account.balance) && (
+                                <tr>
+                                    <td className="four wide column">
+                                        Eth balance:
+                                    </td>
+                                    <td>
+                                        {account.balance}
+                                    </td>
+                                </tr>
+                            )}
+                            {Strings.isDefined(account.tradeTokens) && (
+                                <tr>
+                                    <td className="four wide column">
+                                        Trade tokens:
+                                    </td>
+                                    <td>
+                                        {Strings.commaSeparate(account.tradeTokens)}
+                                    </td>
+                                </tr>
+                            )}
                         </tbody>
                     </table>
                     {(account.tradeTokens > 0)
