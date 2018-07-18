@@ -9,21 +9,18 @@ import {WhatIsCryptoTrade} from "../components/pages/index/WhatIsCryptoTrade";
 import {WhatAreTokens} from "../components/pages/index/WhatAreTokens";
 import {TokenInfo} from "../components/pages/index/TokenInfo";
 import {CryptoTradeTimeline} from "../components/pages/index/CryptoTradeTimeline";
-import {
-    IcoLaunch,
-    PreIcoLaunch,
-    PostIcoLaunch
-} from "../components/pages/index/LaunchPhase";
+import LaunchPhase from "../components/pages/index/LaunchPhase";
 import Settings from '../site-settings';
 import Zoom from 'react-reveal/Zoom';
 import Paths from "../services/Paths";
 import {PurchaseInEther} from "../components/pages/index/PurchaseInEther";
 import Link from 'next/link';
 import {twoColumnGrid} from "../services/cssUtils";
+import BackgroundSegment from "../components/containers/BackgroundSegment";
 
 class Index extends Component {
     static async getInitialProps({req, reduxStore, hasDatabase}){
-        const dispatcher = new Dispatcher(reduxStore.dispatch, req, hasDatabase);
+        const dispatcher = new Dispatcher(reduxStore.dispatch);
 
         await dispatcher.updateAllCrypto({
             request: req,
@@ -41,7 +38,8 @@ class Index extends Component {
             padded,
             bordered,
             centered,
-            attached
+            attached,
+            halfHeight
         } = FullWidthSegment.options;
 
         const {
@@ -54,23 +52,59 @@ class Index extends Component {
         } = this.props;
 
         return (
-            <Page addTimer={true}>
-                <FullWidthSegment wrapper={1}>
-                    <div className={twoColumnGrid('unstack-lg reverse-order')}>
-                        <div className="centered column">
-                            <div className="ui padded bg-color-gray segment" style={{flex: 1}}>
-                                <PurchaseInEther tokenSaleAddress={tokenSale.address}/>
+            <Page addTimer={true} header={
+                (tokenSale.postIcoCountdown > Date.now()) ? (
+                    <FullWidthSegment wrapper={1}>
+                        <div className={twoColumnGrid('unstack-lg reverse-order')}>
+                            <div className="centered column">
+                                <div className="ui padded bg-color-gray segment" style={{flex: 1}}>
+                                    <PurchaseInEther tokenSaleAddress={tokenSale.address}/>
+                                </div>
+                            </div>
+                            <div className="centered column">
+                                <LaunchPhase onComplete={() => {
+                                    this.forceUpdate();
+                                }}/>
                             </div>
                         </div>
-                        <div className="centered column">
-                            <IcoLaunch tokenSale={tokenSale}/>
-                        </div>
-                    </div>
-                </FullWidthSegment>
+                    </FullWidthSegment>
+                ) : null
+            }>
                 {(cryptoMarketData.length > 0) && (
                     <FullWidthSegment options={[gray2, skinny, bordered]}>
                         <CryptoTickerTape cryptoMarketData={cryptoMarketData}/>
                     </FullWidthSegment>
+                )}
+                {tokenSale.postIcoCountdown <= Date.now() && (
+                    <BackgroundSegment
+                        imageUrl={Paths.getImage({
+                            name: 'header',
+                            type: 'jpg'
+                        })}
+                        className="parallax color-white"
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                        options={[centered, halfHeight]}
+                        wrapper={4}
+                    >
+                        <div>
+                            <h1 className="page-title color-white">CryptoTrade</h1>
+                            <p className="elegant h2">
+                                CryptoTrade harnesses the power of pari-mutuel betting and
+                                Ethereum smart contracts to bet on the performance of leading
+                                crypto-currencies over a fixed period.
+                            </p>
+                            <div className="text-center divider-1">
+                                <button className="ui auxilary color-white huge button">
+                                    <Link href={Paths.getTradingPage()}><a>Trade Now</a></Link>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="overlay-secondary"/>
+                    </BackgroundSegment>
                 )}
                 <FullWidthSegment options={[bordered, padded, attached]} wrapper={1}>
                     <Zoom delay={100} duration={750}>

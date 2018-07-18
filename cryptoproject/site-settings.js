@@ -36,7 +36,7 @@ module.exports.CONTRACT_ADDRESSES = [
  * returned when a smart contract is
  * fetched.
  *----------------------------------------*/
-module.exports.DEBUG_MODE = false; //Says if the DEBUG functions should be used or not.
+module.exports.DEBUG_MODE = true; //Says if the DEBUG functions should be used or not.
 module.exports.DEBUG_SMART_CONTRACT = (contract) => {
     return {
         index: contract.index,
@@ -86,7 +86,10 @@ module.exports.DEBUG_TOKEN_SALE = (tokenSale) => {
         address: tokenSale.address,
         completeTime: tokenSale.completeTime,
         amountRaised: 3975,
-        maximumRaised: tokenSale.maximumRaised
+        maximumRaised: tokenSale.maximumRaised,
+        preIcoPhaseCountdown: Date.now() + 1000 * 5,
+        icoPhaseCountdown: Date.now() + 1000 * 10,
+        postIcoCountdown: Date.now() + 1000 * 15
     };
 };
 
@@ -99,7 +102,7 @@ module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
 /*----------------------------------------
  * Token Sale Contract
  *----------------------------------------*/
-module.exports.TOKEN_SALE_CONTRACT_ADDRESS = '0xdd2215ca36085de9deccfa8aa7bde7f76d3e0441';
+module.exports.TOKEN_SALE_CONTRACT_ADDRESS = '0x5f094cdf82ea309fef7b37ee8b021c2b0935308d';
 
 /*----------------------------------------
  * Trade Token

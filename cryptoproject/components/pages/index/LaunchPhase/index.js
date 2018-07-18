@@ -1,19 +1,21 @@
-import React from 'react';
+import React, {Component, Fragment} from 'react';
 import Paths from "../../../../services/Paths";
 import Files from "../../../../services/Files";
 import {TokenCountdown} from '../TokenCountdown';
 import FullWidthSegment from "../../../containers/FullWidthSegment";
 import TokenPurchase from '../TokenPurchase';
 import HideFragment from "../../../modules/HideFragment";
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
-const LaunchPhase = ({title, completeTime, children}) => {
+const Countdown = ({title, completeTime, children, onComplete}) => {
     return (
         <div className="text-center">
             <HideFragment>
                 <TokenCountdown
                     title={title}
                     date={completeTime}
-                    onTimeZero={() => {}}/>
+                    onCountdownZero={onComplete}/>
                 {children}
             </HideFragment>
         </div>
@@ -51,53 +53,113 @@ const WhitePaperButton = () => {
     );
 };
 
-export const PreIcoLaunch = ({tokenSale}) => {
+export const PreIcoLaunch = ({onComplete, preIcoPhaseCountdown}) => {
     return (
-        <LaunchPhase
+        <Countdown
             title="Token Launch Start"
-            completeTime={tokenSale.completeTime}>
+            completeTime={preIcoPhaseCountdown}
+            onComplete={onComplete}>
             <WhitePaperButton/>
-        </LaunchPhase>
+        </Countdown>
     );
 };
 
 
-export const IcoLaunch = ({tokenSale}) => {
+export const IcoLaunch = ({amountRaised, maximumRaised, onComplete, icoPhaseCountdown}) => {
     const {
         skinny,
         noWidthPadding
     } = FullWidthSegment.options;
 
     return (
-        <LaunchPhase
+        <Countdown
             title="Token Sale Ends"
-            completeTime={tokenSale.completeTime}>
+            completeTime={icoPhaseCountdown}
+            onComplete={onComplete}>
             <div className="wrapper-4">
                 <TokenPurchase/>
                 <FullWidthSegment options={[skinny, noWidthPadding]} className="no-padding-bottom">
                     <EthRaised
-                        amountRaised={tokenSale.amountRaised}
-                        maximumRaised={tokenSale.maximumRaised}
+                        amountRaised={amountRaised}
+                        maximumRaised={maximumRaised}
                     />
                     <WhitePaperButton/>
                 </FullWidthSegment>
             </div>
-        </LaunchPhase>
+        </Countdown>
     );
 };
 
-export const PostIcoLaunch = ({tokenSale}) => {
+export const PostIcoLaunch = ({amountRaised, maximumRaised, postIcoCountdown, onComplete}) => {
     return (
-        <LaunchPhase
+        <Countdown
             title="Token Sale Complete"
-            completeTime={tokenSale.completeTime}>
+            completeTime={postIcoCountdown}
+            onComplete={onComplete}>
             <div className="wrapper-4">
                 <EthRaised
-                    amountRaised={tokenSale.amountRaised}
-                    maximumRaised={tokenSale.maximumRaised}
+                    amountRaised={amountRaised}
+                    maximumRaised={maximumRaised}
                 />
                 <WhitePaperButton/>
             </div>
-        </LaunchPhase>
+        </Countdown>
     )
 };
+
+class LaunchPhase extends Component {
+    static mapStateToProps({tokenSale}){
+        return {tokenSale};
+    }
+
+    static propTypes = {
+        onComplete: PropTypes.func.isRequired
+    };
+
+    render(){
+        const {tokenSale} = this.props;
+        const renderPreIcoLaunch = (
+            tokenSale.preIcoPhaseCountdown > Date.now() + 1000
+        );
+        const renderIcoLaunch = (
+            tokenSale.icoPhaseCountdown > Date.now() + 1000
+            && !renderPreIcoLaunch
+        );
+        const renderPostIcoLaunch = (
+            tokenSale.postIcoCountdown > Date.now() + 1000 &&
+            !renderIcoLaunch &&
+            !renderPreIcoLaunch
+        );
+
+        return (
+            <Fragment>
+                {(renderPreIcoLaunch) && (
+                    <PreIcoLaunch
+                        {...tokenSale}
+                        onComplete={() => {
+                            this.forceUpdate();
+                        }}
+                    />
+                )}
+                {(renderIcoLaunch) && (
+                    <IcoLaunch
+                        {...tokenSale}
+                        onComplete={() => {
+                            this.forceUpdate();
+                        }}
+                    />
+                )}
+                {(renderPostIcoLaunch) && (
+                    <PostIcoLaunch
+                        {...tokenSale}
+                        onComplete={() => {
+                            this.props.onComplete();
+                        }}
+                    />
+                )}
+            </Fragment>
+        );
+    }
+}
+
+export default connect(LaunchPhase.mapStateToProps)(LaunchPhase);

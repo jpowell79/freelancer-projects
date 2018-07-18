@@ -42,6 +42,9 @@ describe('Token Sale Contract tests', () => {
                 expect(tokenSale.completeTime).to.be.a('number');
                 expect(tokenSale.amountRaised).to.be.a('number');
                 expect(tokenSale.maximumRaised).to.be.a('number');
+                expect(tokenSale.preIcoPhaseCountdown).to.be.a('number');
+                expect(tokenSale.icoPhaseCountdown).to.be.a('number');
+                expect(tokenSale.postIcoCountdown).to.be.a('number');
                 done();
             });
     });

@@ -118,6 +118,20 @@ module.exports = [
         "constant": false,
         "inputs": [
             {
+                "name": "_posticocountdown",
+                "type": "uint256"
+            }
+        ],
+        "name": "setPostIcoPhaseCountdown",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
+            {
                 "name": "_value",
                 "type": "uint256"
             }
@@ -262,6 +276,20 @@ module.exports = [
     {
         "constant": true,
         "inputs": [],
+        "name": "icoPhaseCountdown",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
         "name": "maxEthRaised",
         "outputs": [
             {
@@ -333,6 +361,34 @@ module.exports = [
         "constant": true,
         "inputs": [],
         "name": "openingTime",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "postIcoPhaseCountdown",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "preIcoPhaseCountdown",
         "outputs": [
             {
                 "name": "",
