@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import Dispatcher from "../../../../services/Dispatcher";
 import PropTypes from 'prop-types';
+import Strings from "../../../../services/Strings";
 
 class UserClaimInfo extends Component {
     static propTypes = {
@@ -26,7 +27,9 @@ class UserClaimInfo extends Component {
             <div className="ui very relaxed list text-center">
                 <div className="item">
                     <p className="h4">
-                        You held <span className="bold">{claimInfo.claimBlockTokenBalance}</span> tokens
+                        You held <span className="bold">{
+                            Strings.commaSeparate(claimInfo.claimBlockTokenBalance)
+                        }</span> tokens
                         at the time of the current claim block.
                     </p>
                 </div>
@@ -42,12 +45,6 @@ class UserClaimInfo extends Component {
                         Based on the number of tokens held at the claim block number, your
                         Eth entitlement for the current claim window
                         is <span className="bold">{claimInfo.entitlementEth}</span>.
-                    </p>
-                </div>
-                <div className="item">
-                    <p className="h4">
-                        The total amount of Eth available to claim
-                        is <span className="bold">{this.props.totalEth}</span>.
                     </p>
                 </div>
             </div>

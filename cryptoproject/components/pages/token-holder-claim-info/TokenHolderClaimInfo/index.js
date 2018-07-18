@@ -12,7 +12,9 @@ class TokenHolderClaimInfo extends Component {
         return (
             <div className="ui very relaxed list text-center">
                 <div className="item">
-                    <p className="h4">There are <span className="bold">{tokenHolderClaim.totalTokenSupply}</span> tokens in existence.</p>
+                    <p className="h4">There are <span className="bold">{
+                        Strings.commaSeparate(tokenHolderClaim.totalTokenSupply)
+                    }</span> tokens in existence.</p>
                 </div>
                 <div className="item">
                     <p className="h4">
@@ -24,7 +26,9 @@ class TokenHolderClaimInfo extends Component {
                 <div className="item">
                     <p className="h4">
                         The current claim block
-                        is <span className="bold">{tokenHolderClaim.claimBlock}</span>.
+                        is <span className="bold">{
+                            Strings.commaSeparate(tokenHolderClaim.claimBlock)
+                        }</span>.
                     </p>
                 </div>
                 <div className="item">

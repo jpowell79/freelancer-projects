@@ -8,6 +8,7 @@ import {
 } from "../../../../services/cssUtils/index";
 import Dispatcher from '../../../../services/Dispatcher/index';
 import Paths from "../../../../services/Paths";
+import Strings from "../../../../services/Strings";
 
 class CryptoBalance extends Component {
     componentDidMount(){
@@ -62,10 +63,18 @@ class CryptoBalance extends Component {
                             </tr>
                             <tr>
                                 <td className="four wide column">
+                                    Eth balance:
+                                </td>
+                                <td>
+                                    {account.balance}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td className="four wide column">
                                     Trade tokens:
                                 </td>
                                 <td>
-                                    {account.tradeTokens}
+                                    {Strings.commaSeparate(account.tradeTokens)}
                                 </td>
                             </tr>
                         </tbody>
