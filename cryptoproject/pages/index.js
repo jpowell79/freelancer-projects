@@ -100,6 +100,11 @@ class Index extends Component {
                     <TokenInfo cryptoMarketData={cryptoMarketData}/>
                 </FullWidthSegment>
                 <FullWidthSegment options={[padded, gray2]} wrapper={1}>
+                    <div className="title text-center">
+                        <h2 className="color-black bold display-5">
+                            CryproTrade Timeline
+                        </h2>
+                    </div>
                     <CryptoTradeTimeline/>
                 </FullWidthSegment>
             </Page>

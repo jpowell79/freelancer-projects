@@ -1,6 +1,8 @@
 import React, {Fragment} from 'react';
 import {twoColumnGrid} from "../../../../services/cssUtils";
 import Paths from "../../../../services/Paths";
+import {SocialMenu} from "../../../modules/navigation/SocialMenu";
+import {SOCIAL_MENU} from "../../../content-settings";
 
 export const PurchaseInEther = ({tokenSaleAddress}) => {
     return (
@@ -54,6 +56,10 @@ export const PurchaseInEther = ({tokenSaleAddress}) => {
                     }</a>
                 </div>
             </h2>
+            <div className="divider-1"/>
+            <SocialMenu
+                links={SOCIAL_MENU.links}
+                className="justify-content-center"/>
         </Fragment>
     );
 };
