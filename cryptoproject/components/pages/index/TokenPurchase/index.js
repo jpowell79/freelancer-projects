@@ -3,7 +3,6 @@ import contract from "../../../../server/services/contract";
 import Paths from "../../../../services/Paths";
 import Strings from "../../../../services/Strings";
 import Dispatcher from "../../../../services/Dispatcher";
-import {LOWEST_ETH} from "../../../../site-settings";
 import {connect} from "react-redux";
 import PositiveFloatInput from "../../../modules/forms/PositiveFloatInput";
 import {LoaderSmall} from "../../../modules/icons";
@@ -56,7 +55,7 @@ class TokenPurchase extends Component {
             success
         } = this.purchaseStatus;
 
-        if(this.state.purchaseValue < LOWEST_ETH){
+        if(this.state.purchaseValue < this.props.tokenSale.minSpend){
             this.setState({purchaseStatus: incorrectEth});
         } else if(this.props.account.balance < this.state.purchaseValue){
             this.setState({purchaseStatus: notEnoughEth});
@@ -137,13 +136,15 @@ class TokenPurchase extends Component {
         case incorrectEth:
             return (
                 <div className="ui error message">
-                    Please correct the amount of Eth to a value greater than or equal to {LOWEST_ETH}
+                    Please correct the amount of Eth to a value greater than or equal to {
+                    this.props.tokenSale.minSpend}
                 </div>
             );
         case notEnoughEth:
             return (
                 <div className="ui error message">
-                    Please note that you require a minimum of {LOWEST_ETH} Eth to place a trade.
+                    Please note that you require a minimum of {
+                    this.props.tokenSale.minSpend} Eth to place a trade.
                 </div>
             );
         case error:
@@ -158,7 +159,7 @@ class TokenPurchase extends Component {
     }
 
     render(){
-        const {account} = this.props;
+        const {account, tokenSale} = this.props;
 
         return (
             (Strings.isDefined(account.address)) ? (
@@ -167,8 +168,9 @@ class TokenPurchase extends Component {
                         (this.state.hasCorrectInput) ? "ui action input" : "ui action input error"
                     }>
                         <PositiveFloatInput
-                            lowestDigit={LOWEST_ETH}
-                            placeholder={`Min ${LOWEST_ETH} eth`}
+                            lowestDigit={tokenSale.minSpend}
+                            highestDigit={tokenSale.maxSpend}
+                            placeholder={`Min ${tokenSale.minSpend} eth`}
                             onIncorrectInput={(event) => {
                                 this.setState({hasCorrectInput: false});
                                 event.preventDefault();
@@ -196,8 +198,8 @@ class TokenPurchase extends Component {
     }
 }
 
-const mapStateToProps = ({account}) => {
-    return {account};
+const mapStateToProps = ({account, tokenSale}) => {
+    return {account, tokenSale};
 };
 
 export default connect(mapStateToProps)(TokenPurchase);

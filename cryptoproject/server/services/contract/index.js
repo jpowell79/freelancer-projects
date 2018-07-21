@@ -179,7 +179,9 @@ const fetchTokenSaleContract = () => {
         methods.maximumRaised().call(),
         methods.preIcoPhaseCountdown().call(),
         methods.icoPhaseCountdown().call(),
-        methods.postIcoPhaseCountdown().call()
+        methods.postIcoPhaseCountdown().call(),
+        methods.minSpend().call(),
+        methods.maxSpend().call()
     ]).then(responses => {
         return {
             address: responses[0],
@@ -188,7 +190,9 @@ const fetchTokenSaleContract = () => {
             maximumRaised: parseFloat(responses[3])/1000000000000000000,
             preIcoPhaseCountdown: parseInt(responses[4], 10) * 1000,
             icoPhaseCountdown: parseInt(responses[5], 10) * 1000,
-            postIcoCountdown: parseInt(responses[6], 10) * 1000
+            postIcoCountdown: parseInt(responses[6], 10) * 1000,
+            minSpend: parseFloat(responses[7])/1000000000000000000,
+            maxSpend: parseFloat(responses[8])/1000000000000000000
         }
     }).then(tokenSale => {
         return (DEBUG_MODE) ? DEBUG_TOKEN_SALE(tokenSale) : tokenSale;
