@@ -8,7 +8,7 @@ export const PurchaseInEther = ({tokenSaleAddress}) => {
     return (
         <Fragment>
             <div className={twoColumnGrid()}>
-                <div className="column" style={{
+                <div id="purchase-eth-column" className="column" style={{
                     display: "flex",
                     justifyContent: "flex-start",
                     alignItems: "center"

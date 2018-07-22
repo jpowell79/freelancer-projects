@@ -146,6 +146,7 @@ $menuBackground: $white;
                 nav {
                     z-index: 899;
                     overflow-y: auto;
+                    -webkit-overflow-scrolling: touch;
                     visibility: visible;
                     animation-name: reveal-menu;
                     border-bottom: 1px solid rgba(34,36,38,.1);
