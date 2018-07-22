@@ -15,7 +15,7 @@ import {
 
 export const CryptoTradeTimeline = () => {
     return (
-        <VerticalTimeline>
+        <VerticalTimeline animate={false}>
             <VerticalTimelineElement
                 date="Q4 2017"
                 icon={<Lightbulb className="color-uiYellow"/>}>
