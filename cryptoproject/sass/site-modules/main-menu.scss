@@ -146,7 +146,6 @@ $menuBackground: $white;
                 nav {
                     z-index: 899;
                     overflow-y: auto;
-                    -webkit-overflow-scrolling: touch;
                     visibility: visible;
                     animation-name: reveal-menu;
                     border-bottom: 1px solid rgba(34,36,38,.1);
@@ -178,7 +177,7 @@ $menuBackground: $white;
     }
 
     100% {
-        max-height: calc(100vh - #{$menuHeight});
+        max-height: calc(100vh - #{$menuHeight+1});
     }
 }
 
