@@ -4,6 +4,7 @@ import {CONTRACT_ADDRESSES} from '../../../../site-settings';
 import {Dropdown} from "../../../modules/icons/index";
 import Paths from "../../../../services/Paths/index";
 import Settings from "../../../../site-settings";
+import ContractItem from "../ContractItem";
 
 class SmartContractList extends Component {
     constructor(props){
@@ -78,6 +79,48 @@ class SmartContractList extends Component {
     render(){
         return (
             <div className="ui very relaxed list">
+                <ContractItem
+                    titleHtml={
+                        <h2 className="ui info message text-center h3">
+                            The html of the contract title can be completely customized.
+                        </h2>
+                    }
+                    accordionTitle="This is a custom accordion title"
+                    accordionHtml={
+                        <div className="ui info message bold h5">
+                            The accordion can also accept custom html.
+                        </div>
+                    }
+                />
+                <ContractItem
+                    title="Pot Manager Contract"
+                    titleLink="potmanager.ethereum.ens"
+                    subtitleLink={Paths.getEtherScanAddressUrl(
+                        "0xf4e3adc51d711e7992623e5d779904330abeb992"
+                    )}
+                    subtitle="0xf4e3adc51d711e7992623e5d779904330abeb992"
+                    accordionLinks={[
+                        {
+                            description: "Update Vars Contract",
+                            link: Paths.getEtherScanAddressUrl(
+                                "0xf4e3adc51d711e7992623e5d779904330abeb992"
+                            ),
+                            linkText: "0xf4e3adc51d711e7992623e5d779904330abeb992"
+                        },
+                        {
+                            description: "Pot Manager Pricing",
+                            link: "http://google.com",
+                            linkText: "0xf4e3adc51d711e7992623e5d779904330abeb992"
+                        },
+                        {
+                            description: "Token holder claim contract",
+                            link: Paths.getEtherScanAddressUrl(
+                                Settings.TOKEN_HOLDER_CLAIM_ADDRESS
+                            ),
+                            linkText: Settings.TOKEN_HOLDER_CLAIM_ADDRESS
+                        },
+                    ]}
+                />
                 {CONTRACT_ADDRESSES.map((address, i) => {
                     let contractName = (i+1 <= 9) ? `crypto_0${i+1}` : `crypto_${i+1}`;
 

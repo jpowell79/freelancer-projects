@@ -163,7 +163,7 @@ class CoinMarketTable extends Component {
                         <th className={hideOnMobile()}>Start Price</th>
                         <th className={hideOnMobile()}>Now Price</th>
                         <th className={hideOnMobile()}>% 24hr</th>
-                        <th>% Total</th>
+                        <th>% Tot</th>
                         <th className={hideOnMobile()}>Nr. Trades</th>
                         <th className={hideOnMobile()}>Pot</th>
                         <th className="no-sort">Trade</th>

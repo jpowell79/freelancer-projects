@@ -92,7 +92,7 @@ class CryptoSidebar extends Component {
                     </h3>
                     <div className={titledSegmentContent('children-divider-2')}>
                         {twitterFeeds.map((feed, i) => (
-                            <div key={i}>
+                            <div key={i} style={{position: "relative", overflow: "auto"}}>
                                 <TwitterWidget feed={feed}/>
                             </div>
                         ))}

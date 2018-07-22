@@ -7,9 +7,10 @@ class Strings {
         return string !== undefined && string !== null && string !== '';
     }
 
-    static toUSD(string){
+    static toUSD(numberOrString){
+        const number = parseFloat(numberOrString);
         let opts = {style: "decimal", currency: "USD"};
-        return '$' + string.toLocaleString("en-US", opts);
+        return '$' + number.toLocaleString("en-US", opts);
     };
 
     static commaSeparate(string){

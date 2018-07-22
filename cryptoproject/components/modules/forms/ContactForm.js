@@ -237,10 +237,13 @@ class ContactForm extends Component {
                         <input
                             disabled={complete}
                             type="text"
+                            value={this.state.name}
                             onChange={event => {
-                                this.setState({
-                                    name: event.target.value
-                                });
+                                if(event.target.value.length <= MAX_NAME_LENGTH) {
+                                    this.setState({
+                                        name: event.target.value
+                                    });
+                                }
                             }}/>
                     </div>
                     <div className={this.getFieldClass('email')}>
@@ -248,10 +251,13 @@ class ContactForm extends Component {
                         <input
                             disabled={complete}
                             type="email"
+                            value={this.state.email}
                             onChange={event => {
-                                this.setState({
-                                    email: event.target.value
-                                });
+                                if(event.target.value.length <= MAX_EMAIL_LENGTH) {
+                                    this.setState({
+                                        email: event.target.value
+                                    });
+                                }
                             }}/>
                     </div>
                     <div className={this.getFieldClass('walletAddress')}>
@@ -259,23 +265,29 @@ class ContactForm extends Component {
                         <input
                             placeholder="0x"
                             disabled={complete}
-                            type="url"
+                            type="text"
+                            value={this.state.walletAddress}
                             onChange={event => {
-                                this.setState({
-                                    walletAddress: event.target.value
-                                });
+                                if(event.target.value.length <= 42) {
+                                    this.setState({
+                                        walletAddress: event.target.value
+                                    });
+                                }
                             }}/>
                     </div>
                     <div className={this.getFieldClass('website')}>
                         <label>Website</label>
                         <input
+                            placeholder="http://"
                             disabled={complete}
                             type="url"
-                            defaultValue="http://"
+                            value={this.state.website}
                             onChange={event => {
-                                this.setState({
-                                    website: event.target.value
-                                });
+                                if(event.target.value.length <= MAX_WEBSITE_LENGTH) {
+                                    this.setState({
+                                        website: event.target.value
+                                    });
+                                }
                             }}/>
                     </div>
                     <div className={this.getFieldClass('message')}>
