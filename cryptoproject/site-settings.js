@@ -109,6 +109,7 @@ module.exports.TOKEN_SALE_CONTRACT_ADDRESS = '0x5f094cdf82ea309fef7b37ee8b021c2b
  *----------------------------------------*/
 module.exports.TOKEN_CONTRACT = '0x3e9838C0063DB4541E1d225509662257a0baf4Fc';
 module.exports.TOKEN_NAME = 'TEST777';
+module.exports.LIVE_MARKET_TOKEN_NAME = 'Bitcoin';
 
 
 /*----------------------------------------

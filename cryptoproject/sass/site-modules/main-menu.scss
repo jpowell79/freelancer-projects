@@ -28,6 +28,7 @@ $menuBackground: $white;
         justify-content: flex-end;
         flex-wrap: wrap;
         background-color: $menuBackground;
+        overflow: hidden;
         z-index: 900;
     }
 
@@ -59,7 +60,7 @@ $menuBackground: $white;
     }
 }
 
-@media (max-width: $mediaLarge){
+@media (max-width: $mediaMedium){
     .mobile-menu-open {
         position: fixed;
         left: auto;
@@ -74,6 +75,10 @@ $menuBackground: $white;
     }
 
     #main-menu {
+        ::-webkit-scrollbar {
+            visibility: hidden;
+        }
+
         nav {
             position: absolute;
             top: calc(#{$menuHeight} - 1px);
@@ -125,8 +130,6 @@ $menuBackground: $white;
         &.animate {
             nav {
                 flex-direction: row;
-                overflow-x: hidden;
-                overflow-y: hidden;
                 z-index: -1;
                 animation-duration: 1s;
                 animation-fill-mode: forwards;
@@ -145,7 +148,6 @@ $menuBackground: $white;
             &.reveal-items {
                 nav {
                     z-index: 899;
-                    overflow-y: auto;
                     visibility: visible;
                     animation-name: reveal-menu;
                     border-bottom: 1px solid rgba(34,36,38,.1);
@@ -161,23 +163,21 @@ $menuBackground: $white;
 
 @keyframes hide-menu {
     0% {
-        max-height: 800px;
+        max-height: calc(100vh - #{$menuHeight});
     }
 
     100% {
-        overflow-y: hidden;
         max-height: 0;
     }
 }
 
 @keyframes reveal-menu {
     0% {
-        overflow-y: hidden;
         max-height: 0;
     }
 
     100% {
-        max-height: calc(100vh - #{$menuHeight+1});
+        max-height: calc(100vh - #{$menuHeight});
     }
 }
 

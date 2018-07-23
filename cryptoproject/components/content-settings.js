@@ -30,10 +30,6 @@ export const MAIN_MENU = {
             href: Paths.getHowItWorksPage()
         },
         {
-            name: 'The Team',
-            href: Paths.getTheTeamPage()
-        },
-        {
             name: 'Smart Contracts',
             href: Paths.getSmartContractsPage()
         },
@@ -44,10 +40,6 @@ export const MAIN_MENU = {
         {
             name: 'Token Holder Claim',
             href: Paths.getTokenHolderClaimPage()
-        },
-        {
-            name: 'Contact',
-            href: Paths.getContactPage()
         }
     ]
 };
@@ -136,11 +128,15 @@ export const FOOTER_MENU_3 = {
     title: 'About', //Optional
     links: [
         {
-            name: 'Mandate',
-            href: ''
+            name: 'Contact',
+            href: Paths.getContactPage()
         },
         {
-            name: 'Team',
+            name: 'The Team',
+            href: Paths.getTheTeamPage()
+        },
+        {
+            name: 'Mandate',
             href: ''
         },
         {

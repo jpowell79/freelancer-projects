@@ -47,6 +47,7 @@ class Index extends Component {
         } = FullWidthSegment.options.colors;
 
         const {
+            liveMarketData,
             cryptoMarketData,
             tokenSale
         } = this.props;
@@ -124,14 +125,14 @@ class Index extends Component {
                 <FullWidthSegment options={[bordered, centered]} wrapper={2}>
                     <div className="title">
                         <h2 className="capitalized color-black bold display-5">
-                            {Settings.TOKEN_NAME} Token Info
+                            {Settings.LIVE_MARKET_TOKEN_NAME} Token Info
                         </h2>
                         <p className="h3">
                             Live from <a href="https://www.coinmarketcap.com">coinmarketcap.com</a> -
                             prices refreshes every {Settings.TABLE_REFRESH_RATE/1000} seconds
                         </p>
                     </div>
-                    <TokenInfo cryptoMarketData={cryptoMarketData}/>
+                    <TokenInfo liveMarketData={liveMarketData}/>
                 </FullWidthSegment>
                 <FullWidthSegment options={[padded, gray2]} wrapper={1}>
                     <div className="title text-center">
@@ -153,9 +154,14 @@ const mapStateToProps = (state) => {
         tokenSale
     } = state;
 
+    const liveMarketData = marketData.filter(data =>
+        data.name.toLowerCase() === Settings.LIVE_MARKET_TOKEN_NAME.toLowerCase()
+    )[0];
+
     return {
         cryptoMarketData: mergeWithMarketData(crypto, marketData),
-        tokenSale
+        tokenSale,
+        liveMarketData: (liveMarketData) ? liveMarketData : {}
     };
 };
 
