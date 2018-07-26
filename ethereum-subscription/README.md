@@ -16,5 +16,5 @@
     - **Models:** Defines all the different database tables.
     - **Services:** Contains other utilities and tools specific to the server.
     
-##Database Design
+## Database Design:
 ![alt-text](./markdown/ethereum_er.png)
