@@ -1,0 +1,14 @@
+/*----------------------------------------
+ * Headings
+ *----------------------------------------*/
+@for $i from 1 through length($displayList) {
+	.display-#{$i}{
+		font-size: #{nth($displayList, $i)};
+	}
+}
+ 
+@for $i from 1 through length($headingList) {
+	.h#{$i}{
+		font-size: #{nth($headingList, $i)};
+	}
+}

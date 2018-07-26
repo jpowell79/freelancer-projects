@@ -1,0 +1,19 @@
+@mixin semanticAttribute($class, $attribute, $value){
+    #{$class}{
+        #{$attribute}: #{$value};
+    }
+
+    .ui {
+        &#{$class},
+        #{$class}{
+            #{$attribute}: #{$value}!important;
+        }
+    }
+}
+
+//----------------------------------------------
+// Effects
+//----------------------------------------------
+@mixin standardHoverEffect(){
+    transition: .3s ease-out;
+}

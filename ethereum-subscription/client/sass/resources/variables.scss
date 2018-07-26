@@ -1,0 +1,180 @@
+//----------------------------------------------
+// 1.0 Colors
+//----------------------------------------------
+$primary      : #7ab200;
+$primary2     : transparentize($primary, .50);
+$primary3     : transparentize($primary, .75);
+$primary4     : transparentize($primary, .95);
+$darkPrimary  : desaturate($primary, 20%);
+$darkPrimary2 : desaturate($primary, 40%);
+$darkPrimary3 : desaturate($primary, 60%);
+$darkPrimary4 : darken($primary, 25%);
+$auxilary     : #db2828;
+$auxilary2    : lighten($auxilary, 15%);
+$auxilary3    : lighten($auxilary, 28%);
+$auxilary4    : lighten($auxilary, 43%);
+$secondary    : #33363f;
+$white        : #ffffff;
+$black        : #000000;
+$gray         : #F9F9F9;
+$gray2        : #f3f5f6;
+$gray3        : #f0f2f4;
+$darkGray     : #CFCFD0;
+$transparent  : rgba(0, 0, 0, 0);
+
+//1.1 Semantic UI Colors
+$uiBlue    : #2185d0;
+$uiIndigo  : #6610f2;
+$uiPurple  : #a333c8;
+$uiPink    : #e03997;
+$uiRed     : #db2828;
+$uiOrange  : #cf590c;
+$uiYellow  : #cd9903;
+$uiOlive   : #b5cc18;
+$uiGreen   : #198f35;
+$uiTeal    : #00b5ad;
+$uiGray    : #767676;
+$uiBrown   : #a5673f;
+$uiViolet  : #6435c9;
+$uiBlack   : #1b1c1d;
+$uiThColor : #f9fafb;
+
+//1.2 Color maps
+$darkColors: (
+    (primary      $primary)
+    (primary2     $primary2)
+    (primary3     $primary3)
+    (primary4     $primary4)
+    (darkPrimary  $darkPrimary)
+    (darkPrimary2 $darkPrimary2)
+    (darkPrimary3 $darkPrimary3)
+    (darkPrimary4 $darkPrimary4)
+    (auxilary     $auxilary)
+    (auxilary2    $auxilary2)
+    (auxilary3    $auxilary3)
+    (auxilary4    $auxilary4)
+    (secondary    $secondary)
+    (black        $black)
+    (transparent  $transparent)
+    (uiBlue       $uiBlue)
+    (uiYellow     $uiYellow)
+    (uiOrange     $uiOrange)
+    (uiTeal       $uiTeal)
+    (uiRed        $uiRed)
+    (uiGreen      $uiGreen)
+    (uiGray       $uiGray)
+    (uiPink       $uiPink)
+    (uiPurple     $uiPurple)
+    (uiIndigo     $uiIndigo)
+    (uiBrown      $uiBrown)
+    (uiOlive      $uiOlive)
+    (uiViolet     $uiViolet)
+    (uiBlack      $uiBlack)
+);
+
+$lightColors: (
+    (white $white)
+    (gray $gray)
+    (gray1 $gray)
+    (gray2 $gray2)
+    (gray3 $gray3)
+);
+
+$colors: join($darkColors, $lightColors);
+
+//----------------------------------------------
+// 2.0 Fonts
+//----------------------------------------------
+$iconFont: Icons;
+$primaryFont: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+
+//----------------------------------------------
+// 3.0 Icons
+//----------------------------------------------
+$mobileMenuIcon: "\f039";
+$sortableIcon: "\f0dc";
+$caretDownIcon: "\f0d7";
+$caretUpIcon: "\f0d8";
+
+//----------------------------------------------
+// 4.0 Site Variables
+//----------------------------------------------
+//4.1 Headings
+$display1: 6rem;
+$display2: 5rem;
+$display3: 4rem;
+$display4: 3rem;
+$display5: 2.5rem;
+$display6: 2rem;
+$h1: 1.5rem;
+$h2: 1.5rem;
+$h3: 1.25rem;
+$h4: 1.125rem;
+$h5: 1rem;
+$h6: 0.875rem;
+
+$displayList: (
+    $display1
+    $display2
+    $display3
+    $display4
+    $display5
+);
+
+$headingList: (
+    $h1
+    $h2
+    $h3
+    $h4
+    $h5
+    $h6
+);
+
+//4.2 Wrappers
+$wrapper1: 1200px;
+$wrapper2: 992px;
+$wrapper3: 768px;
+$wrapper4: 576px;
+
+$wrapperList: (
+    $wrapper1
+    $wrapper2
+    $wrapper3
+    $wrapper4
+);
+
+//4.3 Dividers
+$divider1: 2em;
+$divider2: 1.5em;
+$divider3: 1em;
+$divider4: 0.5em;
+$divider5: 0.25em;
+
+$dividerList: (
+    $divider1
+    $divider2
+    $divider3
+    $divider4
+    $divider5
+);
+
+//4.4 Site Specific
+$menuHeight: 67.5px;
+$segmentPadding: 4em;
+
+//----------------------------------------------
+// 5.0 Media Queries
+//----------------------------------------------
+$mediaLarge   : 1200px;
+$mediaMedium  : 992px;
+$mediaSmall   : 768px;
+$mediaXSmall  : 576px;
+$mediaXXSmall : 0;
+
+$mediaQueries: (
+    (lg  $mediaLarge)
+    (md  $mediaMedium)
+    (sm  $mediaSmall)
+    (xs  $mediaXSmall)
+    (xxs $mediaXXSmall)
+);
