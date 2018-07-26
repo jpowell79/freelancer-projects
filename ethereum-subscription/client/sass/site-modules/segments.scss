@@ -1,0 +1,107 @@
+/*----------------------------------------
+ * Full Width/Height Segments
+ *----------------------------------------*/
+.ui.segment.full {
+    padding: $segmentPadding;
+    margin: 0;
+    background-color: $white;
+    box-shadow: none;
+    border-radius: 0;
+    border: none;
+    z-index: 1;
+
+    > .title,
+    > * > .title {
+        font-size: $display5;
+        margin-bottom: $segmentPadding/4;
+
+        &.centered {
+            text-align: center;
+        }
+    }
+
+    &.width {
+        width: 100%;
+    }
+
+    &.height {
+        min-height: 100vh;
+
+        &.half {
+            min-height: 50vh;
+        }
+    }
+
+    &.padded {
+        padding: $segmentPadding*2 $segmentPadding;
+    }
+
+    &.skinny {
+        padding: $segmentPadding/2;
+
+        > .title,
+        > * > .title {
+            margin-bottom: $segmentPadding/8;
+        }
+    }
+
+    &.bordered {
+        border-top: 1px solid $darkGray;
+        border-bottom: 1px solid $darkGray;
+
+        &.attached {
+            border-top: none;
+        }
+    }
+
+    &.paddingless {
+        padding: 0;
+    }
+
+    &.heightless {
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+
+    &.widthless {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    &.centered {
+        text-align: center;
+    }
+}
+
+
+@media (max-width: $mediaSmall){
+    .ui.segment {
+        &.full:not(.widthless) {
+            padding: $segmentPadding/2!important;
+
+            &.skinny {
+                padding: $segmentPadding/4!important;
+            }
+        }
+    }
+}
+
+@each $name, $color in $darkColors {
+    .ui.segment {
+        &.full {
+            &.#{$name}{
+                background-color: $color;
+            }
+        }
+    }
+}
+
+@each $name, $color in $lightColors {
+    .ui.segment {
+        &.full {
+            &.#{$name}{
+                background-color: $color;
+            }
+        }
+    }
+}

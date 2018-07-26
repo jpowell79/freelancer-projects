@@ -1,0 +1,45 @@
+/*----------------------------------------
+ * Page
+ *----------------------------------------*/
+#page {
+    overflow-x: hidden;
+
+    .page-title {
+        text-align: center;
+        font-size: $display3;
+        color: $primary;
+    }
+
+    &-header {
+        padding-top: $menuHeight;
+    }
+
+    &-footer {
+        .social-menu {
+            &.round > * {
+                background-color: rgba(255, 255, 255, .1);
+                color: $white;
+
+                &:hover {
+                    background-color: darken($primary, 10%);
+                }
+            }
+        }
+    }
+
+    &-content {
+        .loader,
+        .loader-small {
+            position: static;
+            margin: 0 auto;
+        }
+    }
+}
+
+@media (max-width: $mediaSmall){
+    #page {
+        .page-title {
+            font-size: 3.5rem;
+        }
+    }
+}

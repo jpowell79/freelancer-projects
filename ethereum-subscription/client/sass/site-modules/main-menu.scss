@@ -1,0 +1,210 @@
+/*----------------------------------------
+ * Main Menu
+ *----------------------------------------*/
+$menuBackground: $white;
+
+#main-menu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    padding: 0 $divider2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: $menuHeight;
+    width: 100%;
+    background-color: $menuBackground;
+    z-index: 900;
+    border-bottom: 1px solid rgba(34,36,38,.1);
+
+    img {
+        max-height: calc(#{$menuHeight} - 20px);
+        z-index: 9999;
+    }
+
+    > nav {
+        display: flex;
+        flex-grow: 1;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        background-color: $menuBackground;
+        overflow: hidden;
+        z-index: 900;
+    }
+
+    a {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        font-size: $h4;
+        margin-left: $divider2;
+        transition: color .3s ease-out;
+
+        &:first-child {
+            margin-left: 0;
+        }
+
+        &:hover,
+        &:active,
+        &:focus {
+            color: $uiGreen;
+        }
+
+        &.active {
+            color: $uiGreen;
+        }
+    }
+
+    #main-menu-toggler {
+        display: none;
+    }
+}
+
+@media (max-width: $mediaMedium){
+    .mobile-menu-open {
+        position: fixed;
+        left: auto;
+        right: auto;
+        top: 0;
+
+        #page-content,
+        #page-footer {
+            opacity: 0!important;
+            visibility: hidden!important;
+        }
+    }
+
+    #main-menu {
+        ::-webkit-scrollbar {
+            visibility: hidden;
+        }
+
+        nav {
+            position: absolute;
+            top: calc(#{$menuHeight} - 1px);
+            left: 0;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+            max-height: 0;
+            z-index: -1;
+
+            a {
+                display: none;
+                width: 100%;
+                justify-content: center;
+                opacity: 0;
+                margin: 0;
+                padding: $divider3 0;
+                font-size: $h3;
+                font-weight: bold;
+                text-transform: uppercase;
+
+                &:last-child {
+                    padding-bottom: $divider3*2;
+                }
+            }
+        }
+
+        #main-menu-toggler {
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-end;
+            flex-grow: 1;
+            cursor: pointer;
+            z-index: 900;
+
+            &.active .mobile-menu-icon > div {
+                background: $uiGreen;
+            }
+
+            &:hover .mobile-menu-icon > div {
+                background: $uiGreen;
+            }
+
+            > .mobile-menu-icon {
+                align-self: center;
+            }
+        }
+
+        &.animate {
+            nav {
+                flex-direction: row;
+                z-index: -1;
+                animation-duration: 1s;
+                animation-fill-mode: forwards;
+                animation-name: hide-menu;
+                animation-timing-function: cubic-bezier(.8,.01,.3,1);
+
+                a {
+                    display: block;
+                    animation-duration: 1s;
+                    animation-fill-mode: forwards;
+                    animation-name: hide-menu-items;
+                    animation-timing-function: ease-out;
+                }
+            }
+
+            &.reveal-items {
+                nav {
+                    z-index: 899;
+                    visibility: visible;
+                    animation-name: reveal-menu;
+                    border-bottom: 1px solid rgba(34,36,38,.1);
+
+                    a {
+                        animation-name: reveal-menu-items;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes hide-menu {
+    0% {
+        max-height: calc(100vh - #{$menuHeight});
+    }
+
+    100% {
+        max-height: 0;
+    }
+}
+
+@keyframes reveal-menu {
+    0% {
+        max-height: 0;
+    }
+
+    100% {
+        max-height: calc(100vh - #{$menuHeight});
+    }
+}
+
+@keyframes hide-menu-items {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes reveal-menu-items {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,36 @@
+/*----------------------------------------
+ * Global
+ *----------------------------------------*/
+body {
+    background-color: $gray;
+    font-size: 100%;
+}
+
+body {
+    ::-webkit-scrollbar {
+        width: 20px!important;
+        height: 20px!important;
+    }
+}
+
+body, h1, h2, h3, h4, h5, h6, p, span {
+    font-family: $primaryFont;
+}
+
+.ui {
+    font-family: $primaryFont!important;
+}
+
+img {
+    max-width: 100%;
+}
+
+a {
+    color: inherit;
+    @include standardHoverEffect();
+
+    &:hover {
+        text-decoration: none;
+        color: darken($primary, 10%);
+    }
+}
