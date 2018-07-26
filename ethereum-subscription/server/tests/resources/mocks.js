@@ -5,3 +5,8 @@ module.exports.user = {
     role: 'supplier',
     email: 'foo@example.com'
 };
+
+module.exports.setting = {
+    name: 'FooColor',
+    value: "#FF0000"
+};
