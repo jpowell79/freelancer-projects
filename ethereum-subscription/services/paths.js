@@ -11,5 +11,14 @@ module.exports = {
     },
     static: {
         images: IMAGES
+    },
+    redirect: (url, res = null) => {
+        if(res){
+            res.writeHead(302, {Location: url});
+            res.end();
+            res.finished = true;
+        } else {
+            document.location.pathname = url;
+        }
     }
 };

@@ -16,10 +16,10 @@ module.exports = (app, sequelize) => {
     server.use(bodyParser.urlencoded({extended: false}));
     server.use(bodyParser.json());
     server.use(helmet());
-    server.use(cookieParser());
+    server.use(cookieParser(serverSettings.COOKIE_SECRET));
     server.use(session({
-        key: 'session',
-        secret: serverSettings.SESSION_SECRET,
+        key: serverSettings.COOKIE_NAME,
+        secret: serverSettings.COOKIE_SECRET,
         resave: false,
         saveUninitialized: false,
         cookie: {

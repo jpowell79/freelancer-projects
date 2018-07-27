@@ -7,11 +7,11 @@ import PropTypes from 'prop-types';
 import objects from '../../services/objects';
 
 /**
- * Will rerender whenever account changes occurs in metamask and
- * share the account information with all children.
+ * Will rerender whenever metamaskAccount changes occurs in metamask and
+ * share the metamaskAccount information with all children.
  */
 class MetamaskContainer extends Component {
-    static mapStateToProps = ({account}) => ({account});
+    static mapStateToProps = ({metamaskAccount}) => ({metamaskAccount});
 
     static propTypes = {
         loadingRenderer: PropTypes.func,
@@ -22,8 +22,8 @@ class MetamaskContainer extends Component {
         this.handleAccountUpdate = (data) => {
             const address = (!data.selectedAddress)
                 ? null : data.selectedAddress.toLowerCase();
-            const accountAddress = (!this.props.account.address)
-                ? null : this.props.account.address.toLowerCase();
+            const accountAddress = (!this.props.metamaskAccount.address)
+                ? null : this.props.metamaskAccount.address.toLowerCase();
 
             if(address !== accountAddress){
                 this.dispatcher.dispatchUpdateAccount(this.web3);
@@ -42,10 +42,12 @@ class MetamaskContainer extends Component {
     };
 
     componentDidMount(){
-        this.web3 = new Web3(window.web3.currentProvider);
-        this.dispatcher = new Dispatcher(this.props.dispatch);
-        this.dispatcher.dispatchUpdateAccount(this.web3);
-        this.subscribeToAccountUpdate();
+        if(window.web3){
+            this.web3 = new Web3(window.web3.currentProvider);
+            this.dispatcher = new Dispatcher(this.props.dispatch);
+            this.dispatcher.dispatchUpdateAccount(this.web3);
+            this.subscribeToAccountUpdate();
+        }
     }
 
     componentWillUnmount(){
@@ -54,25 +56,25 @@ class MetamaskContainer extends Component {
 
     render(){
         const {
-            account,
+            metamaskAccount,
             loadingRenderer,
             notFoundRenderer,
             children
         } = this.props;
 
-        if(this.props.account.isLoading){
+        if(this.props.metamaskAccount.isLoading){
             return (loadingRenderer)
                 ? this.props.loadingRenderer(children)
                 : <Loader/>;
         }
 
-        if(objects.isEmpty(account)){
+        if(objects.isEmpty(metamaskAccount)){
             return (notFoundRenderer)
                 ? notFoundRenderer(children)
-                : React.cloneElement(children, {account});
+                : React.cloneElement(children, {metamaskAccount});
         }
 
-        return React.cloneElement(children, {account});
+        return React.cloneElement(children, {metamaskAccount});
     }
 }
 

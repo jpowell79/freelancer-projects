@@ -65,7 +65,7 @@ module.exports = (server, sequelize) => {
             handlePost(res, sequelize, req.body);
             break;
         default:
-            res.sendStatus(400);
+            res.sendStatus(405);
             break;
         }
     });

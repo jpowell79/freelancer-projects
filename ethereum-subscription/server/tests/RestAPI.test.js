@@ -24,7 +24,9 @@ const checkNotExists = (response) => {
 describe('Rest API', () => {
     it(`Should return status code of 200 when making GET requests to gettable urls.`, () => {
         const gettableUrls = [
-            urls.users
+            urls.users,
+            urls.sessions,
+            urls.settings
         ];
 
         return setupOrGetMockApp()
@@ -37,12 +39,6 @@ describe('Rest API', () => {
     }).timeout(1000 * 10);
 
     describe(urls.sessions, () => {
-        it('Should give bad request when trying to logout unexisting session', () => {
-            return setupOrGetMockApp()
-                .then(app => request(app).del(`${urls.sessions}`))
-                .then(checkBadRequest);
-        }).timeout(1000 * 10);
-
         it('Should not login with unexisting username', () => {
             return setupOrGetMockApp()
                 .then(app => request(app).post(`${urls.sessions}`)
@@ -59,16 +55,6 @@ describe('Rest API', () => {
                         password: mocks.user.password + 'foo'
                     })))
                 .then(checkBadRequest);
-        }).timeout(1000 * 10);
-
-        it('Should login with valid user and then allow logging out', () => {
-            return setupOrGetMockApp()
-                .then(app => request(app).post(`${urls.sessions}`).send(mocks.user))
-                .then(response => {
-                    checkSuccess(response);
-                    return request(app).del(urls.sessions);
-                })
-                .then(checkSuccess);
         }).timeout(1000 * 10);
     });
 

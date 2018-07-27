@@ -1,0 +1,1 @@
+export const recaptchaSiteKey = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';

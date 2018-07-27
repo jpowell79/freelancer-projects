@@ -32,7 +32,8 @@ $menuBackground: $white;
         z-index: 900;
     }
 
-    a {
+    a,
+    .item {
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -89,7 +90,8 @@ $menuBackground: $white;
             max-height: 0;
             z-index: -1;
 
-            a {
+            a,
+            .item {
                 display: none;
                 width: 100%;
                 justify-content: center;
@@ -136,7 +138,8 @@ $menuBackground: $white;
                 animation-name: hide-menu;
                 animation-timing-function: cubic-bezier(.8,.01,.3,1);
 
-                a {
+                a,
+                .item {
                     display: block;
                     animation-duration: 1s;
                     animation-fill-mode: forwards;

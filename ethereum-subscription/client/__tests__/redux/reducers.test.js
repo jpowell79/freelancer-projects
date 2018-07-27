@@ -1,6 +1,6 @@
 import * as reducers from '../../redux/reducers';
-import {settings, account} from "../../redux/reducers";
-import {loadSettings, isLoadingAccount, updateAccount} from "../../redux/actions";
+import {settings, metamaskAccount} from "../../redux/reducers";
+import {loadSettings, isLoadingAccount, updateMetamaskAccount} from "../../redux/actions";
 
 it('All reducers returns state by default', () => {
     Object.keys(reducers).forEach(reducerKey => {
@@ -16,12 +16,12 @@ describe('settings', () => {
     });
 });
 
-describe('account', () => {
-    it('Should update account', () => {
-        expect(account({}, updateAccount('foo'))).toBe('foo');
+describe('metamaskAccount', () => {
+    it('Should update metamaskAccount', () => {
+        expect(metamaskAccount({}, updateMetamaskAccount('foo'))).toBe('foo');
     });
 
-    it('Should set account to isLoading', () => {
-        expect(account({}, isLoadingAccount())).toEqual({isLoading: true});
+    it('Should set metamaskAccount to isLoading', () => {
+        expect(metamaskAccount({}, isLoadingAccount())).toEqual({isLoading: true});
     });
 });

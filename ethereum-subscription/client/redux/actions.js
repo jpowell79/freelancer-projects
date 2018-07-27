@@ -6,13 +6,18 @@ export const loadSettings = (settings) => ({
 });
 
 export const isLoadingAccount = () => ({
-    type: constants.UPDATE_ACCOUNT,
+    type: constants.UPDATE_METAMASK_ACCOUNT,
     payload: {
         isLoading: true
     }
 });
 
-export const updateAccount = (account) => ({
-    type: constants.UPDATE_ACCOUNT,
-    payload: account
+export const updateUser = (user) => ({
+    type: constants.UPDATE_USER,
+    payload: user
+});
+
+export const updateMetamaskAccount = (metamaskAccount) => ({
+    type: constants.UPDATE_METAMASK_ACCOUNT,
+    payload: metamaskAccount
 });

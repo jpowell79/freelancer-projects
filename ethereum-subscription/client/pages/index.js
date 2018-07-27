@@ -1,12 +1,14 @@
 import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
-import Dispatcher from '../services/Dispatcher';
+import {loadServerDataIntoStore} from "../services/loadServerDataIntoStore";
 
 class Index extends Component {
     static async getInitialProps({reduxStore, req}){
-        const dispatcher = new Dispatcher(reduxStore.dispatch);
-        await dispatcher.dispatchLoadSettings({request: req});
+        await loadServerDataIntoStore(reduxStore, req, {
+            settings: true,
+            user: true
+        });
 
         return {};
     }

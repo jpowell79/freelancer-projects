@@ -8,8 +8,9 @@ module.exports.HOST = 'localhost';
 /*----------------------------------------
  * Session Options
  *----------------------------------------*/
-module.exports.SESSION_SECRET = 'T]s9,l4U!`gYg"Ngf+z-n>T)|,,rqE!u-$60d4gS<4i7O,=YtVOTCbz%{-mUSE';
+module.exports.COOKIE_SECRET = 'T]s9,l4U!`gYg"Ngf+z-n>T)|,,rqE!u-$60d4gS<4i7O,=YtVOTCbz%{-mUSE';
 module.exports.COOKIE_EXPIRE = 1000 * 60 * 30;
+module.exports.COOKIE_NAME = 'session';
 
 /*----------------------------------------
  * MySQL options

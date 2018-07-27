@@ -3,12 +3,13 @@ import FormList from '../../modules/FormList';
 import validation from '../../../services/validation';
 import strings from '../../../services/strings';
 import objects from '../../../services/objects';
-import {recaptchaSiteKey} from "../../content";
+import {recaptchaSiteKey} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
 import urls from '../../../services/urls';
 import roles from '../../../services/roles';
-import {Message} from 'semantic-ui-react';
+import paths, {redirect} from '../../../services/paths';
+import {LoaderTiny} from "../../modules/icons";
 
 class RegisterForm extends Component {
     constructor(props){
@@ -36,7 +37,7 @@ class RegisterForm extends Component {
                     error: ''
                 }
             },
-            success: ''
+            isLoading: false,
         };
     }
 
@@ -59,7 +60,8 @@ class RegisterForm extends Component {
                     ...prevState.fields.grecaptchaField,
                     error: grecaptchaError
                 }
-            }
+            },
+            isLoading: false
         }));
     };
 
@@ -69,7 +71,7 @@ class RegisterForm extends Component {
             email,
             password,
             role: roles.supplier,
-            walletAddress: this.props.account.address,
+            walletAddress: this.props.metamaskAccount.address,
             grecaptcha: grecaptcha.getResponse()
         });
     };
@@ -83,16 +85,19 @@ class RegisterForm extends Component {
 
         if (!isDefined(usernameError) && !isDefined(passwordError) &&
                 !isDefined(emailError) && !isDefined(grecaptchaError)) {
+            this.setState({isLoading: true});
+
             this.registerUser({username, password, email})
                 .then(res => {
-                    if(res.status !== 200) throw new Error('');
-
-                    this.setState({
-                        success: 'Your registration completed successfully!'
-                    });
-                    this.addFieldErrors('');
+                    if(res.status !== 200){
+                        throw new Error('Bad Request');
+                    } else {
+                        //TODO: Tell user about registration + confirmation message
+                        redirect(paths.pages.index);
+                    }
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.error(err);
                     grecaptcha.reset();
                     this.addFieldErrors('The entered username already exists.');
                 });
@@ -104,17 +109,10 @@ class RegisterForm extends Component {
     render(){
         return (
             <Fragment>
-                {(strings.isDefined(this.state.success)) && (
-                    <Message
-                        success
-                        header={this.state.success}
-                    />
-                )}
                 <FormList
                     onSubmit={this.handleSubmit}
                     fields={objects.values(this.state.fields)}
-                    submitButtonText="Register"
-                    disabled={strings.isDefined(this.state.success)}
+                    submitButtonHtml={(this.state.isLoading) ? <LoaderTiny/> : "Register"}
                 >
                     <RecaptchaWidget siteKey={recaptchaSiteKey}/>
                 </FormList>

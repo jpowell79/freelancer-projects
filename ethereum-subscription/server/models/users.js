@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => (
             primaryKey: true,
             allowNull: false,
             validate: {
-                is: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g,
+                is: /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g,
                 len: [2, 64]
             }
         },

@@ -3,6 +3,10 @@ import FormList from '../../modules/FormList';
 import validation from '../../../services/validation';
 import {isDefined} from '../../../services/strings';
 import objects from '../../../services/objects';
+import axios from 'axios';
+import urls from '../../../services/urls';
+import paths, {redirect} from '../../../services/paths';
+import {connect} from 'react-redux';
 
 class LoginForm extends Component {
     constructor(props){
@@ -22,21 +26,21 @@ class LoginForm extends Component {
         };
     }
 
-    addFieldErrors = (usernameErrors, passwordErrors) => {
+    addFieldErrors = (usernameError, passwordError = '') => {
         this.setState(prevState => ({
             usernameField: {
                 ...prevState.usernameField,
-                error: usernameErrors
+                error: usernameError
             },
             passwordField: {
                 ...prevState.passwordField,
-                error: passwordErrors
+                error: passwordError
             }
         }));
     };
 
-    handleLogin = () => {
-        //TODO: Implement handleLogin
+    login = (username, password) => {
+        return axios.post(urls.sessions, {username, password});
     };
 
     handleSubmit = ({username, password}) => {
@@ -44,7 +48,14 @@ class LoginForm extends Component {
         const passwordErrors = validation.getPasswordError(password);
 
         if (!isDefined(usernameErrors) && !isDefined(passwordErrors)) {
-            this.handleLogin();
+            this.login(username, password)
+                .then(res => {
+                    if(res.status !== 200){
+                        this.addFieldErrors('Invalid username or password.');
+                    } else {
+                        redirect(paths.pages.index);
+                    }
+                });
         } else {
             this.addFieldErrors(usernameErrors, passwordErrors);
         }
@@ -55,10 +66,10 @@ class LoginForm extends Component {
             <FormList
                 onSubmit={this.handleSubmit}
                 fields={objects.values(this.state)}
-                submitButtonText="Login"
+                submitButtonHtml="Login"
             />
         );
     }
 }
 
-export default LoginForm;
+export default connect()(LoginForm);

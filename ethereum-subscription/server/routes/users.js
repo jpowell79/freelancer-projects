@@ -36,13 +36,6 @@ const registerUser = (req, res, sequelize, {
         return;
     }
 
-    const usernameErrors = validation.getUsernameError(username);
-
-    if(usernameErrors !== ''){
-        res.status(400).send(usernameErrors);
-        return;
-    }
-
     if(role === roles.admin){
         res.status(400).send('You cannot create admin accounts through this api.');
         return;
@@ -53,9 +46,7 @@ const registerUser = (req, res, sequelize, {
             if(!recaptchaValidation.success && !isTest(sequelize))
                 throw new Error('Grecaptcha not verified.');
 
-            return sequelize.models.users.findOne({where: {
-                username: username.toLowerCase()
-            }});
+            return sequelize.models.users.findOne({where: {username}});
         })
         .then(user => {
             if (user !== null) throw new Error("User already exists.");
@@ -63,7 +54,7 @@ const registerUser = (req, res, sequelize, {
             //TODO: Send confirm email.
 
             return sequelize.models.users.create({
-                username: username.toLowerCase(),
+                username,
                 email,
                 role,
                 password,
@@ -71,8 +62,14 @@ const registerUser = (req, res, sequelize, {
             });
         })
         .then(user => {
-            global.user = user.dataValues;
-            res.sendStatus(200);
+            req.session.user = {
+                username: user.dataValues.username,
+                email: user.dataValues.username,
+                role: user.dataValues.role,
+                walletAddress: user.dataValues.walletAddress
+            };
+
+            res.send(req.session.user);
         })
         .catch(err => {
             res.status(400).send(err.toString());
@@ -94,6 +91,10 @@ const handlePost = (req, res, sequelize) => {
 
 module.exports = (server, sequelize) => {
     server.use(urls.users, (req, res) => {
+        if (!req.session.user) {
+            req.session.user = {}
+        }
+
         switch (req.method){
         case "GET":
             res.sendStatus(200);
@@ -102,7 +103,7 @@ module.exports = (server, sequelize) => {
             handlePost(req, res, sequelize);
             break;
         default:
-            res.sendStatus(400);
+            res.sendStatus(405);
             break;
         }
     });

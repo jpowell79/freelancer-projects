@@ -1,6 +1,11 @@
 import axios from 'axios';
 import urls from '../../services/urls';
-import {loadSettings, updateAccount, isLoadingAccount} from "../redux/actions";
+import {
+    loadSettings,
+    updateMetamaskAccount,
+    isLoadingAccount,
+    updateUser
+} from "../redux/actions";
 import {isServer} from '../../services/utils';
 
 class Dispatcher {
@@ -8,10 +13,14 @@ class Dispatcher {
         this.dispatch = dispatch;
     }
 
-    dispatchLoadSettings = async ({request}) => {
+    dispatchUpdateUser = async (user) => {
+        this.dispatch(updateUser(user));
+    };
+
+    dispatchLoadSettings = async ({req}) => {
         if(isServer()){
-            const session = (request) ? request.session : null;
-            const url = `http://${request.headers.host}`;
+            const session = (req) ? req.session : null;
+            const url = `http://${req.headers.host}`;
 
             return axios({
                 method: 'get',
@@ -39,10 +48,10 @@ class Dispatcher {
         this.dispatch(isLoadingAccount());
 
         return web3.fetchAccount().then(account => {
-            this.dispatch(updateAccount(account));
+            this.dispatch(updateMetamaskAccount(account));
         }).catch(err => {
             console.error(err);
-            this.dispatch(updateAccount({}));
+            this.dispatch(updateMetamaskAccount({}));
         });
     };
 }

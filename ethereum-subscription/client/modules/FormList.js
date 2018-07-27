@@ -17,7 +17,10 @@ class FormList extends Component {
 
     static propTypes = {
         onSubmit: PropTypes.func.isRequired,
-        submitButtonText: PropTypes.string.isRequired,
+        submitButtonHtml: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.element
+        ]),
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
@@ -104,7 +107,7 @@ class FormList extends Component {
                         disabled={this.props.disabled}
                         ref={button => {this.submitButton = button;}}
                         className="ui primary button"
-                        onClick={this.handleSubmit}>{this.props.submitButtonText}</button>
+                        onClick={this.handleSubmit}>{this.props.submitButtonHtml}</button>
                 </form>
             </Fragment>
         );

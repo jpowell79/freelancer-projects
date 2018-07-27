@@ -11,15 +11,15 @@ module.exports.getPasswordError = (password) => {
 };
 
 module.exports.getUsernameError = (username) => {
-    const lettersOrNumbersOrDashesOrUnderscores = /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g;
+    const lettersOrNumbersOrDashesOrSpacesOrUnderscores = /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g;
 
     if(typeof username !== 'string') {
-        return 'Username must be a string';
-    } else if(!username.match(lettersOrNumbersOrDashesOrUnderscores)){
-        return 'The username must start with a letter and cannot contain ' +
-            'any special characters besides dash and underscore.';
+        return 'The public supplier name must be a string';
+    } else if(!username.match(lettersOrNumbersOrDashesOrSpacesOrUnderscores)){
+        return 'The public supplier name must start with a letter and cannot contain ' +
+            'any special characters besides dashes, underscores and spaces.';
     } else if(username.length < 2 || username.length > 64){
-        return 'The username must be between 2 and 64 characters';
+        return 'The public supplier name must be between 2 and 64 characters';
     }
 
     return '';

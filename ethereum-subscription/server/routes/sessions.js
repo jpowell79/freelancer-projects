@@ -1,8 +1,9 @@
 const urls = require('../../services/urls');
 const passwordHash = require('password-hash');
-const isLoggedIn = require('../services/session').isLoggedIn;
+const isLoggedIn = require('../../services/session').isLoggedIn;
+const serverSettings = require('../serverSettings');
 
-const login = (res, sequelize, {username, password}) => {
+const login = (req, res, sequelize, {username, password}) => {
     if(!username || !password){
         res.sendStatus(400);
         return;
@@ -16,8 +17,14 @@ const login = (res, sequelize, {username, password}) => {
             if(!passwordHash.verify(password, user.password))
                 throw new Error('Invalid password.');
 
-            global.user = user.dataValues;
-            res.sendStatus(200);
+            req.session.user = {
+                username: user.dataValues.username,
+                email: user.dataValues.username,
+                role: user.dataValues.role,
+                walletAddress: user.dataValues.walletAddress
+            };
+
+            res.send(req.session.user);
         })
         .catch(err => {
             res.status(400).send(err.toString());
@@ -25,26 +32,39 @@ const login = (res, sequelize, {username, password}) => {
 };
 
 const logout = (req, res) => {
-    if(isLoggedIn(req)){
-        res.clearCookie('session');
-        global.user = null;
-        res.sendStatus(200);
-    } else {
-        res.sendStatus(400);
-    }
+    return isLoggedIn(req)
+        .then(loggedIn => {
+            if(loggedIn){
+                res.clearCookie(serverSettings.COOKIE_NAME);
+                req.session.user = null;
+                res.sendStatus(200);
+            } else {
+                res.sendStatus(400);
+            }
+        })
+        .catch(() => {
+            res.sendStatus(500);
+        });
 };
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.sessions}`, (req, res) => {
+        if (!req.session.user) {
+            req.session.user = {}
+        }
+
         switch (req.method){
+        case "GET":
+            res.send((req.session.user) ? req.session.user : {});
+            break;
         case "POST":
-            login(res, sequelize, req.body);
+            login(req, res, sequelize, req.body);
             break;
         case "DELETE":
             logout(req, res);
             break;
         default:
-            res.sendStatus(400);
+            res.sendStatus(405);
             break;
         }
     });

@@ -3,28 +3,39 @@ import {combineReducers} from 'redux';
 
 export const initialState = {
     settings: [],
-    account: {}
+    metamaskAccount: {},
+    user: {}
 };
 
-export const account = (state = {}, action) => {
+export const user = (user = {}, action) => {
     switch(action.type){
-    case constants.UPDATE_ACCOUNT:
+    case constants.UPDATE_USER:
         return action.payload;
     default:
-        return state;
+        return user;
     }
 };
 
-export const settings = (state = [], action) => {
+export const metamaskAccount = (metamaskAccount = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_METAMASK_ACCOUNT:
+        return action.payload;
+    default:
+        return metamaskAccount;
+    }
+};
+
+export const settings = (settings = [], action) => {
     switch(action.type){
     case constants.LOAD_SETTINGS:
         return action.payload;
     default:
-        return state;
+        return settings;
     }
 };
 
 export default combineReducers({
     settings,
-    account
+    metamaskAccount,
+    user
 });
