@@ -36,6 +36,13 @@ const registerUser = (req, res, sequelize, {
         return;
     }
 
+    const usernameErrors = validation.getUsernameError(username);
+
+    if(usernameErrors !== ''){
+        res.status(400).send(usernameErrors);
+        return;
+    }
+
     if(role === roles.admin){
         res.status(400).send('You cannot create admin accounts through this api.');
         return;
@@ -46,7 +53,9 @@ const registerUser = (req, res, sequelize, {
             if(!recaptchaValidation.success && !isTest(sequelize))
                 throw new Error('Grecaptcha not verified.');
 
-            return sequelize.models.users.findOne({where: {username}});
+            return sequelize.models.users.findOne({where: {
+                username: username.toLowerCase()
+            }});
         })
         .then(user => {
             if (user !== null) throw new Error("User already exists.");
@@ -54,7 +63,7 @@ const registerUser = (req, res, sequelize, {
             //TODO: Send confirm email.
 
             return sequelize.models.users.create({
-                username,
+                username: username.toLowerCase(),
                 email,
                 role,
                 password,

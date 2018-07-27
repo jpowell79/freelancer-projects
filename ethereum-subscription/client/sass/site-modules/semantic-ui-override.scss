@@ -1,0 +1,326 @@
+/*----------------------------------------
+ * Semantic UI Override
+ *----------------------------------------*/
+.ui {
+    &.form {
+        .field {
+            position: relative;
+
+            .counter + textarea,
+            .counter + input {
+                padding-right: 50px!important;
+            }
+
+            .counter {
+                position: absolute;
+                color: $uiBlack;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+    }
+
+    &.primary {
+        background-color: $primary!important;
+    }
+
+    &.auxilary {
+        background-color: $auxilary!important;
+    }
+
+    &.inverted {
+        background: $secondary!important;
+    }
+
+    &.centered {
+        text-align: center;
+
+        &.statistics,
+        .statistics {
+            justify-content: center;
+        }
+    }
+
+    &.table {
+        margin: 0 0 $divider2 0;
+    }
+
+    &.lighter,
+    .lighter {
+        font-weight: lighter!important;
+    }
+
+    &.grid {
+        .two-column {
+            >.column:first-child {
+                padding-left: 0
+            }
+
+            >.column:last-child {
+                padding-right: 0;
+            }
+        }
+
+        .centered.column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &.stackable.center.aligned.hugging {
+            > .column {
+                &:first-child {
+                    text-align: right;
+
+                    .content {
+                        display: flex;
+                        justify-content: flex-end;
+                    }
+                }
+
+                &:nth-child(2){
+                    text-align: center;
+
+                    .content {
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                &:last-child {
+                    text-align: left;
+
+                    .content {
+                        display: flex;
+                        justify-content: flex-start;
+                    }
+                }
+            }
+        }
+    }
+
+    &.feed.divided.list {
+        > div:first-child .ui.header {
+            margin-top: 0;
+        }
+
+        > .item {
+            padding: $divider4 0;
+        }
+
+        > .item:first-child {
+            padding-top: 0;
+        }
+    }
+
+    &.header {
+        position: relative;
+        text-align: center;
+        margin-top: $divider3;
+
+        &.dividing {
+            padding-bottom: $divider3;
+        }
+
+        &.huge {
+            font-size: 50px;
+
+            > .sub.header {
+                font-size: 25px;
+            }
+        }
+
+        .symbol {
+            vertical-align: text-top;
+            font-size: $h3;
+            font-weight: lighter;
+            margin-left: $divider4;
+
+            &.small {
+                font-size: $h3;
+            }
+        }
+    }
+
+    &.break-all,
+    .break-all {
+        word-break: break-all;
+    }
+
+    &.statistics {
+        &.huge,
+        &.large {
+            > .statistic {
+                > .value {
+                    font-size: $display5!important;
+                }
+
+                > .label {
+                    font-size: $h6!important;
+                }
+            }
+        }
+
+        >.statistic {
+            margin: 0 0.5em 2em;
+
+            >.value {
+                font-family: $primaryFont!important;
+                font-size: $display5!important;
+            }
+
+            > .label {
+                font-size: $h6!important;
+            }
+        }
+    }
+
+    &.button a:hover {
+        color: inherit;
+    }
+
+    &.segment {
+        word-wrap: break-word;
+    }
+
+    &.definition {
+        text-align: center;
+
+        tr {
+            padding: 0 0 2px 0!important;
+        }
+
+        td {
+            word-break: break-word;
+            word-wrap: break-word;
+        }
+    }
+
+    input,
+    textarea {
+        border: 1px solid $darkGray!important;
+
+        &:focus {
+            border: 1px solid #85b7d9!important;
+        }
+    }
+}
+
+@media (max-width: $mediaLarge) {
+    .ui {
+        &.grid {
+            &.unstack-lg {
+                &.reverse-order {
+                    > .column:first-child {
+                        order: 2;
+                    }
+
+                    > .column:last-child {
+                        order: 1;
+                    }
+                }
+
+                > .column {
+                    width: 100% !important;
+                }
+
+                &.two-column > .column {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $mediaMedium){
+    .ui {
+        &.grid {
+
+            &.unstack-md {
+                > .column {
+                    width: 100% !important;
+                }
+
+                &.two-column > .column {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+
+            &.stackable.center.aligned.hugging {
+                > .column {
+                    width: 100% !important;
+
+                    &:first-child,
+                    &:last-child {
+                        text-align: center;
+
+                        .content {
+                            justify-content: center;
+                        }
+                    }
+
+                    &:nth-child(2){
+                        order: -1;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: $mediaSmall) {
+    .ui {
+        &.stackable.grid {
+            > .column:not(.why-semantic-ui) {
+                padding-left: 0!important;
+                padding-right: 0!important;
+            }
+        }
+    }
+
+    #purchase-eth-column {
+        justify-content: center!important;
+    }
+}
+
+@media (min-width: $mediaSmall){
+    .ui {
+        &.statistics {
+            .statistic {
+                margin: 0 1.5em 2em;
+            }
+
+            &.huge {
+                > .statistic {
+                    > .value {
+                        font-size: $display1!important;
+                    }
+
+                    > .label {
+                        font-size: $h3!important;
+                        font-weight: lighter;
+                    }
+                }
+            }
+
+            &.large {
+                > .statistic {
+                    > .value {
+                        font-size: $display2!important;
+                    }
+
+                    > .label {
+                        font-size: $h4!important;
+                        font-weight: lighter;
+                    }
+                }
+            }
+        }
+
+        &.definition {
+            text-align: left;
+        }
+    }
+}

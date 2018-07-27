@@ -11,7 +11,7 @@ import objects from '../../services/objects';
  * share the account information with all children.
  */
 class MetamaskContainer extends Component {
-    static mapStateToProps = ({account, settings}) => ({account, settings});
+    static mapStateToProps = ({account}) => ({account});
 
     static propTypes = {
         loadingRenderer: PropTypes.func,

@@ -11,12 +11,14 @@ const specialInputTypes = [
 
 class FormList extends Component {
     static defaultProps = {
-        className: ""
+        className: "",
+        disabled: false
     };
 
     static propTypes = {
         onSubmit: PropTypes.func.isRequired,
         submitButtonText: PropTypes.string.isRequired,
+        disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
             error: PropTypes.string.isRequired,
@@ -56,6 +58,7 @@ class FormList extends Component {
                     <label>{(field.label) ? field.label : field.type}</label>
                     <input
                         type={type}
+                        disabled={this.props.disabled}
                         value={this.state[field.type]}
                         onKeyDown={event => {
                             if(event.key === "enter"){
@@ -98,6 +101,7 @@ class FormList extends Component {
                     {this.renderFields()}
                     {children}
                     <button
+                        disabled={this.props.disabled}
                         ref={button => {this.submitButton = button;}}
                         className="ui primary button"
                         onClick={this.handleSubmit}>{this.props.submitButtonText}</button>

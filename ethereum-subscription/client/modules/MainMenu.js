@@ -62,7 +62,7 @@ class MainMenu extends Component {
 
                         return (
                             <Link key={i} href={link.href}>
-                                <a className={"item" + this.getActiveClass(link)}>
+                                <a className={"item" + this.getActiveClass(link.href)}>
                                     {link.type}
                                 </a>
                             </Link>
