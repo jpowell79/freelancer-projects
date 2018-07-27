@@ -3,6 +3,8 @@ import Dispatcher from '../services/Dispatcher';
 import {connect} from 'react-redux';
 import {Loader} from "../modules/icons";
 import Web3 from "../../services/Web3";
+import PropTypes from 'prop-types';
+import objects from '../../services/objects';
 
 /**
  * Will rerender whenever account changes occurs in metamask and
@@ -10,6 +12,11 @@ import Web3 from "../../services/Web3";
  */
 class MetamaskContainer extends Component {
     static mapStateToProps = ({account, settings}) => ({account, settings});
+
+    static propTypes = {
+        loadingRenderer: PropTypes.func,
+        notFoundRenderer: PropTypes.func
+    };
 
     subscribeToAccountUpdate = () => {
         this.handleAccountUpdate = (data) => {
@@ -46,11 +53,26 @@ class MetamaskContainer extends Component {
     }
 
     render(){
+        const {
+            account,
+            loadingRenderer,
+            notFoundRenderer,
+            children
+        } = this.props;
+
         if(this.props.account.isLoading){
-            return <Loader/>;
+            return (loadingRenderer)
+                ? this.props.loadingRenderer(children)
+                : <Loader/>;
         }
 
-        return React.cloneElement(this.props.children, {account: this.props.account});
+        if(objects.isEmpty(account)){
+            return (notFoundRenderer)
+                ? notFoundRenderer(children)
+                : React.cloneElement(children, {account});
+        }
+
+        return React.cloneElement(children, {account});
     }
 }
 
