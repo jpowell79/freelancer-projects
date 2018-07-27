@@ -6,6 +6,16 @@ const random = require('../../services/utils').random;
 const mocks = require('./resources/mocks');
 const roles = require('../../services/roles');
 
+const checkSuccess = (response) => {
+    console.log(response.text);
+    expect(response.status).to.be.equal(200);
+};
+
+const checkBadRequest = (response) => {
+    console.log(response.text);
+    expect(response.status).to.be.equal(400);
+};
+
 describe('Rest API', () => {
     it(`Should return status code of 200 when making GET requests to gettable urls.`, (done) => {
         const gettableUrls = [
@@ -22,6 +32,42 @@ describe('Rest API', () => {
                 done();
             });
     }).timeout(1000 * 10);
+
+    describe(urls.sessions, () => {
+        it('Should give bad request when trying to logout unexisting session', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).del(`${urls.sessions}`))
+                .then(checkBadRequest);
+        }).timeout(1000 * 10);
+
+        it('Should not login with unexisting username', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.sessions}`)
+                    .send(Object.assign({}, mocks.user, {
+                        username: mocks.user.username + 'foo'
+                    })))
+                .then(checkBadRequest);
+        }).timeout(1000 * 10);
+
+        it('Should not login with invalid password', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.sessions}`)
+                    .send(Object.assign({}, mocks.user, {
+                        password: mocks.user.password + 'foo'
+                    })))
+                .then(checkBadRequest);
+        }).timeout(1000 * 10);
+
+        it('Should login with valid user and then allow logging out', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.sessions}`).send(mocks.user))
+                .then(response => {
+                    checkSuccess(response);
+                    return request(app).del(urls.sessions);
+                })
+                .then(checkSuccess);
+        }).timeout(1000 * 10);
+    });
 
     describe(`${urls.settings}`, () => {
         it('Should get all settings without parameters', (done) => {

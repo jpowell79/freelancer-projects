@@ -1,6 +1,6 @@
 const configSequelize = require('./server/config/configSequelize');
 const serverSettings = require('./server/serverSettings');
-const defaultDatabase = require('./server/config/defaultDatabase');
+const defaultDatabase = require('./server/services/database/defaultDatabase');
 
 const arguments = {
     defaultDatabase: 'defaultDatabase',

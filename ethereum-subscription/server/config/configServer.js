@@ -5,6 +5,8 @@ const urls = require('../../services/urls');
 const helmet = require('helmet');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const serverSettings = require('../serverSettings');
 
 module.exports = (app, sequelize) => {
     const server = express();
@@ -15,6 +17,15 @@ module.exports = (app, sequelize) => {
     server.use(bodyParser.json());
     server.use(helmet());
     server.use(cookieParser());
+    server.use(session({
+        key: 'session',
+        secret: serverSettings.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        cookie: {
+            expires: serverSettings.COOKIE_EXPIRE
+        }
+    }));
 
     const rootPath = require('path').normalize(__dirname + '/../..');
     glob.sync(rootPath + '/server/routes/*.js').forEach(
