@@ -2,17 +2,30 @@
  * Colors
  *----------------------------------------*/
 @each $name, $color in $colors {
-    .color-#{$name}{
-        color: $color;
+    @include semanticAttribute(
+        '.color-#{$name}',
+        'color',
+        $color
+    );
+
+    .ui.color-#{$name} .statistics .statistic {
+        > .value,
+        > .label {
+            color: $color!important;
+        }
     }
 }
 
 @each $name, $color in $colors {
-    .bg-color-#{$name}{
-        background-color: $color;
+    @include semanticAttribute(
+        '.bg-color-#{$name}',
+        'background-color',
+        $color
+    );
 
-        &.glass {
-            background-color: rgba($color, .9);
-        }
-    }
+    @include semanticAttribute(
+        '.bg-color-#{$name}.glass',
+        'background-color',
+        rgba($color, .9)
+    );
 }

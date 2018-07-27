@@ -2,12 +2,12 @@ import {constants} from './constants';
 import {combineReducers} from 'redux';
 
 export const initialState = {
-    sample: ''
+    settings: []
 };
 
-export const sample = (state = '', action) => {
+export const settings = (state = [], action) => {
     switch(action.type){
-    case constants.SAMPLE_ACTION:
+    case constants.LOAD_SETTINGS:
         return action.payload;
     default:
         return state;
@@ -15,5 +15,5 @@ export const sample = (state = '', action) => {
 };
 
 export default combineReducers({
-    sample
+    settings
 });

@@ -1,6 +1,7 @@
 ## How to start developing:
-1. Start your local MySQL server with the settings specified in [serverSettings.js](./server/serverSettings.js).
-2. `npm run dev`
+1. Setup your local MySQL sever to include the user, password and port specified in [serverSettings.js](./server/serverSettings.js).
+2. Start the local MySQL server.
+3. `npm run dev`
 
 ## Project Structure:
 - **Root**: Contains files that can be accessed by both the server and client.

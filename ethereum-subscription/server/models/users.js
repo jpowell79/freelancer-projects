@@ -12,6 +12,14 @@ module.exports = (sequelize, DataTypes) => (
                 len: [2, 64]
             }
         },
+        walletAddress: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                is: /0x[a-zA-Z0-9]+/g,
+                len: [42, 42]
+            }
+        },
         email: {
             type: DataTypes.STRING,
             allowNull: false,

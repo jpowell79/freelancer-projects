@@ -11,11 +11,11 @@ module.exports.getPasswordError = (password) => {
 };
 
 module.exports.getUsernameError = (username) => {
-    const regex = /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g;
+    const lettersOrNumbersOrDashesOrUnderscores = /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g;
 
     if(typeof username !== 'string') {
         return 'Username must be a string';
-    } else if(!username.match(regex)){
+    } else if(!username.match(lettersOrNumbersOrDashesOrUnderscores)){
         return 'The username must start with a letter and cannot contain ' +
             'any special characters besides dash and underscore.';
     } else if(username.length < 2 || username.length > 64){

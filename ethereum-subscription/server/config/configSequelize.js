@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const glob = require('glob');
+const defaultDatabase = require('./defaultDatabase');
 
 function createDatabaseIfNotExists(sequelizeOptions, dbName){
     const sequelize = new Sequelize(sequelizeOptions);
@@ -7,6 +8,16 @@ function createDatabaseIfNotExists(sequelizeOptions, dbName){
     return sequelize
         .query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
         .then(() => sequelize.close());
+}
+
+function loadDefaultDatabaseSettings(sequelize){
+    return sequelize.models.settings
+        .findAll()
+        .then(settings => {
+            if(settings.length === 0){
+                return defaultDatabase.loadDefaultSettings(sequelize);
+            }
+        });
 }
 
 module.exports = async ({
@@ -48,5 +59,6 @@ module.exports = async ({
             controllerPath => require(controllerPath)(sequelize, Sequelize.DataTypes)
         ))
         .then(Models => Promise.all(Models.map(Model => Model.sync())))
+        .then(() => loadDefaultDatabaseSettings(sequelize))
         .then(() => sequelize);
 };

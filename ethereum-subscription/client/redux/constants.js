@@ -1,5 +1,5 @@
 export const constants = {
-    SAMPLE_ACTION: "SAMPLE_ACTION"
+    LOAD_SETTINGS: "LOAD_SETTINGS"
 };
 
 export default constants;

@@ -56,10 +56,12 @@
     "test client": "jest --env=jsdom",
     "test client coverage": "jest --env=jsdom --coverage",
     "test server": "mocha server/tests/**/*.test.js --exit",
+    "default database": "node scripts.js defaultDatabase",
+    "remove database": "node scripts.js removeDatabase",
     "dev": "nodemon -w server -w package.json server/index.js",
     "dev debug": "set DEBUG=* & nodemon -w server -w package.json server/index.js",
-    "build": "next build",
-    "start": "node server/index.js production"
+    "build": "next build client",
+    "start": "node server/index.js production NODE_ENV=production"
   },
   "jest": {
     "collectCoverageFrom": [

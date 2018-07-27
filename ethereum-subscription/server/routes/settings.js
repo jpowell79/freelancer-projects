@@ -3,8 +3,14 @@ const strings = require('../../services/strings');
 
 const handleGet = (res, sequelize, name) => {
     if(!strings.isDefined(name)){
-        res.sendStatus(400);
-        return;
+        return sequelize.models.settings
+            .findAll()
+            .then(settings => {
+                res.status(200).send(settings);
+            })
+            .catch(err => {
+                res.status(403).send(err.toString());
+            });
     }
 
     return sequelize.models.settings
@@ -50,13 +56,12 @@ const handlePost = (res, sequelize, {name, value, update}) => {
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.settings}/:name?`, (req, res) => {
-        //TODO: Check authentication.
-
         switch (req.method){
         case "GET":
             handleGet(res, sequelize, req.params.name);
             break;
         case "POST":
+            //TODO: Check authentication.
             handlePost(res, sequelize, req.body);
             break;
         default:

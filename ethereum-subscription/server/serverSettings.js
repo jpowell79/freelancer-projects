@@ -8,7 +8,7 @@ module.exports.HOST = 'localhost';
 /*----------------------------------------
  * MySQL options
  *----------------------------------------*/
-module.exports.DATABASE_NAME = 'EthereumSubscription';
+module.exports.DATABASE_NAME = 'ethereum_subscription';
 module.exports.DATABASE_USER = 'root';
 module.exports.DATABASE_PASSWORD = null;
 module.exports.DATABASE_PORT = 3306;

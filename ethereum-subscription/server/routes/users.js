@@ -3,8 +3,8 @@ const passwordHash = require('password-hash');
 const validation = require('../../services/validation');
 const roles = require('../../services/roles');
 
-const registerUser = ({username, email, role, password}, res, sequelize) => {
-    if(!username || !email || !role || !password){
+const registerUser = ({username, email, role, password, walletAddress}, res, sequelize) => {
+    if(!username || !email || !role || !password || !walletAddress){
         res.status(400).send('Missing required fields.');
         return;
     }
@@ -34,7 +34,8 @@ const registerUser = ({username, email, role, password}, res, sequelize) => {
                 username,
                 email,
                 role,
-                passwordHash: hash
+                passwordHash: hash,
+                walletAddress
             });
         })
         .then(() => {

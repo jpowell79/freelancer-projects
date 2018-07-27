@@ -1,8 +1,8 @@
 import {constants} from './constants';
 
-export const sampleAction = () => {
+export const loadSettings = (settings) => {
     return {
-        type: constants.SAMPLE_ACTION,
-        payload: 'Hello Redux!'
+        type: constants.LOAD_SETTINGS,
+        payload: settings
     }
 };

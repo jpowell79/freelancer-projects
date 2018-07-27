@@ -24,12 +24,12 @@ describe('Rest API', () => {
     }).timeout(1000 * 10);
 
     describe(`${urls.settings}`, () => {
-        it('Should not allow GET without name specified', (done) => {
+        it('Should get all settings without parameters', (done) => {
             setupOrGetMockApp()
                 .then(app => request(app).get(`${urls.settings}`))
                 .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(400);
+                    console.log(response.body);
+                    expect(response.status).to.be.equal(200);
                     done();
                 });
         }).timeout(1000 * 10);
@@ -158,6 +158,12 @@ describe('Rest API', () => {
             }));
         }).timeout(1000 * 10);
 
+        it('Should not allow empty walletAddress', (done) => {
+            testPostUser(done, Object.assign({}, mockUser, {
+                walletAddress: null
+            }));
+        }).timeout(1000 * 10);
+
         it('Should not allow empty role', (done) => {
             testPostUser(done, Object.assign({}, mockUser, {
                 role: null
@@ -182,9 +188,21 @@ describe('Rest API', () => {
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow too long password', (done) => {
+        it('Should not allow walletAddress not starting with 0x', (done) => {
             testPostUser(done, Object.assign({}, mockUser, {
-                password: '4'.repeat(5000)
+                walletAddress: 'BBB736a9bACC8855531AeF429735D477D4b5A4D208'
+            }));
+        }).timeout(1000 * 10);
+
+        it('Should not allow walletAddress too long walletAddress', (done) => {
+            testPostUser(done, Object.assign({}, mockUser, {
+                walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D2088'
+            }));
+        }).timeout(1000 * 10);
+
+        it('Should not allow walletAddress not too short walletAddress', (done) => {
+            testPostUser(done, Object.assign({}, mockUser, {
+                walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D20'
             }));
         }).timeout(1000 * 10);
 
@@ -229,7 +247,7 @@ describe('Rest API', () => {
 
                     done();
                 });
-        });
+        }).timeout(1000 * 10);
 
         it('Should not allow creating unexisting user.', (done) => {
             setupOrGetMockApp()
@@ -241,7 +259,7 @@ describe('Rest API', () => {
 
                     done();
                 });
-        });
+        }).timeout(1000 * 10);
 
         it('Should not allow creating unexisting admin user.', (done) => {
             setupOrGetMockApp()
@@ -255,6 +273,6 @@ describe('Rest API', () => {
 
                     done();
                 });
-        });
+        }).timeout(1000 * 10);
     });
 });
