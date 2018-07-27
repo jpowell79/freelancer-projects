@@ -16,20 +16,23 @@ const checkBadRequest = (response) => {
     expect(response.status).to.be.equal(400);
 };
 
+const checkNotExists = (response) => {
+    console.log(response.text);
+    expect(response.status).to.be.equal(404);
+};
+
 describe('Rest API', () => {
-    it(`Should return status code of 200 when making GET requests to gettable urls.`, (done) => {
+    it(`Should return status code of 200 when making GET requests to gettable urls.`, () => {
         const gettableUrls = [
             urls.users
         ];
 
-        setupOrGetMockApp()
+        return setupOrGetMockApp()
             .then(app => Promise.all(gettableUrls.map(url => request(app).get(url))))
             .then(responses => {
                 responses.forEach(response => {
                     expect(response.status).to.be.equal(200);
                 });
-
-                done();
             });
     }).timeout(1000 * 10);
 
@@ -70,91 +73,69 @@ describe('Rest API', () => {
     });
 
     describe(`${urls.settings}`, () => {
-        it('Should get all settings without parameters', (done) => {
-            setupOrGetMockApp()
+        it('Should get all settings without parameters', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).get(`${urls.settings}`))
                 .then(response => {
                     console.log(response.body);
                     expect(response.status).to.be.equal(200);
-                    done();
                 });
         }).timeout(1000 * 10);
 
-        it('Should get setting with existing name', (done) => {
-            setupOrGetMockApp()
+        it('Should get setting with existing name', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).get(`${urls.settings}/${mocks.setting.name}`))
                 .then(response => {
                     console.log(response.body.value);
                     expect(response.status).to.be.equal(200);
-                    done();
                 });
         }).timeout(1000 * 10);
 
-        it('Should return status of 404 if setting is not found', (done) => {
-            setupOrGetMockApp()
+        it('Should return status of 404 if setting is not found', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).get(`${urls.settings}/DoesNotExist`))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(404);
-                    done();
-                });
+                .then(checkNotExists);
         }).timeout(1000 * 10);
 
-        it('Should not allow empty name in POST', (done) => {
-            setupOrGetMockApp()
+        it('Should not allow empty name in POST', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: null,
                     value: true
                 }))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(400);
-                    done();
-                });
+                .then(checkBadRequest);
         });
 
-        it('Should not allow creating setting with existing name', (done) => {
-            setupOrGetMockApp()
+        it('Should not allow creating setting with existing name', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: mocks.setting.name,
                     value: true
                 }))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(400);
-                    done();
-                });
+                .then(checkBadRequest);
         });
 
-        it('Should create setting with unique name.', (done) => {
-            setupOrGetMockApp()
+        it('Should create setting with unique name.', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: 'UniqueSetting',
                     value: true
                 }))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(200);
-                    done();
-                });
+                .then(checkSuccess);
         });
 
-        it('Should not update unexisting setting', (done) => {
-            setupOrGetMockApp()
+        it('Should not update unexisting setting', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: 'AnotherUnexistingSetting',
                     value: false,
                     update: true
                 }))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(404);
-                    done();
-                });
+                .then(checkNotExists);
         });
 
-        it('Should update existing setting with update true', (done) => {
-            setupOrGetMockApp()
+        it('Should update existing setting with update true', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: 'AnotherSetting',
                     value: false
@@ -172,7 +153,6 @@ describe('Rest API', () => {
                 .then(() => request(app).get(`${urls.settings}/AnotherSetting`))
                 .then(response => {
                     expect(response.body.value).to.be.equal('1');
-                    done();
                 });
         });
     });
@@ -182,143 +162,123 @@ describe('Rest API', () => {
             username: 'VeryUniqueUsername'
         });
 
-        const testPostUser = (done, user) => {
-            setupOrGetMockApp()
+        const testBadRequestPostUser = (user) => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.users).send(user))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(400);
-                    done();
-                });
+                .then(checkBadRequest);
         };
 
-        it('Should not allow empty username', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow empty username', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: null
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow empty password', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow empty password', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 password: null
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow empty walletAddress', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow empty walletAddress', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 walletAddress: null
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow empty role', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow empty role', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 role: null
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow empty email', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow empty email', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 email: null
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow non string password', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow non string password', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 password: 55555555555555
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow too short of a password', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow too short of a password', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 password: '4'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow walletAddress not starting with 0x', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow walletAddress not starting with 0x', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 walletAddress: 'BBB736a9bACC8855531AeF429735D477D4b5A4D208'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow walletAddress too long walletAddress', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow walletAddress too long walletAddress', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D2088'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow walletAddress not too short walletAddress', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow walletAddress not too short walletAddress', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D20'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow unknown role', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow unknown role', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: `Foo${random(0, 1000)}`,
                 role: 'foo'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow malformed email', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow malformed email', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: `Foo${random(0, 1000)}`,
                 email: 'foo@example.'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow too short username', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow too short username', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: 'a'
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow too long of a username', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow too long of a username', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: '4'.repeat(5000)
             }));
         }).timeout(1000 * 10);
 
-        it('Should not allow username with special characters aside from _ and -', (done) => {
-            testPostUser(done, Object.assign({}, mockUser, {
+        it('Should not allow username with special characters aside from _ and -', () => {
+            return testBadRequestPostUser(Object.assign({}, mockUser, {
                 username: 'Yp&%¤¤#'
             }));
         }).timeout(1000 * 10);
 
-        it('Should create unexisting user.', (done) => {
-            setupOrGetMockApp()
+        it('Should create unexisting user.', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.users).send(mockUser))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(200);
-
-                    done();
-                });
+                .then(checkSuccess);
         }).timeout(1000 * 10);
 
-        it('Should not allow creating unexisting user.', (done) => {
-            setupOrGetMockApp()
+        it('Should not allow creating unexisting user.', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.users).send(mocks.user))
-                .then(response => {
-                    console.log(response.text);
-
-                    expect(response.status).to.be.equal(400);
-
-                    done();
-                });
+                .then(checkBadRequest);
         }).timeout(1000 * 10);
 
-        it('Should not allow creating unexisting admin user.', (done) => {
-            setupOrGetMockApp()
+        it('Should not allow creating unexisting admin user.', () => {
+            return setupOrGetMockApp()
                 .then(app => request(app).post(urls.users).send(Object.assign({}, mockUser, {
                     username: 'VeryUniqueAdminUsername',
                     role: roles.admin
                 })))
-                .then(response => {
-                    console.log(response.text);
-                    expect(response.status).to.be.equal(400);
-
-                    done();
-                });
+                .then(checkBadRequest);
         }).timeout(1000 * 10);
     });
 });
