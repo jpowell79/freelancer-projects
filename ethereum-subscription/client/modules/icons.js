@@ -1,6 +1,15 @@
 import React from 'react';
 import {joinClassNames} from "../services/className";
 
+export const Loader = ({className = "", ...props}) =>
+    <div {...props} className={joinClassNames('loader', className)}/>;
+
+export const LoaderSmall = ({className = "", ...props}) =>
+    <div {...props} className={joinClassNames('loader-small', className)}/>;
+
+export const LoaderTiny = ({className = "", ...props}) =>
+    <div {...props} className={joinClassNames('loader-tiny', className)}/>;
+
 export const Times = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames('times icon', className)}/>;
 

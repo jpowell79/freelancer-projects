@@ -1,6 +1,6 @@
 import * as reducers from '../../redux/reducers';
-import {settings} from "../../redux/reducers";
-import {loadSettings} from "../../redux/actions";
+import {settings, account} from "../../redux/reducers";
+import {loadSettings, isLoadingAccount, updateAccount} from "../../redux/actions";
 
 it('All reducers returns state by default', () => {
     Object.keys(reducers).forEach(reducerKey => {
@@ -13,5 +13,15 @@ it('All reducers returns state by default', () => {
 describe('settings', () => {
     it('Should load settings', () => {
         expect(settings([], loadSettings('Foo'))).toBe('Foo');
+    });
+});
+
+describe('account', () => {
+    it('Should update account', () => {
+        expect(account({}, updateAccount('foo'))).toBe('foo');
+    });
+
+    it('Should set account to isLoading', () => {
+        expect(account({}, isLoadingAccount())).toEqual({isLoading: true});
     });
 });

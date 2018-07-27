@@ -5,6 +5,9 @@ import {isDefined} from '../../../services/strings';
 import objects from '../../../services/objects';
 import {recaptchaSiteKey} from "../../content";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
+import axios from 'axios';
+import urls from '../../../services/urls';
+import roles from '../../../services/roles';
 
 class RegisterForm extends Component {
     constructor(props){
@@ -54,7 +57,16 @@ class RegisterForm extends Component {
         }));
     };
 
-    handleRegister = () => {
+    handleRegister = ({username, password, email}) => {
+        axios.post(urls.users, {
+            username,
+            email,
+            password,
+            role: roles.supplier,
+            walletAddress,
+            grecaptcha
+        })
+
         //TODO: Implement handleLogin
     };
 
@@ -65,7 +77,7 @@ class RegisterForm extends Component {
         const grecaptchaError = validation.getGrecaptchaError();
 
         if (!isDefined(usernameError) && !isDefined(passwordError) && !isDefined(emailError)) {
-            this.handleRegister();
+            this.handleRegister({username, password, email});
         } else {
             this.addFieldErrors(usernameError, passwordError, emailError, grecaptchaError);
         }

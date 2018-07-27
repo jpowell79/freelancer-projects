@@ -1,6 +1,6 @@
 import axios from 'axios';
 import urls from '../../services/urls';
-import {loadSettings} from "../redux/actions";
+import {loadSettings, updateAccount, isLoadingAccount} from "../redux/actions";
 import {isServer} from '../../services/utils';
 
 class Dispatcher {
@@ -8,7 +8,7 @@ class Dispatcher {
         this.dispatch = dispatch;
     }
 
-    fetchSettings = async ({request}) => {
+    dispatchLoadSettings = async ({request}) => {
         if(isServer()){
             const session = (request) ? request.session : null;
             const url = `http://${request.headers.host}`;
@@ -33,7 +33,18 @@ class Dispatcher {
                     console.error(err);
                 });
         }
-    }
+    };
+
+    dispatchUpdateAccount = async (web3) => {
+        this.dispatch(isLoadingAccount());
+
+        return web3.fetchAccount().then(account => {
+            this.dispatch(updateAccount(account));
+        }).catch(err => {
+            console.error(err);
+            this.dispatch(updateAccount({}));
+        });
+    };
 }
 
 export default Dispatcher;

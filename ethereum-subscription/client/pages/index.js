@@ -6,7 +6,7 @@ import Dispatcher from '../services/Dispatcher';
 class Index extends Component {
     static async getInitialProps({reduxStore, req}){
         const dispatcher = new Dispatcher(reduxStore.dispatch);
-        await dispatcher.fetchSettings({request: req});
+        await dispatcher.dispatchLoadSettings({request: req});
 
         return {};
     }

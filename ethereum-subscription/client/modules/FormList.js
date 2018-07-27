@@ -76,8 +76,6 @@ class FormList extends Component {
             .map(field => field.error)
             .filter(error => isDefined(error));
 
-        console.log(this.props.children);
-
         const children = (this.props.children && this.props.children.length)
             ? (
                 this.props.children.map((child, i) => (

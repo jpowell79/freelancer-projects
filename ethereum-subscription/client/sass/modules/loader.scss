@@ -1,0 +1,57 @@
+/*----------------------------------------
+ * Loader
+ *----------------------------------------*/
+.loader {
+    width: 120px;
+    height: 120px;
+    border: 16px solid lighten($secondary, 70%);
+    border-top: 16px solid $primary;
+    border-radius: 50%;
+    animation: loader-spin 1s linear infinite;
+
+    &.secondary {
+        border: 16px solid rgba(255, 255, 255, .5);
+        border-top: 16px solid $secondary;
+    }
+
+    &-small {
+        @extend .loader;
+        width: 60px;
+        height: 60px;
+        border: 8px solid lighten($secondary, 70%);
+        border-top: 8px solid $primary;
+
+        &.secondary {
+            border: 8px solid rgba(255, 255, 255, .5);
+            border-top: 8px solid $secondary;
+        }
+    }
+
+    &-tiny {
+        width: 20px;
+        height: 20px;
+        border: 2px solid lighten($secondary, 70%);
+        border-top: 2px solid $primary;
+        border-radius: 50%;
+        animation: loader-spin 1s linear infinite;
+
+        &.secondary {
+            border: 2px solid rgba(255, 255, 255, .5);
+            border-top: 2px solid $secondary;
+        }
+    }
+}
+
+.message {
+    .loader,
+    .loader-small,
+    .loader-tiny {
+        position: static;
+        margin-right: $divider2 !important;
+    }
+}
+
+@keyframes loader-spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

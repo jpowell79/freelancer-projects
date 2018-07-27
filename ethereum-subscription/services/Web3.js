@@ -1,14 +1,4 @@
 const web3 = require('web3');
-const siteSettings = require('../siteSettings');
-const isClient = require('./utils').isClient;
-
-const getProvider = () => {
-    if (isClient() && typeof window.web3 !== 'undefined') {
-        return window.web3.currentProvider;
-    }
-
-    return new web3.providers.HttpProvider(siteSettings.HTTP_PROVIDER);
-};
 
 function CustomWeb3(provider){
     web3.call(this, provider);
@@ -41,7 +31,6 @@ function CustomWeb3(provider){
     this.fetchAccount = () => {
         let account = {
             address: null,
-            tradeTokens: null,
             balance: null,
             network: null
         };
@@ -54,9 +43,6 @@ function CustomWeb3(provider){
             return this.fetchEthBalance(account.address);
         }).then(balance => {
             account.balance = balance;
-            return this.fetchTradeTokens(account.address);
-        }).then(tradeTokens => {
-            account.tradeTokens = tradeTokens;
             return account;
         });
     };
@@ -96,4 +82,4 @@ function CustomWeb3(provider){
 CustomWeb3.prototype = Object.create(web3.prototype);
 CustomWeb3.prototype.contructor = CustomWeb3;
 
-module.exports = new CustomWeb3(getProvider());
+module.exports = CustomWeb3;
