@@ -3,7 +3,8 @@ const urls = require('../../services/urls');
 const validation = require('../../services/validation');
 const roles = require('../../services/roles');
 const serverSettings = require('../serverSettings');
-const isTest = require('../tests/serverTestSettings').isTest;
+const {isTest} = require('../tests/serverTestSettings');
+const {saveUser} = require('../../services/session');
 
 const validateGrecaptcha = (req) => {
     const secret = `secret=${serverSettings.RECAPTCHA_SECRET_KEY}`;
@@ -44,35 +45,25 @@ const registerUser = (req, res, sequelize, {
     return validateGrecaptcha(req)
         .then(recaptchaValidation => {
             if(!recaptchaValidation.success && !isTest(sequelize))
-                throw new Error('Grecaptcha not verified.');
+                throw new Error('The reCAPTCHA could not be verified.');
 
             return sequelize.models.users.findOne({where: {username}});
         })
-        .then(user => {
-            if (user !== null) throw new Error("User already exists.");
+        .then(userRes => {
+            if (userRes !== null) throw new Error("The public supplier name already exists.");
 
             //TODO: Send confirm email.
 
             return sequelize.models.users.create({
-                username,
-                email,
-                role,
-                password,
-                walletAddress
+                username: username.trim(), email, role, password, walletAddress
             });
         })
-        .then(user => {
-            req.session.user = {
-                username: user.dataValues.username,
-                email: user.dataValues.username,
-                role: user.dataValues.role,
-                walletAddress: user.dataValues.walletAddress
-            };
-
+        .then(userRes => {
+            saveUser(req, userRes.dataValues);
             res.send(req.session.user);
         })
         .catch(err => {
-            res.status(400).send(err.toString());
+            res.send(err.toString());
         });
 };
 

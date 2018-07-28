@@ -1,6 +1,6 @@
 const urls = require('../../services/urls');
 const passwordHash = require('password-hash');
-const isLoggedIn = require('../../services/session').isLoggedIn;
+const {isLoggedIn, saveUser} = require('../../services/session');
 const serverSettings = require('../serverSettings');
 
 const login = (req, res, sequelize, {username, password}) => {
@@ -11,23 +11,19 @@ const login = (req, res, sequelize, {username, password}) => {
 
     return sequelize.models.users
         .findOne({where: {username}})
-        .then(user => {
-            if(!user)
+        .then(userRes => {
+            if(!userRes)
                 throw new Error('User does not exist.');
-            if(!passwordHash.verify(password, user.password))
+            if(!passwordHash.verify(password, userRes.password))
                 throw new Error('Invalid password.');
+            if(!userRes.isActivated)
+                throw new Error('This user is not activated.');
 
-            req.session.user = {
-                username: user.dataValues.username,
-                email: user.dataValues.username,
-                role: user.dataValues.role,
-                walletAddress: user.dataValues.walletAddress
-            };
-
+            saveUser(req, userRes.dataValues);
             res.send(req.session.user);
         })
         .catch(err => {
-            res.status(400).send(err.toString());
+            res.send(err.toString());
         });
 };
 

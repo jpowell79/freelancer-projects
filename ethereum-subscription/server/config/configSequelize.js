@@ -20,14 +20,23 @@ function loadDefaultDatabaseSettings(sequelize){
         });
 }
 
+function loadDefaultDatabaseUsers(sequelize){
+    return sequelize.models.users
+        .findAll()
+        .then(users => {
+            if(users.length === 0){
+                return defaultDatabase.loadDefaultUsers(sequelize);
+            }
+        });
+}
+
 module.exports = async ({
     HOST,
     DATABASE_NAME,
     DATABASE_USER,
     DATABASE_PASSWORD,
     DATABASE_PORT,
-    DATABASE_DIALECT,
-    LOG_SQL
+    DATABASE_DIALECT
 }) => {
     const Op = Sequelize.Op;
     const options = {
@@ -47,7 +56,7 @@ module.exports = async ({
         }
     };
 
-    if(!LOG_SQL) options.logging = false;
+    if(global.isProduction()) options.logging = false;
 
     const sequelize = new Sequelize(Object.assign({}, options, {
         database: DATABASE_NAME
@@ -60,5 +69,8 @@ module.exports = async ({
         ))
         .then(Models => Promise.all(Models.map(Model => Model.sync())))
         .then(() => loadDefaultDatabaseSettings(sequelize))
+        .then(() => {
+            if(!global.isProduction()) return loadDefaultDatabaseUsers(sequelize);
+        })
         .then(() => sequelize);
 };

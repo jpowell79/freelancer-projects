@@ -9,34 +9,38 @@ import axios from 'axios';
 import urls from '../../../services/urls';
 import roles from '../../../services/roles';
 import {LoaderTiny} from "../../modules/icons";
+import {Message} from 'semantic-ui-react';
 
 class RegisterForm extends Component {
     constructor(props){
         super(props);
 
-        this.state = {
-            fields: {
-                usernameField: {
-                    type: 'username',
-                    label: 'Public Supplier name:',
-                    error: ''
-                },
-                emailField: {
-                    type: 'email',
-                    label: 'Email:',
-                    error: '',
-                },
-                passwordField: {
-                    type: 'password',
-                    label: 'Password:',
-                    error: ''
-                },
-                grecaptchaField: {
-                    type: 'hidden',
-                    error: ''
-                }
+        this.initialFields = {
+            usernameField: {
+                type: 'username',
+                label: 'Public Supplier name:',
+                error: ''
             },
+            emailField: {
+                type: 'email',
+                label: 'Email:',
+                error: '',
+            },
+            passwordField: {
+                type: 'password',
+                label: 'Password:',
+                error: ''
+            },
+            grecaptchaField: {
+                type: 'hidden',
+                error: ''
+            }
+        };
+
+        this.state = {
+            fields: this.initialFields,
             isLoading: false,
+            completed: false
         };
     }
 
@@ -88,16 +92,21 @@ class RegisterForm extends Component {
 
             this.registerUser({username, password, email})
                 .then(res => {
-                    if(res.status !== 200){
-                        throw new Error('Bad Request');
+                    if(typeof res.data === 'string'){
+                        grecaptcha.reset();
+                        this.addFieldErrors(res.data.toString().split("Error: ")[1]);
                     } else {
-                        //TODO: Tell user about registration + confirmation message
+                        this.setState({
+                            fields: this.initialFields,
+                            isLoading: false,
+                            completed: true
+                        });
                     }
                 })
                 .catch(err => {
                     console.error(err);
                     grecaptcha.reset();
-                    this.addFieldErrors('The entered username already exists.');
+                    this.addFieldErrors('Something went wrong when processing the request.', true);
                 });
         } else {
             this.addFieldErrors(usernameError, passwordError, emailError, grecaptchaError);
@@ -107,8 +116,16 @@ class RegisterForm extends Component {
     render(){
         return (
             <Fragment>
+                {(this.state.completed) && (
+                    <Message
+                        success
+                        header='Your registration was completed successfully.'
+                        list={['Check your email to activate the account.']}
+                    />
+                )}
                 <FormList
                     onSubmit={this.handleSubmit}
+                    disabled={this.state.isLoading || this.state.completed}
                     fields={objects.values(this.state.fields)}
                     submitButtonHtml={(this.state.isLoading) ? <LoaderTiny/> : "Register"}
                 >

@@ -2,13 +2,16 @@ require('./services/padEnd');
 const next = require('next');
 const configServer = require('./config/configServer');
 const network = require('./config/network');
+const configSequelize = require('./config/configSequelize');
+const addGlobalHelpers = require('./config/addGlobalHelpers');
 const serverSettings = require('./serverSettings');
 const log = require('./services/log');
-const configSequelize = require('./config/configSequelize');
+
+addGlobalHelpers();
 
 const app = next({
     dir: serverSettings.NEXT_DIR,
-    dev: process.argv[2] !== 'production'
+    dev: !global.isProduction()
 });
 
 app.prepare().then(() => {

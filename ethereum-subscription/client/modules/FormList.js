@@ -24,7 +24,10 @@ class FormList extends Component {
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
-            error: PropTypes.string.isRequired,
+            error: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.bool
+            ]).isRequired,
             label: PropTypes.string
         }))
     };
@@ -50,7 +53,7 @@ class FormList extends Component {
 
             const fieldClass = classNames({
                 'field': true,
-                'error': isDefined(field.error)
+                'error': typeof error === 'string' ? isDefined(field.error) : field.error
             }, this.props.className);
 
             const specialType = specialInputTypes.filter(type => type === field.type)[0];
@@ -80,6 +83,7 @@ class FormList extends Component {
     render(){
         const errors = this.props.fields
             .map(field => field.error)
+            .filter(error => typeof error === 'string')
             .filter(error => isDefined(error));
 
         const children = (this.props.children && this.props.children.length)
@@ -97,7 +101,7 @@ class FormList extends Component {
                     <Message
                         error
                         header='There was some errors with your submission'
-                        list={errors}
+                        list={errors.filter(error => typeof error === 'string')}
                     />
                 )}
                 <form className="ui form">

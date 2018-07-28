@@ -5,35 +5,42 @@ import axios from 'axios';
 import urls from '../../../services/urls';
 import paths, {redirect} from '../../../services/paths';
 import {connect} from 'react-redux';
+import {LoaderTiny} from "../../modules/icons";
 
 class LoginForm extends Component {
     constructor(props){
         super(props);
 
         this.state = {
-            usernameField: {
-                type: 'username',
-                label: 'Username:',
-                error: ''
+            fields: {
+                usernameField: {
+                    type: 'username',
+                    label: 'Username:',
+                    error: false
+                },
+                passwordField: {
+                    type: 'password',
+                    label: 'Password:',
+                    error: false
+                }
             },
-            passwordField: {
-                type: 'password',
-                label: 'Password:',
-                error: ''
-            }
+            isLoading: false,
         };
     }
 
     addFieldErrors = (usernameError, passwordError = '') => {
         this.setState(prevState => ({
-            usernameField: {
-                ...prevState.usernameField,
-                error: usernameError
+            fields: {
+                usernameField: {
+                    ...prevState.fields.usernameField,
+                    error: usernameError
+                },
+                passwordField: {
+                    ...prevState.fields.passwordField,
+                    error: passwordError
+                }
             },
-            passwordField: {
-                ...prevState.passwordField,
-                error: passwordError
-            }
+            isLoading: false
         }));
     };
 
@@ -44,11 +51,15 @@ class LoginForm extends Component {
     handleSubmit = ({username, password}) => {
         this.login(username, password)
             .then(res => {
-                if(res.status !== 200){
-                    this.addFieldErrors('Invalid username or password.');
+                if(typeof res.data === 'string'){
+                    this.addFieldErrors(res.data.toString().split("Error: ")[1], true);
                 } else {
                     redirect(paths.pages.admin);
                 }
+            })
+            .catch(err => {
+                console.error(err);
+                this.addFieldErrors('Something went wrong when processing the request.', true);
             });
     };
 
@@ -56,8 +67,9 @@ class LoginForm extends Component {
         return (
             <FormList
                 onSubmit={this.handleSubmit}
-                fields={objects.values(this.state)}
-                submitButtonHtml="Login"
+                disabled={this.state.isLoading}
+                fields={objects.values(this.state.fields)}
+                submitButtonHtml={this.state.isLoading ? <LoaderTiny/> : "Login"}
             />
         );
     }

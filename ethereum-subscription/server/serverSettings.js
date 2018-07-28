@@ -20,7 +20,6 @@ module.exports.DATABASE_USER = 'root';
 module.exports.DATABASE_PASSWORD = null;
 module.exports.DATABASE_PORT = 3306;
 module.exports.DATABASE_DIALECT = 'mysql';
-module.exports.LOG_SQL = true;
 
 /*----------------------------------------
  * ReCAPTCHA
