@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => (
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                isIn: objects.values(roles)
+                isIn: [objects.values(roles)]
             }
         },
         rating: {

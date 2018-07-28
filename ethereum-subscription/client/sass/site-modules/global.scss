@@ -3,10 +3,12 @@
  *----------------------------------------*/
 body {
     background-color: $gray;
+    min-width: inherit;
     font-size: 100%;
 }
 
 body {
+    &::-webkit-scrollbar,
     ::-webkit-scrollbar {
         width: 20px!important;
         height: 20px!important;
@@ -30,7 +32,6 @@ a {
     @include standardHoverEffect();
 
     &:hover {
-        text-decoration: none;
         color: darken($primary, 10%);
     }
 }

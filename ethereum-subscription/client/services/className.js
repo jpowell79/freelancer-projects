@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-export const className = (string = '') => {
+export const spreadClassName = (string = '') => {
     return (string === '') ? {} : {
         className: string
     };

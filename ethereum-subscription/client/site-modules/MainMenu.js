@@ -5,12 +5,17 @@ import {MobileMenuIcon} from "../modules/icons";
 import $ from 'jquery';
 import paths, {redirect} from "../../services/paths";
 import {connect} from 'react-redux';
-import {isEmpty} from '../../services/objects';
 import axios from 'axios';
 import urls from '../../services/urls';
+import {hideOnMobile} from "../services/css";
+import {classNames, spreadClassName} from "../services/className";
 
 class MainMenu extends Component {
     static mapStateToProps = ({user}) => ({user});
+
+    static defaultProps = {
+        className: ""
+    };
 
     static items = {
         logo: {
@@ -19,21 +24,21 @@ class MainMenu extends Component {
         },
         links: [
             {
-                type: 'Register',
+                name: 'Register',
                 href: paths.pages.register
             },
             {
-                type: 'Login',
+                name: 'Login',
                 href: paths.pages.login
             },
             {
-                type: 'How it works',
+                name: 'How it works',
                 href: paths.pages.howItWorks
             },
             {
-                type: 'About',
+                name: 'About',
                 href: paths.pages.about
-            }
+            },
         ]
     };
 
@@ -65,7 +70,7 @@ class MainMenu extends Component {
         return (this.props.router.route === page) ? " active" : "";
     }
 
-    renderNotLoggedInMenu = () => {
+    renderMainMenu = () => {
         const {
             logo,
             links
@@ -81,14 +86,14 @@ class MainMenu extends Component {
                         links.map((link, i) => {
                             if(link.href === ''){
                                 return (
-                                    <a key={i}>{link.type}</a>
+                                    <a key={i}>{link.name}</a>
                                 );
                             }
 
                             return (
                                 <Link key={i} href={link.href}>
                                     <a className={"item" + this.getActiveClass(link.href)}>
-                                        {link.type}
+                                        {link.name}
                                     </a>
                                 </Link>
                             );
@@ -99,7 +104,7 @@ class MainMenu extends Component {
         );
     };
 
-    renderLoggedInMenu = () => {
+    renderAdminMenu = () => {
         const {user} = this.props;
         const {logo} = MainMenu.items;
 
@@ -109,7 +114,7 @@ class MainMenu extends Component {
                     <a><img src={logo.src}/></a>
                 </Link>
                 <nav>
-                    <div className="item">
+                    <div className={hideOnMobile('item')}>
                         <span>Welcome back <strong>{user.username}</strong></span>
                     </div>
                     <div className="item">
@@ -132,14 +137,20 @@ class MainMenu extends Component {
             dispatch,
             router,
             user,
+            className,
             ...props
         } = this.props;
 
         //TODO: Render Menu Based on Location
+        const mainMenuClass = classNames({
+            'no-mobile': router.route === paths.pages.admin
+        }, className);
 
         return (
-            <nav id="main-menu" {...props}>
-                {isEmpty(user) ? this.renderNotLoggedInMenu() : this.renderLoggedInMenu()}
+            <nav id="main-menu" {...spreadClassName(mainMenuClass)} {...props}>
+                {(router.route === paths.pages.admin)
+                    ? this.renderAdminMenu()
+                    : this.renderMainMenu()}
                 <div id="main-menu-toggler">
                     <MobileMenuIcon/>
                 </div>

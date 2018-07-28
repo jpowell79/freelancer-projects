@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import FormList from '../../modules/FormList';
-import validation from '../../../services/validation';
-import {isDefined} from '../../../services/strings';
 import objects from '../../../services/objects';
 import axios from 'axios';
 import urls from '../../../services/urls';
@@ -44,21 +42,14 @@ class LoginForm extends Component {
     };
 
     handleSubmit = ({username, password}) => {
-        const usernameErrors = validation.getUsernameError(username);
-        const passwordErrors = validation.getPasswordError(password);
-
-        if (!isDefined(usernameErrors) && !isDefined(passwordErrors)) {
-            this.login(username, password)
-                .then(res => {
-                    if(res.status !== 200){
-                        this.addFieldErrors('Invalid username or password.');
-                    } else {
-                        redirect(paths.pages.index);
-                    }
-                });
-        } else {
-            this.addFieldErrors(usernameErrors, passwordErrors);
-        }
+        this.login(username, password)
+            .then(res => {
+                if(res.status !== 200){
+                    this.addFieldErrors('Invalid username or password.');
+                } else {
+                    redirect(paths.pages.admin);
+                }
+            });
     };
 
     render(){

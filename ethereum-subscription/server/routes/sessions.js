@@ -36,7 +36,6 @@ const logout = (req, res) => {
         .then(loggedIn => {
             if(loggedIn){
                 res.clearCookie(serverSettings.COOKIE_NAME);
-                req.session.user = null;
                 res.sendStatus(200);
             } else {
                 res.sendStatus(400);
@@ -48,14 +47,10 @@ const logout = (req, res) => {
 };
 
 module.exports = (server, sequelize) => {
-    server.use(`${urls.sessions}`, (req, res) => {
-        if (!req.session.user) {
-            req.session.user = {}
-        }
-
+    server.use(`${urls.sessions}`, server.initSessionVariables, (req, res) => {
         switch (req.method){
         case "GET":
-            res.send((req.session.user) ? req.session.user : {});
+            res.send(req.session.user);
             break;
         case "POST":
             login(req, res, sequelize, req.body);

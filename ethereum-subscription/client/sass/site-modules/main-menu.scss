@@ -17,6 +17,10 @@ $menuBackground: $white;
     z-index: 900;
     border-bottom: 1px solid rgba(34,36,38,.1);
 
+    &.no-mobile {
+        flex-wrap: nowrap;
+    }
+
     img {
         max-height: calc(#{$menuHeight} - 20px);
         z-index: 9999;
@@ -75,7 +79,7 @@ $menuBackground: $white;
         }
     }
 
-    #main-menu {
+    #main-menu:not(.no-mobile) {
         ::-webkit-scrollbar {
             visibility: hidden;
         }
@@ -155,7 +159,8 @@ $menuBackground: $white;
                     animation-name: reveal-menu;
                     border-bottom: 1px solid rgba(34,36,38,.1);
 
-                    a {
+                    a,
+                    .item {
                         animation-name: reveal-menu-items;
                     }
                 }

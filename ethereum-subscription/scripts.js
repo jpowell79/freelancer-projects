@@ -34,7 +34,7 @@ function removeDatabase(sequelize){
 function loadDefaultDatabase(sequelize){
     return Promise.all(Object.keys(sequelize.models)
         .map(modelKey => sequelize.query(`DELETE FROM ${modelKey}`)))
-        .then(() => defaultDatabase.loadDefaultSettings(sequelize));
+        .then(() => defaultDatabase.load(sequelize));
 }
 
 configSequelize(serverSettings)

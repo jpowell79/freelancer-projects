@@ -3,7 +3,7 @@ import Head from './Head';
 import Header from './Header';
 import Footer from './Footer';
 import PropTypes from 'prop-types';
-import {className} from "../services/className";
+import {spreadClassName} from "../services/className";
 
 class Page extends Component {
     static defaultProps = {
@@ -28,17 +28,17 @@ class Page extends Component {
 
     render(){
         return (
-            <div id="page" {...className(this.props.pageClass)}>
+            <div id="page" {...spreadClassName(this.props.pageClass)}>
                 <Head>
                     {this.props.head}
                 </Head>
-                <Header id="page-header" {...className(this.props.headerClass)}>
+                <Header id="page-header" {...spreadClassName(this.props.headerClass)}>
                     {this.props.header}
                 </Header>
-                <section id="page-content" {...className(this.props.contentClass)}>
+                <section id="page-content" {...spreadClassName(this.props.contentClass)}>
                     {this.props.children}
                 </section>
-                <Footer id="page-footer" {...className(this.props.footerClass)}>
+                <Footer id="page-footer" {...spreadClassName(this.props.footerClass)}>
                     {this.props.footer}
                     <script
                         src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

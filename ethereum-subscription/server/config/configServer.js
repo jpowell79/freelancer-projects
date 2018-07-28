@@ -18,7 +18,7 @@ module.exports = (app, sequelize) => {
     server.use(helmet());
     server.use(cookieParser(serverSettings.COOKIE_SECRET));
     server.use(session({
-        key: serverSettings.COOKIE_NAME,
+        name: serverSettings.COOKIE_NAME,
         secret: serverSettings.COOKIE_SECRET,
         resave: false,
         saveUninitialized: false,
@@ -26,6 +26,13 @@ module.exports = (app, sequelize) => {
             expires: serverSettings.COOKIE_EXPIRE
         }
     }));
+    server.initSessionVariables = (req, res, next) => {
+        if(!req.session.user){
+            req.session.user = {};
+        }
+
+        next();
+    };
 
     const rootPath = require('path').normalize(__dirname + '/../..');
     glob.sync(rootPath + '/server/routes/*.js').forEach(

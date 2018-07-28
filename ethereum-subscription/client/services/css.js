@@ -1,7 +1,7 @@
 import {joinClassNames} from './className';
 
 export const hideOnMobile = (className = '') => {
-    return joinClassNames("hide-xxs show-md", className);
+    return joinClassNames("hide-xxs show-sm", className);
 };
 
 export const sortableTable = (className = '') => {

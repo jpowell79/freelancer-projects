@@ -8,7 +8,6 @@ import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
 import urls from '../../../services/urls';
 import roles from '../../../services/roles';
-import paths, {redirect} from '../../../services/paths';
 import {LoaderTiny} from "../../modules/icons";
 
 class RegisterForm extends Component {
@@ -93,7 +92,6 @@ class RegisterForm extends Component {
                         throw new Error('Bad Request');
                     } else {
                         //TODO: Tell user about registration + confirmation message
-                        redirect(paths.pages.index);
                     }
                 })
                 .catch(err => {

@@ -90,11 +90,7 @@ const handlePost = (req, res, sequelize) => {
 };
 
 module.exports = (server, sequelize) => {
-    server.use(urls.users, (req, res) => {
-        if (!req.session.user) {
-            req.session.user = {}
-        }
-
+    server.use(urls.users, server.initSessionVariables, (req, res) => {
         switch (req.method){
         case "GET":
             res.sendStatus(200);

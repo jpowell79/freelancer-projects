@@ -2,11 +2,14 @@ const roles = require('./roles');
 const axios = require('axios');
 const urls = require('./urls');
 const isEmpty = require('./objects').isEmpty;
+const {isClient} = require('./utils');
 
-module.exports.isLoggedIn = async (req = null) => {
-    if(!req) return axios.get(urls.sessions).then(user => !isEmpty(user));
+module.exports.isLoggedIn = async (req) => {
+    if(isClient()) return axios.get(urls.sessions).then(
+        response => !isEmpty(response.data)
+    );
 
-    return req.session.user && req.session.cookie;
+    return !isEmpty(req.session.user);
 };
 
 module.exports.isLoggedInAdmin = (req) => {
