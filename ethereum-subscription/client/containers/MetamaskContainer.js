@@ -5,6 +5,7 @@ import {Loader} from "../modules/icons";
 import Web3 from "../../services/Web3";
 import PropTypes from 'prop-types';
 import objects from '../../services/objects';
+import HideFragment from './HideFragment';
 
 /**
  * Will rerender whenever metamaskAccount changes occurs in metamask and
@@ -65,13 +66,23 @@ class MetamaskContainer extends Component {
         if(this.props.metamaskAccount.isLoading){
             return (loadingRenderer)
                 ? this.props.loadingRenderer(children)
-                : <Loader/>;
+                : (
+                    <div className="text-center">
+                        <Loader/>
+                        <h3>Listening for account changes...</h3>
+                    </div>
+                );
         }
 
         if(objects.isEmpty(metamaskAccount)){
-            return (notFoundRenderer)
-                ? notFoundRenderer(children)
-                : React.cloneElement(children, {metamaskAccount});
+            return (
+                <HideFragment>
+                    {(notFoundRenderer)
+                        ? notFoundRenderer(children)
+                        : React.cloneElement(children, {metamaskAccount})}
+                </HideFragment>
+            );
+
         }
 
         return React.cloneElement(children, {metamaskAccount});

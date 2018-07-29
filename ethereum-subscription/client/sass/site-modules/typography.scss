@@ -1,0 +1,99 @@
+.article {
+    a {
+        font-weight: normal;
+    }
+
+    p,
+    span,
+    ul,
+    ol,
+    li,
+    blockquote,
+    label {
+        font-size: $h3;
+    }
+
+    ol,
+    ul {
+        li {
+            margin-bottom: $divider4;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    ol {
+        counter-reset: item;
+        list-style: none;
+        padding-left: 20px;
+
+        li {
+            display: flex;
+            counter-increment: item;
+
+            &:before {
+                content: counter(item) ".";
+                margin-right: $divider4;
+                font-weight: normal;
+            }
+        }
+    }
+
+    figcaption {
+        font-size: $h4;
+        font-weight: normal;
+        display: block;
+        text-align: center;
+    }
+
+    p.title {
+        font-weight: bold;
+        margin-top: $divider1;
+        margin-bottom: $divider4;
+    }
+
+    .math {
+        font-weight: normal;
+        padding-left: 40px;
+    }
+
+    .ui.full.width.segment {
+        margin: $divider2 0;
+
+        &.bordered {
+            border: 1px solid $darkGray;
+        }
+    }
+}
+
+.capitalized {
+    display: block;
+    font-size: $display5;
+    font-weight: lighter;
+    text-transform: uppercase;
+    margin-top: 0;
+    margin-bottom: $divider5;
+}
+
+.text {
+    font-size: $h2;
+    font-weight: lighter;
+}
+
+.rc-anchor {
+    background-color: #FFF!important;
+}
+
+@media (max-width: $mediaSmall) {
+    .article {
+        .math {
+            padding-left: 20px;
+        }
+
+        ol {
+            padding-left: 10px;
+        }
+    }
+}

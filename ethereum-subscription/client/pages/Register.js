@@ -4,10 +4,17 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import RegisterForm from '../site-modules/forms/RegisterForm';
 import MetamaskContainer from '../containers/MetamaskContainer';
 import {Segment} from 'semantic-ui-react';
+import {isClient} from '../../services/utils';
 
 class Register extends Component {
     renderMetamaskAccountNotFound = () => {
-        return <h3>You need metamask in order to create an account.</h3>;
+        if(!isClient()) return null;
+
+        if(!window.web3){
+            return <p className="text">You need metamask in order to create an account.</p>;
+        }
+
+        return <p className="text">Login to metamask in order to create an account.</p>;
     };
 
     render () {
