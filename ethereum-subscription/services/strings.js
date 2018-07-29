@@ -11,3 +11,15 @@ module.exports.isDefined = (stringsOrString) => {
         return stringIsDefined(stringsOrString);
     }
 };
+
+module.exports.hasLowerCase = (string) => (
+    string.toUpperCase() !== string
+);
+
+module.exports.hasUpperCase = (string) => (
+    string.toLowerCase() !== string
+);
+
+module.exports.hasSpecialCharacters = (string) => (
+    /[^a-zA-Z0-9]+/g.test(string)
+);

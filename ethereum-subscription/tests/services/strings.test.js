@@ -20,4 +20,30 @@ describe('strings', () => {
         });
     });
 
+    describe('hasXCharacters', () => {
+        it('Should find that string has special characters', () => {
+            expect(strings.hasSpecialCharacters('F0o_')).to.be.equal(true);
+        });
+
+        it('Should find that string has no special characters', () => {
+            expect(strings.hasSpecialCharacters('F0o')).to.be.equal(false);
+        });
+
+        it('Should find that string has uppercase characters', () => {
+            expect(strings.hasUpperCase('F0o_')).to.be.equal(true);
+        });
+
+        it('Should find that string has no uppercase characters', () => {
+            expect(strings.hasUpperCase('f0o_')).to.be.equal(false);
+        });
+
+        it('Should find that string has lowercase characters', () => {
+            expect(strings.hasLowerCase('F0o_')).to.be.equal(true);
+        });
+
+        it('Should find that string has no lowercase characters', () => {
+            expect(strings.hasLowerCase('F0O_')).to.be.equal(false);
+        });
+    });
+
 });

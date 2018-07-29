@@ -3,8 +3,15 @@ const strings = require('./strings');
 module.exports.getPasswordError = (password) => {
     if(typeof password !== 'string'){
         return 'Password must be a string';
-    } else if(password.length < 6 || password.length > 64){
-        return 'The password must be between 6 and 64 characters';
+    } else if(
+        password.length < 8 || password.length > 1000 ||
+        !strings.hasLowerCase(password) || !strings.hasUpperCase(password) ||
+        !strings.hasSpecialCharacters(password)
+    ){
+        return (
+            'The password must be at least 8 characters long with a mix of uppercase and ' +
+            'lowercase letters and symbols.'
+        );
     }
 
     return '';
