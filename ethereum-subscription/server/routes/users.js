@@ -150,7 +150,7 @@ const handleGet = (req, res, sequelize) => {
 };
 
 module.exports = (server, sequelize) => {
-    server.use(`${urls.users}/:uuid?`, server.initSessionVariables, (req, res) => {
+    server.use(`${urls.users}/:uuid?`, server.initSession, (req, res) => {
         switch (req.method){
         case "GET":
             handleGet(req, res, sequelize);

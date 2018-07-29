@@ -30,6 +30,8 @@ const handlePost = (res, sequelize, {name, value, update}) => {
         return;
     }
 
+    //TODO: Check authentication depending on setting edited
+
     if(update){
         return sequelize.models.settings
             .update({name, value}, {where: {name}})
@@ -61,7 +63,6 @@ module.exports = (server, sequelize) => {
             handleGet(res, sequelize, req.params.name);
             break;
         case "POST":
-            //TODO: Check authentication.
             handlePost(res, sequelize, req.body);
             break;
         default:

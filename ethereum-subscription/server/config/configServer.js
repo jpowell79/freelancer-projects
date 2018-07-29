@@ -26,7 +26,7 @@ module.exports = (app, sequelize) => {
             expires: serverSettings.COOKIE_EXPIRE
         }
     }));
-    server.initSessionVariables = (req, res, next) => {
+    server.initSession = (req, res, next) => {
         if(!req.session.user){
             req.session.user = {};
         }

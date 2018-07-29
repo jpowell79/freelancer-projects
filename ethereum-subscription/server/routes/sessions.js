@@ -35,13 +35,14 @@ const logout = (req, res) => {
                 res.sendStatus(400);
             }
         })
-        .catch(() => {
+        .catch(err => {
+            if(global.isProduction()) console.error(err);
             res.sendStatus(500);
         });
 };
 
 module.exports = (server, sequelize) => {
-    server.use(`${urls.sessions}`, server.initSessionVariables, (req, res) => {
+    server.use(`${urls.sessions}`, server.initSession, (req, res) => {
         switch (req.method){
         case "GET":
             res.send(req.session.user);

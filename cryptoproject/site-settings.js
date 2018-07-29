@@ -97,7 +97,33 @@ module.exports.DEBUG_TOKEN_SALE = (tokenSale) => {
  * Token holder claim address
  *----------------------------------------*/
 module.exports.TOKEN_HOLDER_CLAIM_ADDRESS = '0xd473fc1cee590f3132a3f66fd5726a8dfb94740e';
-module.exports.PRICING_ADDRESS = '0x44aaee348a5a0259cf2116950e4c1aadda3be41d';
+module.exports.PRICING_ADDRESS = {
+    crypto_01: '0x0f6075d98d9dbed642c807dab63587bc35bd8d7f',
+    crypto_02: '0xf37e009daea9d4c2ec85f2fb6aafe19fb56b0dc9',
+    crypto_03: '0xf42ae203addd1ad0722e526a24dd8c31427f8f18',
+    crypto_04: '0x0663e115c80d854f3a99f9584ae9d136057a00a4',
+    crypto_05: '0x2337625ce12d500cfedbcadff880ac0212e52b9a',
+    crypto_06: '0x4638f25755b39cb275a785d5f62907c168541d49',
+    crypto_07: '0xbcecf6deb24060e9be1dc075cf7608a2d9fc3067',
+    crypto_08: '0xc95c03dacb7f712ba8afaed6cb5b9c2bc66372d6',
+    crypto_09: '0x023477598897b04d88fada7a30ba9926e0c34bc8',
+    crypto_10: '0x9a5fa6802179ca2d101750b840cb634852a774bd',
+    crypto_11: '0x75383709c1b3fd675808fe0836769e69d25836a2',
+    crypto_12: '0x08ae49a404fa6087964406a514da0aec34b4fba1',
+    crypto_13: '0x9afedf849ade545937919705b3cd8399f660203b',
+    crypto_14: '0xeda209cbc6232b50f65fc956bc9a6843e84757ef',
+    crypto_15: '0xf4819e1037f7e3c28b4fe23983057c822fc0a62d',
+    crypto_16: '0x51c046c22827064fb3f650f351b9e99a5122132b',
+    crypto_17: '0xe44c947782da8b42605784da7917bd1b2a229cb2',
+    crypto_18: '0xe1c183d28241530187f7ee5878f46a2776b6ffbb',
+    crypto_19: '0x02c325579dd8626e44e317379234ab89dc9cb8e8',
+    crypto_20: '0xf570e44c3283877ba5c15f266c9839cbfc11d3d8',
+    crypto_21: '0x228071ebc6a33a04a835f1eaaa460cfb9c769071',
+    crypto_22: '0xea33f5fa588ce641c1af6e162cce019602c9140a',
+    crypto_23: '0xf84b50b1c21479594f85332eebe2d8d301644a3e',
+    crypto_24: '0x02ad41bb5d66fc58e7e58fe9093d9ce20ce17d1a',
+    crypto_25: '0xa52fbe0c0d9b07b04f53d384cc097285f899418f',
+};
 
 /*----------------------------------------
  * Token Sale Contract
