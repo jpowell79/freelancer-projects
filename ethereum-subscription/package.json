@@ -51,6 +51,7 @@
     "sass-loader": "^7.0.3",
     "semantic-ui-react": "^0.82.1",
     "sequelize": "^4.38.0",
+    "uuid": "^3.3.2",
     "web3": "^1.0.0-beta.35"
   },
   "scripts": {

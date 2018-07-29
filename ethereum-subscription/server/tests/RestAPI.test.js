@@ -13,7 +13,10 @@ const checkSuccess = (response) => {
 
 const checkBadRequest = (response) => {
     console.log(response.text);
-    expect(response.status).to.be.equal(400);
+    
+    if(!response.text.startsWith('Error:')){
+        expect(response.status).to.be.equal(400);
+    }
 };
 
 const checkNotExists = (response) => {

@@ -2,6 +2,7 @@ const testSettings = require('../serverTestSettings');
 const configServer = require('../../config/configServer');
 const configSequelize = require('../../config/configSequelize');
 const loadTestDatabase = require('./loadTestDatabase');
+require('../../config/addGlobalHelpers')();
 
 module.exports = async () => {
     const mockApp = {

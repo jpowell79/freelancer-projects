@@ -12,10 +12,9 @@ module.exports.loadDefaultSettings = async (sequelize) => {
 };
 
 module.exports.loadDefaultUsers = async (sequelize) => {
-    return Promise.all(defaultData.users.map(user => {
-        console.log(user);
-        return sequelize.models.users.create(user);
-    }));
+    return Promise.all(defaultData.users.map(user =>
+        sequelize.models.users.create(user)
+    ));
 };
 
 module.exports.load = async (sequelize) => {

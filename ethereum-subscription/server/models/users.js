@@ -1,6 +1,5 @@
 const objects = require('../../services/objects');
 const roles = require('../../services/roles');
-const passwordHash = require('password-hash');
 
 module.exports = (sequelize, DataTypes) => (
     sequelize.define('users', {
@@ -9,7 +8,7 @@ module.exports = (sequelize, DataTypes) => (
             primaryKey: true,
             allowNull: false,
             validate: {
-                is: /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g,
+                is: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g,
                 len: [2, 64]
             }
         },
@@ -46,17 +45,5 @@ module.exports = (sequelize, DataTypes) => (
                 min: 0
             }
         },
-        isActivated: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false,
-            defaultValue: false
-        }
-    },
-    {
-        hooks: {
-            beforeCreate: (user) => {
-                user.password = passwordHash.generate(user.password);
-            }
-        }
     })
 );

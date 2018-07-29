@@ -18,7 +18,7 @@ class RegisterForm extends Component {
         this.initialFields = {
             usernameField: {
                 type: 'username',
-                label: 'Public Supplier name:',
+                label: 'Username:',
                 error: ''
             },
             emailField: {
@@ -92,7 +92,7 @@ class RegisterForm extends Component {
 
             this.registerUser({username, password, email})
                 .then(res => {
-                    if(typeof res.data === 'string'){
+                    if(typeof res.data === 'string' && res.data.startsWith("Error: ")){
                         grecaptcha.reset();
                         this.addFieldErrors(res.data.toString().split("Error: ")[1]);
                     } else {
@@ -120,7 +120,10 @@ class RegisterForm extends Component {
                     <Message
                         success
                         header='Your registration was completed successfully.'
-                        list={['Check your email to activate the account.']}
+                        list={[
+                            'Check your email to activate the account. ' +
+                            'The account will expire after 1 hour.'
+                        ]}
                     />
                 )}
                 <FormList

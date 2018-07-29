@@ -12,15 +12,17 @@ const specialInputTypes = [
 class FormList extends Component {
     static defaultProps = {
         className: "",
-        disabled: false
+        disabled: false,
+        errorTitle: "There was some errors with your submission"
     };
 
     static propTypes = {
         onSubmit: PropTypes.func.isRequired,
+        errorTitle: PropTypes.string,
         submitButtonHtml: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.element
-        ]),
+        ]).isRequired,
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
@@ -100,7 +102,7 @@ class FormList extends Component {
                 {(errors.length > 0) && (
                     <Message
                         error
-                        header='There was some errors with your submission'
+                        header={this.props.errorTitle}
                         list={errors.filter(error => typeof error === 'string')}
                     />
                 )}

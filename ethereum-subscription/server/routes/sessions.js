@@ -16,8 +16,6 @@ const login = (req, res, sequelize, {username, password}) => {
                 throw new Error('User does not exist.');
             if(!passwordHash.verify(password, userRes.password))
                 throw new Error('Invalid password.');
-            if(!userRes.isActivated)
-                throw new Error('This user is not activated.');
 
             saveUser(req, userRes.dataValues);
             res.send(req.session.user);

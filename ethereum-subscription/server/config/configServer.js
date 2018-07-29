@@ -31,6 +31,12 @@ module.exports = (app, sequelize) => {
             req.session.user = {};
         }
 
+        if(!req.session.tempUser) {
+            req.session.tempUser = {};
+        }
+
+        req.session.userWasActivated = false;
+
         next();
     };
 

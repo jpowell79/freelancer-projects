@@ -10,16 +10,26 @@ module.exports.getPasswordError = (password) => {
     return '';
 };
 
+module.exports.getWalletAddressError = (walletAddress) => {
+    if(typeof walletAddress !== 'string') {
+        return 'The walletAddress must be a string';
+    } else if(!walletAddress.startsWith('0x') || walletAddress.length !== 42){
+        return 'The walletAddress must start with 0x and be 42 characters long.';
+    }
+
+    return '';
+};
+
 module.exports.getUsernameError = (username) => {
-    const lettersOrNumbersOrDashesOrSpacesOrUnderscores = /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g;
+    const lettersOrNumbersOrDashesOrUnderscores = /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g;
 
     if(typeof username !== 'string') {
-        return 'The public supplier name must be a string';
-    } else if(!username.match(lettersOrNumbersOrDashesOrSpacesOrUnderscores)){
-        return 'The public supplier name must start with a letter and cannot contain ' +
-            'any special characters besides dashes, underscores and spaces.';
+        return 'The username must be a string';
+    } else if(!username.match(lettersOrNumbersOrDashesOrUnderscores)){
+        return 'The username must start with a letter and cannot contain ' +
+            'any special characters besides dashes and underscores.';
     } else if(username.length < 2 || username.length > 64){
-        return 'The public supplier name must be between 2 and 64 characters';
+        return 'The username must be between 2 and 64 characters';
     }
 
     return '';
