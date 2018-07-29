@@ -28,8 +28,6 @@ module.exports = {
         return (
             isLoggedIn(req)
                 .then(loggedIn => {
-                    console.log(loggedIn);
-
                     if(!loggedIn){
                         module.exports.redirect(url, res);
                     }

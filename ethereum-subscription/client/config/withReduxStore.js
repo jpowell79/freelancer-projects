@@ -4,7 +4,6 @@ import {initStore} from '../redux/store';
 import {isServer} from "../../services/utils";
 
 const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
-const __HAS_DATABASE__ = '__HAS_DATABASE__';
 
 function getOrCreateStore(initialState) {
     if (isServer()) {
@@ -31,7 +30,7 @@ export default (App) => {
             return {
                 ...appProps,
                 initialReduxState: reduxStore.getState()
-            }
+            };
         }
 
         constructor(props) {
