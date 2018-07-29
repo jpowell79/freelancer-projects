@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import LoginForm from '../site-modules/forms/LoginForm';
-import {Message} from 'semantic-ui-react';
+import {Message, Segment} from 'semantic-ui-react';
 
 class Login extends Component {
     static async getInitialProps({res, req}){
@@ -16,15 +16,17 @@ class Login extends Component {
     render () {
         return (
             <Page>
-                <FullWidthSegment wrapper={4}>
-                    {(this.props.userWasActivated) && (
-                        <Message
-                            success
-                            header='Your account has been activated successfully.'
-                        />
-                    )}
-                    <h1>Login</h1>
-                    <LoginForm/>
+                <FullWidthSegment className="gray" wrapper={4}>
+                    <Segment padded>
+                        {(this.props.userWasActivated) && (
+                            <Message
+                                success
+                                header='Your account has been activated successfully.'
+                            />
+                        )}
+                        <h1>Login</h1>
+                        <LoginForm/>
+                    </Segment>
                 </FullWidthSegment>
             </Page>
         )

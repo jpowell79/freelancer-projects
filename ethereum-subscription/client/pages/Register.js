@@ -3,6 +3,7 @@ import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import RegisterForm from '../site-modules/forms/RegisterForm';
 import MetamaskContainer from '../containers/MetamaskContainer';
+import {Segment} from 'semantic-ui-react';
 
 class Register extends Component {
     renderMetamaskAccountNotFound = () => {
@@ -12,11 +13,13 @@ class Register extends Component {
     render () {
         return (
             <Page>
-                <FullWidthSegment wrapper={4}>
-                    <h1>Register</h1>
-                    <MetamaskContainer notFoundRenderer={this.renderMetamaskAccountNotFound}>
-                        <RegisterForm/>
-                    </MetamaskContainer>
+                <FullWidthSegment className="gray" wrapper={4}>
+                    <Segment padded>
+                        <h1>Register</h1>
+                        <MetamaskContainer notFoundRenderer={this.renderMetamaskAccountNotFound}>
+                            <RegisterForm/>
+                        </MetamaskContainer>
+                    </Segment>
                 </FullWidthSegment>
             </Page>
         )

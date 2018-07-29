@@ -6,7 +6,7 @@ class HowItWorks extends Component {
     render () {
         return (
             <Page>
-                <FullWidthSegment options={['secondary', 'centered', 'color-white']}>
+                <FullWidthSegment>
                     <h1>Ethereum Subscription</h1>
                 </FullWidthSegment>
             </Page>
