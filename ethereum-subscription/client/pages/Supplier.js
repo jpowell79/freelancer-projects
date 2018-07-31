@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateSupplier from '../config/withAuthenticateSupplier';
-import {Menu} from 'semantic-ui-react';
+import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
 
 class Supplier extends Component {
@@ -46,7 +46,7 @@ class Supplier extends Component {
 
         return (
             <Page>
-                <FullWidthSegment skinny>
+                <FullWidthSegment className="gray" skinny>
                     <Menu compact>
                         {objects.values(Supplier.sections)
                             .map((section, i) => {
@@ -63,9 +63,9 @@ class Supplier extends Component {
                             })
                         }
                     </Menu>
-                </FullWidthSegment>
-                <FullWidthSegment skinny>
-                    {this.renderSection(active)}
+                    <Segment>
+                        {this.renderSection(active)}
+                    </Segment>
                 </FullWidthSegment>
             </Page>
         )

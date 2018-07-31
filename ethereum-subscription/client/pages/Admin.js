@@ -60,7 +60,7 @@ class Admin extends Component {
 
         return (
             <Page>
-                <FullWidthSegment skinny wrapper={1}>
+                <FullWidthSegment className="gray" skinny wrapper={1}>
                     <Grid stackable>
                         <Grid.Column width={5}>
                             <Menu fluid vertical>
