@@ -19,11 +19,13 @@ export default (PageComponent, title) => {
             };
 
             this.settingsUpdater = new SettingsUpdater(props.settings);
-            console.log(this.settingsUpdater);
         }
 
         handleSave = () => {
-            this.setState({isSaving: true});
+            this.setState({
+                isSaving: true,
+                hasSaved: false
+            });
             const componentState = objects.filter(this.component.state, setting => setting);
 
             return Promise.all(Object
