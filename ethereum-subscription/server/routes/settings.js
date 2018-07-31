@@ -36,10 +36,10 @@ const handlePost = (res, sequelize, {name, value, update}) => {
         return sequelize.models.settings
             .update({name, value}, {where: {name}})
             .then(affectedRows => {
-                if(affectedRows[0] === 0)
+                if(affectedRows[0] === '0' || affectedRows[0] === 0)
                     throw new Error("No setting with the given name exists.");
 
-                res.status(200).send(response);
+                res.status(200).send(affectedRows);
             })
             .catch(err => {
                 res.status(404).send(err.toString());

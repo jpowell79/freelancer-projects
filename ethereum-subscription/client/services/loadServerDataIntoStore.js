@@ -1,5 +1,5 @@
 import Dispatcher from "./Dispatcher";
-import {isEmpty} from '../../services/objects';
+import objects from '../../services/objects';
 import {isClient} from '../../services/utils';
 
 const defaultOptions = {
@@ -15,13 +15,13 @@ export const loadServerDataIntoStore = async (reduxStore, req, options) => {
 
     if(isClient()) return;
 
-    if(load.user && isEmpty(state.user)){
+    if(load.user && objects.isEmpty(state.user)){
         promises.push(dispatcher.dispatchUpdateUser(
             (req.session.user) ? req.session.user : {}
         ));
     }
 
-    if(load.settings && state.settings.length === 0){
+    if(load.settings && objects.isEmpty(state.settings)){
         promises.push(dispatcher.dispatchLoadSettings({req}));
     }
 

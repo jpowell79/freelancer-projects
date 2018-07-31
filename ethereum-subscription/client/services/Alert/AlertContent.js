@@ -6,7 +6,7 @@ class AlertContent extends Component {
         BACKDROP: 'ui dimmer modals page transition top aligned',
         REVEAL: 'visible active',
         HIDDEN: 'hidden',
-        MAIN_CONTAINER: 'ui standard small modal transition',
+        MAIN_CONTAINER: 'ui standard tiny modal transition',
         CONTENT_CONTAINER: 'content',
         HEADER: 'header',
         TITLE: 'modal-title',

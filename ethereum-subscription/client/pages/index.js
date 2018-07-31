@@ -4,13 +4,18 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import SubscriptionTable from "../site-modules/SubscriptionTable";
 import BackgroundSegment from "../containers/BackgroundSegment";
 import paths from '../../services/paths';
+import {connect} from 'react-redux';
 
 class Index extends Component {
+    static mapStateToProps = ({settings}) => ({settings});
+
     render () {
+        const {settings} = this.props;
+
         return (
             <Page>
                 <BackgroundSegment
-                    imageUrl={`${paths.static.images}/header.jpg`}
+                    imageUrl={`${paths.static.images}/${settings.homepageBanner.value}`}
                     className="parallax color-white"
                     style={{
                         display: "flex",
@@ -27,7 +32,9 @@ class Index extends Component {
                         contract and an easy way to request a subscription cancellation
                         if it ever becomes necessary.
                     </p>
-                    <div className="overlay-secondary"/>
+                    <div className="overlay" style={{
+                        backgroundColor: settings.homepageBannerOverlayColor.value
+                    }}/>
                 </BackgroundSegment>
                 <FullWidthSegment noWidthPadding skinny>
                     <SubscriptionTable/>
@@ -37,4 +44,4 @@ class Index extends Component {
     }
 }
 
-export default Index;
+export default connect(Index.mapStateToProps)(Index);

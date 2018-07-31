@@ -2,7 +2,7 @@ import {constants} from './constants';
 import {combineReducers} from 'redux';
 
 export const initialState = {
-    settings: [],
+    settings: {},
     metamaskAccount: {},
     user: {}
 };
@@ -25,7 +25,7 @@ export const metamaskAccount = (metamaskAccount = {}, action) => {
     }
 };
 
-export const settings = (settings = [], action) => {
+export const settings = (settings = {}, action) => {
     switch(action.type){
     case constants.LOAD_SETTINGS:
         return action.payload;

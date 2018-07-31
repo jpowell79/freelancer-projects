@@ -7,7 +7,6 @@ const {saveUser, saveTempUser} = require('../../services/session');
 const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/paths');
-const passwordHash = require('password-hash');
 
 const validateGrecaptcha = (req) => {
     const secret = `secret=${serverSettings.RECAPTCHA_SECRET_KEY}`;
@@ -115,7 +114,7 @@ const registerTempUser = (req, res, sequelize, {
                 username,
                 email,
                 role,
-                password: passwordHash.generate(password),
+                password,
                 walletAddress
             }, uuidv4());
 

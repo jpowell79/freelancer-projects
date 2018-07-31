@@ -18,6 +18,16 @@ class Dispatcher {
     };
 
     dispatchLoadSettings = async ({req}) => {
+        const dispatchLoadSetting = (response) => {
+            const settings = {};
+
+            response.data.forEach(setting => {
+                settings[setting.name] = setting;
+            });
+
+            this.dispatch(loadSettings(settings));
+        };
+
         if(isServer()){
             const session = (req) ? req.session : null;
             const url = `http://${req.headers.host}`;
@@ -27,17 +37,14 @@ class Dispatcher {
                 url: url + urls.settings,
                 credentials: 'same-origin',
                 data: {'session': session}
-            }).then(response => {
-                this.dispatch(loadSettings(response.data));
             })
+            .then(dispatchLoadSetting)
             .catch(err => {
                 console.error(err);
             });
         } else {
             return axios.get(urls.settings)
-                .then(response => {
-                    this.dispatch(loadSettings(response.data));
-                })
+                .then(dispatchLoadSetting)
                 .catch(err => {
                     console.error(err);
                 });

@@ -1,8 +1,10 @@
-const roles = require('../../../services/roles');
+const roles = require('./roles');
 
 module.exports.settings = {
     etherScanUrl: 'https://kovan.etherscan.io',
-    httpProvider: 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv'
+    httpProvider: 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv',
+    homepageBanner: 'header.jpg',
+    homepageBannerOverlayColor: '#33363f'
 };
 
 module.exports.users = [

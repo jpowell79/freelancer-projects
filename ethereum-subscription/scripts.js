@@ -1,6 +1,6 @@
 const configSequelize = require('./server/config/configSequelize');
 const serverSettings = require('./server/serverSettings');
-const defaultDatabase = require('./server/services/database/defaultDatabase');
+const defaultDatabase = require('./server/services/defaultDatabase');
 const addGlobalHelpers = require('./server/config/addGlobalHelpers');
 addGlobalHelpers();
 

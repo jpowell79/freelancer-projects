@@ -1,6 +1,6 @@
 const Sequelize = require('sequelize');
 const glob = require('glob');
-const defaultDatabase = require('../services/database/defaultDatabase');
+const defaultDatabase = require('../services/defaultDatabase');
 
 function createDatabaseIfNotExists(sequelizeOptions, dbName){
     const sequelize = new Sequelize(sequelizeOptions);

@@ -1,0 +1,30 @@
+.file-input {
+    position: relative;
+
+    .ui.button {
+        margin: 0;
+        border-radius: .28571429rem 0 0 .28571429rem;
+    }
+    
+    label {
+        font-weight: bold;
+        display: flex;
+    }
+
+    input[type="text"]{
+        border-radius: 0 .28571429rem .28571429rem 0!important;
+        border-left: none!important;
+
+        &:focus {
+            border-left: none!important;
+        }
+    }
+
+    input[type="file"]{
+        position: absolute;
+        padding: 0!important;
+        top: 0;
+        visibility: hidden;
+        overflow: hidden;
+    }
+}

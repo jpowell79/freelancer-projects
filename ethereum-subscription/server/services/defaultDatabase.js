@@ -1,4 +1,4 @@
-const defaultData = require('./defaultData');
+const defaultData = require('../../services/defaultData');
 
 module.exports.loadDefaultSettings = async (sequelize) => {
     return Promise.all(Object.keys(defaultData.settings)

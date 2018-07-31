@@ -4,6 +4,7 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
+import UpdateHomepageBanner from "../site-modules/admin-sections/UpdateHomepageBanner";
 
 class Admin extends Component {
     static sections = {
@@ -20,7 +21,7 @@ class Admin extends Component {
         super(props);
 
         this.state = {
-            active: 0
+            active: 5
         }
     }
 
@@ -47,7 +48,7 @@ class Admin extends Component {
         case addSubCategory:
             return <p>Sub Category</p>;
         case updateHomepageBanner:
-            return <p>Update Banner</p>;
+            return <UpdateHomepageBanner/>;
         case smartContract:
             return <p>Smart Contract</p>;
         default:
