@@ -28,7 +28,8 @@ class ColorPicker extends Component {
                         height: "25px",
                         borderRadius: "5px",
                         cursor: "pointer",
-                        backgroundColor: this.state.color
+                        backgroundColor: this.state.color,
+                        border: "1px solid #CFCFD0"
                     }}
                     onClick={() => {
                         this.setState((prevState) => ({
@@ -38,7 +39,6 @@ class ColorPicker extends Component {
                 >
                     {(this.state.showPicker) && (
                         <SketchPicker
-                            style={{position: "absolute"}}
                             color={this.state.color}
                             disableAlpha={true}
                             onChangeComplete={(color) => {

@@ -7,3 +7,27 @@ module.exports.isEmpty = (object) => {
 module.exports.values = (object) => {
     return Object.keys(object).map(key => object[key]);
 };
+
+module.exports.filter = (object, predicate) => {
+    const filteredObject = {};
+
+    Object.keys(object).forEach(key => {
+        const value = object[key];
+        if(predicate(value, key)){
+            filteredObject[key] = value;
+        }
+    });
+
+    return filteredObject;
+};
+
+module.exports.map = (object, transform) => {
+    const mappedObject = {};
+
+    Object.keys(object).forEach(key => {
+        const value = object[key];
+        mappedObject[key] = transform(value, key);
+    });
+
+    return mappedObject;
+};
