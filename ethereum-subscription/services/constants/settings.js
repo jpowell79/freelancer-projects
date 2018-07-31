@@ -5,5 +5,7 @@ module.exports = {
     homepageBannerOverlayColor: 'homepageBannerOverlayColor',
     homepageBannerTextColor: "homepageBannerTextColor",
     homepageBannerText: 'homepageBannerText',
-    homepageBannerTitle: 'homepageBannerTitle'
+    homepageBannerTitle: 'homepageBannerTitle',
+    logo: 'logo',
+    siteTitle: 'siteTitle'
 };

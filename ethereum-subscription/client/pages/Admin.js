@@ -5,6 +5,7 @@ import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";
+import EditLogo from "../site-modules/admin-sections/EditLogo";
 
 class Admin extends Component {
     static sections = {
@@ -14,14 +15,15 @@ class Admin extends Component {
         backupDatabase: 'Backup Database',
         addSubCategory: 'Add new Sub Category',
         homepageBanner: 'Homepage Banner',
-        smartContract: 'Smart Contract Data'
+        smartContract: 'Smart Contract Data',
+        editLogo: 'Edit Logo'
     };
 
     constructor(props){
         super(props);
 
         this.state = {
-            active: 5
+            active: 7
         }
     }
 
@@ -33,7 +35,8 @@ class Admin extends Component {
             backupDatabase,
             addSubCategory,
             homepageBanner,
-            smartContract
+            smartContract,
+            editLogo
         } = Admin.sections;
 
         switch(objects.values(Admin.sections)[active]){
@@ -51,6 +54,8 @@ class Admin extends Component {
             return <HomepageBanner/>;
         case smartContract:
             return <p>Smart Contract</p>;
+        case editLogo:
+            return <EditLogo/>;
         default:
             return null;
         }

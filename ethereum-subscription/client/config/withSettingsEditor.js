@@ -58,17 +58,19 @@ export default (PageComponent, title) => {
                         <Message
                             success
                             header='Your changes have been saved successfully!'
+                            list={[
+                                'Refresh the browser to view the changes.'
+                            ]}
                         />
                     )}
                     <h2>{title}</h2>
-                    <div className="divider-3">
-                        <PageComponent
-                            {...this.props}
-                            settingsUpdater={this.settingsUpdater}
-                            getDefaultsOrState={this.getDefaultsOrState}
-                            ref={component => {this.component = component}}
-                        />
-                    </div>
+                    <PageComponent
+                        {...this.props}
+                        settingsUpdater={this.settingsUpdater}
+                        getDefaultsOrState={this.getDefaultsOrState}
+                        ref={component => {this.component = component}}
+                    />
+                    <hr className="ui divider"/>
                     <button
                         className="ui primary button"
                         onClick={this.handleSave}>

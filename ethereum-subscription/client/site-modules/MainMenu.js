@@ -10,17 +10,13 @@ import {hideOnMobile} from "../services/css";
 import {classNames, spreadClassName} from "../services/className";
 
 class MainMenu extends Component {
-    static mapStateToProps = ({user}) => ({user});
+    static mapStateToProps = ({user, settings}) => ({user, settings});
 
     static defaultProps = {
         className: ""
     };
 
     static items = {
-        logo: {
-            src: `${paths.static.images}/logo_small.png`,
-            href: paths.pages.index
-        },
         links: [
             {
                 name: 'Register',
@@ -70,15 +66,12 @@ class MainMenu extends Component {
     }
 
     renderMainMenu = () =>{
-        const {
-            logo,
-            links
-        } = MainMenu.items;
+        const {links} = MainMenu.items;
 
         return (
             <Fragment>
-                <Link href={logo.href}>
-                    <a><img src={logo.src}/></a>
+                <Link href="/">
+                    <a><img src={`${paths.static.images}/${this.props.settings.logo.value}`}/></a>
                 </Link>
                 <nav>
                     {
@@ -105,12 +98,11 @@ class MainMenu extends Component {
 
     renderSupplierMenu = () => {
         const {user} = this.props;
-        const {logo} = MainMenu.items;
 
         return (
             <Fragment>
-                <Link href={logo.href}>
-                    <a><img src={logo.src}/></a>
+                <Link href="/">
+                    <a><img src={`${paths.static.images}/${this.props.settings.logo.value}`}/></a>
                 </Link>
                 <nav>
                     <div className={hideOnMobile('item')}>
@@ -133,12 +125,11 @@ class MainMenu extends Component {
 
     renderAdminMenu = () =>{
         const {user} = this.props;
-        const {logo} = MainMenu.items;
 
         return (
             <Fragment>
-                <Link href={logo.href}>
-                    <a><img src={logo.src}/></a>
+                <Link href="/">
+                    <a><img src={`${paths.static.images}/${this.props.settings.logo.value}`}/></a>
                 </Link>
                 <nav>
                     <div className={hideOnMobile('item')}>
@@ -188,6 +179,7 @@ class MainMenu extends Component {
             router,
             user,
             className,
+            settings,
             ...props
         } = this.props;
 

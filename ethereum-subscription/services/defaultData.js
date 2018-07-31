@@ -12,7 +12,9 @@ module.exports.settings = {
         `contract and an easy way to request a subscription cancellation ` +
         `if it ever becomes necessary.`
     ),
-    homepageBannerTitle: 'Ethereum Subscriptions'
+    homepageBannerTitle: 'Ethereum Subscriptions',
+    logo: 'logo.png',
+    siteTitle: 'Ethereum Subscriptions'
 };
 
 module.exports.users = [
