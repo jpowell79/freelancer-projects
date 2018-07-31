@@ -4,7 +4,7 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
-import UpdateHomepageBanner from "../site-modules/admin-sections/UpdateHomepageBanner";
+import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";
 
 class Admin extends Component {
     static sections = {
@@ -13,7 +13,7 @@ class Admin extends Component {
         massEmail: 'Mass Email to Suppliers',
         backupDatabase: 'Backup Database',
         addSubCategory: 'Add new Sub Category',
-        updateHomepageBanner: 'Update Homepage Banner',
+        homepageBanner: 'Homepage Banner',
         smartContract: 'Smart Contract Data'
     };
 
@@ -32,7 +32,7 @@ class Admin extends Component {
             massEmail,
             backupDatabase,
             addSubCategory,
-            updateHomepageBanner,
+            homepageBanner,
             smartContract
         } = Admin.sections;
 
@@ -47,8 +47,8 @@ class Admin extends Component {
             return <p>Backup</p>;
         case addSubCategory:
             return <p>Sub Category</p>;
-        case updateHomepageBanner:
-            return <UpdateHomepageBanner/>;
+        case homepageBanner:
+            return <HomepageBanner/>;
         case smartContract:
             return <p>Smart Contract</p>;
         default:

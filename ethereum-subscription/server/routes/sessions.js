@@ -1,4 +1,4 @@
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 const passwordHash = require('password-hash');
 const {isLoggedIn, saveUser} = require('../../services/session');
 const serverSettings = require('../serverSettings');

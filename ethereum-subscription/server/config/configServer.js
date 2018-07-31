@@ -1,7 +1,7 @@
 const express = require('express');
 const glob = require('glob');
 const bodyParser = require('body-parser');
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 const helmet = require('helmet');
 const csrf = require('csurf');
 const cookieParser = require('cookie-parser');
@@ -13,8 +13,8 @@ module.exports = (app, sequelize) => {
     const csrfProtection = csrf({cookie: true});
 
     server.set('json spaces', 4);
-    server.use(bodyParser.urlencoded({extended: false}));
-    server.use(bodyParser.json());
+    server.use(bodyParser.urlencoded({limit: serverSettings.MAX_UPLOAD_SIZE, extended: true}));
+    server.use(bodyParser.json({limit: serverSettings.MAX_UPLOAD_SIZE, extended: true}));
     server.use(helmet());
     server.use(cookieParser(serverSettings.COOKIE_SECRET));
     server.use(session({

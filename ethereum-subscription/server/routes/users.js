@@ -1,12 +1,12 @@
 const axios = require('axios');
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 const validation = require('../../services/validation');
-const roles = require('../../services/roles');
+const roles = require('../../services/constants/roles');
 const serverSettings = require('../serverSettings');
 const {saveUser, saveTempUser} = require('../../services/session');
 const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
 const uuidv4 = require('uuid/v4');
-const paths = require('../../services/paths');
+const paths = require('../../services/constants/paths');
 
 const validateGrecaptcha = (req) => {
     const secret = `secret=${serverSettings.RECAPTCHA_SECRET_KEY}`;

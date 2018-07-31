@@ -1,4 +1,4 @@
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 
 function sectionTitle(title){
     console.log("-".repeat(60));

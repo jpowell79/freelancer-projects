@@ -6,8 +6,8 @@ import objects from '../../../services/objects';
 import {recaptchaSiteKey} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
-import urls from '../../../services/urls';
-import roles from '../../../services/roles';
+import urls from '../../../services/constants/urls';
+import roles from '../../../services/constants/roles';
 import {LoaderTiny} from "../../modules/icons";
 import {Message} from 'semantic-ui-react';
 

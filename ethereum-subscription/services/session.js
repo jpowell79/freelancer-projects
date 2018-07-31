@@ -1,6 +1,6 @@
-const roles = require('./roles');
+const roles = require('./constants/roles');
 const axios = require('axios');
-const urls = require('./urls');
+const urls = require('./constants/urls');
 const isEmpty = require('./objects').isEmpty;
 const {isClient} = require('./utils');
 
@@ -32,7 +32,7 @@ module.exports.isLoggedIn = async (req) => {
     return !isEmpty(req.session.user);
 };
 
-module.exports.isLoggedInAdmin = (req) => {
+module.exports.isLoggedInAdmin = async (req) => {
     return module.exports.isLoggedIn(req)
         .then(loggedIn => {
             if(loggedIn){

@@ -7,7 +7,7 @@ import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import {LoaderTiny} from "../../modules/icons";
 import SettingsUpdater from '../../services/SettingsUpdater';
 
-class UpdateHomepageBanner extends Component {
+class HomepageBanner extends Component {
     static mapStateToProps = ({settings}) => ({settings});
 
     constructor(props){
@@ -16,6 +16,8 @@ class UpdateHomepageBanner extends Component {
         this.state = {
             file: {name: props.settings.homepageBanner.value},
             color: props.settings.homepageBannerOverlayColor.value,
+            text: props.settings.homepageBannerText.value,
+            title: props.settings.homepageBannerTitle.value,
             isSaving: false,
             hasSaved: false,
         };
@@ -24,14 +26,16 @@ class UpdateHomepageBanner extends Component {
     }
 
     handleSave = () => {
-        const {file, color} = this.state;
+        const {file, color, text, title} = this.state;
         this.setState({isSaving: true});
+        const uploadPromise = (file.type)
+            ? this.settingsUpdater.updateHomepageBannerImage(file) : () => {};
 
-        //TODO: Upload image
-
-        Promise.all([
+        return Promise.all([
             this.settingsUpdater.updateHomepageBannerOverlayColor(color),
-            this.settingsUpdater.updateHomepageBannerImage(file.name)
+            this.settingsUpdater.updateHomepageBannerText(text),
+            this.settingsUpdater.updateHomepageBannerTitle(title),
+            uploadPromise,
         ]).then(() => {
             this.setState({
                 hasSaved: true,
@@ -39,6 +43,7 @@ class UpdateHomepageBanner extends Component {
             });
         }).catch(err => {
             AlertOptionPane.showErrorAlert({message: err.toString()});
+            this.setState({isSaving: false});
         });
     };
 
@@ -51,6 +56,7 @@ class UpdateHomepageBanner extends Component {
                         header='Your changes have been saved successfully!'
                     />
                 )}
+                <h2>Homepage Banner</h2>
                 <Form>
                     <Form.Field>
                         <FileInput
@@ -76,6 +82,27 @@ class UpdateHomepageBanner extends Component {
                             }}
                         />
                     </Form.Field>
+                    <Form.Field>
+                        <label>Title:</label>
+                        <input
+                            type="text"
+                            value={this.state.title}
+                            onChange={(event) => {
+                                this.setState({title: event.target.value});
+                            }}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Text:</label>
+                        <textarea
+                            value={this.state.text}
+                            onChange={(event) => {
+                                this.setState({text: event.target.value});
+                            }}
+                            rows={5}
+                        />
+                    </Form.Field>
+                    <div className="divider-1"/>
                     <button
                         className="ui primary button"
                         onClick={this.handleSave}>
@@ -89,4 +116,4 @@ class UpdateHomepageBanner extends Component {
     }
 }
 
-export default connect(UpdateHomepageBanner.mapStateToProps)(UpdateHomepageBanner);
+export default connect(HomepageBanner.mapStateToProps)(HomepageBanner);

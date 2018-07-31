@@ -1,10 +1,18 @@
-const roles = require('./roles');
+const roles = require('./constants/roles');
 
 module.exports.settings = {
     etherScanUrl: 'https://kovan.etherscan.io',
     httpProvider: 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv',
     homepageBanner: 'header.jpg',
-    homepageBannerOverlayColor: '#33363f'
+    homepageBannerOverlayColor: '#33363f',
+    homepageBannerTextColor: "#FFFFFF",
+    homepageBannerText: (
+        `Take out a subscription to a service, and pay for the service ` +
+        `using Ethereum, with a public record of the terms of the ` +
+        `contract and an easy way to request a subscription cancellation ` +
+        `if it ever becomes necessary.`
+    ),
+    homepageBannerTitle: 'Ethereum Subscriptions'
 };
 
 module.exports.users = [

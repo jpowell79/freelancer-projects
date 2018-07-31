@@ -1,10 +1,10 @@
 const expect = require('chai').expect;
 const request = require("supertest");
 const setupOrGetMockApp = require('./resources/mockApp');
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 const random = require('../../services/utils').random;
 const mocks = require('./resources/mocks');
-const roles = require('../../services/roles');
+const roles = require('../../services/constants/roles');
 
 const checkSuccess = (response) => {
     console.log(response.text);

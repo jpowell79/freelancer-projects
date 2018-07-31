@@ -12,6 +12,12 @@ module.exports.COOKIE_SECRET = 'T]s9,l4U!`gYg"Ngf+z-n>T)|,,rqE!u-$60d4gS<4i7O,=Y
 module.exports.COOKIE_EXPIRE = 1000 * 60 * 60;
 module.exports.COOKIE_NAME = 'session';
 
+
+/*----------------------------------------
+ * Upload Options
+ *----------------------------------------*/
+module.exports.MAX_UPLOAD_SIZE = '50mb';
+
 /*----------------------------------------
  * MySQL options
  *----------------------------------------*/

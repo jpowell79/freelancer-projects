@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import {redirectIfNotLoggedInAdmin} from "../../services/paths";
-import paths from "../../services/paths";
+import {redirectIfNotLoggedInAdmin} from "../../services/constants/paths";
+import paths from "../../services/constants/paths";
 
 export default (PageComponent) => {
     return class Authenticate extends Component {

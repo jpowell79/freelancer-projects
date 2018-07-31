@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import FormList from '../../modules/FormList';
 import objects from '../../../services/objects';
 import axios from 'axios';
-import urls from '../../../services/urls';
-import paths, {redirect} from '../../../services/paths';
+import urls from '../../../services/constants/urls';
+import paths, {redirect} from '../../../services/constants/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
-import roles from '../../../services/roles';
+import roles from '../../../services/constants/roles';
 
 class LoginForm extends Component {
     constructor(props){

@@ -3,10 +3,9 @@ import Link from 'next/link';
 import {withRouter} from 'next/router';
 import {MobileMenuIcon} from "../modules/icons";
 import $ from 'jquery';
-import paths, {redirect} from "../../services/paths";
+import {paths, urls, roles} from '../../services/constants';
 import {connect} from 'react-redux';
 import axios from 'axios';
-import urls from '../../services/urls';
 import {hideOnMobile} from "../services/css";
 import {classNames, spreadClassName} from "../services/className";
 
@@ -104,7 +103,7 @@ class MainMenu extends Component {
         );
     };
 
-    renderAdminMenu = () =>{
+    renderSupplierMenu = () => {
         const {user} = this.props;
         const {logo} = MainMenu.items;
 
@@ -122,23 +121,62 @@ class MainMenu extends Component {
                             className="ui bg-color-uiBlue color-white button"
                             onClick={() =>{
                                 axios.delete(urls.sessions)
-                                     .then(() =>{
-                                         redirect(paths.pages.login);
-                                     });
-                            }}>Logout
-                        </button>
+                                    .then(() =>{
+                                        paths.redirect(paths.pages.login);
+                                    });
+                            }}>Logout</button>
                     </div>
                 </nav>
             </Fragment>
         );
     };
 
-    renderMenu = (route) => {
+    renderAdminMenu = () =>{
+        const {user} = this.props;
+        const {logo} = MainMenu.items;
+
+        return (
+            <Fragment>
+                <Link href={logo.href}>
+                    <a><img src={logo.src}/></a>
+                </Link>
+                <nav>
+                    <div className={hideOnMobile('item')}>
+                        <span>Welcome back <strong>{user.username}</strong></span>
+                    </div>
+                    <Link href={paths.pages.admin}>
+                        <a className={"item" + this.getActiveClass(paths.pages.admin)}>
+                            Admin
+                        </a>
+                    </Link>
+                    <Link href={paths.pages.supplier}>
+                        <a className={"item" + this.getActiveClass(paths.pages.supplier)}>
+                            Supplier
+                        </a>
+                    </Link>
+                    <div className="item">
+                        <button
+                            className="ui bg-color-uiBlue color-white button"
+                            onClick={() =>{
+                                axios.delete(urls.sessions)
+                                     .then(() =>{
+                                         paths.redirect(paths.pages.login);
+                                     });
+                            }}>Logout</button>
+                    </div>
+                </nav>
+            </Fragment>
+        );
+    };
+
+    renderMenu = (route, user) => {
         switch(route){
         case paths.pages.admin:
             return this.renderAdminMenu();
         case paths.pages.supplier:
-            return this.renderAdminMenu();
+            return (user.role === roles.admin)
+                ? this.renderAdminMenu()
+                : this.renderSupplierMenu();
         default:
             return this.renderMainMenu();
         }
@@ -162,7 +200,7 @@ class MainMenu extends Component {
 
         return (
             <nav id="main-menu" {...spreadClassName(mainMenuClass)} {...props}>
-                {this.renderMenu(router.route)}
+                {this.renderMenu(router.route, user)}
                 <div id="main-menu-toggler">
                     <MobileMenuIcon/>
                 </div>

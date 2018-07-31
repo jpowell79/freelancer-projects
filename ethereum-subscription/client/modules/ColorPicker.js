@@ -40,7 +40,8 @@ class ColorPicker extends Component {
                         <SketchPicker
                             style={{position: "absolute"}}
                             color={this.state.color}
-                            onChange={(color) => {
+                            disableAlpha={true}
+                            onChangeComplete={(color) => {
                                 this.setState({color: color.hex});
                                 this.props.onChange(color.hex);
                             }}

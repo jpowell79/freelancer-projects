@@ -1,5 +1,5 @@
 const objects = require('../../services/objects');
-const roles = require('../../services/roles');
+const roles = require('../../services/constants/roles');
 const passwordHash = require('password-hash');
 
 module.exports = (sequelize, DataTypes) => (

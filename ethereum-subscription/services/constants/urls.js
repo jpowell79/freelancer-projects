@@ -2,10 +2,12 @@ const API = '/api';
 const USERS = `${API}/users`;
 const SETTINGS = `${API}/settings`;
 const SESSIONS = `${API}/sessions`;
+const UPLOAD = `${API}/upload`;
 
 module.exports = {
     base: API,
     users: USERS,
     settings: SETTINGS,
-    sessions: SESSIONS
+    sessions: SESSIONS,
+    upload: UPLOAD
 };

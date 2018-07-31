@@ -1,5 +1,5 @@
 import axios from 'axios';
-import urls from '../../services/urls';
+import urls from '../../services/constants/urls';
 import {
     loadSettings,
     updateMetamaskAccount,
@@ -7,6 +7,7 @@ import {
     updateUser
 } from "../redux/actions";
 import {isServer} from '../../services/utils';
+import parser from './parser';
 
 class Dispatcher {
     constructor(dispatch){
@@ -25,7 +26,7 @@ class Dispatcher {
                 settings[setting.name] = setting;
             });
 
-            this.dispatch(loadSettings(settings));
+            this.dispatch(loadSettings(parser.parseSettings(settings)));
         };
 
         if(isServer()){

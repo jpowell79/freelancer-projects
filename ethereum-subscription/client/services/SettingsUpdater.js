@@ -1,5 +1,5 @@
 import axios from "axios/index";
-import urls from "../../services/urls";
+import urls from "../../services/constants/urls";
 
 class SettingsUpdater {
     constructor(settings){
@@ -12,11 +12,15 @@ class SettingsUpdater {
         }));
     };
 
-    updateHomepageBannerImage = async (imageName) => {
-        return this.updateSetting({
-            name: this.settings.homepageBanner.name,
-            value: imageName
-        });
+    updateHomepageBannerImage = async (file) => {
+        const formData = new FormData();
+        formData.append('file', file, file.name);
+
+        return axios.post(urls.upload, formData)
+            .then(() => this.updateSetting({
+                name: this.settings.homepageBanner.name,
+                value: file.name
+            }));
     };
 
     updateHomepageBannerOverlayColor = async (color) => {
@@ -24,7 +28,21 @@ class SettingsUpdater {
             name: this.settings.homepageBannerOverlayColor.name,
             value: color
         });
-    }
+    };
+
+    updateHomepageBannerText = async (text) => {
+        return this.updateSetting({
+            name: this.settings.homepageBannerText.name,
+            value: text
+        });
+    };
+
+    updateHomepageBannerTitle = async (title) => {
+        return this.updateSetting({
+            name: this.settings.homepageBannerTitle.name,
+            value: title
+        });
+    };
 }
 
 export default SettingsUpdater;

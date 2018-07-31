@@ -1,5 +1,6 @@
-const urls = require('../../services/urls');
+const urls = require('../../services/constants/urls');
 const strings = require('../../services/strings');
+const {isLoggedInAdmin} = require('../../services/session');
 
 const handleGet = (res, sequelize, name) => {
     if(!strings.isDefined(name)){
@@ -24,13 +25,19 @@ const handleGet = (res, sequelize, name) => {
         });
 };
 
-const handlePost = (res, sequelize, {name, value, update}) => {
+const handlePost = async (req, res, sequelize, {name, value, update}) => {
     if(!strings.isDefined(name)){
         res.sendStatus(400);
         return;
     }
 
-    //TODO: Check authentication depending on setting edited
+    //TODO: Give suppliers access to certain settings
+    const loggedInAdmin = await isLoggedInAdmin(req);
+
+    if(!loggedInAdmin){
+        res.sendStatus(401);
+        return;
+    }
 
     if(update){
         return sequelize.models.settings
@@ -57,13 +64,13 @@ const handlePost = (res, sequelize, {name, value, update}) => {
 };
 
 module.exports = (server, sequelize) => {
-    server.use(`${urls.settings}/:name?`, (req, res) => {
+    server.use(`${urls.settings}/:name?`, server.initSession, (req, res) => {
         switch (req.method){
         case "GET":
             handleGet(res, sequelize, req.params.name);
             break;
         case "POST":
-            handlePost(res, sequelize, req.body);
+            handlePost(req, res, sequelize, req.body);
             break;
         default:
             res.sendStatus(405);

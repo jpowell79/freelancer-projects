@@ -1,7 +1,10 @@
 const STATIC = `static`;
 const IMAGES = `${STATIC}/images`;
-const isServer = require('./utils').isServer;
-const session = require('./session');
+const AUDIO = `${STATIC}/audio`;
+const VIDEO = `${STATIC}/video`;
+const FILES = `${STATIC}/files`;
+const isServer = require('../utils').isServer;
+const session = require('../session');
 
 module.exports = {
     pages: {
@@ -14,7 +17,10 @@ module.exports = {
         supplier: '/Supplier'
     },
     static: {
-        images: IMAGES
+        images: IMAGES,
+        audio: AUDIO,
+        video: VIDEO,
+        files: FILES
     },
     redirect: (url, res = null) => {
         if(isServer()){
