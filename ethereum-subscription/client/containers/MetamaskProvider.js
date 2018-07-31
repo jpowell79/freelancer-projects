@@ -11,7 +11,7 @@ import HideFragment from './HideFragment';
  * Will rerender whenever metamaskAccount changes occurs in metamask and
  * share the metamaskAccount information with all children.
  */
-class MetamaskContainer extends Component {
+class MetamaskProvider extends Component {
     static mapStateToProps = ({metamaskAccount}) => ({metamaskAccount});
 
     static propTypes = {
@@ -89,4 +89,4 @@ class MetamaskContainer extends Component {
     }
 }
 
-export default connect(MetamaskContainer.mapStateToProps)(MetamaskContainer);
+export default connect(MetamaskProvider.mapStateToProps)(MetamaskProvider);

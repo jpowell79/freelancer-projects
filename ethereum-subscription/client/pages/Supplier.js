@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
-import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
+import withAuthenticateSupplier from '../config/withAuthenticateSupplier';
 
-class Admin extends Component {
+class Supplier extends Component {
     render () {
         return (
             <Page>
@@ -15,4 +15,4 @@ class Admin extends Component {
     }
 }
 
-export default withAuthenticateAdmin(Admin);
+export default withAuthenticateSupplier(Supplier);

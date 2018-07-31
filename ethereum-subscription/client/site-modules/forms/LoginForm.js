@@ -6,6 +6,7 @@ import urls from '../../../services/urls';
 import paths, {redirect} from '../../../services/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
+import roles from '../../../services/roles';
 
 class LoginForm extends Component {
     constructor(props){
@@ -54,7 +55,11 @@ class LoginForm extends Component {
                 if(typeof res.data === 'string'){
                     this.addFieldErrors(res.data.toString().split("Error: ")[1], true);
                 } else {
-                    redirect(paths.pages.admin);
+                    if(res.data.role === roles.admin){
+                        redirect(paths.pages.admin);
+                    } else {
+                        redirect(paths.pages.supplier);
+                    }
                 }
             })
             .catch(err => {

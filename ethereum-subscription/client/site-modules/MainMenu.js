@@ -53,7 +53,7 @@ class MainMenu extends Component {
         const $mobileMenuIcon = $('.mobile-menu-icon');
         const $mainMenu = $('#main-menu');
 
-        this.$mainMenuToggler.on('click', () => {
+        this.$mainMenuToggler.on('click', () =>{
             $mainMenu.toggleClass('reveal-items');
             $mainMenu.addClass('animate');
             this.$mainMenuToggler.toggleClass('active');
@@ -70,7 +70,7 @@ class MainMenu extends Component {
         return (this.props.router.route === page) ? " active" : "";
     }
 
-    renderMainMenu = () => {
+    renderMainMenu = () =>{
         const {
             logo,
             links
@@ -83,7 +83,7 @@ class MainMenu extends Component {
                 </Link>
                 <nav>
                     {
-                        links.map((link, i) => {
+                        links.map((link, i) =>{
                             if(link.href === ''){
                                 return (
                                     <a key={i}>{link.name}</a>
@@ -104,7 +104,7 @@ class MainMenu extends Component {
         );
     };
 
-    renderAdminMenu = () => {
+    renderAdminMenu = () =>{
         const {user} = this.props;
         const {logo} = MainMenu.items;
 
@@ -120,16 +120,28 @@ class MainMenu extends Component {
                     <div className="item">
                         <button
                             className="ui bg-color-uiBlue color-white button"
-                            onClick={() => {
+                            onClick={() =>{
                                 axios.delete(urls.sessions)
-                                    .then(() => {
-                                        redirect(paths.pages.login)
-                                    });
-                            }}>Logout</button>
+                                     .then(() =>{
+                                         redirect(paths.pages.login);
+                                     });
+                            }}>Logout
+                        </button>
                     </div>
                 </nav>
             </Fragment>
         );
+    };
+
+    renderMenu = (route) => {
+        switch(route){
+        case paths.pages.admin:
+            return this.renderAdminMenu();
+        case paths.pages.supplier:
+            return this.renderAdminMenu();
+        default:
+            return this.renderMainMenu();
+        }
     };
 
     render(){
@@ -143,14 +155,14 @@ class MainMenu extends Component {
 
         //TODO: Render Menu Based on Location
         const mainMenuClass = classNames({
-            'no-mobile': router.route === paths.pages.admin
+            'no-mobile': (
+                router.route === paths.pages.admin || router.route === paths.pages.supplier
+            )
         }, className);
 
         return (
             <nav id="main-menu" {...spreadClassName(mainMenuClass)} {...props}>
-                {(router.route === paths.pages.admin)
-                    ? this.renderAdminMenu()
-                    : this.renderMainMenu()}
+                {this.renderMenu(router.route)}
                 <div id="main-menu-toggler">
                     <MobileMenuIcon/>
                 </div>

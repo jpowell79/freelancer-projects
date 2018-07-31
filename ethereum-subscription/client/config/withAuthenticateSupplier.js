@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import {redirectIfNotLoggedIn} from "../../services/paths";
+import {redirectIfNotLoggedInSupplier} from "../../services/paths";
 import paths from "../../services/paths";
 
 export default (PageComponent) => {
     return class Authenticate extends Component {
         static async getInitialProps (appContext) {
             const {req, res} = appContext;
-            await redirectIfNotLoggedIn(paths.pages.login, req, res);
+            await redirectIfNotLoggedInSupplier(paths.pages.login, req, res);
 
             let pageProps = {};
 

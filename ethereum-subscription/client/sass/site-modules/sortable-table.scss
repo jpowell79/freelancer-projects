@@ -1,0 +1,62 @@
+/*----------------------------------------
+ * Sortable Table
+ *----------------------------------------*/
+.ui.sortable-table {
+    text-align: center;
+
+    .ui.button {
+        padding: 10px;
+        font-size: .9em;
+
+        a:hover {
+            color: inherit;
+        }
+    }
+
+    &.white {
+        th {
+            background-color: $white!important;
+        }
+    }
+
+    th {
+        &.sortable:after {
+            @include uiTableIcon($sortableIcon);
+            color: darken($uiThColor, 25%);
+        }
+
+        &.no-sort {
+            cursor: default!important;
+
+            &:hover {
+                background-color: $uiThColor!important;
+            }
+        }
+    }
+
+    td {
+        font-size: 1.15em!important;
+    }
+
+    img {
+        vertical-align: middle;
+    }
+
+    .loader,
+    .loader-small {
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: $mediaXSmall){
+    .ui.sortable-table {
+        .ui.button {
+            padding: 6px;
+            font-size: .8em;
+        }
+
+        td {
+            font-size: 1em !important;
+        }
+    }
+}

@@ -34,5 +34,17 @@ module.exports.isLoggedIn = async (req) => {
 
 module.exports.isLoggedInAdmin = (req) => {
     return module.exports.isLoggedIn(req)
-        ? req.session.user.role === roles.admin : false;
+        .then(loggedIn => {
+            if(loggedIn){
+                if(isClient()){
+                    return axios.get(urls.sessions).then(
+                        response => response.data.role === roles.admin
+                    );
+                } else {
+                    return req.session.user.role === roles.admin;
+                }
+            }
+
+            return false;
+        });
 };

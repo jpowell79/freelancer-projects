@@ -1,7 +1,7 @@
 const STATIC = `static`;
 const IMAGES = `${STATIC}/images`;
 const isServer = require('./utils').isServer;
-const isLoggedIn = require('./session').isLoggedIn;
+const session = require('./session');
 
 module.exports = {
     pages: {
@@ -10,7 +10,8 @@ module.exports = {
         register: '/Register',
         howItWorks: '/HowItWorks',
         about: '/About',
-        admin: '/Admin'
+        admin: '/Admin',
+        supplier: '/Supplier'
     },
     static: {
         images: IMAGES
@@ -24,9 +25,9 @@ module.exports = {
             document.location.pathname = url;
         }
     },
-    redirectIfNotLoggedIn: async (url, req = null, res = null) => {
+    redirectIfNotLoggedInSupplier: async (url, req = null, res = null) => {
         return (
-            isLoggedIn(req)
+            session.isLoggedIn(req)
                 .then(loggedIn => {
                     if(!loggedIn){
                         module.exports.redirect(url, res);
@@ -36,5 +37,18 @@ module.exports = {
                     console.error(err);
                 })
         );
-    }
+    },
+    redirectIfNotLoggedInAdmin: async (url, req = null, res = null) => {
+        return (
+            session.isLoggedInAdmin(req)
+                .then(loggedInAdmin => {
+                    if(!loggedInAdmin){
+                        module.exports.redirect(url, res);
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                })
+        );
+    },
 };

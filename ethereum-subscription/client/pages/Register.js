@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import RegisterForm from '../site-modules/forms/RegisterForm';
-import MetamaskContainer from '../containers/MetamaskContainer';
+import MetamaskContainer from '../containers/MetamaskProvider';
 import {Segment} from 'semantic-ui-react';
 import {isClient} from '../../services/utils';
 
