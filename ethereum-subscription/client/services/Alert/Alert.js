@@ -18,7 +18,7 @@ class Alert {
         TITLE: '',
         CONFIRM: 'Ok',
         MESSAGE: '',
-        CANCEL: 'Avbryt'
+        CANCEL: 'Cancel'
     };
 
     static CLASS_NAMES = {

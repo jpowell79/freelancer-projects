@@ -5,6 +5,7 @@ import {LoaderTiny} from "../modules/icons";
 import {Message} from 'semantic-ui-react';
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from '../../services/objects';
+import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
 
 export default (PageComponent, title) => {
     class SettingsEditor extends Component {
@@ -33,6 +34,9 @@ export default (PageComponent, title) => {
                 .map(settingsKey =>
                     this.settingsUpdater[settingsKey](componentState[settingsKey].value)
                 ))
+                .then(() =>
+                    loadServerDataIntoStoreFromClient(this.props.dispatch, {settings: true})
+                )
                 .then(() => {
                     this.setState({
                         hasSaved: true,
@@ -58,9 +62,6 @@ export default (PageComponent, title) => {
                         <Message
                             success
                             header='Your changes have been saved successfully!'
-                            list={[
-                                'Refresh the browser to view the changes.'
-                            ]}
                         />
                     )}
                     <h2>{title}</h2>

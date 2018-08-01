@@ -19,9 +19,32 @@ const checkBadRequest = (response) => {
     }
 };
 
+const checkUnauthorized = (response) => {
+    console.log(response.text);
+    expect(response.status).to.be.equal(401);
+};
+
 const checkNotExists = (response) => {
     console.log(response.text);
     expect(response.status).to.be.equal(404);
+};
+
+const loginAsAdmin = () => {
+    return request(global.app).post(urls.sessions).send({
+        username: mocks.admin.username,
+        password: mocks.admin.password
+    });
+};
+
+const loginAsSupplier = () => {
+    return request(global.app).post(urls.sessions).send({
+        username: mocks.user.username,
+        password: mocks.user.password
+    });
+};
+
+const logout = () => {
+    return request(global.app).del(urls.sessions);
 };
 
 describe('Rest API', () => {
@@ -95,60 +118,91 @@ describe('Rest API', () => {
                 .then(checkBadRequest);
         });
 
-        it('Should not allow creating setting with existing name', () => {
+        it('Should be unauthorized to create setting when not logged in.', () => {
             return setupOrGetMockApp()
                 .then(app => request(app).post(urls.settings).send({
                     name: mocks.setting.name,
                     value: true
                 }))
-                .then(checkBadRequest);
+                .then(checkUnauthorized);
+        });
+
+        it('Should be unauthorized to create setting as supplier.', () => {
+            return setupOrGetMockApp()
+                .then(loginAsSupplier)
+                .then(() => request(global.app).post(urls.settings).send({
+                    name: mocks.setting.name,
+                    value: true
+                }))
+                .then(checkUnauthorized)
+                .then(logout);
+        });
+
+        /*
+        it('Should not be able to create setting with existing name.', () => {
+            return setupOrGetMockApp()
+                .then(loginAsAdmin)
+                .then(() => request(global.app).post(urls.settings).send({
+                    name: mocks.setting.name,
+                    value: true
+                }))
+                .then(checkBadRequest)
+                .then(logout);
         });
 
         it('Should create setting with unique name.', () => {
             return setupOrGetMockApp()
-                .then(app => request(app).post(urls.settings).send({
+                .then(loginAsAdmin)
+                .then(() => request(global.app).post(urls.settings).send({
                     name: 'UniqueSetting',
                     value: true
                 }))
-                .then(checkSuccess);
+                .then(checkSuccess)
+                .then(logout);
         });
 
         it('Should not update unexisting setting', () => {
             return setupOrGetMockApp()
-                .then(app => request(app).post(urls.settings).send({
+                .then(loginAsAdmin)
+                .then(() => request(global.app).post(urls.settings).send({
                     name: 'AnotherUnexistingSetting',
                     value: false,
                     update: true
                 }))
-                .then(checkNotExists);
+                .then(checkNotExists)
+                .then(logout);
         });
 
         it('Should update existing setting with update true', () => {
             return setupOrGetMockApp()
-                .then(app => request(app).post(urls.settings).send({
+                .then(loginAsAdmin)
+                .then(() => request(global.app).post(urls.settings).send({
                     name: 'AnotherSetting',
                     value: false
                 }))
-                .then(() => request(app).get(`${urls.settings}/AnotherSetting`))
+                .then(() => request(global.app).get(`${urls.settings}/AnotherSetting`))
                 .then(response => {
                     expect(response.body.value).to.be.equal('0');
 
-                    return request(app).post(urls.settings).send({
+                    return request(global.app).post(urls.settings).send({
                         name: 'AnotherSetting',
                         value: true,
                         update: true
                     });
                 })
-                .then(() => request(app).get(`${urls.settings}/AnotherSetting`))
+                .then(() => request(global.app).get(`${urls.settings}/AnotherSetting`))
                 .then(response => {
                     expect(response.body.value).to.be.equal('1');
-                });
+                })
+                .then(logout);
         });
+        */
     });
 
     describe(`${urls.users}`, () => {
         const mockUser = Object.assign({}, mocks.user, {
-            username: 'VeryUniqueUsername'
+            username: 'VeryUniqueUsername',
+            password: 'Foo_bar_foo'
         });
 
         const testBadRequestPostUser = (user) => {

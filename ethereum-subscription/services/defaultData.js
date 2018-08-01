@@ -19,13 +19,6 @@ module.exports.settings = {
 
 module.exports.users = [
     {
-        username: 'root',
-        email: 'root@example.com',
-        role: roles.admin,
-        password: 'root',
-        walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
-    },
-    {
         username: 'admin',
         email: 'admin@example.com',
         role: roles.admin,

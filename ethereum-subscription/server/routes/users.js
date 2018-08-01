@@ -3,7 +3,7 @@ const urls = require('../../services/constants/urls');
 const validation = require('../../services/validation');
 const roles = require('../../services/constants/roles');
 const serverSettings = require('../serverSettings');
-const {saveUser, saveTempUser} = require('../../services/session');
+const {saveUser, saveTempUser, isLoggedInAdmin} = require('../../services/session');
 const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/constants/paths');
@@ -130,6 +130,28 @@ const registerTempUser = (req, res, sequelize, {
         });
 };
 
+const filterUsers = (userEntries) => {
+    return userEntries
+        .map(entry => entry.dataValues)
+        .map(user => ({
+            username: user.username,
+            role: user.role,
+            rating: user.rating
+        }));
+};
+
+const filterUsersAsAdmin = (userEntries) => {
+    return userEntries
+        .map(entry => entry.dataValues)
+        .map(user => ({
+            username: user.username,
+            walletAddress: user.walletAddress,
+            email: user.email,
+            role: user.role,
+            rating: user.rating
+        }));
+};
+
 const handlePost = (req, res, sequelize) => {
     if(!req.body){
         res.sendStatus(400);
@@ -139,13 +161,54 @@ const handlePost = (req, res, sequelize) => {
     registerTempUser(req, res, sequelize, req.body);
 };
 
-const handleGet = (req, res, sequelize) => {
+const handleGet = async (req, res, sequelize) => {
     if(req.params.uuid && isValidEmailConfirmation(req, req.params.uuid)) {
         createUser(req, res, sequelize);
-    } else {
-        //TODO: Implement way of getting users (no sensitive data shared).
-        res.sendStatus(200);
+        return;
     }
+
+    //TODO: Implement way of getting single users (no sensitive data shared).
+
+    const loggedInAdmin = await isLoggedInAdmin(req);
+
+    return sequelize.models.users
+        .findAll()
+        .then(userEntries => {
+            if(loggedInAdmin){
+                res.status(200).send(filterUsersAsAdmin(userEntries));
+            } else {
+                res.status(200).send(filterUsers(userEntries));
+            }
+        })
+        .catch(err => {
+            res.status(403).send(err.toString());
+        });
+};
+
+const handleDelete = async (req, res, sequelize) => {
+    const loggedInAdmin = await isLoggedInAdmin(req);
+
+    if(!loggedInAdmin){
+        res.sendStatus(401);
+        return;
+    }
+
+    const username = req.query.username;
+
+    if(!username){
+        res.sendStatus(400);
+        return;
+    }
+
+    return sequelize.models.users
+        .destroy({where: {username}})
+        .then(() => {
+            res.sendStatus(200);
+        })
+        .catch(err => {
+            if(global.isDevelopment()) console.error(err);
+            res.sendStatus(404);
+        })
 };
 
 module.exports = (server, sequelize) => {
@@ -156,6 +219,9 @@ module.exports = (server, sequelize) => {
             break;
         case "POST":
             handlePost(req, res, sequelize);
+            break;
+        case "DELETE":
+            handleDelete(req, res, sequelize);
             break;
         default:
             res.sendStatus(405);

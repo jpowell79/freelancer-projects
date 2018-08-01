@@ -5,7 +5,9 @@ import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";
-import EditLogo from "../site-modules/admin-sections/EditLogo";
+import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
+import MassEmail from "../site-modules/admin-sections/MassEmail";
+import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
 
 class Admin extends Component {
     static sections = {
@@ -16,14 +18,14 @@ class Admin extends Component {
         addSubCategory: 'Add new Sub Category',
         homepageBanner: 'Homepage Banner',
         smartContract: 'Smart Contract Data',
-        editLogo: 'Edit Logo'
+        siteIdentity: 'Site Identity'
     };
 
     constructor(props){
         super(props);
 
         this.state = {
-            active: 7
+            active: 0
         }
     }
 
@@ -36,16 +38,16 @@ class Admin extends Component {
             addSubCategory,
             homepageBanner,
             smartContract,
-            editLogo
+            siteIdentity
         } = Admin.sections;
 
         switch(objects.values(Admin.sections)[active]){
         case addContract:
             return <p>Add Contract</p>;
         case suspendSuppliers:
-            return <p>Suspend</p>;
+            return <SuspendSuppliers/>;
         case massEmail:
-            return <p>Mass email</p>;
+            return <MassEmail/>;
         case backupDatabase:
             return <p>Backup</p>;
         case addSubCategory:
@@ -54,8 +56,8 @@ class Admin extends Component {
             return <HomepageBanner/>;
         case smartContract:
             return <p>Smart Contract</p>;
-        case editLogo:
-            return <EditLogo/>;
+        case siteIdentity:
+            return <SiteIdentity/>;
         default:
             return null;
         }

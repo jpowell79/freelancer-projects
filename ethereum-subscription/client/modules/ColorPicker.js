@@ -49,6 +49,20 @@ class ColorPicker extends Component {
                         />
                     )}
                 </div>
+                {(this.state.showPicker) && (
+                    <div
+                        style={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0
+                        }}
+                        onClick={() => {
+                            this.setState({showPicker: false});
+                        }}
+                    />
+                )}
             </Fragment>
         );
     }
