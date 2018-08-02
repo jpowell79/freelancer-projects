@@ -1,59 +1,42 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
-import objects from '../../../services/objects';
 import axios from 'axios';
 import urls from '../../../services/constants/urls';
 import paths, {redirect} from '../../../services/constants/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
 import roles from '../../../services/constants/roles';
+import withMessage from '../../config/withMessage';
 
 class LoginForm extends Component {
-    constructor(props){
-        super(props);
-
-        this.state = {
-            fields: {
-                usernameField: {
-                    type: 'username',
-                    label: 'Username:',
-                    error: false
-                },
-                passwordField: {
-                    type: 'password',
-                    label: 'Password:',
-                    error: false
-                }
-            },
-            isLoading: false,
-        };
-    }
-
-    addFieldErrors = (usernameError, passwordError = '') => {
-        this.setState(prevState => ({
-            fields: {
-                usernameField: {
-                    ...prevState.fields.usernameField,
-                    error: usernameError
-                },
-                passwordField: {
-                    ...prevState.fields.passwordField,
-                    error: passwordError
-                }
-            },
-            isLoading: false
-        }));
-    };
+    static fields = [
+        {
+            type: 'username',
+            label: 'Username:'
+        },
+        {
+            type: 'password',
+            label: 'Password:'
+        }
+    ];
 
     login = (username, password) => {
         return axios.post(urls.sessions, {username, password});
     };
 
     handleSubmit = ({username, password}) => {
+        this.props.setMessageState({
+            errors: [],
+            isLoading: true
+        });
+
         this.login(username, password)
             .then(res => {
                 if(typeof res.data === 'string'){
-                    this.addFieldErrors(res.data.toString().split("Error: ")[1], true);
+                    this.props.setMessageState({
+                        errors: [res.data.toString().split("Error: ")[1]],
+                        isLoading: false
+                    });
                 } else {
                     if(res.data.role === roles.admin){
                         redirect(paths.pages.admin);
@@ -62,22 +45,28 @@ class LoginForm extends Component {
                     }
                 }
             })
-            .catch(err => {
-                console.error(err);
-                this.addFieldErrors('Something went wrong when processing the request.', true);
+            .catch(() => {
+                this.props.setMessageState({
+                    errors: ['Something went wrong when processing the request.'],
+                    isLoading: false
+                });
             });
     };
 
     render(){
         return (
-            <FormList
-                onSubmit={this.handleSubmit}
-                disabled={this.state.isLoading}
-                fields={objects.values(this.state.fields)}
-                submitButtonHtml={this.state.isLoading ? <LoaderTiny/> : "Login"}
-            />
+            <Fragment>
+                {this.props.renderMessages()}
+                <FormList
+                    validate={false}
+                    onSubmit={this.handleSubmit}
+                    disabled={this.props.messageState.isLoading}
+                    fields={LoginForm.fields}
+                    submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Login"}
+                />
+            </Fragment>
         );
     }
 }
 
-export default connect()(LoginForm);
+export default withMessage(connect()(LoginForm));

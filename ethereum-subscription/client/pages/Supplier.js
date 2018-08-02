@@ -4,6 +4,7 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateSupplier from '../config/withAuthenticateSupplier';
 import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
+import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 
 class Supplier extends Component {
     static sections = {
@@ -33,7 +34,7 @@ class Supplier extends Component {
         case requestContract:
             return <p>Request</p>;
         case manageProfile:
-            return <p>Manage</p>;
+            return <ManageProfile/>;
         default:
             return null;
         }
@@ -46,8 +47,8 @@ class Supplier extends Component {
 
         return (
             <Page>
-                <FullWidthSegment className="gray" skinny>
-                    <Menu compact>
+                <FullWidthSegment className="gray" skinny wrapper={1}>
+                    <Menu fluid stackable>
                         {objects.values(Supplier.sections)
                             .map((section, i) => {
                                 return (

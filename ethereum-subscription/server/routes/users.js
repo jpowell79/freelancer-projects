@@ -3,7 +3,7 @@ const urls = require('../../services/constants/urls');
 const validation = require('../../services/validation');
 const roles = require('../../services/constants/roles');
 const serverSettings = require('../serverSettings');
-const {saveUser, saveTempUser, isLoggedInAdmin} = require('../../services/session');
+const {saveUser, saveTempUser, isLoggedInAdmin, isLoggedIn} = require('../../services/session');
 const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/constants/paths');
@@ -152,13 +152,43 @@ const filterUsersAsAdmin = (userEntries) => {
         }));
 };
 
+const updateUser = async (req, res, sequelize, {username, originalUsername, email}) => {
+    const loggedIn = await isLoggedIn(req);
+
+    if(!loggedIn){
+        res.sendStatus(401);
+        return;
+    }
+
+    if(req.session.user.username !== originalUsername){
+        res.sendStatus(401);
+        return;
+    }
+
+    return sequelize.models.users
+        .update({username, email}, {where: {username: originalUsername}})
+        .then(() => sequelize.models.users.findOne({where: {username}}))
+        .then(userRes => {
+            saveUser(req, userRes.dataValues);
+            res.send(userRes.dataValues);
+        })
+        .catch(err => {
+            if(global.isDevelopment()) console.error(err);
+            res.status(400).send(err.toString());
+        });
+};
+
 const handlePost = (req, res, sequelize) => {
     if(!req.body){
         res.sendStatus(400);
         return;
     }
 
-    registerTempUser(req, res, sequelize, req.body);
+    if(req.body.update){
+        updateUser(req, res, sequelize, req.body);
+    } else {
+        registerTempUser(req, res, sequelize, req.body);
+    }
 };
 
 const handleGet = async (req, res, sequelize) => {

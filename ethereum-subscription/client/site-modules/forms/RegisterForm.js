@@ -1,72 +1,32 @@
 import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
-import validation from '../../../services/validation';
-import strings from '../../../services/strings';
-import objects from '../../../services/objects';
 import {recaptchaSiteKey} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
 import urls from '../../../services/constants/urls';
 import roles from '../../../services/constants/roles';
 import {LoaderTiny} from "../../modules/icons";
-import {Message} from 'semantic-ui-react';
+import withMessage from '../../config/withMessage';
 
 class RegisterForm extends Component {
-    constructor(props){
-        super(props);
-
-        this.initialFields = {
-            usernameField: {
-                type: 'username',
-                label: 'Username:',
-                error: ''
-            },
-            emailField: {
-                type: 'email',
-                label: 'Email:',
-                error: '',
-            },
-            passwordField: {
-                type: 'password',
-                label: 'Password:',
-                error: ''
-            },
-            grecaptchaField: {
-                type: 'hidden',
-                error: ''
-            }
-        };
-
-        this.state = {
-            fields: this.initialFields,
-            isLoading: false,
-            completed: false
-        };
-    }
-
-    addFieldErrors = (usernameError, passwordError = '', emailError = '', grecaptchaError = '') => {
-        this.setState(prevState => ({
-            fields: {
-                usernameField: {
-                    ...prevState.fields.usernameField,
-                    error: usernameError
-                },
-                passwordField: {
-                    ...prevState.fields.passwordField,
-                    error: passwordError
-                },
-                emailField: {
-                    ...prevState.fields.emailField,
-                    error: emailError
-                },
-                grecaptchaField: {
-                    ...prevState.fields.grecaptchaField,
-                    error: grecaptchaError
-                }
-            },
-            isLoading: false
-        }));
-    };
+    static fields = [
+        {
+            type: 'username',
+            label: 'Username:'
+        },
+        {
+            type: 'email',
+            label: 'Email:'
+        },
+        {
+            type: 'password',
+            label: 'Password:'
+        },
+        {
+            type: 'grecaptcha',
+            hidden: true
+        }
+    ];
 
     registerUser = ({username, password, email}) => {
         return axios.post(urls.users, {
@@ -80,57 +40,59 @@ class RegisterForm extends Component {
     };
 
     handleSubmit = ({username, password, email}) => {
-        const {isDefined} = strings;
-        const usernameError = validation.getUsernameError(username);
-        const passwordError = validation.getPasswordError(password);
-        const emailError = validation.getEmailError(email);
-        const grecaptchaError = validation.getGrecaptchaError();
+        this.props.setMessageState({
+            isLoading: true,
+            showSuccess: false,
+            errors: []
+        });
 
-        if (!isDefined(usernameError) && !isDefined(passwordError) &&
-                !isDefined(emailError) && !isDefined(grecaptchaError)) {
-            this.setState({isLoading: true});
-
-            this.registerUser({username, password, email})
-                .then(res => {
-                    if(typeof res.data === 'string' && res.data.startsWith("Error: ")){
-                        grecaptcha.reset();
-                        this.addFieldErrors(res.data.toString().split("Error: ")[1]);
-                    } else {
-                        this.setState({
-                            fields: this.initialFields,
-                            isLoading: false,
-                            completed: true
-                        });
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
+        this.registerUser({username, password, email})
+            .then(res => {
+                if(typeof res.data === 'string' && res.data.startsWith("Error: ")){
                     grecaptcha.reset();
-                    this.addFieldErrors('Something went wrong when processing the request.', true);
+                    this.props.setMessageState({
+                        errors: [res.data.toString().split("Error: ")[1]],
+                        isLoading: false
+                    });
+                } else {
+                    this.props.setMessageState({
+                        isLoading: false,
+                        showSuccess: true,
+                        successTitle: 'Your registration was completed successfully.',
+                        success: [
+                            'Check your email to activate the account. ' +
+                            'It will expire after 1 hour.'
+                        ]
+                    });
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                grecaptcha.reset();
+                this.props.setMessageState({
+                    errors: ['Something went wrong when processing the request.'],
+                    isLoading: false,
                 });
-        } else {
-            this.addFieldErrors(usernameError, passwordError, emailError, grecaptchaError);
-        }
+            });
     };
 
     render(){
+        const {messageState} = this.props;
+
         return (
             <Fragment>
-                {(this.state.completed) && (
-                    <Message
-                        success
-                        header='Your registration was completed successfully.'
-                        list={[
-                            'Check your email to activate the account. ' +
-                            'The account will expire after 1 hour.'
-                        ]}
-                    />
-                )}
+                {this.props.renderMessages()}
                 <FormList
                     onSubmit={this.handleSubmit}
-                    disabled={this.state.isLoading || this.state.completed}
-                    fields={objects.values(this.state.fields)}
-                    submitButtonHtml={(this.state.isLoading) ? <LoaderTiny/> : "Register"}
+                    onError={() => {
+                        this.props.setMessageState({
+                            errors: [],
+                            showSuccess: false
+                        });
+                    }}
+                    disabled={messageState.isLoading || messageState.showSuccess}
+                    fields={RegisterForm.fields}
+                    submitButtonHtml={(messageState.isLoading) ? <LoaderTiny/> : "Register"}
                 >
                     <RecaptchaWidget siteKey={recaptchaSiteKey}/>
                 </FormList>
@@ -139,4 +101,4 @@ class RegisterForm extends Component {
     }
 }
 
-export default RegisterForm;
+export default withMessage(RegisterForm);

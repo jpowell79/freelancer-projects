@@ -183,7 +183,6 @@ class MainMenu extends Component {
             ...props
         } = this.props;
 
-        //TODO: Render Menu Based on Location
         const mainMenuClass = classNames({
             'no-mobile': (
                 router.route === paths.pages.admin || router.route === paths.pages.supplier

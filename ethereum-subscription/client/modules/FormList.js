@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import {isDefined} from '../../services/strings';
 import {classNames} from "../services/className";
 import {Message} from 'semantic-ui-react';
+import validation from '../../services/validation';
+import objects from '../../services/objects';
 
 const specialInputTypes = [
     'date', 'datetime-local', 'email', 'hidden', 'month',
@@ -13,12 +15,16 @@ class FormList extends Component {
     static defaultProps = {
         className: "",
         disabled: false,
-        errorTitle: "There was some errors with your submission"
+        errorTitle: "There was some errors with your submission",
+        onError: null,
+        validate: true
     };
 
     static propTypes = {
         onSubmit: PropTypes.func.isRequired,
+        onError: PropTypes.func,
         errorTitle: PropTypes.string,
+        validate: PropTypes.bool,
         submitButtonHtml: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.element
@@ -26,10 +32,11 @@ class FormList extends Component {
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
+            defaultValue: PropTypes.string,
             error: PropTypes.oneOfType([
                 PropTypes.string,
                 PropTypes.bool
-            ]).isRequired,
+            ]),
             label: PropTypes.string
         }))
     };
@@ -38,24 +45,64 @@ class FormList extends Component {
         super(props);
 
         this.state = props.fields
-            .map(field => ({[field.type]: ''}))
-            .reduce((accumulator, currentValue) => {
-                return Object.assign({}, accumulator, currentValue);
-            });
+            .map(field => ({[field.type]: (field.defaultValue) ? field.defaultValue : ''}))
+            .reduce((accumulator, currentValue) =>
+                Object.assign({}, accumulator, currentValue)
+            );
+
+        this.fieldErrors = {};
+
     }
+
+    getFieldError = (fieldKey) => {
+        switch(fieldKey){
+        case 'username':
+            return validation.getUsernameError(this.state[fieldKey]);
+        case 'password':
+            return validation.getPasswordError(this.state[fieldKey]);
+        case 'email':
+            return validation.getEmailError(this.state[fieldKey]);
+        case 'grecaptcha':
+            return validation.getGrecaptchaError();
+        case 'walletAddress':
+            return validation.getWalletAddressError(this.state[fieldKey]);
+        default:
+            return '';
+        }
+    };
 
     handleSubmit = (event) => {
         event.preventDefault();
-        this.props.onSubmit(this.state);
+
+        this.fieldErrors = {};
+        const fieldErrorsArray = Object.keys(this.state)
+            .filter(fieldKey => isDefined(this.getFieldError(fieldKey)))
+            .map(fieldKey => ({[fieldKey]: this.getFieldError(fieldKey)}));
+
+        if(fieldErrorsArray.length === 0 || !this.props.validate){
+            this.props.onSubmit(this.state);
+        } else {
+            this.fieldErrors = fieldErrorsArray.reduce((accumulator, currentValue) =>
+                Object.assign({}, accumulator, currentValue)
+            );
+
+            if(this.props.onError){
+                this.props.onError(this.fieldErrors);
+            } else {
+                this.forceUpdate();
+            }
+        }
     };
 
     renderFields = () => {
         return this.props.fields.map((field, i) => {
-            if(field.type === 'hidden') return null;
+            if(field.hidden) return null;
 
             const fieldClass = classNames({
                 'field': true,
-                'error': typeof error === 'string' ? isDefined(field.error) : field.error
+                'error': ((typeof field.error === 'string')
+                    ? (isDefined(field.error))
+                    : field.error) || isDefined(this.fieldErrors[field.type])
             }, this.props.className);
 
             const specialType = specialInputTypes.filter(type => type === field.type)[0];
@@ -83,10 +130,12 @@ class FormList extends Component {
     };
 
     render(){
-        const errors = this.props.fields
+        let errors = this.props.fields
             .map(field => field.error)
             .filter(error => typeof error === 'string')
             .filter(error => isDefined(error));
+        errors = (objects.isEmpty(this.fieldErrors) || errors.length > 0)
+            ? errors : objects.values(this.fieldErrors);
 
         const children = (this.props.children && this.props.children.length)
             ? (
@@ -103,12 +152,13 @@ class FormList extends Component {
                     <Message
                         error
                         header={this.props.errorTitle}
-                        list={errors.filter(error => typeof error === 'string')}
+                        list={errors}
                     />
                 )}
                 <form className="ui form">
                     {this.renderFields()}
                     {children}
+                    <hr className="ui divider"/>
                     <button
                         disabled={this.props.disabled}
                         ref={button => {this.submitButton = button;}}
