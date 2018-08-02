@@ -9,7 +9,7 @@ CoinMarketCapApi.fiatCurrencies = {
     JPY: "JPY", KRW: "KRW", MXN: "MXN", MYR: "MYR", NOK: "NOK",
     NZD: "NZD", PHP: "PHP", PKR: "PKR", PLN: "PLN", RUB: "RUB",
     SEK: "SEK", SGD: "SGD", THB: "THB", TRY: "TRY", TWD: "TWD",
-    ZAR: "ZAR"
+    ZAR: "ZAR", USD: "USD"
 };
 
 CoinMarketCapApi.cryptoCurrencies = {

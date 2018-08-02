@@ -40,7 +40,6 @@ $menuBackground: $white;
     .item {
         display: flex;
         align-items: center;
-        cursor: pointer;
         font-size: $h4;
         margin-left: $divider2;
         transition: color .3s ease-out;
@@ -48,6 +47,11 @@ $menuBackground: $white;
         &:first-child {
             margin-left: 0;
         }
+    }
+
+    a,
+    .item a {
+        cursor: pointer;
 
         &:hover,
         &:active,

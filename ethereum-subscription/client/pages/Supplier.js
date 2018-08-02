@@ -5,6 +5,7 @@ import withAuthenticateSupplier from '../config/withAuthenticateSupplier';
 import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
+import RequestContract from "../site-modules/supplier-sections/RequestContract";
 
 class Supplier extends Component {
     static sections = {
@@ -32,7 +33,7 @@ class Supplier extends Component {
         case subscriptions:
             return <p>Subscription</p>;
         case requestContract:
-            return <p>Request</p>;
+            return <RequestContract/>;
         case manageProfile:
             return <ManageProfile/>;
         default:

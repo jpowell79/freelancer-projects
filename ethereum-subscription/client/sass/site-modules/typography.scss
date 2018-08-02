@@ -82,6 +82,13 @@
     font-weight: lighter;
 }
 
+.ui.dropdown {
+    .text {
+        font-size: inherit;
+        font-weight: inherit;
+    }
+}
+
 .rc-anchor {
     background-color: #FFF!important;
 }
