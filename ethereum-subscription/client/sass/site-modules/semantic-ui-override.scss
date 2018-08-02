@@ -3,7 +3,7 @@
  *----------------------------------------*/
 .ui {
     &.form {
-        p, span {
+        .field-text {
             display: inline-block;
             font-size: $h3;
         }

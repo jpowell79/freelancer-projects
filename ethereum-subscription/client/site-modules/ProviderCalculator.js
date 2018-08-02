@@ -154,7 +154,7 @@ class ProviderCalculator extends Component {
                         </Form.Field>
                         <Form.Field>
                             <label>Current Rate:</label>
-                            <span>
+                            <span className="field-text">
                                 {this.getCurrencySymbol(selectedCurrency)}1 = {this.getConversionRate()} Wei
                             </span>
                         </Form.Field>
@@ -174,7 +174,7 @@ class ProviderCalculator extends Component {
                         </Form.Field>
                         {(isDefined(conversionValue)) && (
                             <Form.Field>
-                                <p>
+                                <p className="field-text">
                                     This would be the equivalent of <strong>{
                                     this.calcConversion()}</strong> Wei
                                 </p>

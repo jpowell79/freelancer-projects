@@ -6,6 +6,7 @@ import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
+import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 
 class Supplier extends Component {
     static sections = {
@@ -31,7 +32,7 @@ class Supplier extends Component {
 
         switch(objects.values(Supplier.sections)[active]){
         case subscriptions:
-            return <p>Subscription</p>;
+            return <Subscriptions/>;
         case requestContract:
             return <RequestContract/>;
         case manageProfile:

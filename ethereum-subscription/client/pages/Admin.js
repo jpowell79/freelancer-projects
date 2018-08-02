@@ -8,6 +8,7 @@ import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";
 import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
 import MassEmail from "../site-modules/admin-sections/MassEmail";
 import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
+import AddContract from "../site-modules/admin-sections/AddContract";
 
 class Admin extends Component {
     static sections = {
@@ -43,7 +44,7 @@ class Admin extends Component {
 
         switch(objects.values(Admin.sections)[active]){
         case addContract:
-            return <p>Add Contract</p>;
+            return <AddContract/>;
         case suspendSuppliers:
             return <SuspendSuppliers/>;
         case massEmail:
