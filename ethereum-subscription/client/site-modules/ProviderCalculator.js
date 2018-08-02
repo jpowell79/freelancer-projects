@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import axios from 'axios';
 import CoinMarketCapApi from '../../services/CoinMarketCapApi';
 import {Form, Dropdown} from 'semantic-ui-react';
@@ -114,10 +114,14 @@ class ProviderCalculator extends Component {
         const minimumEth = 1/ethereumConversionRates["USD"].price;
         const minimumAmount = minimumEth * ethereumConversionRates[selectedCurrency].price;
 
-        return minimumAmount.toFixed(2);
+        return (selectedCurrency === "USD")
+            ? minimumAmount.toFixed(2)
+            : (minimumAmount + 0.01).toFixed(2);
     };
 
     calcConversion = () => {
+        if(isNaN(this.state.conversionValue)) return 0;
+
         return this.getConversionRate() * this.state.conversionValue;
     };
 
@@ -135,7 +139,7 @@ class ProviderCalculator extends Component {
 
         return (
             (dropdownOptions.length > 0) && (
-                <div className="container-4">
+                <Fragment>
                     <Form>
                         <Form.Field>
                             <label>Home Currency:</label>
@@ -150,7 +154,7 @@ class ProviderCalculator extends Component {
                         </Form.Field>
                         <Form.Field>
                             <label>Current Rate:</label>
-                            <span className="h3" style={{display: "inline-block"}}>
+                            <span>
                                 {this.getCurrencySymbol(selectedCurrency)}1 = {this.getConversionRate()} Wei
                             </span>
                         </Form.Field>
@@ -169,13 +173,15 @@ class ProviderCalculator extends Component {
                             />
                         </Form.Field>
                         {(isDefined(conversionValue)) && (
-                            <p className="h3">
-                                This would be the equivalent of <strong>{
-                                this.calcConversion()}</strong> Wei
-                            </p>
+                            <Form.Field>
+                                <p>
+                                    This would be the equivalent of <strong>{
+                                    this.calcConversion()}</strong> Wei
+                                </p>
+                            </Form.Field>
                         )}
                     </Form>
-                </div>
+                </Fragment>
             )
         );
     }

@@ -3,6 +3,11 @@
  *----------------------------------------*/
 .ui {
     &.form {
+        p, span {
+            display: inline-block;
+            font-size: $h3;
+        }
+
         .field {
             position: relative;
 

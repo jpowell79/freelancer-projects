@@ -54,30 +54,13 @@ class FormList extends Component {
 
     }
 
-    getFieldError = (fieldKey) => {
-        switch(fieldKey){
-        case 'username':
-            return validation.getUsernameError(this.state[fieldKey]);
-        case 'password':
-            return validation.getPasswordError(this.state[fieldKey]);
-        case 'email':
-            return validation.getEmailError(this.state[fieldKey]);
-        case 'grecaptcha':
-            return validation.getGrecaptchaError();
-        case 'walletAddress':
-            return validation.getWalletAddressError(this.state[fieldKey]);
-        default:
-            return '';
-        }
-    };
-
     handleSubmit = (event) => {
         event.preventDefault();
 
         this.fieldErrors = {};
         const fieldErrorsArray = Object.keys(this.state)
-            .filter(fieldKey => isDefined(this.getFieldError(fieldKey)))
-            .map(fieldKey => ({[fieldKey]: this.getFieldError(fieldKey)}));
+            .filter(fieldKey => isDefined(validation.getFieldError(fieldKey, this.state[fieldKey])))
+            .map(fieldKey => ({[fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])}));
 
         if(fieldErrorsArray.length === 0 || !this.props.validate){
             this.props.onSubmit(this.state);

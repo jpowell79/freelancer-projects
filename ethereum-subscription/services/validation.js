@@ -1,5 +1,22 @@
 const strings = require('./strings');
 
+module.exports.getFieldError = (fieldName, field) => {
+    switch(fieldName){
+    case 'username':
+        return module.exports.getUsernameError(field);
+    case 'password':
+        return module.exports.getPasswordError(field);
+    case 'email':
+        return module.exports.getEmailError(field);
+    case 'grecaptcha':
+        return module.exports.getGrecaptchaError();
+    case 'walletAddress':
+        return module.exports.getWalletAddressError(field);
+    default:
+        return '';
+    }
+};
+
 module.exports.getPasswordError = (password) => {
     if(typeof password !== 'string'){
         return 'Password must be a string';

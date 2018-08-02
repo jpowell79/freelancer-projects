@@ -1,19 +1,21 @@
 import React, {Component, Fragment} from "react";
 import {Message} from 'semantic-ui-react';
 
-export default (PageComponent) => {
+const defaultInitialState = {
+    successTitle: 'Your changes have been saved successfully!',
+    errorTitle: 'There was some errors with your submission',
+    errors: [],
+    success: [],
+    showSuccess: false,
+    showError: false
+};
+
+export default (PageComponent, initialState) => {
     class MessageProvider extends Component {
         constructor(props){
             super(props);
 
-            this.state = {
-                successTitle: 'Your changes have been saved successfully!',
-                errorTitle: 'There was some errors with your submission',
-                errors: [],
-                success: [],
-                showSuccess: false,
-                showError: false
-            };
+            this.state = Object.assign({}, defaultInitialState, initialState);
         }
 
         setMessageState = (state) => {
