@@ -23,3 +23,21 @@ module.exports.hasUpperCase = (string) => (
 module.exports.hasSpecialCharacters = (string) => (
     /[^a-zA-Z0-9]+/g.test(string)
 );
+
+module.exports.isUpperCase = (string) => {
+    return string.toUpperCase() === string;
+}
+
+module.exports.spaceCamelCase = (string) => {
+    if(!module.exports.isDefined(string)) return string;
+
+    let spacedCamelCase = string.charAt(0).toUpperCase();
+
+
+    for(let i = 1; i < string.length; i++){
+        const char = string.charAt(i);
+        spacedCamelCase += (module.exports.isUpperCase(char)) ? ` ${char}` : char;
+    }
+
+    return spacedCamelCase;
+};

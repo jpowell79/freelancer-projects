@@ -46,4 +46,9 @@ describe('strings', () => {
         });
     });
 
+    describe('spaceCamelCase', () => {
+        it('Should add a space before each uppercase and turn first letter uppercase.', () => {
+            expect(strings.spaceCamelCase('camelCaseString')).to.be.equal('Camel Case String');
+        });
+    });
 });

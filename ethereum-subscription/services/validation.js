@@ -7,14 +7,49 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'password':
         return module.exports.getPasswordError(field);
     case 'email':
-        return module.exports.getEmailError(field);
+    case 'contactDetails':
+        return module.exports.getEmailError(field, strings.spaceCamelCase(fieldName));
     case 'grecaptcha':
         return module.exports.getGrecaptchaError();
     case 'walletAddress':
-        return module.exports.getWalletAddressError(field);
+    case 'smartContractAddress':
+    case 'supplierWalletAddress':
+        return module.exports.getWalletAddressError(field, strings.spaceCamelCase(fieldName));
+    case 'subscriptionName':
+        return module.exports.getNameError(name, strings.spaceCamelCase(fieldName));
+    case 'exitFee':
+    case 'joinFee':
+    case 'subscriptionPrice':
+    case 'subscriptionLengthInWeeks':
+        return module.exports.getNumberError(field, strings.spaceCamelCase(fieldName));
     default:
         return '';
     }
+};
+
+module.exports.getNameError = (name, fieldName) => {
+    const lettersOrNumbersOrDashesOrUnderscoresOrSpaces = /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g;
+
+    if(typeof name !== 'string') {
+        return `${fieldName} must be a string`;
+    } else if(!strings.isDefined(name)){
+        return `${fieldName} is required.`
+    } else if(!name.match(lettersOrNumbersOrDashesOrUnderscoresOrSpaces)){
+        return `${fieldName} cannot contain any special characters besides dashes, ` +
+            `underscores and spaces.`;
+    } else if(name.length < 2 || name.length > 64){
+        return `${fieldName} must be between 2 and 64 characters`;
+    }
+
+    return '';
+};
+
+module.exports.getNumberError = (number, fieldName) => {
+    if(isNaN(number) || !strings.isDefined(number)){
+        return `${fieldName} is required and must be a number.`;
+    }
+
+    return '';
 };
 
 module.exports.getPasswordError = (password) => {
@@ -34,11 +69,11 @@ module.exports.getPasswordError = (password) => {
     return '';
 };
 
-module.exports.getWalletAddressError = (walletAddress) => {
+module.exports.getWalletAddressError = (walletAddress, fieldName = 'The address') => {
     if(typeof walletAddress !== 'string') {
-        return 'The walletAddress must be a string';
+        return `${fieldName} must be a string`;
     } else if(!walletAddress.startsWith('0x') || walletAddress.length !== 42){
-        return 'The walletAddress must start with 0x and be 42 characters long.';
+        return `${fieldName} must start with 0x and be 42 characters long.`;
     }
 
     return '';
@@ -59,13 +94,13 @@ module.exports.getUsernameError = (username) => {
     return '';
 };
 
-module.exports.getEmailError = (email) => {
+module.exports.getEmailError = (email, fieldName = 'email') => {
     const looksLikeEmail = /\S+@\S+\.\S+/g;
 
     if(typeof email !== 'string') {
-        return 'Email must be a string';
+        return `${fieldName} must be a string`;
     } else if(!email.match(looksLikeEmail) || email.length > 64){
-        return 'Please provide a valid email address';
+        return `Please provide a valid ${fieldName} address`;
     }
 
     return '';

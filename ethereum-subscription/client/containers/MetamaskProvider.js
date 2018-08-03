@@ -79,13 +79,13 @@ class MetamaskProvider extends Component {
                 <HideFragment>
                     {(notFoundRenderer)
                         ? notFoundRenderer(children)
-                        : React.cloneElement(children, {metamaskAccount})}
+                        : React.cloneElement(children, {metamaskAccount, web3: this.web3})}
                 </HideFragment>
             );
 
         }
 
-        return React.cloneElement(children, {metamaskAccount});
+        return React.cloneElement(children, {metamaskAccount, web3: this.web3});
     }
 }
 

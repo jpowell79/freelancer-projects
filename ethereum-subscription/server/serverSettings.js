@@ -9,7 +9,7 @@ module.exports.HOST = 'localhost';
  * Cookie Options
  *----------------------------------------*/
 module.exports.COOKIE_SECRET = 'T]s9,l4U!`gYg"Ngf+z-n>T)|,,rqE!u-$60d4gS<4i7O,=YtVOTCbz%{-mUSE';
-module.exports.COOKIE_EXPIRE = 1000 * 60 * 60;
+module.exports.COOKIE_EXPIRE = 1000 * 60 * 60 * 12;
 module.exports.COOKIE_NAME = 'session';
 
 

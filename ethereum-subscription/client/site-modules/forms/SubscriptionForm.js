@@ -15,6 +15,11 @@ class SubscriptionForm extends Component {
         topChildren: PropTypes.element
     };
 
+    handleSubmit = (event) => {
+        event.preventDefault();
+        this.props.onSubmit(this);
+    };
+
     render(){
         const {
             setMessageState,
@@ -75,10 +80,10 @@ class SubscriptionForm extends Component {
                         <label>Subscription Length (in weeks)</label>
                         <input
                             type="text"
-                            value={messageState.subscriptionLength}
+                            value={messageState.subscriptionLengthInWeeks}
                             onChange={(event) => {
                                 setMessageState({
-                                    subscriptionLength: event.target.value
+                                    subscriptionLengthInWeeks: event.target.value
                                 });
                             }}
                         />
@@ -87,10 +92,10 @@ class SubscriptionForm extends Component {
                         <label>Monthly Subscription Price (in Wei)</label>
                         <input
                             type="text"
-                            value={messageState.monthlySubscriptionPrice}
+                            value={messageState.subscriptionPrice}
                             onChange={(event) => {
                                 setMessageState({
-                                    monthlySubscriptionPrice: event.target.value
+                                    subscriptionPrice: event.target.value
                                 });
                             }}
                         />
@@ -99,9 +104,9 @@ class SubscriptionForm extends Component {
                         <label>Joining Fee (in Wei)</label>
                         <input
                             type="text"
-                            value={messageState.joiningFee}
+                            value={messageState.joinFee}
                             onChange={(event) => {
-                                setMessageState({joiningFee: event.target.value});
+                                setMessageState({joinFee: event.target.value});
                             }}
                         />
                     </Form.Field>
@@ -156,10 +161,7 @@ class SubscriptionForm extends Component {
                     <hr className="ui divider"/>
                     <button
                         className="ui primary button"
-                        onClick={(event) => {
-                            event.preventDefault();
-                            this.props.onSubmit(this);
-                        }}>
+                        onClick={this.handleSubmit}>
                         {this.props.submitButtonText}
                     </button>
                 </Form>
@@ -172,9 +174,9 @@ export default withMessage((SubscriptionForm), {
     contactDetails: '',
     subscriptionType: '',
     subscriptionName: '',
-    subscriptionLength: '',
-    monthlySubscriptionPrice: '',
-    joiningFee: '',
+    subscriptionLengthInWeeks: '',
+    subscriptionPrice: '',
+    joinFee: '',
     exitFee: '',
     hasFreeTrials: true,
     subscriptionDetails: ''

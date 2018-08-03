@@ -23,12 +23,14 @@ module.exports = (app, sequelize) => {
         resave: false,
         saveUninitialized: false,
         cookie: {
-            expires: serverSettings.COOKIE_EXPIRE
+            maxAge: serverSettings.COOKIE_EXPIRE
         }
     }));
     server.initSession = (req, res, next) => {
         if(!req.session.user){
             req.session.user = {};
+        } else {
+            req.session.cookie.maxAge = serverSettings.COOKIE_EXPIRE;
         }
 
         if(!req.session.tempUser) {
