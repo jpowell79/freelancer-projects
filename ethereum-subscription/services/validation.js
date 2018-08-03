@@ -22,9 +22,22 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'subscriptionPrice':
     case 'subscriptionLengthInWeeks':
         return module.exports.getNumberError(field, strings.spaceCamelCase(fieldName));
+    case 'subject':
+    case 'body':
+        return module.exports.getTextError(field, strings.spaceCamelCase(fieldName));
     default:
         return '';
     }
+};
+
+module.exports.getTextError = (text, fieldName) => {
+    if(typeof text !== 'string') {
+        return `${fieldName} must be a string`;
+    } else if(!strings.isDefined(text)){
+        return `${fieldName} is required.`;
+    }
+
+    return '';
 };
 
 module.exports.getNameError = (name, fieldName) => {
@@ -33,7 +46,7 @@ module.exports.getNameError = (name, fieldName) => {
     if(typeof name !== 'string') {
         return `${fieldName} must be a string`;
     } else if(!strings.isDefined(name)){
-        return `${fieldName} is required.`
+        return `${fieldName} is required.`;
     } else if(!name.match(lettersOrNumbersOrDashesOrUnderscoresOrSpaces)){
         return `${fieldName} cannot contain any special characters besides dashes, ` +
             `underscores and spaces.`;

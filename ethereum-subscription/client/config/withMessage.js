@@ -10,7 +10,7 @@ const defaultInitialState = {
     showError: false
 };
 
-export default (PageComponent, initialState) => {
+export default (Module, initialState) => {
     class MessageProvider extends Component {
         constructor(props){
             super(props);
@@ -45,7 +45,7 @@ export default (PageComponent, initialState) => {
 
         render() {
             return (
-                <PageComponent
+                <Module
                     {...this.props}
                     renderMessages={this.renderMessages}
                     setMessageState={this.setMessageState}

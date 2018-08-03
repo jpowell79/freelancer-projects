@@ -27,9 +27,16 @@ module.exports.users = [
     },
     {
         username: 'supplier',
-        email: 'supplier@example.com',
+        email: 'sampletonexample@gmail.com',
         role: roles.supplier,
         password: roles.supplier,
+        walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
+    },
+    {
+        username: 'smnrkssn',
+        email: 'smnrkssn@hotmail.se',
+        role: roles.supplier,
+        password: 'smnrkssn',
         walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
     }
 ];

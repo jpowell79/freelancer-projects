@@ -7,7 +7,7 @@ import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from '../../services/objects';
 import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
 
-export default (PageComponent, title) => {
+export default (Module, title) => {
     class SettingsEditor extends Component {
         static mapStateToProps = ({settings}) => ({settings});
 
@@ -65,7 +65,7 @@ export default (PageComponent, title) => {
                         />
                     )}
                     <h2>{title}</h2>
-                    <PageComponent
+                    <Module
                         {...this.props}
                         settingsUpdater={this.settingsUpdater}
                         getDefaultsOrState={this.getDefaultsOrState}
