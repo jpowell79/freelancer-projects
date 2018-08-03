@@ -2,17 +2,20 @@ import React, {Component, Fragment} from 'react';
 import {Form, Dropdown, Radio} from 'semantic-ui-react';
 import withMessage from '../../config/withMessage';
 import PropTypes from 'prop-types';
+import {LoaderTiny} from "../../modules/icons";
 
 class SubscriptionForm extends Component {
     static defaultProps = {
         submitButtonText: "Submit",
-        topChildren: null
+        renderTopChildren: () => { return null; },
+        renderBottomChildren: () => { return null; }
     };
 
     static propTypes = {
         submitButtonText: PropTypes.string.isRequired,
         onSubmit: PropTypes.func,
-        topChildren: PropTypes.element
+        renderTopChildren: PropTypes.func,
+        renderBottomChildren: PropTypes.func
     };
 
     handleSubmit = (event) => {
@@ -27,14 +30,20 @@ class SubscriptionForm extends Component {
             renderMessages
         } = this.props;
 
+        const {
+            isLoading,
+            complete
+        } = messageState;
+
         return (
             <Fragment>
                 {renderMessages()}
                 <Form>
-                    {this.props.topChildren}
+                    {this.props.renderTopChildren(this.props)}
                     <Form.Field>
                         <label>Contact details (optional - max 50 characters)</label>
                         <input
+                            disabled={isLoading || complete}
                             type="text"
                             value={messageState.contactDetails}
                             onChange={(event) => {
@@ -49,6 +58,7 @@ class SubscriptionForm extends Component {
                         <Dropdown
                             selection
                             defaultValue="Gym Membership"
+                            disabled={isLoading || complete}
                             options={[
                                 {
                                     text: "Gym Membership",
@@ -69,6 +79,7 @@ class SubscriptionForm extends Component {
                         <input
                             type="text"
                             value={messageState.subscriptionName}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({
                                     subscriptionName: event.target.value
@@ -81,6 +92,7 @@ class SubscriptionForm extends Component {
                         <input
                             type="text"
                             value={messageState.subscriptionLengthInWeeks}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({
                                     subscriptionLengthInWeeks: event.target.value
@@ -93,6 +105,7 @@ class SubscriptionForm extends Component {
                         <input
                             type="text"
                             value={messageState.subscriptionPrice}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({
                                     subscriptionPrice: event.target.value
@@ -105,6 +118,7 @@ class SubscriptionForm extends Component {
                         <input
                             type="text"
                             value={messageState.joinFee}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({joinFee: event.target.value});
                             }}
@@ -115,6 +129,7 @@ class SubscriptionForm extends Component {
                         <input
                             type="text"
                             value={messageState.exitFee}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({
                                     exitFee: event.target.value
@@ -127,6 +142,7 @@ class SubscriptionForm extends Component {
                         <Radio
                             label='Yes'
                             checked={messageState.hasFreeTrials}
+                            disabled={isLoading || complete}
                             onChange={() => {
                                 setMessageState({
                                     hasFreeTrials: true
@@ -137,6 +153,7 @@ class SubscriptionForm extends Component {
                             <Radio
                                 label='No'
                                 checked={!messageState.hasFreeTrials}
+                                disabled={isLoading || complete}
                                 onChange={() => {
                                     setMessageState({
                                         hasFreeTrials: false
@@ -149,6 +166,7 @@ class SubscriptionForm extends Component {
                         <label>Subscription Details (max 500 characters)</label>
                         <textarea
                             value={messageState.subscriptionDetails}
+                            disabled={isLoading || complete}
                             onChange={(event) => {
                                 setMessageState({
                                     subscriptionDetails: event.target.value
@@ -157,12 +175,14 @@ class SubscriptionForm extends Component {
                             rows={6}
                         />
                     </Form.Field>
-                    {this.props.children}
+                    {this.props.renderBottomChildren(this.props)}
                     <hr className="ui divider"/>
                     <button
                         className="ui primary button"
                         onClick={this.handleSubmit}>
-                        {this.props.submitButtonText}
+                        {(isLoading)
+                            ? <LoaderTiny/>
+                            : this.props.submitButtonText}
                     </button>
                 </Form>
             </Fragment>
@@ -179,5 +199,7 @@ export default withMessage((SubscriptionForm), {
     joinFee: '',
     exitFee: '',
     hasFreeTrials: true,
-    subscriptionDetails: ''
+    subscriptionDetails: '',
+    isLoading: false,
+    complete: false
 });

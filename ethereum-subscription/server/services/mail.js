@@ -16,6 +16,33 @@ module.exports.sendMail = (mailOptions) => {
     return smtpTransport.sendMail(mailOptions);
 };
 
+module.exports.sendContractCreatedMail = (req) => {
+    const {
+        subscriptionName,
+        contactDetails
+    } = req.body;
+
+    if(!subscriptionName || !contactDetails){
+        return new Promise(() => {
+            throw new Error("Missing required fields.");
+        });
+    }
+
+    const mailOptions = {
+        to: contactDetails,
+        subject: "[Ethereum Subscription] Your contract request has been approved!",
+        html: (
+            `<div>
+                <p>Hi <strong>${contactDetails}!</strong></p>
+                <p>Your <strong>${subscriptionName}</strong> contract has now been published ` +
+                  `and is accessible on the website.</p>
+             </div>`
+        )
+    };
+
+    return module.exports.sendMail(mailOptions);
+};
+
 module.exports.sendConfirmEmail = (req) => {
     const user = req.session.tempUser;
     const fullUrl = url.format({

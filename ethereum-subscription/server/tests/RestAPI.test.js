@@ -1,10 +1,9 @@
 const expect = require('chai').expect;
 const request = require("supertest");
 const setupOrGetMockApp = require('./resources/mockApp');
-const urls = require('../../services/constants/urls');
+const {urls, roles, mailTypes} = require('../../services/constants/');
 const random = require('../../services/utils').random;
 const mocks = require('./resources/mocks');
-const roles = require('../../services/constants/roles');
 
 const checkSuccess = (response) => {
     console.log(response.text);
@@ -197,6 +196,24 @@ describe('Rest API', () => {
                 .then(logout);
         });
         */
+    });
+
+    describe(`${urls.email}`, () => {
+        it('Should return bad request with unexisting type', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.email}/includes`).send({}))
+                .then(checkBadRequest);
+        });
+
+        it('Should be unauthorized to send email', () => {
+            return setupOrGetMockApp()
+                .then(app => (
+                    request(app)
+                        .post(`${urls.email}/${mailTypes.confirmationMail}`)
+                        .send({})
+                ))
+                .then(checkUnauthorized);
+        });
     });
 
     describe(`${urls.users}`, () => {

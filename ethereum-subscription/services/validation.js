@@ -16,7 +16,7 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'supplierWalletAddress':
         return module.exports.getWalletAddressError(field, strings.spaceCamelCase(fieldName));
     case 'subscriptionName':
-        return module.exports.getNameError(name, strings.spaceCamelCase(fieldName));
+        return module.exports.getNameError(field, strings.spaceCamelCase(fieldName));
     case 'exitFee':
     case 'joinFee':
     case 'subscriptionPrice':

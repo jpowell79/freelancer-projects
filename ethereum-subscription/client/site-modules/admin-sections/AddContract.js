@@ -2,9 +2,11 @@ import React, {Component, Fragment} from 'react';
 import SubscriptionForm from "../forms/SubscriptionForm";
 import {Form} from 'semantic-ui-react';
 import MetamaskProvider from "../../containers/MetamaskProvider";
-import SubscriptionContract from '../../../services/smartContract/SubscriptionContract';
+import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
 import validation from '../../../services/validation';
 import {isDefined} from '../../../services/strings';
+import {mailTypes, urls} from '../../../services/constants';
+import axios from 'axios';
 
 class AddContract extends Component {
     state = {
@@ -57,12 +59,15 @@ class AddContract extends Component {
             supplierEmail: contactDetails,
             subscriptionDetails,
             admin: metamaskAccount.address
-        })
-        .then(() => contract.fetchSubscriptionData())
-        .then(res => {
-            console.log(res);
         });
-    }
+    };
+
+    sendContractCreatedEmail = async (setMessageState, {contactDetails, subscriptionName}) => {
+        return axios.post(`${urls.email}/${mailTypes.contractCreated}`, {
+            contactDetails,
+            subscriptionName,
+        });
+    };
 
     handleSubmit = (subscriptionForm) => {
         if(this.hasFieldErrors(subscriptionForm)) return;
@@ -70,10 +75,29 @@ class AddContract extends Component {
         const {
             web3,
             metamaskAccount,
-            messageState
+            messageState,
+            setMessageState
         } = subscriptionForm.props;
 
-        this.setSubscriptionDetails(web3, metamaskAccount, messageState);
+        setMessageState({isLoading: true});
+
+        return this.setSubscriptionDetails(web3, metamaskAccount, messageState)
+            .then(() => this.sendContractCreatedEmail(setMessageState, messageState))
+            .then(() => {
+                setMessageState({
+                    isLoading: false,
+                    complete: true,
+                    successTitle: 'The contract has been created successfully',
+                    success: [`An email has been sent to ${messageState.contactDetails}`],
+                    showSuccess: true,
+                    errors: []
+                });
+            }).catch(err => {
+                setMessageState({
+                    isLoading: false,
+                    errors: [err.toString()]
+                });
+            });
     };
 
     render(){
@@ -85,34 +109,41 @@ class AddContract extends Component {
                 }>
                     <SubscriptionForm
                         onSubmit={this.handleSubmit}
-                        topChildren={
-                            <Form.Field>
-                                <label>Supplier Wallet Address</label>
-                                <input
-                                    type="text"
-                                    value={this.state.supplierWalletAddress}
-                                    onChange={(event) => {
-                                        this.setState({
-                                            supplierWalletAddress: event.target.value
-                                        });
-                                    }}
-                                />
-                            </Form.Field>
-                        }
-                    >
-                        <Form.Field>
-                            <label>Smart Contract Address</label>
-                            <input
-                                type="text"
-                                value={this.state.smartContractAddress}
-                                onChange={(event) => {
-                                    this.setState({
-                                        smartContractAddress: event.target.value
-                                    });
-                                }}
-                            />
-                        </Form.Field>
-                    </SubscriptionForm>
+                        renderTopChildren={({messageState}) => {
+                            return (
+                                <Form.Field>
+                                    <label>Supplier Wallet Address</label>
+                                    <input
+                                        type="text"
+                                        value={this.state.supplierWalletAddress}
+                                        disabled={messageState.isLoading || messageState.complete}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                supplierWalletAddress: event.target.value
+                                            });
+                                        }}
+                                    />
+                                </Form.Field>
+                            );
+                        }}
+                        renderBottomChildren={({messageState}) => {
+                            return (
+                                <Form.Field>
+                                    <label>Smart Contract Address</label>
+                                    <input
+                                        type="text"
+                                        value={this.state.smartContractAddress}
+                                        disabled={messageState.isLoading || messageState.complete}
+                                        onChange={(event) => {
+                                            this.setState({
+                                                smartContractAddress: event.target.value
+                                            });
+                                        }}
+                                    />
+                                </Form.Field>
+                            );
+                        }}
+                    />
                 </MetamaskProvider>
             </Fragment>
         );
