@@ -1,11 +1,17 @@
-const urls = require('../../services/constants/urls');
+const {urls, httpCodes} = require('../../services/constants/');
 const passwordHash = require('password-hash');
 const {isLoggedIn, saveUser} = require('../../services/session');
 const serverSettings = require('../serverSettings');
+const {
+    SUCCESS,
+    BAD_REQUEST,
+    SOMETHING_WENT_WRONG,
+    METHOD_NOT_ALLOWED,
+} = httpCodes;
 
 const login = (req, res, sequelize, {username, password}) => {
     if(!username || !password){
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         return;
     }
 
@@ -30,14 +36,14 @@ const logout = (req, res) => {
         .then(loggedIn => {
             if(loggedIn){
                 res.clearCookie(serverSettings.COOKIE_NAME);
-                res.sendStatus(200);
+                res.sendStatus(SUCCESS);
             } else {
-                res.sendStatus(400);
+                res.sendStatus(BAD_REQUEST);
             }
         })
         .catch(err => {
             if(global.isProduction()) console.error(err);
-            res.sendStatus(500);
+            res.sendStatus(SOMETHING_WENT_WRONG);
         });
 };
 
@@ -54,7 +60,7 @@ module.exports = (server, sequelize) => {
             logout(req, res);
             break;
         default:
-            res.sendStatus(405);
+            res.sendStatus(METHOD_NOT_ALLOWED);
             break;
         }
     });

@@ -1,12 +1,20 @@
 const axios = require('axios');
-const urls = require('../../services/constants/urls');
 const validation = require('../../services/validation');
-const roles = require('../../services/constants/roles');
+const {roles, urls, httpCodes} = require('../../services/constants/');
 const serverSettings = require('../serverSettings');
 const {saveUser, saveTempUser, isLoggedInAdmin, isLoggedIn} = require('../../services/session');
 const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/constants/paths');
+const {
+    SUCCESS,
+    UNAUTHORIZED,
+    BAD_REQUEST,
+    REDIRECT,
+    SOMETHING_WENT_WRONG,
+    METHOD_NOT_ALLOWED,
+    NOT_FOUND
+} = httpCodes;
 
 const validateGrecaptcha = (req) => {
     const secret = `secret=${serverSettings.RECAPTCHA_SECRET_KEY}`;
@@ -33,7 +41,7 @@ const createUser = (req, res, sequelize) => {
     }).then(() => {
         req.session.tempUser = {};
         req.session.userWasActivated = true;
-        res.redirect(301, paths.pages.login);
+        res.redirect(REDIRECT, paths.pages.login);
     }).catch(err => {
         if(global.isDevelopment()) console.error(err);
         res.send(err.toString());
@@ -48,7 +56,7 @@ const isValidUser = (res, {
     walletAddress
 }) => {
     if(!username || !email || !role || !password || !walletAddress){
-        res.status(400).send('Missing required fields.');
+        res.status(BAD_REQUEST).send('Missing required fields.');
         return;
     }
 
@@ -58,32 +66,32 @@ const isValidUser = (res, {
     const walletAddressErrors = validation.getWalletAddressError(walletAddress);
 
     if(usernameErrors !== ''){
-        res.status(400).send(usernameErrors);
+        res.status(BAD_REQUEST).send(usernameErrors);
         return false;
     }
 
     if(passwordErrors !== ''){
-        res.status(400).send(passwordErrors);
+        res.status(BAD_REQUEST).send(passwordErrors);
         return false;
     }
 
     if(emailErrors !== ''){
-        res.status(400).send(emailErrors);
+        res.status(BAD_REQUEST).send(emailErrors);
         return false;
     }
 
     if(walletAddressErrors !== ''){
-        res.status(400).send(walletAddressErrors);
+        res.status(BAD_REQUEST).send(walletAddressErrors);
         return false;
     }
 
     if(role === roles.admin){
-        res.status(400).send('You cannot create admin accounts through this api.');
+        res.status(BAD_REQUEST).send('You cannot create admin accounts through this api.');
         return false;
     }
 
     if(!roles[role]){
-        res.status(400).send('Role does not exist');
+        res.status(BAD_REQUEST).send('Role does not exist');
         return false;
     }
 
@@ -122,7 +130,7 @@ const registerTempUser = (req, res, sequelize, {
         })
         .then(mailRes => {
             if(global.isDevelopment()) console.log(mailRes);
-            res.sendStatus(200);
+            res.sendStatus(BAD_REQUEST);
         })
         .catch(err => {
             if(global.isDevelopment()) console.error(err);
@@ -156,12 +164,12 @@ const updateUser = async (req, res, sequelize, {username, originalUsername, emai
     const loggedIn = await isLoggedIn(req);
 
     if(!loggedIn){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
     if(req.session.user.username !== originalUsername){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
@@ -174,13 +182,13 @@ const updateUser = async (req, res, sequelize, {username, originalUsername, emai
         })
         .catch(err => {
             if(global.isDevelopment()) console.error(err);
-            res.status(400).send(err.toString());
+            res.status(BAD_REQUEST).send(err.toString());
         });
 };
 
 const handlePost = (req, res, sequelize) => {
     if(!req.body){
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         return;
     }
 
@@ -205,13 +213,13 @@ const handleGet = async (req, res, sequelize) => {
         .findAll()
         .then(userEntries => {
             if(loggedInAdmin){
-                res.status(200).send(filterUsersAsAdmin(userEntries));
+                res.status(SUCCESS).send(filterUsersAsAdmin(userEntries));
             } else {
-                res.status(200).send(filterUsers(userEntries));
+                res.status(SUCCESS).send(filterUsers(userEntries));
             }
         })
         .catch(err => {
-            res.status(403).send(err.toString());
+            res.status(SOMETHING_WENT_WRONG).send(err.toString());
         });
 };
 
@@ -219,25 +227,25 @@ const handleDelete = async (req, res, sequelize) => {
     const loggedInAdmin = await isLoggedInAdmin(req);
 
     if(!loggedInAdmin){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
     const username = req.query.username;
 
     if(!username){
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         return;
     }
 
     return sequelize.models.users
         .destroy({where: {username}})
         .then(() => {
-            res.sendStatus(200);
+            res.sendStatus(SUCCESS);
         })
         .catch(err => {
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(404);
+            res.sendStatus(NOT_FOUND);
         })
 };
 
@@ -254,7 +262,7 @@ module.exports = (server, sequelize) => {
             handleDelete(req, res, sequelize);
             break;
         default:
-            res.sendStatus(405);
+            res.sendStatus(METHOD_NOT_ALLOWED);
             break;
         }
     });

@@ -1,16 +1,24 @@
-const urls = require('../../services/constants/urls');
+const {urls, httpCodes} = require('../../services/constants/');
 const strings = require('../../services/strings');
 const {isLoggedInAdmin} = require('../../services/session');
+const {
+    SUCCESS,
+    UNAUTHORIZED,
+    BAD_REQUEST,
+    SOMETHING_WENT_WRONG,
+    METHOD_NOT_ALLOWED,
+    NOT_FOUND
+} = httpCodes;
 
 const handleGet = (res, sequelize, name) => {
     if(!strings.isDefined(name)){
         return sequelize.models.settings
             .findAll()
             .then(settings => {
-                res.status(200).send(settings);
+                res.status(SUCCESS).send(settings);
             })
             .catch(err => {
-                res.status(403).send(err.toString());
+                res.status(SOMETHING_WENT_WRONG).send(err.toString());
             });
     }
 
@@ -21,13 +29,13 @@ const handleGet = (res, sequelize, name) => {
             res.send(setting);
         })
         .catch(err => {
-            res.status(404).send(err.toString());
+            res.status(NOT_FOUND).send(err.toString());
         });
 };
 
 const handlePost = async (req, res, sequelize, {name, value, update}) => {
     if(!strings.isDefined(name)){
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         return;
     }
 
@@ -35,7 +43,7 @@ const handlePost = async (req, res, sequelize, {name, value, update}) => {
     const loggedInAdmin = await isLoggedInAdmin(req);
 
     if(!loggedInAdmin){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
@@ -46,19 +54,19 @@ const handlePost = async (req, res, sequelize, {name, value, update}) => {
                 if(affectedRows[0] === '0' || affectedRows[0] === 0)
                     throw new Error("No setting with the given name exists.");
 
-                res.status(200).send(affectedRows);
+                res.status(SUCCESS).send(affectedRows);
             })
             .catch(err => {
-                res.status(404).send(err.toString());
+                res.status(NOT_FOUND).send(err.toString());
             });
     } else {
         return sequelize.models.settings
             .create({name, value})
             .then(() => {
-                res.sendStatus(200);
+                res.sendStatus(SUCCESS);
             })
             .catch(err => {
-                res.status(400).send(err.toString());
+                res.status(BAD_REQUEST).send(err.toString());
             });
     }
 };
@@ -73,7 +81,7 @@ module.exports = (server, sequelize) => {
             handlePost(req, res, sequelize, req.body);
             break;
         default:
-            res.sendStatus(405);
+            res.sendStatus(METHOD_NOT_ALLOWED);
             break;
         }
     });

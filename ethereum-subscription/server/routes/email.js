@@ -1,6 +1,6 @@
 const {urls, mailTypes} = require('../../services/constants');
 const mail = require('../services/mail');
-const {isLoggedIn} = require('../../services/session');
+const {isLoggedIn, isLoggedInAdmin} = require('../../services/session');
 const {standardResponseHandler} = require('../services/apiUtils');
 
 const handlePost = async (req, res, sequelize) => {
@@ -22,6 +22,13 @@ const handlePost = async (req, res, sequelize) => {
     case mailTypes.contractCreated:
         return standardResponseHandler(res, mail.sendContractCreatedMail(req));
     case mailTypes.massMailSuppliers:
+        const loggedInAdmin = await isLoggedInAdmin(req);
+
+        if(!loggedInAdmin){
+            res.sendStatus(401);
+            return;
+        }
+
         return standardResponseHandler(res, mail.sendMassSupplierMail(req, sequelize));
     default:
         res.sendStatus(400);

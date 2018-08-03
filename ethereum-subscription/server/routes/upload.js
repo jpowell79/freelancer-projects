@@ -1,17 +1,23 @@
-const {urls, paths} = require('../../services/constants/');
+const {urls, paths, httpCodes} = require('../../services/constants/');
 const {isLoggedInAdmin} = require('../../services/session');
 const formidable = require('formidable');
 const fs = require('fs');
+const {
+    SUCCESS,
+    UNAUTHORIZED,
+    BAD_REQUEST,
+    METHOD_NOT_ALLOWED,
+} = httpCodes;
 
 const upload = (res, file, path) => {
     fs.copyFile(file.path, `client/${path}/${file.name}`, (err) => {
         if(err){
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(400);
+            res.sendStatus(BAD_REQUEST);
             return;
         }
 
-        res.sendStatus(200);
+        res.sendStatus(SUCCESS);
     });
 };
 
@@ -31,7 +37,7 @@ const handlePost = async (req, res) => {
     const loggedInAdmin = await isLoggedInAdmin(req);
 
     if(!loggedInAdmin){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
@@ -42,7 +48,7 @@ const handlePost = async (req, res) => {
 
         if(err || !file){
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(400);
+            res.sendStatus(BAD_REQUEST);
             return;
         }
 
@@ -57,7 +63,7 @@ module.exports = (server) => {
             handlePost(req, res, req.body);
             break;
         default:
-            res.sendStatus(405);
+            res.sendStatus(METHOD_NOT_ALLOWED);
             break;
         }
     });
