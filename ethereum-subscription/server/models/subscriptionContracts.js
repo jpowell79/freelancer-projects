@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => (
-    sequelize.define('subscription_contracts', {
+    sequelize.define('subscriptionContracts', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => (
                 len: [0, 2048]
             }
         },
-        userUsername: {
+        ownerUsername: {
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
@@ -33,11 +33,11 @@ module.exports = (sequelize, DataTypes) => (
                 key: 'username'
             }
         },
-        subscriptionTypeId: {
+        typeId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'subscription_types',
+                model: 'subscriptionTypes',
                 key: 'id'
             }
         },

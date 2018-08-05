@@ -1,7 +1,7 @@
 const {urls, mailTypes} = require('../../services/constants');
-const mail = require('../services/mail');
+const mail = require('../services/api/mail');
 const {isLoggedIn, isLoggedInAdmin} = require('../../services/session');
-const {standardResponseHandler} = require('../services/apiUtils');
+const {standardResponseHandler} = require('../services/api/apiUtils');
 
 const handlePost = async (req, res, sequelize) => {
     if(!mailTypes.includes(req.params.type)){

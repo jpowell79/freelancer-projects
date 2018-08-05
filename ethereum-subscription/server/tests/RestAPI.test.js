@@ -28,13 +28,6 @@ const checkNotExists = (response) => {
     expect(response.status).to.be.equal(404);
 };
 
-const loginAsAdmin = () => {
-    return request(global.app).post(urls.sessions).send({
-        username: mocks.admin.username,
-        password: mocks.admin.password
-    });
-};
-
 const loginAsSupplier = () => {
     return request(global.app).post(urls.sessions).send({
         username: mocks.user.username,
@@ -51,7 +44,11 @@ describe('Rest API', () => {
         const gettableUrls = [
             urls.users,
             urls.sessions,
-            urls.settings
+            urls.settings,
+            urls.subscriptionTypes,
+            urls.subscriptionContracts,
+            urls.subscriptionSubscribers,
+            urls.subscriptions
         ];
 
         return setupOrGetMockApp()
@@ -61,7 +58,16 @@ describe('Rest API', () => {
                     expect(response.status).to.be.equal(200);
                 });
             });
-    }).timeout(1000 * 10);
+    }).timeout(1000 * 100);
+
+    describe(urls.subscriptionTypes, () => {
+        it('Should be unauthorized to create new subscription type', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.subscriptionTypes}`)
+                    .send({name: 'Foo'}))
+                .then(checkUnauthorized);
+        });
+    });
 
     describe(urls.sessions, () => {
         it('Should not login with unexisting username', () => {

@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const url = require('url');
-const {roles} = require('../../services/constants');
+const {roles} = require('../../../services/constants/index');
 
 const smtpTransport = nodemailer.createTransport({
     service: "Gmail",
@@ -33,8 +33,6 @@ module.exports.sendMassSupplierMail = (req, sequelize) => {
         .findAll({where: {role: roles.supplier}})
         .then(entries => entries.map(entry => entry.dataValues))
         .then(users => {
-            console.log(users);
-
             return Promise.all(users.map(user => {
                 const mailOptions = {
                     to: user.email,

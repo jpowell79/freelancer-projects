@@ -3,7 +3,7 @@ const validation = require('../../services/validation');
 const {roles, urls, httpCodes} = require('../../services/constants/');
 const serverSettings = require('../serverSettings');
 const {saveUser, saveTempUser, isLoggedInAdmin, isLoggedIn} = require('../../services/session');
-const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/mail');
+const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/api/mail');
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/constants/paths');
 const {

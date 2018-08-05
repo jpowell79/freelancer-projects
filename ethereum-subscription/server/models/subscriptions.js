@@ -5,11 +5,11 @@ module.exports = (sequelize, DataTypes) => (
             primaryKey: true,
             autoIncrement: true,
         },
-        subscriptionContractId: {
+        contractId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'subscription_contracts',
+                model: 'subscriptionContracts',
                 key: 'id'
             }
         },
@@ -21,5 +21,7 @@ module.exports = (sequelize, DataTypes) => (
                 key: 'id'
             }
         },
+    }, {
+        timestamps: false
     })
 );

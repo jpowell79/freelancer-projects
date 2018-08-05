@@ -26,22 +26,35 @@ module.exports.subscriptionTypes = [
 module.exports.subscriptionContracts = [
     {
         address: '0x3cbc16e2c379a1584ec821ac5720511ddbf355e0',
-        userUsername: 'smnrkssn',
-        subscriptionTypeId: 'Gym Membership',
+        ownerUsername: 'smnrkssn',
+        typeName: 'Gym Membership',
         details: 'Random details'
+    },
+    {
+        address: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
+        ownerUsername: 'supplier',
+        typeName: 'Gym Membership',
+        details: 'Some details'
     }
 ];
 
 module.exports.subscribers = [
     {
         walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
+    },
+    {
+        walletAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F'
     }
 ];
 
 module.exports.subscriptions = [
     {
-        subscriberWalletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208',
-        subscriptionContractAddress: '0x3cbc16e2c379a1584ec821ac5720511ddbf355e0'
+        subscriberAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
+        contractAddress: '0x3cbc16e2c379a1584ec821ac5720511ddbf355e0'
+    },
+    {
+        subscriberAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208',
+        contractAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F'
     }
 ];
 
@@ -58,7 +71,7 @@ module.exports.users = [
         email: 'sampletonexample@gmail.com',
         role: roles.supplier,
         password: roles.supplier,
-        walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
+        walletAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F'
     },
     {
         username: 'smnrkssn',

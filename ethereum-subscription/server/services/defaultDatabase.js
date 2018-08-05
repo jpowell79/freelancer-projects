@@ -1,4 +1,5 @@
 const defaultData = require('../../services/defaultData');
+const Subscriptions = require('./api/Subscriptions');
 
 module.exports.loadDefaultSettings = async (sequelize) => {
     return Promise.all(Object.keys(defaultData.settings)
@@ -19,16 +20,16 @@ module.exports.loadDefaultUsers = async (sequelize) => {
 
 module.exports.loadDefaultSubscriptionTypes = async (sequelize) => {
     return Promise.all(defaultData.subscriptionTypes.map(type =>
-        sequelize.models.subscription_types.create(type)
+        sequelize.models.subscriptionTypes.create(type)
     ));
 };
 
 module.exports.loadDefaultSubscriptionContracts = async (sequelize) => {
     return Promise.all(defaultData.subscriptionContracts.map(contract =>
-        sequelize.models.subscription_types.findOne({where: {name: contract.subscriptionTypeId}})
+        sequelize.models.subscriptionTypes.findOne({where: {name: contract.typeName}})
             .then(typeEntry => typeEntry.dataValues)
-            .then(type => sequelize.models.subscription_contracts
-                .create(Object.assign({}, contract, {subscriptionTypeId: type.id})))
+            .then(type => sequelize.models.subscriptionContracts
+                .create(Object.assign({}, contract, {typeId: type.id})))
     ));
 };
 
@@ -39,31 +40,10 @@ module.exports.loadDefaultSubscribers = async (sequelize) => {
 };
 
 module.exports.loadDefaultSubscription = async (sequelize) => {
-    let subscriptionContract;
+    const subscriptions = new Subscriptions({sequelize});
 
     return Promise.all(defaultData.subscriptions.map(subscription =>
-        sequelize.models.subscription_contracts
-            .findOne({
-                where: {
-                    address: subscription.subscriptionContractAddress
-                }
-            })
-            .then(contractEntry => contractEntry.dataValues)
-            .then(contract => {subscriptionContract = contract;})
-            .then(() => sequelize.models.subscribers
-                .findOne({
-                    where: {
-                        walletAddress: subscription.subscriberWalletAddress
-                    }
-                })
-            )
-            .then(subscriberEntry => subscriberEntry.dataValues)
-            .then(subscriber => sequelize.models.subscriptions
-                .create({
-                    subscriberId: subscriber.id,
-                    subscriptionContractId: subscriptionContract.id
-                })
-            )
+        subscriptions.create(subscription)
     ));
 };
 

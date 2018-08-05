@@ -2,6 +2,7 @@ const testSettings = require('../serverTestSettings');
 const configServer = require('../../config/configServer');
 const configSequelize = require('../../config/configSequelize');
 const loadTestDatabase = require('./loadTestDatabase');
+const {removeDatabase} = require('../../services/databaseUtils');
 require('../../config/addGlobalHelpers')();
 
 module.exports = async () => {
@@ -14,6 +15,8 @@ module.exports = async () => {
 
     if(!global.app){
         return configSequelize(testSettings)
+            .then(sequelize => removeDatabase(sequelize, testSettings.DATABASE_NAME))
+            .then(() => configSequelize(testSettings))
             .then(sequelize => {
                 global.sequelize = sequelize;
                 return loadTestDatabase(sequelize);

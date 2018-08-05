@@ -52,6 +52,13 @@ module.exports = async ({
             $lt: Op.lt,
             $lte: Op.lte,
             $like: Op.like
+        },
+        define: {
+            defaultScope: {
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt']
+                }
+            }
         }
     };
 
@@ -63,15 +70,28 @@ module.exports = async ({
 
     const Settings = require('../models/settings')(sequelize, Sequelize.DataTypes);
     const Subscribers = require('../models/subscribers')(sequelize, Sequelize.DataTypes);
-    const SubscriptionTypes = require('../models/subscription_types')(sequelize, Sequelize.DataTypes);
+    const SubscriptionTypes = require('../models/subscriptionTypes')(sequelize, Sequelize.DataTypes);
     const Subscriptions = require('../models/subscriptions')(sequelize, Sequelize.DataTypes);
-    const SubscriptionContracts = require('../models/subscription_contracts')(sequelize, Sequelize.DataTypes);
+    const SubscriptionContracts = require('../models/subscriptionContracts')(sequelize, Sequelize.DataTypes);
     const Users = require('../models/users')(sequelize, Sequelize.DataTypes);
 
-    Users.hasMany(SubscriptionContracts);
-    SubscriptionTypes.hasOne(SubscriptionContracts);
-    SubscriptionContracts.hasMany(Subscriptions);
-    Subscribers.hasMany(Subscriptions);
+    Users.hasMany(SubscriptionContracts, {
+        foreignKey: 'ownerUsername'
+    });
+    SubscriptionContracts.belongsTo(SubscriptionTypes, {
+        foreignKey: 'typeId'
+    });
+    SubscriptionTypes.hasMany(SubscriptionContracts, {
+        foreignKey: 'typeId'
+    });
+    SubscriptionContracts.belongsToMany(Subscribers, {
+        through: Subscriptions,
+        foreignKey: 'contractId'
+    });
+    Subscribers.belongsToMany(SubscriptionContracts, {
+        through: Subscriptions,
+        foreignKey: 'subscriberId'
+    });
 
     return createDatabaseIfNotExists(options, DATABASE_NAME)
         .then(() => Settings.sync())
