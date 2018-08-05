@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const glob = require('glob');
 const defaultDatabase = require('../services/defaultDatabase');
 
 function createDatabaseIfNotExists(sequelizeOptions, dbName){
@@ -37,7 +36,7 @@ module.exports = async ({
     DATABASE_PASSWORD,
     DATABASE_PORT,
     DATABASE_DIALECT
-}) => {
+}, loadDefaultData = true) => {
     const Op = Sequelize.Op;
     const options = {
         host: HOST,
@@ -61,16 +60,34 @@ module.exports = async ({
     const sequelize = new Sequelize(Object.assign({}, options, {
         database: DATABASE_NAME
     }));
-    const rootPath = require('path').normalize(__dirname + '/../..');
+
+    const Settings = require('../models/settings')(sequelize, Sequelize.DataTypes);
+    const Subscribers = require('../models/subscribers')(sequelize, Sequelize.DataTypes);
+    const SubscriptionTypes = require('../models/subscription_types')(sequelize, Sequelize.DataTypes);
+    const Subscriptions = require('../models/subscriptions')(sequelize, Sequelize.DataTypes);
+    const SubscriptionContracts = require('../models/subscription_contracts')(sequelize, Sequelize.DataTypes);
+    const Users = require('../models/users')(sequelize, Sequelize.DataTypes);
+
+    Users.hasMany(SubscriptionContracts);
+    SubscriptionTypes.hasOne(SubscriptionContracts);
+    SubscriptionContracts.hasMany(Subscriptions);
+    Subscribers.hasMany(Subscriptions);
 
     return createDatabaseIfNotExists(options, DATABASE_NAME)
-        .then(() => glob.sync(rootPath + '/server/models/*.js').map(
-            controllerPath => require(controllerPath)(sequelize, Sequelize.DataTypes)
-        ))
-        .then(Models => Promise.all(Models.map(Model => Model.sync())))
-        .then(() => loadDefaultDatabaseSettings(sequelize))
+        .then(() => Settings.sync())
+        .then(() => Users.sync())
+        .then(() => SubscriptionTypes.sync())
+        .then(() => SubscriptionContracts.sync())
+        .then(() => Subscribers.sync())
+        .then(() => Subscriptions.sync())
         .then(() => {
-            if(!global.isProduction()) return loadDefaultDatabaseUsers(sequelize);
+            if(loadDefaultData){
+                return loadDefaultDatabaseSettings(sequelize);
+            }
+        })
+        .then(() => {
+            if(global.isDevelopment() && loadDefaultData)
+                return loadDefaultDatabaseUsers(sequelize);
         })
         .then(() => sequelize);
 };

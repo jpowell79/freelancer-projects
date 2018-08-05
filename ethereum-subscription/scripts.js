@@ -29,31 +29,35 @@ if (process.argv.length < 3) {
 }
 
 function removeDatabase(sequelize) {
-    return Promise.all(Object.keys(sequelize.models)
-        .map(modelKey => sequelize.query(`DROP TABLE ${modelKey}`)));
+    return sequelize.query(`DROP TABLE settings`)
+        .then(() => sequelize.query(`DROP TABLE subscriptions`))
+        .then(() => sequelize.query(`DROP TABLE subscribers`))
+        .then(() => sequelize.query(`DROP TABLE subscription_contracts`))
+        .then(() => sequelize.query(`DROP TABLE subscription_types`))
+        .then(() => sequelize.query(`DROP TABLE users`));
 }
 
 function loadDefaultDatabase(sequelize) {
-    return Promise.all(Object.keys(sequelize.models)
-        .map(modelKey => sequelize.query(`DELETE FROM ${modelKey}`)))
+    return removeDatabase(sequelize)
+        .then(() => configSequelize(serverSettings, false))
         .then(() => defaultDatabase.load(sequelize));
 }
 
-configSequelize(serverSettings)
+configSequelize(serverSettings, false)
     .then(sequelize => {
         switch (process.argv[2]) {
-            case arguments.removeDatabase:
-                return removeDatabase(sequelize);
-            case arguments.defaultDatabase:
-                return loadDefaultDatabase(sequelize);
-            case 'help':
-                printHelp();
-                break;
-            default:
-                console.error(`Error: Unexpected argument ${process.argv[2]}`);
-                printHelp();
-                process.exit(1);
-                break;
+        case arguments.removeDatabase:
+            return removeDatabase(sequelize);
+        case arguments.defaultDatabase:
+            return loadDefaultDatabase(sequelize);
+        case 'help':
+            printHelp();
+            break;
+        default:
+            console.error(`Error: Unexpected argument ${process.argv[2]}`);
+            printHelp();
+            process.exit(1);
+            break;
         }
     })
     .then(() => process.exit(0))
