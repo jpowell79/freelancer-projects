@@ -200,14 +200,27 @@ const handlePost = (req, res, sequelize) => {
 };
 
 const handleGet = async (req, res, sequelize) => {
-    if(req.params.uuid && isValidEmailConfirmation(req, req.params.uuid)) {
+    if(req.params.param && isValidEmailConfirmation(req, req.params.param)) {
         createUser(req, res, sequelize);
         return;
     }
 
-    //TODO: Implement way of getting single users (no sensitive data shared).
-
     const loggedInAdmin = await isLoggedInAdmin(req);
+
+    if(req.params.param){
+        return sequelize.models.users
+            .findOne({where: {username: req.params.param}})
+            .then(userEntry => {
+                if(loggedInAdmin){
+                    res.status(SUCCESS).send(filterUsersAsAdmin([userEntry]));
+                } else {
+                    res.status(SUCCESS).send(filterUsers([userEntry]));
+                }
+            })
+            .catch(() => {
+                res.sendStatus(NOT_FOUND);
+            });
+    }
 
     return sequelize.models.users
         .findAll()
@@ -250,7 +263,7 @@ const handleDelete = async (req, res, sequelize) => {
 };
 
 module.exports = (server, sequelize) => {
-    server.use(`${urls.users}/:uuid?`, server.initSession, (req, res) => {
+    server.use(`${urls.users}/:param?`, server.initSession, (req, res) => {
         switch (req.method){
         case "GET":
             handleGet(req, res, sequelize);

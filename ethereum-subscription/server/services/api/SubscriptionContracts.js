@@ -1,8 +1,10 @@
 const {httpCodes} = require('../../../services/constants/index');
 const {getAllModelEntries} = require('./apiUtils');
+const {isLoggedInAdmin} = require('../../../services/session');
 const {
-    SUCCESS,
+    CREATED,
     BAD_REQUEST,
+    UNAUTHORIZED,
     SOMETHING_WENT_WRONG
 } = httpCodes;
 
@@ -28,13 +30,16 @@ function SubscriptionContracts({req, res, sequelize}){
     };
 
     this.sendCreate = async (contract) => {
-        this.subscriptionTypesModel.findOne({where: {name: contract.typeName}})
-            .then(typeEntry => typeEntry.dataValues)
-            .then(type => this.model.create(
-                Object.assign({}, contract, {typeId: type.id})
-            ))
+        const loggedInAdmin = await isLoggedInAdmin(req);
+
+        if(!loggedInAdmin){
+            res.sendStatus(UNAUTHORIZED);
+            return;
+        }
+
+        this.model.create(contract)
             .then(() => {
-                res.sendStatus(SUCCESS);
+                res.sendStatus(CREATED);
             })
             .catch(err => {
                 if(global.isDevelopment()) console.error(err);

@@ -26,6 +26,8 @@ const handleContractsRequest = (req, res, sequelize) => {
     switch (req.method){
     case "GET":
         return subscriptionContracts.sendGetAll();
+    case "POST":
+        return subscriptionContracts.sendCreate(req.body);
     default:
         res.sendStatus(METHOD_NOT_ALLOWED);
         break;

@@ -48,7 +48,9 @@ class SubscriptionForm extends Component {
                 {renderMessages()}
                 <Form>
                     {this.props.renderTopChildren(this.props)}
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('contactDetails')
+                    }>
                         <label>Contact details (optional - max 50 characters)</label>
                         <input
                             disabled={isLoading || complete}
@@ -61,7 +63,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('subscriptionType')
+                    }>
                         <label>Subscription Type</label>
                         <Dropdown
                             selection
@@ -75,7 +79,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('subscriptionName')
+                    }>
                         <label>Subscription Name</label>
                         <input
                             type="text"
@@ -88,7 +94,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('subscriptionLengthInWeeks')
+                    }>
                         <label>Subscription Length (in weeks)</label>
                         <input
                             type="text"
@@ -101,7 +109,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('subscriptionPrice')
+                    }>
                         <label>Monthly Subscription Price (in Wei)</label>
                         <input
                             type="text"
@@ -114,7 +124,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('joinFee')
+                    }>
                         <label>Joining Fee (in Wei)</label>
                         <input
                             type="text"
@@ -125,7 +137,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('exitFee')
+                    }>
                         <label>Exit Fee (in Wei)</label>
                         <input
                             type="text"
@@ -138,7 +152,9 @@ class SubscriptionForm extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('hasFreeTrials')
+                    }>
                         <label>Free Trials?</label>
                         <Radio
                             label='Yes'
@@ -163,7 +179,9 @@ class SubscriptionForm extends Component {
                             />
                         </span>
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={
+                        messageState.fieldsWithErrors.includes('subscriptionDetails')
+                    }>
                         <label>Subscription Details (max 500 characters)</label>
                         <textarea
                             value={messageState.subscriptionDetails}

@@ -1,10 +1,13 @@
 import React, {Component, Fragment} from "react";
 import {Message} from 'semantic-ui-react';
+import validation from "../../services/validation";
+import {isDefined} from "../../services/strings";
 
 const defaultInitialState = {
     successTitle: 'Your changes have been saved successfully!',
     errorTitle: 'There was some errors with your submission',
     errors: [],
+    fieldsWithErrors: [],
     success: [],
     showSuccess: false,
     showError: false
@@ -20,6 +23,43 @@ export default (Module, initialState) => {
 
         setMessageState = (state) => {
             this.setState((prevState) => Object.assign({}, prevState, state));
+        };
+
+        hasFieldErrors = (additionalFields = {}) => {
+            const fields = Object.assign({}, this.state, additionalFields);
+            const errors = Object.keys(fields)
+                .map(key => validation.getFieldError(key, fields[key]))
+                .filter(error => isDefined(error));
+            const fieldsWithErrors = Object.keys(fields)
+                .filter(key => isDefined(validation.getFieldError(key, fields[key])));
+
+            if(errors.length > 0){
+                this.setState({
+                    errors,
+                    fieldsWithErrors
+                });
+                return true;
+            }
+
+            return false;
+        };
+
+        setIsLoading = (state = {}) => {
+            this.setState({
+                isLoading: true,
+                errors: [],
+                fieldsWithErrors: [],
+                ...state
+            });
+        };
+
+        setComplete = (state = {}) => {
+            this.setState({
+                isLoading: false,
+                complete: true,
+                showSuccess: true,
+                ...state
+            });
         };
 
         renderMessages = () => {
@@ -50,6 +90,9 @@ export default (Module, initialState) => {
                     renderMessages={this.renderMessages}
                     setMessageState={this.setMessageState}
                     messageState={this.state}
+                    hasFieldErrors={this.hasFieldErrors}
+                    setIsLoading={this.setIsLoading}
+                    setComplete={this.setComplete}
                 />
             );
         }

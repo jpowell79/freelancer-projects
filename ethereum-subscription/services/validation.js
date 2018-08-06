@@ -3,6 +3,7 @@ const strings = require('./strings');
 module.exports.getFieldError = (fieldName, field) => {
     switch(fieldName){
     case 'username':
+    case 'supplierUsername':
         return module.exports.getUsernameError(field);
     case 'password':
         return module.exports.getPasswordError(field);
@@ -12,6 +13,7 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'grecaptcha':
         return module.exports.getGrecaptchaError();
     case 'walletAddress':
+    case 'contractAddress':
     case 'smartContractAddress':
     case 'supplierWalletAddress':
         return module.exports.getWalletAddressError(field, strings.spaceCamelCase(fieldName));
@@ -26,9 +28,19 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'subject':
     case 'body':
         return module.exports.getTextError(field, strings.spaceCamelCase(fieldName));
+    case 'subscriptionTypeId':
+        return module.exports.getNotDefinedError(field, strings.spaceCamelCase(fieldName));
     default:
         return '';
     }
+};
+
+module.exports.getNotDefinedError = (field, fieldName) => {
+    if(!field){
+        return `${fieldName} is required.`;
+    }
+
+    return '';
 };
 
 module.exports.getTextError = (text, fieldName) => {

@@ -115,10 +115,10 @@ module.exports.sendMassSupplierMail = (req, sequelize) => {
 module.exports.sendContractCreatedMail = (req) => {
     const {
         subscriptionName,
-        contactDetails
+        email
     } = req.body;
 
-    if(!subscriptionName || !contactDetails){
+    if(!subscriptionName || !email){
         return new Promise(() => {
             throw new Error("Missing required fields.");
         });
@@ -127,18 +127,18 @@ module.exports.sendContractCreatedMail = (req) => {
     const fullUrl = url.format({
         protocol: req.protocol,
         host: req.get('host'),
-        pathname: req.originalUrl
+        pathname: paths.pages.supplier
     });
 
     const mailOptions = {
-        to: contactDetails,
+        to: email,
         subject: `[Ethereum Subscription] Your ${subscriptionName} contract is ready!`,
         html: (
             `<div>
-                <p>Hi <strong>${contactDetails}!</strong></p>
+                <p>Hi <strong>${email}!</strong></p>
                 <p>Please visit your control panel to add or amend information to the ` +
-                    `subscription – You can click on ` +
-                    `<a href="${fullUrl}/${paths.pages.supplier}">this link</a> to take you ` +
+                    `subscription.` +
+                `<p>You can click on <a href="${fullUrl}">this link</a> to take you ` +
                     `directly to the smart contract</p>
              </div>`
         )

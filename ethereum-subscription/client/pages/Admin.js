@@ -9,6 +9,7 @@ import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
 import MassEmail from "../site-modules/admin-sections/MassEmail";
 import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
 import AddContract from "../site-modules/admin-sections/AddContract";
+import SmartContractData from "../site-modules/admin-sections/SmartContractData";
 
 class Admin extends Component {
     static sections = {
@@ -56,7 +57,7 @@ class Admin extends Component {
         case homepageBanner:
             return <HomepageBanner/>;
         case smartContract:
-            return <p>Smart Contract</p>;
+            return <SmartContractData/>;
         case siteIdentity:
             return <SiteIdentity/>;
         default:
