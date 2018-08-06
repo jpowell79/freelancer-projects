@@ -5,6 +5,10 @@ import {isClient, isServer} from '../../services/utils';
 const defaultOptions = {
     settings: false,
     user: false,
+    subscriptionContracts: false,
+    subscriptionTypes: false,
+    subscribers: false,
+    subscriptions: false,
     data: {}
 };
 
@@ -21,6 +25,14 @@ export const loadServerDataIntoStoreFromClient = async (dispatch, options) => {
 
     if(load.settings){
         promises.push(dispatcher.dispatchLoadSettings({}));
+    }
+
+    if(load.subscriptionContracts){
+        promises.push(dispatcher.dispatchUpdateSubcriptionContracts({}));
+    }
+
+    if(load.subscriptionTypes){
+        promises.push(dispatcher.dispatchUpdateSubscriptionTypes({}));
     }
 
     return Promise.all(promises);
@@ -42,6 +54,22 @@ export const loadServerDataIntoStore = async (reduxStore, req, options) => {
 
     if(load.settings && objects.isEmpty(state.settings)){
         promises.push(dispatcher.dispatchLoadSettings({req}));
+    }
+
+    if(load.subscriptionTypes && state.subscriptionTypes.length === 0){
+        promises.push(dispatcher.dispatchUpdateSubscriptionTypes({req}));
+    }
+
+    if(load.subscriptionContracts && state.subscriptionContracts.length === 0){
+        promises.push(dispatcher.dispatchUpdateSubcriptionContracts({req}));
+    }
+
+    if(load.subscribers && state.subscribers.length === 0){
+        promises.push(dispatcher.dispatchUpdateSubscribers({req}));
+    }
+
+    if(load.subscriptions && state.subscriptions.length === 0){
+        promises.push(dispatcher.dispatchUpdateSubscriptions({req}));
     }
 
     return Promise.all(promises);

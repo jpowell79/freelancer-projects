@@ -1,4 +1,5 @@
 const {httpCodes} = require('../../../services/constants/index');
+const {getAllModelEntries} = require('./apiUtils');
 const {
     SUCCESS,
     BAD_REQUEST,
@@ -9,7 +10,9 @@ function SubscriptionContracts({req, res, sequelize}){
     this.model = sequelize.models.subscriptionContracts;
     this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
 
-    this.sendGetAll = async () => {
+    this.sendGetAll = async () => getAllModelEntries(res, this.model);
+
+    this.sendJoinedGetAll = async () => {
         return this.model
             .findAll({
                 include: [this.subscriptionTypesModel]

@@ -14,7 +14,11 @@ export default (PageComponent) => {
 
             await loadServerDataIntoStore(reduxStore, req, {
                 settings: true,
-                user: true
+                user: true,
+                subscriptionTypes: true,
+                subscribers: true,
+                subscriptionContracts: true,
+                subscriptions: true,
             });
 
             return {...pageProps};

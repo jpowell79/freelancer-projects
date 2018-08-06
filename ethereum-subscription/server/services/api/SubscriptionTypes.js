@@ -10,6 +10,10 @@ const {
 function SubscriptionTypes({req, res, sequelize}){
     this.model = sequelize.models.subscriptionTypes;
 
+    this.create = ({name}) => {
+        return this.model.create({name});
+    };
+
     this.sendGetAll = async () => getAllModelEntries(res, this.model);
 
     this.sendCreate = async () => {
@@ -27,8 +31,7 @@ function SubscriptionTypes({req, res, sequelize}){
             return;
         }
 
-        return this.model
-            .create({name})
+        return this.create({name})
             .then(() => {
                 res.sendStatus(CREATED);
             })

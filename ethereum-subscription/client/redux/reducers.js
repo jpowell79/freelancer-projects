@@ -4,7 +4,47 @@ import {combineReducers} from 'redux';
 export const initialState = {
     settings: {},
     metamaskAccount: {},
+    subscriptionContracts: [],
+    subscriptionTypes: [],
+    subscribers: [],
+    subscriptions: [],
     user: {}
+};
+
+export const subscriptions = (subscriptions = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_SUBSCRIPTIONS:
+        return action.payload;
+    default:
+        return subscriptions;
+    }
+};
+
+export const subscribers = (subscribers = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_SUBSCRIBERS:
+        return action.payload;
+    default:
+        return subscribers;
+    }
+};
+
+export const subscriptionContracts = (subscriptionContracts = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_SUBSCRIPTION_CONTRACTS:
+        return action.payload;
+    default:
+        return subscriptionContracts;
+    }
+};
+
+export const subscriptionTypes = (subscriptionTypes = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_SUBSCRIPTION_TYPES:
+        return action.payload;
+    default:
+        return subscriptionTypes;
+    }
 };
 
 export const user = (user = {}, action) => {
@@ -37,5 +77,9 @@ export const settings = (settings = {}, action) => {
 export default combineReducers({
     settings,
     metamaskAccount,
-    user
+    user,
+    subscriptionContracts,
+    subscriptionTypes,
+    subscribers,
+    subscriptions,
 });
