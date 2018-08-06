@@ -3,8 +3,16 @@ import {Form, Dropdown, Radio} from 'semantic-ui-react';
 import withMessage from '../../config/withMessage';
 import PropTypes from 'prop-types';
 import {LoaderTiny} from "../../modules/icons";
+import {connect} from 'react-redux';
 
 class SubscriptionForm extends Component {
+    static mapStateToProps = ({subscriptionTypes}) => ({
+        options: subscriptionTypes.map(type => ({
+            value: type.id,
+            text: type.name
+        }))
+    });
+
     static defaultProps = {
         submitButtonText: "Submit",
         renderTopChildren: () => { return null; },
@@ -57,20 +65,13 @@ class SubscriptionForm extends Component {
                         <label>Subscription Type</label>
                         <Dropdown
                             selection
-                            defaultValue="Gym Membership"
                             disabled={isLoading || complete}
-                            options={[
-                                {
-                                    text: "Gym Membership",
-                                    value: "Gym Membership"
-                                },
-                                {
-                                    text: 'Another Subscription Type',
-                                    value: 'Another Subscription Type',
-                                }
-                            ]}
+                            options={this.props.options}
                             onChange={(event, {value}) => {
-                                setMessageState({subscriptionType: value});
+                                setMessageState({
+                                    subscriptionType: this.props.options
+                                        .filter(option => option.value === value)[0].text
+                                });
                             }}
                         />
                     </Form.Field>
@@ -190,7 +191,7 @@ class SubscriptionForm extends Component {
     }
 }
 
-export default withMessage((SubscriptionForm), {
+export default withMessage(connect(SubscriptionForm.mapStateToProps)(SubscriptionForm), {
     contactDetails: '',
     subscriptionType: '',
     subscriptionName: '',

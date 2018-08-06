@@ -1,6 +1,7 @@
 const nodemailer = require('nodemailer');
 const url = require('url');
-const {roles} = require('../../../services/constants/index');
+const {roles, paths} = require('../../../services/constants/index');
+const escape_html = require('html-escape');
 
 const smtpTransport = nodemailer.createTransport({
     service: "Gmail",
@@ -15,6 +16,67 @@ const smtpTransport = nodemailer.createTransport({
 
 module.exports.sendMail = (mailOptions) => {
     return smtpTransport.sendMail(mailOptions);
+};
+
+module.exports.sendContractRequestMail = (req) => {
+    const {
+        contactDetails,
+        exitFee,
+        joinFee,
+        hasFreeTrials,
+        subscriptionDetails,
+        subscriptionLengthInWeeks,
+        subscriptionName,
+        subscriptionPrice,
+        subscriptionType
+    } = req.body;
+
+    if(!contactDetails || !exitFee || !joinFee || !subscriptionDetails ||
+        !subscriptionLengthInWeeks || !subscriptionName || !subscriptionPrice ||
+        !subscriptionType
+    ){
+        return new Promise(() => {
+            throw new Error("Missing required fields.");
+        });
+    }
+
+    const mailOptions = {
+        to: "sampletonexample@gmail.com",
+        from: contactDetails,
+        subject: `Contract request from ${req.session.user.username}`,
+        html: (
+            `<div>
+                <p><strong>Contact Details:</strong></p>
+                <p>${escape_html(contactDetails)}</p>
+                <hr>
+                <p><strong>Subscription Name:</strong></p>
+                <p>${escape_html(subscriptionName)}</p>
+                <hr>
+                <p><strong>Subscription Type:</strong></p>
+                <p>${escape_html(subscriptionType)}</p>
+                <hr>
+                <p><strong>Subscription Length (in weeks):</strong></p>
+                <p>${escape_html(subscriptionLengthInWeeks)}</p>
+                <hr>
+                <p><strong>Subscription Price (in Wei):</strong></p>
+                <p>${escape_html(subscriptionPrice)}</p>
+                <hr>
+                <p><strong>Joining Fee (in Wei):</strong></p>
+                <p>${escape_html(joinFee)}</p>
+                <hr>
+                <p><strong>Exit Fee (in Wei):</strong></p>
+                <p>${escape_html(exitFee)}</p>
+                <hr>
+                <p><strong>Free Trials:</strong></p>
+                <p>${(hasFreeTrials) ? "Yes" : "No"}</p>
+                <hr>
+                <p><strong>Subscription Details:</strong></p>
+                <p>${escape_html(subscriptionDetails)}</p>
+             </div>`
+        )
+    };
+
+    return module.exports.sendMail(mailOptions);
 };
 
 module.exports.sendMassSupplierMail = (req, sequelize) => {
@@ -40,7 +102,7 @@ module.exports.sendMassSupplierMail = (req, sequelize) => {
                     html: (
                         `<div>
                              <p>Hi <strong>${user.username}!</strong></p>
-                             <p>${body}</p>
+                             <p>${escape_html(body)}</p>
                         </div>`
                     )
                 };
@@ -62,14 +124,22 @@ module.exports.sendContractCreatedMail = (req) => {
         });
     }
 
+    const fullUrl = url.format({
+        protocol: req.protocol,
+        host: req.get('host'),
+        pathname: req.originalUrl
+    });
+
     const mailOptions = {
         to: contactDetails,
-        subject: "[Ethereum Subscription] Your contract request has been approved!",
+        subject: `[Ethereum Subscription] Your ${subscriptionName} contract is ready!`,
         html: (
             `<div>
                 <p>Hi <strong>${contactDetails}!</strong></p>
-                <p>Your <strong>${subscriptionName}</strong> contract has now been published ` +
-                  `and is accessible on the website.</p>
+                <p>Please visit your control panel to add or amend information to the ` +
+                    `subscription – You can click on ` +
+                    `<a href="${fullUrl}/${paths.pages.supplier}">this link</a> to take you ` +
+                    `directly to the smart contract</p>
              </div>`
         )
     };

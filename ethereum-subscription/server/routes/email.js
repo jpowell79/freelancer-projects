@@ -1,18 +1,23 @@
-const {urls, mailTypes} = require('../../services/constants');
+const {urls, mailTypes, httpCodes} = require('../../services/constants');
 const mail = require('../services/api/mail');
 const {isLoggedIn, isLoggedInAdmin} = require('../../services/session');
 const {standardResponseHandler} = require('../services/api/apiUtils');
+const {
+    UNAUTHORIZED,
+    BAD_REQUEST,
+    METHOD_NOT_ALLOWED,
+} = httpCodes;
 
 const handlePost = async (req, res, sequelize) => {
     if(!mailTypes.includes(req.params.type)){
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         return;
     }
 
     const loggedIn = await isLoggedIn(req);
 
     if(!loggedIn){
-        res.sendStatus(401);
+        res.sendStatus(UNAUTHORIZED);
         return;
     }
 
@@ -21,6 +26,8 @@ const handlePost = async (req, res, sequelize) => {
         return standardResponseHandler(res, mail.sendConfirmEmail(req));
     case mailTypes.contractCreated:
         return standardResponseHandler(res, mail.sendContractCreatedMail(req));
+    case mailTypes.requestContract:
+        return standardResponseHandler(res, mail.sendContractRequestMail(req));
     case mailTypes.massMailSuppliers:
         const loggedInAdmin = await isLoggedInAdmin(req);
 
@@ -31,7 +38,7 @@ const handlePost = async (req, res, sequelize) => {
 
         return standardResponseHandler(res, mail.sendMassSupplierMail(req, sequelize));
     default:
-        res.sendStatus(400);
+        res.sendStatus(BAD_REQUEST);
         break;
     }
 };
@@ -43,7 +50,7 @@ module.exports = (server, sequelize) => {
             handlePost(req, res, sequelize);
             break;
         default:
-            res.sendStatus(405);
+            res.sendStatus(METHOD_NOT_ALLOWED);
             break;
         }
     });
