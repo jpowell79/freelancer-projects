@@ -2,10 +2,12 @@ const cryptoAbi = require('./cryptoAbi');
 const tokenHolderClaimAbi = require('./tokenHolderClaimAbi');
 const tokenSaleAbi = require('./tokenSaleAbi');
 const web3 = require('../Web3');
+const TokenSaleWeb3 = require('web3');
 const SETTINGS = require("../../../site-settings");
 const {
     DEBUG_MODE,
     CONTRACT_ADDRESSES,
+    TOKEN_SALE_HTTP_PROVIDER,
     TOKEN_HOLDER_CLAIM_ADDRESS,
     TOKEN_SALE_CONTRACT_ADDRESS,
     DEBUG_FINISH_PRICE_RETRIEVAL_TIME,
@@ -167,7 +169,16 @@ const claimEth = (address) => {
 };
 
 const fetchTokenSaleContract = () => {
-    const methods = new web3.eth.Contract(
+    const getTokenSaleProvider = () => {
+        if (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') {
+            return window.web3.currentProvider;
+        }
+
+        return new web3.providers.HttpProvider(TOKEN_SALE_HTTP_PROVIDER);
+    };
+
+    const tokenSaleWeb3 = new TokenSaleWeb3(getTokenSaleProvider());
+    const methods = new tokenSaleWeb3.eth.Contract(
         tokenSaleAbi,
         TOKEN_SALE_CONTRACT_ADDRESS
     ).methods;

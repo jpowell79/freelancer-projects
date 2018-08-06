@@ -152,6 +152,7 @@ module.exports.PROXY = null;
  * Ethereum Network Settings
  *----------------------------------------*/
 module.exports.HTTP_PROVIDER = 'https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv';
+module.exports.TOKEN_SALE_HTTP_PROVIDER = 'https://mainnet.infura.io/1vVql2txeV5cLgGiNaSXv';
 module.exports.ETHER_SCAN_URL = 'https://kovan.etherscan.io';
 
 
