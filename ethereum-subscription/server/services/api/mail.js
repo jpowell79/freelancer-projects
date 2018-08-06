@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 const url = require('url');
 const {roles, paths} = require('../../../services/constants/index');
-const escape_html = require('html-escape');
+const escapeHtml = require('html-escape');
 
 const smtpTransport = nodemailer.createTransport({
     service: "Gmail",
@@ -31,9 +31,8 @@ module.exports.sendContractRequestMail = (req) => {
         subscriptionType
     } = req.body;
 
-    if(!contactDetails || !exitFee || !joinFee || !subscriptionDetails ||
-        !subscriptionLengthInWeeks || !subscriptionName || !subscriptionPrice ||
-        !subscriptionType
+    if(!exitFee || !joinFee || !subscriptionDetails || !subscriptionLengthInWeeks ||
+        !subscriptionName || !subscriptionPrice || !subscriptionType
     ){
         return new Promise(() => {
             throw new Error("Missing required fields.");
@@ -42,36 +41,36 @@ module.exports.sendContractRequestMail = (req) => {
 
     const mailOptions = {
         to: "sampletonexample@gmail.com",
-        from: contactDetails,
+        from: req.session.user.email,
         subject: `Contract request from ${req.session.user.username}`,
         html: (
             `<div>
                 <p><strong>Contact Details:</strong></p>
-                <p>${escape_html(contactDetails)}</p>
+                <p>${escapeHtml(contactDetails)}</p>
                 <hr>
                 <p><strong>Subscription Name:</strong></p>
-                <p>${escape_html(subscriptionName)}</p>
+                <p>${escapeHtml(subscriptionName)}</p>
                 <hr>
                 <p><strong>Subscription Type:</strong></p>
-                <p>${escape_html(subscriptionType)}</p>
+                <p>${escapeHtml(subscriptionType)}</p>
                 <hr>
                 <p><strong>Subscription Length (in weeks):</strong></p>
-                <p>${escape_html(subscriptionLengthInWeeks)}</p>
+                <p>${escapeHtml(subscriptionLengthInWeeks)}</p>
                 <hr>
                 <p><strong>Subscription Price (in Wei):</strong></p>
-                <p>${escape_html(subscriptionPrice)}</p>
+                <p>${escapeHtml(subscriptionPrice)}</p>
                 <hr>
                 <p><strong>Joining Fee (in Wei):</strong></p>
-                <p>${escape_html(joinFee)}</p>
+                <p>${escapeHtml(joinFee)}</p>
                 <hr>
                 <p><strong>Exit Fee (in Wei):</strong></p>
-                <p>${escape_html(exitFee)}</p>
+                <p>${escapeHtml(exitFee)}</p>
                 <hr>
                 <p><strong>Free Trials:</strong></p>
                 <p>${(hasFreeTrials) ? "Yes" : "No"}</p>
                 <hr>
                 <p><strong>Subscription Details:</strong></p>
-                <p>${escape_html(subscriptionDetails)}</p>
+                <p>${escapeHtml(subscriptionDetails)}</p>
              </div>`
         )
     };
@@ -102,7 +101,7 @@ module.exports.sendMassSupplierMail = (req, sequelize) => {
                     html: (
                         `<div>
                              <p>Hi <strong>${user.username}!</strong></p>
-                             <p>${escape_html(body)}</p>
+                             <p>${escapeHtml(body)}</p>
                         </div>`
                     )
                 };

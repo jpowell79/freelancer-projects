@@ -10,6 +10,7 @@ import MassEmail from "../site-modules/admin-sections/MassEmail";
 import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
 import AddContract from "../site-modules/admin-sections/AddContract";
 import SmartContractData from "../site-modules/admin-sections/SmartContractData";
+import AddContractType from "../site-modules/admin-sections/AddContractType";
 
 class Admin extends Component {
     static sections = {
@@ -17,7 +18,7 @@ class Admin extends Component {
         suspendSuppliers: 'Suspend Suppliers',
         massEmail: 'Mass Email to Suppliers',
         backupDatabase: 'Backup Database',
-        addSubCategory: 'Add new Sub Category',
+        addContractType: 'Add new contract type',
         homepageBanner: 'Homepage Banner',
         smartContract: 'Smart Contract Data',
         siteIdentity: 'Site Identity'
@@ -37,7 +38,7 @@ class Admin extends Component {
             suspendSuppliers,
             massEmail,
             backupDatabase,
-            addSubCategory,
+            addContractType,
             homepageBanner,
             smartContract,
             siteIdentity
@@ -52,8 +53,8 @@ class Admin extends Component {
             return <MassEmail/>;
         case backupDatabase:
             return <p>Backup</p>;
-        case addSubCategory:
-            return <p>Sub Category</p>;
+        case addContractType:
+            return <AddContractType/>;
         case homepageBanner:
             return <HomepageBanner/>;
         case smartContract:

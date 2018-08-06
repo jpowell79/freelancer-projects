@@ -8,7 +8,6 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'password':
         return module.exports.getPasswordError(field);
     case 'email':
-    case 'contactDetails':
         return module.exports.getEmailError(field, strings.spaceCamelCase(fieldName));
     case 'grecaptcha':
         return module.exports.getGrecaptchaError();
@@ -25,6 +24,7 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'subscriptionLengthInWeeks':
         return module.exports.getNumberError(field, strings.spaceCamelCase(fieldName));
     case 'subscriptionType':
+    case 'contractType':
     case 'subject':
     case 'body':
         return module.exports.getTextError(field, strings.spaceCamelCase(fieldName));

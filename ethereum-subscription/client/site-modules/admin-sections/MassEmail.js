@@ -4,40 +4,19 @@ import axios from 'axios';
 import {urls, mailTypes} from '../../../services/constants';
 import withMessage from '../../config/withMessage';
 import {LoaderTiny} from "../../modules/icons";
-import validation from '../../../services/validation';
-import strings from '../../../services/strings';
 
 class MassEmail extends Component {
-    hasValidFields = () => {
-        const errors = Object.keys(this.props.messageState)
-            .map(key => validation.getFieldError(key, this.props.messageState[key]))
-            .filter(error => strings.isDefined(error));
-
-        if(errors.length > 0){
-            this.props.setMessageState({errors});
-            return false;
-        }
-
-        return true;
-    };
-
     handleSubmit = () => {
-        if(!this.hasValidFields()) return;
+        if(this.props.hasFieldErrors()) return;
 
-        this.props.setMessageState({
-            isLoading: true,
-            errors: []
-        });
+        this.props.setIsLoading();
 
         return axios.post(`${urls.email}/${mailTypes.massMailSuppliers}`, {
             subject: this.props.messageState.subject,
             body: this.props.messageState.body
         }).then(() => {
-            this.props.setMessageState({
-                isLoading: false,
+            this.props.setComplete({
                 successTitle: 'The emails was sent successfully!',
-                showSuccess: true,
-                complete: true
             });
         }).catch(() => {
             this.props.setMessageState({
@@ -51,10 +30,11 @@ class MassEmail extends Component {
         const {
             messageState,
             setMessageState,
-            renderMessages
+            renderMessages,
         } = this.props;
 
         const {
+            fieldsWithErrors,
             isLoading,
             complete,
             subject,
@@ -66,7 +46,7 @@ class MassEmail extends Component {
                 {renderMessages()}
                 <h2>Mass Email to Suppliers</h2>
                 <Form>
-                    <Form.Field>
+                    <Form.Field error={fieldsWithErrors.includes('subject')}>
                         <label>Subject:</label>
                         <input
                             type="text"
@@ -79,7 +59,7 @@ class MassEmail extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
+                    <Form.Field error={fieldsWithErrors.includes('body')}>
                         <label>Body:</label>
                         <textarea
                             value={body}

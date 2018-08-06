@@ -29,13 +29,15 @@ function SubscriptionContracts({req, res, sequelize}){
             });
     };
 
-    this.sendCreate = async (contract) => {
+    this.sendCreate = async () => {
         const loggedInAdmin = await isLoggedInAdmin(req);
 
         if(!loggedInAdmin){
             res.sendStatus(UNAUTHORIZED);
             return;
         }
+
+        const contract = req.body;
 
         this.model.create(contract)
             .then(() => {
