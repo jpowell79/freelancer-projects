@@ -57,9 +57,11 @@ class AddContractForm extends Component {
                             value={messageState.supplierUsername}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    supplierUsername: event.target.value
-                                });
+                                if(event.target.value.length <= 64){
+                                    setMessageState({
+                                        supplierUsername: event.target.value
+                                    });
+                                }
                             }}
                         />
                     </Form.Field>
@@ -72,9 +74,11 @@ class AddContractForm extends Component {
                             value={messageState.contractAddress}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    contractAddress: event.target.value
-                                });
+                                if(event.target.value.length <= 42){
+                                    setMessageState({
+                                        contractAddress: event.target.value
+                                    });
+                                }
                             }}
                         />
                     </Form.Field>
@@ -87,9 +91,11 @@ class AddContractForm extends Component {
                             value={messageState.subscriptionName}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    subscriptionName: event.target.value
-                                });
+                                if(event.target.value.length <= 64){
+                                    setMessageState({
+                                        subscriptionName: event.target.value
+                                    });
+                                }
                             }}
                         />
                     </Form.Field>
@@ -110,13 +116,18 @@ class AddContractForm extends Component {
                         messageState.fieldsWithErrors.includes('subscriptionDetails')
                     }>
                         <label>Subscription Details (max 2048 characters)</label>
+                        <span className="counter">
+                            {2048 - messageState.subscriptionDetails.length}
+                        </span>
                         <textarea
                             value={messageState.subscriptionDetails}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    subscriptionDetails: event.target.value
-                                });
+                                if(event.target.value.length <= 2048){
+                                    setMessageState({
+                                        subscriptionDetails: event.target.value
+                                    });
+                                }
                             }}
                             rows={6}
                         />

@@ -35,7 +35,7 @@ class SubscriptionForm extends Component {
         const {
             setMessageState,
             messageState,
-            renderMessages
+            renderMessages,
         } = this.props;
 
         const {
@@ -52,14 +52,19 @@ class SubscriptionForm extends Component {
                         messageState.fieldsWithErrors.includes('contactDetails')
                     }>
                         <label>Contact details (optional - max 50 characters)</label>
+                        <span className="counter">
+                            {50 - messageState.contactDetails.length}
+                        </span>
                         <input
                             disabled={isLoading || complete}
                             type="text"
                             value={messageState.contactDetails}
                             onChange={(event) => {
-                                setMessageState({
-                                    contactDetails: event.target.value
-                                });
+                                if(event.target.value.length <= 50){
+                                    setMessageState({
+                                        contactDetails: event.target.value
+                                    });
+                                }
                             }}
                         />
                     </Form.Field>
@@ -88,9 +93,11 @@ class SubscriptionForm extends Component {
                             value={messageState.subscriptionName}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    subscriptionName: event.target.value
-                                });
+                                if(event.target.value.length <= 64){
+                                    setMessageState({
+                                        subscriptionName: event.target.value
+                                    });
+                                }
                             }}
                         />
                     </Form.Field>
@@ -182,14 +189,19 @@ class SubscriptionForm extends Component {
                     <Form.Field error={
                         messageState.fieldsWithErrors.includes('subscriptionDetails')
                     }>
-                        <label>Subscription Details (max 500 characters)</label>
+                        <label>Subscription Details (max 2048 characters)</label>
+                        <span className="counter">
+                            {2048 - messageState.subscriptionDetails.length}
+                        </span>
                         <textarea
                             value={messageState.subscriptionDetails}
                             disabled={isLoading || complete}
                             onChange={(event) => {
-                                setMessageState({
-                                    subscriptionDetails: event.target.value
-                                });
+                                if(event.target.value.length <= 2048){
+                                    setMessageState({
+                                        subscriptionDetails: event.target.value
+                                    });
+                                }
                             }}
                             rows={6}
                         />

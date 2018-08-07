@@ -84,9 +84,11 @@ class SmartContractData extends Component {
                                         value={this.state.supplierWalletAddress}
                                         disabled={messageState.isLoading || messageState.complete}
                                         onChange={(event) => {
-                                            this.setState({
-                                                supplierWalletAddress: event.target.value
-                                            });
+                                            if(event.target.value.length <= 42){
+                                                this.setState({
+                                                    supplierWalletAddress: event.target.value
+                                                });
+                                            }
                                         }}
                                     />
                                 </Form.Field>
@@ -103,9 +105,11 @@ class SmartContractData extends Component {
                                         value={this.state.smartContractAddress}
                                         disabled={messageState.isLoading || messageState.complete}
                                         onChange={(event) => {
-                                            this.setState({
-                                                smartContractAddress: event.target.value
-                                            });
+                                            if(event.target.value.length <= 42){
+                                                this.setState({
+                                                    smartContractAddress: event.target.value
+                                                });
+                                            }
                                         }}
                                     />
                                 </Form.Field>
