@@ -4,11 +4,11 @@
 3. `npm run dev`
 4. The server will then create the whole database schema if it doesn't already exist and load in the [defaultData](server/services/database/defaultData.js) when creating the database for the first time.
 
-##Scripts
+## Scripts
 1. `npm run removeDatabase`: Removes the database with the name defined in [serverSettings.js](./server/serverSettings.js).
 2. `npm run defaultDatabase`: First runs `removeDatabase` then loads all [defaultData](server/services/database/defaultData.js).
 
-##Login
+## Login
 The site loads in some accounts by default. Check the list of users defined in [defaultData](server/services/database/defaultData.js).
 
 ## Project Structure:
