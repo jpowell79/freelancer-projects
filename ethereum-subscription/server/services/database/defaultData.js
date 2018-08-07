@@ -1,4 +1,4 @@
-const roles = require('./constants/roles');
+const roles = require('../../../services/constants/roles');
 
 module.exports.settings = {
     etherScanUrl: 'https://kovan.etherscan.io',

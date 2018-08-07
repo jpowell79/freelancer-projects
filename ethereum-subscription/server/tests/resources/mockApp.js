@@ -2,7 +2,7 @@ const testSettings = require('../serverTestSettings');
 const configServer = require('../../config/configServer');
 const configSequelize = require('../../config/configSequelize');
 const loadTestDatabase = require('./loadTestDatabase');
-const {removeDatabase} = require('../../services/databaseUtils');
+const {removeDatabase} = require('../../services/database/databaseUtils');
 require('../../config/addGlobalHelpers')();
 
 module.exports = async () => {

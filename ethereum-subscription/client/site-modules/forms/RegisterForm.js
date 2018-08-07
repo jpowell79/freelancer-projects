@@ -6,7 +6,7 @@ import axios from 'axios';
 import urls from '../../../services/constants/urls';
 import roles from '../../../services/constants/roles';
 import {LoaderTiny} from "../../modules/icons";
-import withMessage from '../../config/withMessage';
+import withMessage from '../../hoc/withMessage';
 
 class RegisterForm extends Component {
     static fields = [

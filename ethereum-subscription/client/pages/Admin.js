@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
-import withAuthenticateAdmin from '../config/withAuthenticateAdmin';
+import withAuthenticateAdmin from '../hoc/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";

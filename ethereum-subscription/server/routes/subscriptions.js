@@ -41,6 +41,10 @@ const handleTypesRequest = (req, res, sequelize) => {
     case "GET":
         return subscriptionTypes.sendGetAll();
     case "POST":
+        if(req.body.update){
+            return subscriptionTypes.sendUpdate();
+        }
+
         return subscriptionTypes.sendCreate();
     default:
         res.sendStatus(METHOD_NOT_ALLOWED);

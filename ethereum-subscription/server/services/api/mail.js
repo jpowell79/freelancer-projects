@@ -2,21 +2,13 @@ const nodemailer = require('nodemailer');
 const url = require('url');
 const {roles, paths} = require('../../../services/constants/index');
 const escapeHtml = require('html-escape');
+const serverSettings = require('../../serverSettings');
 
-const smtpTransport = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-        user: "sampletonexample",
-        pass: "Sampleton_Example"
-    },
-    tls: {
-        rejectUnauthorized: false
-    }
-});
+const smtpTransport = nodemailer.createTransport(serverSettings.NODEMAILER_TRANSPORT);
 
-module.exports.sendMail = (mailOptions) => {
-    return smtpTransport.sendMail(mailOptions);
-};
+module.exports.sendMail = (mailOptions) => (
+    smtpTransport.sendMail(mailOptions)
+);
 
 module.exports.sendContractRequestMail = (req) => {
     const {

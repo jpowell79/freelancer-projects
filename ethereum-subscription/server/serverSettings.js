@@ -27,7 +27,23 @@ module.exports.DATABASE_PASSWORD = null;
 module.exports.DATABASE_PORT = 3306;
 module.exports.DATABASE_DIALECT = 'mysql';
 
+
 /*----------------------------------------
  * ReCAPTCHA
  *----------------------------------------*/
 module.exports.RECAPTCHA_SECRET_KEY = '6LcVbGIUAAAAAJebHtHYG4kFtHLaN-jeGgr6jZC8';
+
+
+/*----------------------------------------
+ * Email
+ *----------------------------------------*/
+module.exports.NODEMAILER_TRANSPORT = {
+    service: "Gmail",
+    auth: {
+        user: "sampletonexample",
+        pass: "Sampleton_Example"
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+};

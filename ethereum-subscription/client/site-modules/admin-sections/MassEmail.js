@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import {Form} from 'semantic-ui-react';
 import axios from 'axios';
 import {urls, mailTypes} from '../../../services/constants';
-import withMessage from '../../config/withMessage';
+import withMessage from '../../hoc/withMessage';
 import {LoaderTiny} from "../../modules/icons";
 
 class MassEmail extends Component {

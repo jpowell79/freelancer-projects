@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import withMessage from '../../config/withMessage';
+import withMessage from '../../hoc/withMessage';
 import {Form} from 'semantic-ui-react';
 import {LoaderTiny} from "../../modules/icons";
 import PropTypes from 'prop-types';

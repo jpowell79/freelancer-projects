@@ -1,13 +1,14 @@
 const configSequelize = require('./server/config/configSequelize');
 const serverSettings = require('./server/serverSettings');
-const defaultDatabase = require('./server/services/defaultDatabase');
 const addGlobalHelpers = require('./server/config/addGlobalHelpers');
-const {removeDatabase} = require('./server/services/databaseUtils');
+const {removeDatabase} = require('./server/services/database/databaseUtils');
+const passwordHash = require('password-hash');
 addGlobalHelpers();
 
 const arguments = {
     defaultDatabase: 'defaultDatabase',
-    removeDatabase: 'removeDatabase'
+    removeDatabase: 'removeDatabase',
+    hashPassword: 'hashPassword'
 };
 
 const printHelp = () => {
@@ -29,25 +30,42 @@ if (process.argv.length < 3) {
     printHelp();
 }
 
-configSequelize(serverSettings, false)
-    .then(sequelize => {
-        switch (process.argv[2]) {
-        case arguments.removeDatabase:
-            return removeDatabase(sequelize, serverSettings.DATABASE_NAME);
-        case arguments.defaultDatabase:
-            return defaultDatabase.load(sequelize);
-        case 'help':
-            printHelp();
-            break;
-        default:
-            console.error(`Error: Unexpected argument ${process.argv[2]}`);
-            printHelp();
+if(process.argv[2].includes('Database')){
+    configSequelize(serverSettings, false)
+        .then(sequelize => {
+            switch (process.argv[2]) {
+            case arguments.removeDatabase:
+                return removeDatabase(sequelize, serverSettings.DATABASE_NAME);
+            case arguments.defaultDatabase:
+                return removeDatabase(sequelize, serverSettings.DATABASE_NAME)
+                    .then(() => configSequelize(serverSettings));
+            case 'help':
+                printHelp();
+                break;
+            default:
+                console.error(`Error: Unexpected argument ${process.argv[2]}`);
+                printHelp();
+                process.exit(1);
+                break;
+            }
+        })
+        .then(() => process.exit(0))
+        .catch(err => {
+            console.error(err);
             process.exit(1);
-            break;
-        }
-    })
-    .then(() => process.exit(0))
-    .catch(err => {
-        console.error(err);
+        });
+} else {
+    switch (process.argv[2]) {
+    case arguments.hashPassword:
+        console.log(passwordHash.generate(process.argv[3]));
+        break;
+    case 'help':
+        printHelp();
+        break;
+    default:
+        console.error(`Error: Unexpected argument ${process.argv[2]}`);
+        printHelp();
         process.exit(1);
-    });
+        break;
+    }
+}

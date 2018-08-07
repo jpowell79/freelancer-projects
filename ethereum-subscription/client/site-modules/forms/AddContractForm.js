@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import {Form, Dropdown} from 'semantic-ui-react';
-import withMessage from '../../config/withMessage';
+import withMessage from '../../hoc/withMessage';
 import PropTypes from 'prop-types';
 import {LoaderTiny} from "../../modules/icons";
 import {connect} from 'react-redux';
