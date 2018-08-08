@@ -151,7 +151,6 @@ class SubscriptionTable extends Component {
                         <Pagination
                             activePage={this.state.activePage}
                             onPageChange={(e, {activePage}) => {
-                                console.log(activePage);
                                 this.setState({activePage});
                             }}
                             totalPages={totalPages}

@@ -53,7 +53,7 @@ class Index extends Component {
                         />
                     </div>
                     <SubscriptionTable
-                        maxRows={25}
+                        maxRows={100}
                         subscriptionContracts={
                             filterSubscriptionContracts(
                                 liveSubscriptionContracts,

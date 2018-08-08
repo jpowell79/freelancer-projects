@@ -112,9 +112,12 @@ class SubscriptionFilters extends Component {
         } = this.state;
 
         return (
-            <Fragment>
+            <div className="divider-2">
                 <Grid stackable className="unstack-md">
-                    <Grid.Column width={9}>
+                    <Grid.Column width={9} style={{
+                        display: "flex",
+                        flexDirection: "column"
+                    }}>
                         <Segment>
                             <p className="bold">Show the following subscription types:</p>
                             <Form>
@@ -162,17 +165,23 @@ class SubscriptionFilters extends Component {
                                         onClick={this.handleCheckAllSubscriptionTypes}
                                     />
                                 </Form.Group>
-                                <Form.Group>
-                                    <Form.Checkbox
-                                        label="Show currently active subscriptions"
-                                        checked={showActiveSubscriptionsChecked}
-                                        onClick={() => {
-                                            this.handleCheckboxClick('showActiveSubscriptionsChecked');
-                                        }}
-                                    />
-                                </Form.Group>
                             </Form>
                         </Segment>
+                        <Form as={Segment} style={{
+                            display: "flex",
+                            flex: 1,
+                            alignItems: "center",
+                            marginTop: 0,
+                            padding: "1em 1em"
+                        }}>
+                            <Form.Checkbox
+                                label="Show currently active subscriptions"
+                                checked={showActiveSubscriptionsChecked}
+                                onClick={() => {
+                                    this.handleCheckboxClick('showActiveSubscriptionsChecked');
+                                }}
+                            />
+                        </Form>
                     </Grid.Column>
                     <Grid.Column width={7}>
                         <Segment>
@@ -208,29 +217,29 @@ class SubscriptionFilters extends Component {
                                         onClick={this.handleCheckAllAdditional}
                                     />
                                 </Form.Group>
-                                <div>
-                                    <Form.Field
-                                        label="Search Subscription by Tx Hash:"
-                                        control="input"
-                                        style={{width: "100%"}}
-                                        value={txHashSearch}
-                                        onChange={(event) => {
-                                            this.props.onChange({
-                                                ...this.state,
-                                                txHashSearch: event.target.value
-                                            });
-
-                                            this.setState({
-                                                txHashSearch: event.target.value
-                                            });
-                                        }}
-                                    />
-                                </div>
                             </Form>
                         </Segment>
+                        <Form as={Segment}>
+                            <Form.Field
+                                label="Search Subscription by Tx Hash:"
+                                control="input"
+                                style={{width: "100%"}}
+                                value={txHashSearch}
+                                onChange={(event) => {
+                                    this.props.onChange({
+                                        ...this.state,
+                                        txHashSearch: event.target.value
+                                    });
+
+                                    this.setState({
+                                        txHashSearch: event.target.value
+                                    });
+                                }}
+                            />
+                        </Form>
                     </Grid.Column>
                 </Grid>
-            </Fragment>
+            </div>
         );
     }
 }

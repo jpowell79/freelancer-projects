@@ -12,7 +12,8 @@ const generateDummySubscriptionContracts = (amount) =>{
         'IPTV Subscription',
         'Magazine Subscription',
         'Website Membership',
-        'Other'
+        'Other',
+        'Foobar'
     ];
 
     for(let i = 0; i < amount; i++){
