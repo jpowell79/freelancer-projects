@@ -4,7 +4,7 @@ import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateAdmin from '../hocs/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
 import objects from '../../services/objects';
-import HomepageBanner from "../site-modules/admin-sections/HomepageBanner";
+import Homepage from "../site-modules/admin-sections/Homepage";
 import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
 import MassEmail from "../site-modules/admin-sections/MassEmail";
 import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
@@ -19,7 +19,7 @@ class Admin extends Component {
         massEmail: 'Mass Email to Suppliers',
         backupDatabase: 'Backup Database',
         addContractType: 'Add new contract type',
-        homepageBanner: 'Homepage Banner',
+        homepage: 'Homepage',
         smartContract: 'Smart Contract Data',
         siteIdentity: 'Site Identity'
     };
@@ -39,7 +39,7 @@ class Admin extends Component {
             massEmail,
             backupDatabase,
             addContractType,
-            homepageBanner,
+            homepage,
             smartContract,
             siteIdentity
         } = Admin.sections;
@@ -55,8 +55,8 @@ class Admin extends Component {
             return <p>Backup</p>;
         case addContractType:
             return <AddContractType/>;
-        case homepageBanner:
-            return <HomepageBanner/>;
+        case homepage:
+            return <Homepage/>;
         case smartContract:
             return <SmartContractData/>;
         case siteIdentity:

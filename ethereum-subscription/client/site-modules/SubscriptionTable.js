@@ -146,7 +146,7 @@ class SubscriptionTable extends Component {
                         {this.renderSubscriptionContracts()}
                     </tbody>
                 </SortableTable>
-                {(this.props.maxRows > 0 && totalPages > 1) && (
+                {(totalPages > 1) && (
                     <div className="text-center">
                         <Pagination
                             activePage={this.state.activePage}

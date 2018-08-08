@@ -13,6 +13,7 @@ module.exports.settings = {
         `if it ever becomes necessary.`
     ),
     homepageBannerTitle: 'Ethereum Subscriptions',
+    homepageTableMaxRows: '100',
     logo: 'logo.png',
     siteTitle: 'Ethereum Subscriptions'
 };

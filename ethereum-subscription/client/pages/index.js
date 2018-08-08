@@ -11,6 +11,7 @@ import {filterSubscriptionContracts} from "../services/filters";
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
+
     state = {
         filters: {}
     };
@@ -24,6 +25,8 @@ class Index extends Component {
             settings,
             liveSubscriptionContracts
         } = this.props;
+
+        console.log(settings.homepageTableMaxRows);
 
         return (
             <Page>
@@ -53,7 +56,7 @@ class Index extends Component {
                         />
                     </div>
                     <SubscriptionTable
-                        maxRows={100}
+                        maxRows={parseInt(settings.homepageTableMaxRows.value, 10)}
                         subscriptionContracts={
                             filterSubscriptionContracts(
                                 liveSubscriptionContracts,
