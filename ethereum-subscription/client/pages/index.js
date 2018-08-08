@@ -53,14 +53,13 @@ class Index extends Component {
                         />
                     </div>
                     <SubscriptionTable
+                        maxRows={25}
                         subscriptionContracts={
                             filterSubscriptionContracts(
                                 liveSubscriptionContracts,
                                 this.state.filters
                             )
                         }
-                        showExitFee={this.state.filters.showExitFeeChecked}
-                        showJoinFee={this.state.filters.showJoinFeeChecked}
                     />
                 </FullWidthSegment>
             </Page>

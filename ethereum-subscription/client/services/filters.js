@@ -12,6 +12,8 @@ export const filterSubscriptionContracts = (subscriptionContracts, filterState) 
         websiteMembershipChecked,
         showActiveSubscriptionsChecked,
         showZeroReputationChecked,
+        showExitFeeChecked,
+        showJoinFeeChecked,
         txHashSearch
     } = filterState;
 
@@ -28,8 +30,20 @@ export const filterSubscriptionContracts = (subscriptionContracts, filterState) 
             return false;
         if(hasReputationToHide(contract))
             return false;
+        if(hasExitFeeToHide(contract))
+            return false;
+        if(hasJoinFeeToHide(contract))
+            return false;
 
         return !hasTxHashToHide(contract);
+    };
+
+    const hasExitFeeToHide = (contract) => {
+        return (!showExitFeeChecked) ? contract.exitFee !== 0 : false;
+    };
+
+    const hasJoinFeeToHide = (contract) => {
+        return (!showJoinFeeChecked) ? contract.joiningFee !== 0 : false;
     };
 
     const hasTxHashToHide = (contract) => {

@@ -4,18 +4,19 @@ import PropTypes from 'prop-types';
 import strings from '../../services/strings';
 import {Star} from "../modules/icons";
 import {classNames} from "../services/className";
+import {Pagination} from 'semantic-ui-react';
 
 class SubscriptionTable extends Component {
     static defaultProps = {
-        showExitFee: true,
-        showJoinFee: true
+        maxRows: -1
     };
 
     static propTypes = {
         subscriptionContracts: PropTypes.array.isRequired,
-        showExitFee: PropTypes.bool,
-        showJoinFee: PropTypes.bool
+        maxRows: PropTypes.number
     };
+
+    state = {activePage: 1};
 
     renderReputationStars = (name, reputation) => {
         if(reputation < 2){
@@ -70,56 +71,58 @@ class SubscriptionTable extends Component {
     };
 
     renderSubscriptionContracts = () => {
+        const {activePage} = this.state;
+        const {maxRows} = this.props;
+
         return (
-            this.props.subscriptionContracts.map((contract, i) => {
-                //TODO: Add more info link
+            this.props.subscriptionContracts
+                .filter((contract, i) => {
+                    if(maxRows < 0) return true;
 
-                const buttonClass = classNames({
-                    'ui button': true,
-                    'primary': !contract.subscriptionActive,
-                    'bg-color-uiRed color-white': contract.subscriptionActive
-                });
+                    return (i >= (maxRows*(activePage-1))) && (i < (maxRows*activePage));
+                })
+                .map((contract, i) => {
+                    //TODO: Add more info link
 
-                const exitFeeClass = classNames({
-                    'hide-xxs': !this.props.showExitFee
-                });
-                const joinFeeClass = classNames({
-                    'hide-xxs': !this.props.showJoinFee
-                });
+                    const buttonClass = classNames({
+                        'ui button': true,
+                        'primary': !contract.subscriptionActive,
+                        'bg-color-uiRed color-white': contract.subscriptionActive
+                    });
 
-                return (
-                    <tr key={i}>
-                        <td>{contract.type}</td>
-                        <td>{this.renderReputationStars(
-                            contract.supplierName,
-                            contract.reputation
-                        )}</td>
-                        <td>{contract.reputation}</td>
-                        <td>{strings.toDateString(new Date(contract.contractCreation))}</td>
-                        <td>TBI</td>
-                        <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
-                        <td className={joinFeeClass}>{contract.joiningFee} Eth</td>
-                        <td className={exitFeeClass}>{contract.exitFee} Eth</td>
-                        <td>{contract.subscriptionLengthInWeeks} Weeks</td>
-                        <td>{contract.subscriptionAmountToPay} Eth</td>
-                        <td>
-                            <button className={buttonClass}>
-                                More Info
-                            </button>
-                        </td>
-                    </tr>
-                );
+                    return (
+                        <tr key={i}>
+                            <td>{contract.type}</td>
+                            <td>{this.renderReputationStars(
+                                contract.supplierName,
+                                contract.reputation
+                            )}</td>
+                            <td>{contract.reputation}</td>
+                            <td>{strings.toDateString(new Date(contract.contractCreation))}</td>
+                            <td>TBI</td>
+                            <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
+                            <td>{contract.joiningFee} Eth</td>
+                            <td>{contract.exitFee} Eth</td>
+                            <td>{contract.subscriptionLengthInWeeks} Weeks</td>
+                            <td>{contract.subscriptionAmountToPay} Eth</td>
+                            <td>
+                                <button className={buttonClass}>
+                                    More Info
+                                </button>
+                            </td>
+                        </tr>
+                    );
             })
         );
     };
 
     render(){
-        const exitFeeClass = classNames({
-            'hide-xxs': !this.props.showExitFee
-        });
-        const joinFeeClass = classNames({
-            'hide-xxs': !this.props.showJoinFee
-        });
+        const {
+            subscriptionContracts,
+            maxRows
+        } = this.props;
+
+        const totalPages = Math.ceil(subscriptionContracts.length/maxRows);
 
         return (
             <Fragment>
@@ -132,8 +135,8 @@ class SubscriptionTable extends Component {
                             <th>Registration Age</th>
                             <th>Wallet Age</th>
                             <th>Free Trial</th>
-                            <th className={joinFeeClass}>Join Fee</th>
-                            <th className={exitFeeClass}>Exit Fee</th>
+                            <th>Join Fee</th>
+                            <th>Exit Fee</th>
                             <th>Contract Length</th>
                             <th>Monthly Price</th>
                             <th className="no-sort"/>
@@ -143,6 +146,18 @@ class SubscriptionTable extends Component {
                         {this.renderSubscriptionContracts()}
                     </tbody>
                 </SortableTable>
+                {(this.props.maxRows > 0 && totalPages > 1) && (
+                    <div className="text-center">
+                        <Pagination
+                            activePage={this.state.activePage}
+                            onPageChange={(e, {activePage}) => {
+                                console.log(activePage);
+                                this.setState({activePage});
+                            }}
+                            totalPages={totalPages}
+                        />
+                    </div>
+                )}
             </Fragment>
         );
     }

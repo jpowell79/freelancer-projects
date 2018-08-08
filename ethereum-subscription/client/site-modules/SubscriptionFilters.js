@@ -62,7 +62,6 @@ class SubscriptionFilters extends Component {
                     otherChecked: false,
                     magazineSubscriptionChecked: false,
                     websiteMembershipChecked: false,
-                    showActiveSubscriptionsChecked: false,
                     checkAllSubscriptionTypes: false
                 })
                 : ({
@@ -71,7 +70,6 @@ class SubscriptionFilters extends Component {
                     otherChecked: true,
                     magazineSubscriptionChecked: true,
                     websiteMembershipChecked: true,
-                    showActiveSubscriptionsChecked: true,
                     checkAllSubscriptionTypes: true
                 });
 
