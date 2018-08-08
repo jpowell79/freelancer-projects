@@ -48,13 +48,13 @@ export const filterSubscriptionContracts = (subscriptionContracts, filterState) 
 
     const hasTypeToHide = (contract) => {
         if(isTypeToHide(contract, gymMembershipChecked, "Gym Membership"))
-            return false;
+            return true;
         if(isTypeToHide(contract, iptvSubscriptionChecked, "IPTV Subscription"))
-            return false;
+            return true;
         if(isTypeToHide(contract, magazineSubscriptionChecked, "Magazine Subscription"))
-            return false;
+            return true;
         if(isTypeToHide(contract, websiteMembershipChecked, "Website Membership"))
-            return false;
+            return true;
 
         return isTypesToHide(contract, otherChecked, types);
     };
