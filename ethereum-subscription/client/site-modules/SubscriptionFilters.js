@@ -24,6 +24,8 @@ class SubscriptionFilters extends Component {
             checkAllAdditional: true,
             txHashSearch: ''
         };
+
+        props.onChange(this.state);
     }
 
     handleCheckAllAdditional = () => {

@@ -20,6 +20,14 @@ module.exports.serverRequest = (req, url) => {
     });
 };
 
+module.exports.ethToWei = (eth) => {
+    return eth * 1000000000000000000;
+};
+
+module.exports.weiToEth = (wei) => {
+    return wei/1000000000000000000;
+};
+
 module.exports.random = (lowest, highest) => {
     return Math.floor((Math.random() * highest) + lowest);
 };

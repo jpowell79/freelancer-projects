@@ -10,6 +10,9 @@ export const LoaderSmall = ({className = "", ...props}) =>
 export const LoaderTiny = ({className = "", ...props}) =>
     <div {...props} className={joinClassNames('loader-tiny', className)}/>;
 
+export const Star = ({className = "", ...props}) =>
+    <i {...props} className={joinClassNames('star icon', className)}/>;
+
 export const Times = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames('times icon', className)}/>;
 

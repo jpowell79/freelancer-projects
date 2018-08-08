@@ -7,12 +7,16 @@ import paths from '../../services/constants/paths';
 import {connect} from 'react-redux';
 import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
 import SubscriptionFilters from "../site-modules/SubscriptionFilters";
+import {filterSubscriptionContracts} from "../services/filters";
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
+    state = {
+        filters: {}
+    };
 
-    handleSubscriptionFormChange = (formState) => {
-        console.log(formState);
+    handleSubscriptionFormChange = (filterFormState) => {
+        this.setState({filters: filterFormState});
     };
 
     render () {
@@ -49,7 +53,14 @@ class Index extends Component {
                         />
                     </div>
                     <SubscriptionTable
-                        subscriptionContracts={liveSubscriptionContracts}
+                        subscriptionContracts={
+                            filterSubscriptionContracts(
+                                liveSubscriptionContracts,
+                                this.state.filters
+                            )
+                        }
+                        showExitFee={this.state.filters.showExitFeeChecked}
+                        showJoinFee={this.state.filters.showJoinFeeChecked}
                     />
                 </FullWidthSegment>
             </Page>
@@ -57,4 +68,4 @@ class Index extends Component {
     }
 }
 
-export default withSubscriptionContracts(25)(connect(Index.mapStateToProps)(Index));
+export default withSubscriptionContracts({useDummyData: true})(connect(Index.mapStateToProps)(Index));
