@@ -75,6 +75,10 @@ export default (options = {}) => (Module) => {
                 ? generateDummySubscriptionContracts(mergedOptions.amountOfDummyDataToGenerate)
                 : this.props.subscriptionContracts;
 
+            if(mergedOptions.useDummyData){
+                window.__DUMMY_SUBSCRIPTION_CONTRACTS__ = this.subscriptionContracts;
+            }
+
             if(mergedOptions.maxLoad < 0){
                 this.loadContracts(0, this.subscriptionContracts.length-1);
             } else {

@@ -14,7 +14,8 @@ module.exports = {
         howItWorks: '/HowItWorks',
         about: '/About',
         admin: '/Admin',
-        supplier: '/Supplier'
+        supplier: '/Supplier',
+        subscriptionInfo: '/SubscriptionInfo'
     },
     static: {
         images: IMAGES,
@@ -24,9 +25,10 @@ module.exports = {
     },
     redirect: (url, res = null) => {
         if(isServer()){
-            res.writeHead(302, {Location: url});
+            res.writeHead(302, {
+                Location: url
+            });
             res.end();
-            res.finished = true;
         } else {
             document.location.pathname = url;
         }

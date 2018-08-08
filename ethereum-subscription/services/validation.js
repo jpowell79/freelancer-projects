@@ -15,7 +15,7 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'contractAddress':
     case 'smartContractAddress':
     case 'supplierWalletAddress':
-        return module.exports.getWalletAddressError(field, strings.spaceCamelCase(fieldName));
+        return module.exports.getEthereumAddressError(field, strings.spaceCamelCase(fieldName));
     case 'subscriptionName':
         return module.exports.getNameError(field, strings.spaceCamelCase(fieldName));
     case 'exitFee':
@@ -95,7 +95,7 @@ module.exports.getPasswordError = (password) => {
     return '';
 };
 
-module.exports.getWalletAddressError = (walletAddress, fieldName = 'The address') => {
+module.exports.getEthereumAddressError = (walletAddress, fieldName = 'The address') => {
     if(typeof walletAddress !== 'string') {
         return `${fieldName} must be a string`;
     } else if(!walletAddress.startsWith('0x') || walletAddress.length !== 42){

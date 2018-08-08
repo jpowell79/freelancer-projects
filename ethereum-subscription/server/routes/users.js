@@ -63,7 +63,7 @@ const isValidUser = (res, {
     const usernameErrors = validation.getUsernameError(username);
     const passwordErrors = validation.getPasswordError(password);
     const emailErrors = validation.getEmailError(email);
-    const walletAddressErrors = validation.getWalletAddressError(walletAddress);
+    const walletAddressErrors = validation.getEthereumAddressError(walletAddress);
 
     if(usernameErrors !== ''){
         res.status(BAD_REQUEST).send(usernameErrors);

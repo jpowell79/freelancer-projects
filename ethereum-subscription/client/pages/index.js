@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {compose} from 'redux';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import SubscriptionTable from "../site-modules/SubscriptionTable";
@@ -25,8 +26,6 @@ class Index extends Component {
             settings,
             liveSubscriptionContracts
         } = this.props;
-
-        console.log(settings.homepageTableMaxRows);
 
         return (
             <Page>
@@ -70,4 +69,7 @@ class Index extends Component {
     }
 }
 
-export default withSubscriptionContracts({useDummyData: true})(connect(Index.mapStateToProps)(Index));
+export default compose(
+    withSubscriptionContracts({useDummyData: true}),
+    connect(Index.mapStateToProps)
+)(Index);

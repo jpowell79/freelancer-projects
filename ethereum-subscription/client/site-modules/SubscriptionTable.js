@@ -5,6 +5,9 @@ import strings from '../../services/strings';
 import {Star} from "../modules/icons";
 import {classNames} from "../services/className";
 import {Pagination} from 'semantic-ui-react';
+import {paths} from '../../services/constants';
+import Link from 'next/link';
+import {ProviderRating} from "./ProviderRating";
 
 class SubscriptionTable extends Component {
     static defaultProps = {
@@ -17,58 +20,6 @@ class SubscriptionTable extends Component {
     };
 
     state = {activePage: 1};
-
-    renderReputationStars = (name, reputation) => {
-        if(reputation < 2){
-            return <span>{name}</span>;
-        } else if(reputation <= 10){
-            return (
-                <span style={{whiteSpace: "nowrap"}}>
-                    <span style={{marginRight: "5px"}}>{name}</span>
-                    <Star className="color-uiGreen"/>
-                </span>
-            );
-        } else if(reputation <= 50){
-            return (
-                <span style={{whiteSpace: "nowrap"}}>
-                    <span style={{marginRight: "5px"}}>{name}</span>
-                    <Star className="color-uiBlue"/>
-                </span>
-            );
-        } else if(reputation <= 100){
-            return (
-                <span style={{whiteSpace: "no-wrap"}}>
-                    <span style={{marginRight: "5px"}}>{name}</span>
-                    <Star className="color-uiPurple"/>
-                </span>
-            );
-        } else if(reputation <= 250){
-            return (
-                <span style={{whiteSpace: "nowrap"}}>
-                    <span style={{marginRight: "5px"}}>{name}</span>
-                    <Star className="color-uiYellow"/>
-                </span>
-            );
-        } else if(reputation <= 499){
-            return (
-                <span style={{whiteSpace: "nowrap"}}>
-                    <span style={{marginRight: "5px"}}>{name}</span>
-                    <Star className="color-uiYellow"/>
-                    <Star className="color-uiYellow"/>
-                </span>
-
-            );
-        } else {
-            return (
-                <span style={{whiteSpace: "nowrap"}}>
-                    <strong style={{marginRight: "5px"}}>{name}</strong>
-                    <Star className="color-uiYellow"/>
-                    <Star className="color-uiYellow"/>
-                </span>
-            );
-        }
-
-    };
 
     renderSubscriptionContracts = () => {
         const {activePage} = this.state;
@@ -93,10 +44,12 @@ class SubscriptionTable extends Component {
                     return (
                         <tr key={i}>
                             <td>{contract.type}</td>
-                            <td>{this.renderReputationStars(
-                                contract.supplierName,
-                                contract.reputation
-                            )}</td>
+                            <td>
+                                <ProviderRating
+                                    name={contract.supplierName}
+                                    reputation={contract.reputation}
+                                />
+                            </td>
                             <td>{contract.reputation}</td>
                             <td>{strings.toDateString(new Date(contract.contractCreation))}</td>
                             <td>TBI</td>
@@ -107,7 +60,10 @@ class SubscriptionTable extends Component {
                             <td>{contract.subscriptionAmountToPay} Eth</td>
                             <td>
                                 <button className={buttonClass}>
-                                    More Info
+                                    <Link href={{
+                                        pathname: paths.pages.subscriptionInfo,
+                                        query: {address: contract.contractAddress}
+                                    }}><a>More Info</a></Link>
                                 </button>
                             </td>
                         </tr>
