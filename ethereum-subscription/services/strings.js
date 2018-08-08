@@ -1,3 +1,5 @@
+const {random} = require('./utils');
+
 module.exports.isDefined = (stringsOrString) => {
     const stringIsDefined = (string) => (
         string !== null && string !== undefined && string !== ''
@@ -26,7 +28,7 @@ module.exports.hasSpecialCharacters = (string) => (
 
 module.exports.isUpperCase = (string) => {
     return string.toUpperCase() === string;
-}
+};
 
 module.exports.spaceCamelCase = (string) => {
     if(!module.exports.isDefined(string)) return string;
@@ -40,4 +42,33 @@ module.exports.spaceCamelCase = (string) => {
     }
 
     return spacedCamelCase;
+};
+
+/**
+ * @param string like Gym Membership.
+ * @returns {string} gymMembership
+ */
+module.exports.toCamelCase = (string) => {
+    if(string.length === 0) return '';
+
+    const withoutSpaces = string.split(' ').join('');
+    const decapitalizeFirstLetter = withoutSpaces.charAt(0).toLowerCase();
+
+    if(withoutSpaces.length === 1) return decapitalizeFirstLetter;
+
+    return `${decapitalizeFirstLetter}${withoutSpaces.substring(1)}`;
+};
+
+module.exports.generateRandom = (
+    stringLength,
+    chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+) => {
+    let string = '';
+
+    for (let i = 0; i < stringLength; i++) {
+        const charIndex = random(0, chars.length);
+        string += chars.charAt(charIndex);
+    }
+
+    return string;
 };

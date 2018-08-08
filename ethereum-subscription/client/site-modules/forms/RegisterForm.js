@@ -5,8 +5,12 @@ import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
 import urls from '../../../services/constants/urls';
 import roles from '../../../services/constants/roles';
-import {LoaderTiny} from "../../modules/icons";
-import withMessage from '../../hoc/withMessage';
+import {Loader, LoaderTiny} from "../../modules/icons";
+import withMessage from '../../hocs/withMessage';
+import withMetamask from '../../hocs/withMetamask';
+import objects from "../../../services/objects";
+import {isClient} from "../../../services/utils";
+import HideFragment from "../../containers/HideFragment";
 
 class RegisterForm extends Component {
     static fields = [
@@ -76,8 +80,38 @@ class RegisterForm extends Component {
             });
     };
 
+    renderMetamaskAccountNotFound = () => {
+        if(!isClient()) return null;
+
+        if(!window.web3){
+            return <p className="text">You need metamask in order to create an account.</p>;
+        }
+
+        return <p className="text">Login to metamask in order to create an account.</p>;
+    };
+
     render(){
-        const {messageState} = this.props;
+        const {
+            messageState,
+            metamaskAccount
+        } = this.props;
+
+        if(this.props.metamaskAccount.isLoading){
+            return (
+                <div className="text-center">
+                    <Loader/>
+                    <h3>Listening for account changes...</h3>
+                </div>
+            );
+        }
+
+        if(objects.isEmpty(metamaskAccount)){
+            return (
+                <HideFragment>
+                    {this.renderMetamaskAccountNotFound()}
+                </HideFragment>
+            );
+        }
 
         return (
             <Fragment>
@@ -101,4 +135,4 @@ class RegisterForm extends Component {
     }
 }
 
-export default withMessage(RegisterForm);
+export default withMessage(withMetamask(RegisterForm));

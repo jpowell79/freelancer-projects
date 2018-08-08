@@ -5,12 +5,21 @@ import SubscriptionTable from "../site-modules/SubscriptionTable";
 import BackgroundSegment from "../containers/BackgroundSegment";
 import paths from '../../services/constants/paths';
 import {connect} from 'react-redux';
+import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
+import SubscriptionFilters from "../site-modules/SubscriptionFilters";
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
 
+    handleSubscriptionFormChange = (formState) => {
+        console.log(formState);
+    };
+
     render () {
-        const {settings} = this.props;
+        const {
+            settings,
+            liveSubscriptionContracts
+        } = this.props;
 
         return (
             <Page>
@@ -33,11 +42,19 @@ class Index extends Component {
                     }}/>
                 </BackgroundSegment>
                 <FullWidthSegment noWidthPadding skinny>
-                    <SubscriptionTable/>
+                    <div className="wrapper-1">
+                        <h2 className="text-center display-5">Subscriptions</h2>
+                        <SubscriptionFilters
+                            onChange={this.handleSubscriptionFormChange}
+                        />
+                    </div>
+                    <SubscriptionTable
+                        subscriptionContracts={liveSubscriptionContracts}
+                    />
                 </FullWidthSegment>
             </Page>
         )
     }
 }
 
-export default connect(Index.mapStateToProps)(Index);
+export default withSubscriptionContracts(25)(connect(Index.mapStateToProps)(Index));

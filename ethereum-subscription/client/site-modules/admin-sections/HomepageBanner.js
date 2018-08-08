@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Form} from 'semantic-ui-react';
 import FileInput from '../../modules/FileInput';
 import ColorPicker from '../../modules/ColorPicker';
-import withSettingsEditor from '../../hoc/withSettingsEditor';
+import withSettingsEditor from '../../hocs/withSettingsEditor';
 
 class HomepageBanner extends Component {
     constructor(props){

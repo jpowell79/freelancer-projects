@@ -19,7 +19,16 @@ module.exports.settings = {
 
 module.exports.subscriptionTypes = [
     {
-        name: 'Gym Membership'
+        name: 'Gym Membership',
+    },
+    {
+        name: 'IPTV Subscription',
+    },
+    {
+        name: 'Magazine Subscription',
+    },
+    {
+        name: 'Website Membership',
     }
 ];
 
@@ -29,12 +38,6 @@ module.exports.subscriptionContracts = [
         ownerUsername: 'smnrkssn',
         typeName: 'Gym Membership',
         details: 'Random details'
-    },
-    {
-        address: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
-        ownerUsername: 'supplier',
-        typeName: 'Gym Membership',
-        details: 'Some details'
     }
 ];
 
@@ -51,10 +54,6 @@ module.exports.subscriptions = [
     {
         subscriberAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
         contractAddress: '0x4d3566afa9e15b158fb1d89aa921c1c73a22c552'
-    },
-    {
-        subscriberAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208',
-        contractAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F'
     }
 ];
 

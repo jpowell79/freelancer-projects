@@ -51,4 +51,24 @@ describe('strings', () => {
             expect(strings.spaceCamelCase('camelCaseString')).to.be.equal('Camel Case String');
         });
     });
+
+    describe('toCamelCase', () => {
+        it('Should return empty string when empty string is sent', () => {
+            expect(strings.toCamelCase('')).to.be.equal('');
+        });
+
+        it('Should decapitalize when 1 letter is sent', () => {
+            expect(strings.toCamelCase('A')).to.be.equal('a');
+        });
+
+        it('Should turn into camelCase', () => {
+            expect(strings.toCamelCase('Foo Bar Bar')).to.be.equal('fooBarBar');
+        });
+    });
+
+    describe('generateRandom', () => {
+        it('Generates string of given length', () => {
+            expect(strings.generateRandom(100).length).to.be.equal(100);
+        });
+    });
 });

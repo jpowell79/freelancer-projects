@@ -7,6 +7,7 @@
 ## Scripts
 1. `npm run removeDatabase`: Removes the database with the name defined in [serverSettings.js](./server/serverSettings.js).
 2. `npm run defaultDatabase`: First runs `removeDatabase` then loads all [defaultData](server/services/database/defaultData.js).
+3. `npm run dummyDatabase`: First runs `removeDatabase` then loads all [dummyData](server/services/database/dummyData.js).
 
 ## Login
 The site loads in some accounts by default. Check the list of users defined in [defaultData](server/services/database/defaultData.js).
@@ -14,7 +15,7 @@ The site loads in some accounts by default. Check the list of users defined in [
 ## Project Structure:
 - **Root**: Contains files that can be accessed by both the server and client.
 - **Client**: Contains all frontend code. Should never import from the server.
-    - **Hoc**: Contains all higher-order components.
+    - **Hocs**: Contains all higher-order components.
     - **Containers**: Components designed to primarily contain other components.
     - **Modules**: Components designed to work on any site.
     - **Site-Modules**: Components designed specifically for this site.

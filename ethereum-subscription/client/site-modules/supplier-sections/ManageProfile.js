@@ -5,7 +5,7 @@ import {urls} from '../../../services/constants';
 import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIntoStore";
 import FormList from "../../modules/FormList";
 import {LoaderTiny} from "../../modules/icons";
-import withMessage from '../../hoc/withMessage';
+import withMessage from '../../hocs/withMessage';
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});

@@ -6,7 +6,7 @@ import paths, {redirect} from '../../../services/constants/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
 import roles from '../../../services/constants/roles';
-import withMessage from '../../hoc/withMessage';
+import withMessage from '../../hocs/withMessage';
 
 class LoginForm extends Component {
     static fields = [

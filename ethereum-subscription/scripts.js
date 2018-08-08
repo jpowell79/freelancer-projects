@@ -2,12 +2,14 @@ const configSequelize = require('./server/config/configSequelize');
 const serverSettings = require('./server/serverSettings');
 const addGlobalHelpers = require('./server/config/addGlobalHelpers');
 const {removeDatabase} = require('./server/services/database/databaseUtils');
+const dummyDatabase = require('./server/services/database/dummyDatabase');
 const passwordHash = require('password-hash');
 addGlobalHelpers();
 
 const arguments = {
     defaultDatabase: 'defaultDatabase',
     removeDatabase: 'removeDatabase',
+    dummyDatabase: 'dummyDatabase',
     hashPassword: 'hashPassword'
 };
 
@@ -39,6 +41,10 @@ if(process.argv[2].includes('Database')){
             case arguments.defaultDatabase:
                 return removeDatabase(sequelize, serverSettings.DATABASE_NAME)
                     .then(() => configSequelize(serverSettings));
+            case arguments.dummyDatabase:
+                return removeDatabase(sequelize, serverSettings.DATABASE_NAME)
+                    .then(() => configSequelize(serverSettings, false))
+                    .then(seq => dummyDatabase.load(seq));
             case 'help':
                 printHelp();
                 break;

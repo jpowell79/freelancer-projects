@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Form} from 'semantic-ui-react';
 import FileInput from '../../modules/FileInput';
-import withSettingsEditor from '../../hoc/withSettingsEditor';
+import withSettingsEditor from '../../hocs/withSettingsEditor';
 
 class SiteIdentity extends Component {
     constructor(props){

@@ -1,8 +1,13 @@
 import React, {Component, Fragment} from 'react';
 import SortableTable from "../modules/SortableTable";
-import {Grid, Form, Pagination, Segment} from 'semantic-ui-react';
+import {Pagination} from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 class SubscriptionTable extends Component {
+    static propTypes = {
+        subscriptionContracts: PropTypes.array.isRequired
+    };
+
     constructor(props){
         super(props);
 
@@ -56,86 +61,6 @@ class SubscriptionTable extends Component {
     render(){
         return (
             <Fragment>
-                <div className="wrapper-1">
-                    <h2 className="text-center display-5">Subscriptions</h2>
-                    <Grid stackable className="unstack-md">
-                        <Grid.Column width={9}>
-                            <Segment>
-                                <p className="bold">Show the following subscription types:</p>
-                                <Form>
-                                    <Form.Group widths={3}>
-                                        <Form.Checkbox
-                                            label="Gym Membership"
-                                        />
-                                        <Form.Checkbox
-                                            label="IPTV Subscription"
-                                        />
-                                        <Form.Checkbox
-                                            label="Other"
-                                        />
-                                    </Form.Group>
-                                    <Form.Group widths={3}>
-                                        <Form.Checkbox
-                                            label="Magazine Subscription"
-                                        />
-                                        <Form.Checkbox
-                                            label="Website Membership"
-                                        />
-                                        <Form.Checkbox
-                                            label="Tick/Untick All"
-                                        />
-                                    </Form.Group>
-                                    <Form.Group>
-                                        <Form.Checkbox
-                                            label="Show currently active subscriptions"
-                                        />
-                                    </Form.Group>
-                                </Form>
-                            </Segment>
-                        </Grid.Column>
-                        <Grid.Column width={7}>
-                            <Segment>
-                                <p className="bold">Additional Subscription Filters:</p>
-                                <Form>
-                                    <Form.Group widths={2}>
-                                        <Form.Checkbox
-                                            label="Show with Join Fee?"
-                                        />
-                                        <Form.Checkbox
-                                            label="Show with Exit Fee?"
-                                        />
-                                    </Form.Group>
-                                    <Form.Group widths={2}>
-                                        <Form.Checkbox
-                                            label="Show with zero Reputation?"
-                                        />
-                                        <Form.Checkbox
-                                            label="Tick/Untick All"
-                                        />
-                                    </Form.Group>
-                                    <div>
-                                        <Form.Field
-                                            label="Search Subscription by Tx Hash:"
-                                            control="input"
-                                            style={{width: "100%"}}
-                                        />
-                                    </div>
-                                </Form>
-                            </Segment>
-                        </Grid.Column>
-                    </Grid>
-                    <div className="divider-3 padder-3">
-                        <Form>
-                            <Form.Group widths={2}>
-                                <div className="field" style={{
-                                    display: "flex",
-                                    alignItems: "center"
-                                }}>
-                                </div>
-                            </Form.Group>
-                        </Form>
-                    </div>
-                </div>
                 <SortableTable
                     head={this.state.head}
                     body={this.state.body.filter((item, i) => i === this.state.activePage-1)}

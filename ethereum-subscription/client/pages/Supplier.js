@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
-import withAuthenticateSupplier from '../hoc/withAuthenticateSupplier';
+import withAuthenticateSupplier from '../hocs/withAuthenticateSupplier';
 import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";

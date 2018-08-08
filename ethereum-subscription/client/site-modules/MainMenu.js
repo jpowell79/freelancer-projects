@@ -7,14 +7,9 @@ import {paths, urls, roles} from '../../services/constants';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {hideOnMobile} from "../services/css";
-import {classNames, spreadClassName} from "../services/className";
 
 class MainMenu extends Component {
     static mapStateToProps = ({user, settings}) => ({user, settings});
-
-    static defaultProps = {
-        className: ""
-    };
 
     static items = {
         links: [
@@ -178,19 +173,12 @@ class MainMenu extends Component {
             dispatch,
             router,
             user,
-            className,
             settings,
             ...props
         } = this.props;
 
-        const mainMenuClass = classNames({
-            'no-mobile': (
-                router.route === paths.pages.admin || router.route === paths.pages.supplier
-            )
-        }, className);
-
         return (
-            <nav id="main-menu" {...spreadClassName(mainMenuClass)} {...props}>
+            <nav id="main-menu" {...props}>
                 {this.renderMenu(router.route, user)}
                 <div id="main-menu-toggler">
                     <MobileMenuIcon/>
