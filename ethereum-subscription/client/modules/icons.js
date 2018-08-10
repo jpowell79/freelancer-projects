@@ -13,6 +13,9 @@ export const LoaderTiny = ({className = "", ...props}) =>
 export const Star = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames('star icon', className)}/>;
 
+export const ArrowLeft = ({className = "", ...props}) =>
+    <i {...props} className={joinClassNames('arrow left icon', className)}/>;
+
 export const Times = ({className = "", ...props}) =>
     <i {...props} className={joinClassNames('times icon', className)}/>;
 

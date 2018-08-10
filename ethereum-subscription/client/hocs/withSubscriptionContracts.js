@@ -14,15 +14,22 @@ const generateDummySubscriptionContracts = (amount) => {
         'Other',
         'Foobar'
     ];
+    const users = [
+        'admin',
+        'smnrkssn',
+        'supplier'
+    ];
 
     for(let i = 0; i < amount; i++){
         const address = `0x${strings.generateRandom(40)}`;
+        const username = (random(0, 5) === 2) ? users[random(0, users.length)] : `Supplier ${i}`;
 
         subscriptionContracts.push({
             index: i,
             type: subsriptionTypes[random(0, subsriptionTypes.length)],
             txHash: `0x${strings.generateRandom(40)}`,
-            supplierName: `Supplier ${i}`,
+            supplierName: username,
+            ownerUsername: username,
             hasFreeTrials: (random(0, 2) === 1),
             admin: `0x${strings.generateRandom(40)}`,
             amountClaimedSoFar: random(0, 50),
@@ -33,7 +40,7 @@ const generateDummySubscriptionContracts = (amount) => {
             details: strings.generateRandom(100),
             exitFee: random(0, 50)/100,
             joiningFee: random(0, 50)/100,
-            reputation: (random(0, 2) === 1) ? 0 : random(0, 551),
+            reputation: users.includes(username) ? 0 : (random(0, 4) === 2) ? 0 : random(0, 551),
             subscriptionActive: (random(0, 50) === 10),
             subscriptionAmountToPay: random(0, 50)/100,
             subscriptionCancelled: random(0, 2) === 1,
@@ -66,7 +73,6 @@ export default (options = {}) => (Module) => {
     class SubscriptionContractProvider extends Component {
         state = {contracts: []};
         dummyContracts = Array(mergedOptions.amountOfDummyDataToGenerate).fill({});
-        hasGeneratedDummyData = false;
         web3 = null;
 
         static async getInitialProps (appContext){
@@ -80,15 +86,14 @@ export default (options = {}) => (Module) => {
         });
 
         getDummyData = () => {
-            if(this.hasGeneratedDummyData){
+            if(window.__DUMMY_SUBSCRIPTION_CONTRACTS__){
+                this.dummyContracts = window.__DUMMY_SUBSCRIPTION_CONTRACTS__;
                 return this.dummyContracts;
             }
 
             this.dummyContracts = generateDummySubscriptionContracts(
                 mergedOptions.amountOfDummyDataToGenerate
             );
-
-            this.hasGeneratedDummyData = true;
             window.__DUMMY_SUBSCRIPTION_CONTRACTS__ = this.dummyContracts;
 
             return this.dummyContracts;
@@ -154,22 +159,20 @@ export default (options = {}) => (Module) => {
             return err;
         };
 
-        loadContract = (address) => {
+        loadContracts = (comparator) => {
             if(mergedOptions.useDummyData){
-                if(!window.__DUMMY_SUBSCRIPTION_CONTRACTS__) return Promise.resolve([]);
-                return Promise.resolve(window.__DUMMY_SUBSCRIPTION_CONTRACTS__
-                    .filter(contract => contract.address.toLowerCase() === address.toLowerCase()))
-                    .then(contracts => {
-                        this.setState({contracts});
-                        return contracts;
-                    })
-                    .catch(this.handleError)
+                return Promise.resolve(
+                    this.getDummyData().filter(comparator)
+                ).then(contracts => {
+                    this.setState({contracts});
+                    return contracts;
+                }).catch(this.handleError)
             }
             if(!window.web3) return Promise.resolve([]);
 
             return Promise.all(
                 this.props.subscriptionContracts
-                    .filter(contract => contract.address.toLowerCase() === address.toLowerCase())
+                    .filter(comparator)
                     .map(this.fetchAndMergeContract)
             ).then(contracts => {
                 this.setState({contracts});
@@ -198,7 +201,7 @@ export default (options = {}) => (Module) => {
                             loadAllContracts={this.loadAllContracts}
                             fetchContracts={this.fetchContracts}
                             subscriptionContracts={this.dummyContracts}
-                            loadContract={this.loadContract}
+                            loadContracts={this.loadContracts}
                         />
                     )
                     : (
@@ -207,7 +210,7 @@ export default (options = {}) => (Module) => {
                             {...this.state}
                             loadAllContracts={this.loadAllContracts}
                             fetchContracts={this.fetchContracts}
-                            loadContract={this.loadContract}
+                            loadContracts={this.loadContracts}
                         />
                     )
             );

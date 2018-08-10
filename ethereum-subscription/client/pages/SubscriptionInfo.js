@@ -28,10 +28,11 @@ class SubscriptionInfo extends Component {
     };
 
     componentDidMount(){
-        this.props.loadContract(this.props.address)
-            .then(() => {
-                this.setState({isLoading: false});
-            });
+        this.props.loadContracts(contract =>
+            contract.address.toLowerCase() === this.props.address.toLowerCase()
+        ).then(() => {
+            this.setState({isLoading: false});
+        });
     }
 
     renderContract = () => {

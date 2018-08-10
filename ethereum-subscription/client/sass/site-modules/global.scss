@@ -21,6 +21,7 @@ img {
 
 a {
     color: inherit;
+    cursor: pointer;
     @include standardHoverEffect();
 
     &:hover {

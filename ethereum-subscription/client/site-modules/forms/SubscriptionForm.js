@@ -15,18 +15,39 @@ class SubscriptionForm extends Component {
 
     static defaultProps = {
         submitButtonText: "Submit",
-        renderTopChildren: () => { return null; },
-        renderBottomChildren: () => { return null; }
+        renderTopChildren: () =>{
+            return null;
+        },
+        renderBottomChildren: () =>{
+            return null;
+        },
+        renderExtraButtons: () =>{
+            return null;
+        },
+        placeholders: {},
+        defaultState: {},
+        hideFields: []
     };
 
     static propTypes = {
         submitButtonText: PropTypes.string.isRequired,
         onSubmit: PropTypes.func,
         renderTopChildren: PropTypes.func,
-        renderBottomChildren: PropTypes.func
+        renderBottomChildren: PropTypes.func,
+        defaultState: PropTypes.object,
+        hideFields: PropTypes.array
     };
 
-    handleSubmit = (event) => {
+    constructor(props){
+        super(props);
+
+        props.setMessageState({
+            ...props.messageState,
+            ...props.defaultState
+        });
+    }
+
+    handleSubmit = (event) =>{
         event.preventDefault();
         this.props.onSubmit(this);
     };
@@ -36,6 +57,8 @@ class SubscriptionForm extends Component {
             setMessageState,
             messageState,
             renderMessages,
+            placeholders,
+            hideFields
         } = this.props;
 
         const {
@@ -43,169 +66,199 @@ class SubscriptionForm extends Component {
             complete
         } = messageState;
 
+        const selectedType = this.props.options.filter(
+            option => option.text === messageState.subscriptionType
+        )[0];
+
         return (
             <Fragment>
                 {renderMessages()}
                 <Form>
                     {this.props.renderTopChildren(this.props)}
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('contactDetails')
-                    }>
-                        <label>Contact details (optional - max 50 characters)</label>
-                        <span className="counter">
+                    {!hideFields.includes('contactDetails') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('contactDetails')
+                        }>
+                            <label>Contact details (optional - max 50 characters)</label>
+                            <span className="counter">
                             {50 - messageState.contactDetails.length}
                         </span>
-                        <input
-                            disabled={isLoading || complete}
-                            type="text"
-                            value={messageState.contactDetails}
-                            onChange={(event) => {
-                                if(event.target.value.length <= 50){
+                            <input
+                                disabled={isLoading || complete}
+                                type="text"
+                                value={messageState.contactDetails}
+                                placeholder={placeholders.contactDetails}
+                                onChange={(event) =>{
+                                    if(event.target.value.length <= 50){
+                                        setMessageState({
+                                            contactDetails: event.target.value
+                                        });
+                                    }
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('subscriptionType') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('subscriptionType')
+                        }>
+                            <label>Subscription Type</label>
+                            <Dropdown
+                                selection
+                                disabled={isLoading || complete}
+                                options={this.props.options}
+                                value={(selectedType) ? selectedType.value : 0}
+                                onChange={(event, {value}) =>{
                                     setMessageState({
-                                        contactDetails: event.target.value
+                                        subscriptionType: this.props.options
+                                            .filter(option => option.value === value)[0].text
                                     });
-                                }
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionType')
-                    }>
-                        <label>Subscription Type</label>
-                        <Dropdown
-                            selection
-                            disabled={isLoading || complete}
-                            options={this.props.options}
-                            onChange={(event, {value}) => {
-                                setMessageState({
-                                    subscriptionType: this.props.options
-                                        .filter(option => option.value === value)[0].text
-                                });
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionName')
-                    }>
-                        <label>Subscription Name</label>
-                        <input
-                            type="text"
-                            value={messageState.subscriptionName}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                if(event.target.value.length <= 64){
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('subscriptionName') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('subscriptionName')
+                        }>
+                            <label>Subscription Name</label>
+                            <input
+                                type="text"
+                                value={messageState.subscriptionName}
+                                placeholder={placeholders.subscriptionName}
+                                disabled={isLoading || complete}
+                                onChange={(event) =>{
+                                    if(event.target.value.length <= 64){
+                                        setMessageState({
+                                            subscriptionName: event.target.value
+                                        });
+                                    }
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('subscriptionLengthInWeeks') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('subscriptionLengthInWeeks')
+                        }>
+                            <label>Subscription Length (in weeks)</label>
+                            <input
+                                type="number"
+                                value={messageState.subscriptionLengthInWeeks}
+                                placeholder={placeholders.subscriptionLengthInWeeks}
+                                disabled={isLoading || complete}
+                                onChange={(event) =>{
                                     setMessageState({
-                                        subscriptionName: event.target.value
+                                        subscriptionLengthInWeeks: event.target.value
                                     });
-                                }
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionLengthInWeeks')
-                    }>
-                        <label>Subscription Length (in weeks)</label>
-                        <input
-                            type="number"
-                            value={messageState.subscriptionLengthInWeeks}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                setMessageState({
-                                    subscriptionLengthInWeeks: event.target.value
-                                });
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionPrice')
-                    }>
-                        <label>Monthly Subscription Price (in Wei)</label>
-                        <input
-                            type="number"
-                            value={messageState.subscriptionPrice}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                setMessageState({
-                                    subscriptionPrice: event.target.value
-                                });
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('joinFee')
-                    }>
-                        <label>Joining Fee (in Wei)</label>
-                        <input
-                            type="number"
-                            value={messageState.joinFee}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                setMessageState({joinFee: event.target.value});
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('exitFee')
-                    }>
-                        <label>Exit Fee (in Wei)</label>
-                        <input
-                            type="number"
-                            value={messageState.exitFee}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                setMessageState({
-                                    exitFee: event.target.value
-                                });
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('hasFreeTrials')
-                    }>
-                        <label>Free Trials?</label>
-                        <Radio
-                            label='Yes'
-                            checked={messageState.hasFreeTrials}
-                            disabled={isLoading || complete}
-                            onChange={() => {
-                                setMessageState({
-                                    hasFreeTrials: true
-                                });
-                            }}
-                        />
-                        <span className="padder-3">
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('subscriptionPrice') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('subscriptionPrice')
+                        }>
+                            <label>Monthly Subscription Price (in Wei)</label>
+                            <input
+                                type="number"
+                                value={messageState.subscriptionPrice}
+                                placeholder={placeholders.subscriptionPrice}
+                                disabled={isLoading || complete}
+                                onChange={(event) =>{
+                                    setMessageState({
+                                        subscriptionPrice: event.target.value
+                                    });
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('joinFee') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('joinFee')
+                        }>
+                            <label>Joining Fee (in Wei)</label>
+                            <input
+                                type="number"
+                                value={messageState.joinFee}
+                                disabled={isLoading || complete}
+                                placeholder={placeholders.joinFee}
+                                onChange={(event) =>{
+                                    setMessageState({joinFee: event.target.value});
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('exitFee') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('exitFee')
+                        }>
+                            <label>Exit Fee (in Wei)</label>
+                            <input
+                                type="number"
+                                value={messageState.exitFee}
+                                disabled={isLoading || complete}
+                                placeholder={placeholders.exitFee}
+                                onChange={(event) =>{
+                                    setMessageState({
+                                        exitFee: event.target.value
+                                    });
+                                }}
+                            />
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('hasFreeTrials') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('hasFreeTrials')
+                        }>
+                            <label>Free Trials?</label>
+                            <Radio
+                                label='Yes'
+                                checked={messageState.hasFreeTrials}
+                                disabled={isLoading || complete}
+                                onChange={() =>{
+                                    setMessageState({
+                                        hasFreeTrials: true
+                                    });
+                                }}
+                            />
+                            <span className="padder-3">
                             <Radio
                                 label='No'
                                 checked={!messageState.hasFreeTrials}
                                 disabled={isLoading || complete}
-                                onChange={() => {
+                                onChange={() =>{
                                     setMessageState({
                                         hasFreeTrials: false
                                     });
                                 }}
                             />
                         </span>
-                    </Form.Field>
-                    <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionDetails')
-                    }>
-                        <label>Subscription Details (max 2048 characters)</label>
-                        <span className="counter">
+                        </Form.Field>
+                    )}
+                    {!hideFields.includes('subscriptionDetails') && (
+                        <Form.Field error={
+                            messageState.fieldsWithErrors.includes('subscriptionDetails')
+                        }>
+                            <label>Subscription Details (max 2048 characters)</label>
+                            <span className="counter">
                             {2048 - messageState.subscriptionDetails.length}
                         </span>
-                        <textarea
-                            value={messageState.subscriptionDetails}
-                            disabled={isLoading || complete}
-                            onChange={(event) => {
-                                if(event.target.value.length <= 2048){
-                                    setMessageState({
-                                        subscriptionDetails: event.target.value
-                                    });
-                                }
-                            }}
-                            rows={6}
-                        />
-                    </Form.Field>
+                            <textarea
+                                value={messageState.subscriptionDetails}
+                                disabled={isLoading || complete}
+                                placeholder={placeholders.subscriptionDetails}
+                                onChange={(event) =>{
+                                    if(event.target.value.length <= 2048){
+                                        setMessageState({
+                                            subscriptionDetails: event.target.value
+                                        });
+                                    }
+                                }}
+                                rows={6}
+                            />
+                        </Form.Field>
+                    )}
                     {this.props.renderBottomChildren(this.props)}
                     <hr className="ui divider"/>
                     <button
@@ -215,6 +268,7 @@ class SubscriptionForm extends Component {
                             ? <LoaderTiny/>
                             : this.props.submitButtonText}
                     </button>
+                    {this.props.renderExtraButtons(this.props)}
                 </Form>
             </Fragment>
         );

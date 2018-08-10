@@ -15,7 +15,8 @@ class SubscriptionTable extends Component {
 
     static propTypes = {
         subscriptionContracts: PropTypes.array.isRequired,
-        maxRows: PropTypes.number
+        maxRows: PropTypes.number,
+        buttonRenderer: PropTypes.func,
     };
 
     state = {activePage: 1};
@@ -56,12 +57,23 @@ class SubscriptionTable extends Component {
                             <td>{contract.subscriptionLengthInWeeks} Weeks</td>
                             <td>{contract.subscriptionAmountToPay} Eth</td>
                             <td>
-                                <button className={buttonClass}>
-                                    <Link href={{
-                                        pathname: paths.pages.subscriptionInfo,
-                                        query: {address: contract.contractAddress}
-                                    }}><a>More Info</a></Link>
-                                </button>
+                                {(this.props.buttonRenderer)
+                                    ? this.props.buttonRenderer({
+                                        buttonClass,
+                                        style: {whiteSpace: "nowrap"},
+                                        contract
+                                    })
+                                    : (
+                                        <button className={buttonClass} style={{
+                                            whiteSpace: "nowrap"
+                                        }}>
+                                            <Link href={{
+                                                pathname: paths.pages.subscriptionInfo,
+                                                query: {address: contract.contractAddress}
+                                            }}><a>More Info</a></Link>
+                                        </button>
+                                    )
+                                }
                             </td>
                         </tr>
                     );
