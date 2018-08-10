@@ -2,7 +2,6 @@ import React, {Component, Fragment} from 'react';
 import SortableTable from "../modules/SortableTable";
 import PropTypes from 'prop-types';
 import strings from '../../services/strings';
-import {Star} from "../modules/icons";
 import {classNames} from "../services/className";
 import {Pagination} from 'semantic-ui-react';
 import {paths} from '../../services/constants';
@@ -33,8 +32,6 @@ class SubscriptionTable extends Component {
                     return (i >= (maxRows*(activePage-1))) && (i < (maxRows*activePage));
                 })
                 .map((contract, i) => {
-                    //TODO: Add more info link
-
                     const buttonClass = classNames({
                         'ui button': true,
                         'primary': !contract.subscriptionActive,

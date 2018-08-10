@@ -130,7 +130,7 @@ const registerTempUser = (req, res, sequelize, {
         })
         .then(mailRes => {
             if(global.isDevelopment()) console.log(mailRes);
-            res.sendStatus(BAD_REQUEST);
+            res.sendStatus(SUCCESS);
         })
         .catch(err => {
             if(global.isDevelopment()) console.error(err);

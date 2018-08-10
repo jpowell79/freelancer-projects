@@ -4,19 +4,20 @@ import Web3 from '../../services/Web3';
 import {connect} from 'react-redux';
 import strings from '../../services/strings';
 import {random} from '../../services/utils';
+import {getChildProps} from "../services/utils";
+import {FILTERABLE_SUBSCRIPTION_TYPES} from "../clientSettings";
 
-const generateDummySubscriptionContracts = (amount) =>{
+const generateDummySubscriptionContracts = (amount) => {
     const subscriptionContracts = [];
     const subsriptionTypes = [
-        'Gym Membership',
-        'IPTV Subscription',
-        'Magazine Subscription',
-        'Website Membership',
+        ...FILTERABLE_SUBSCRIPTION_TYPES,
         'Other',
         'Foobar'
     ];
 
     for(let i = 0; i < amount; i++){
+        const address = `0x${strings.generateRandom(40)}`;
+
         subscriptionContracts.push({
             index: i,
             type: subsriptionTypes[random(0, subsriptionTypes.length)],
@@ -26,7 +27,8 @@ const generateDummySubscriptionContracts = (amount) =>{
             admin: `0x${strings.generateRandom(40)}`,
             amountClaimedSoFar: random(0, 50),
             amountToClaim: random(0, 50),
-            contractAddress: `0x${strings.generateRandom(40)}`,
+            contractAddress: address,
+            address: address,
             contractCreation: Date.now() - random(0, 1000 * 60 * 60 * 24 * 600),
             details: strings.generateRandom(100),
             exitFee: random(0, 50)/100,
@@ -54,7 +56,6 @@ const generateDummySubscriptionContracts = (amount) =>{
 };
 
 const defaultOptions = {
-    maxLoad: -1,
     useDummyData: false,
     amountOfDummyDataToGenerate: 513
 };
@@ -63,74 +64,152 @@ export default (options = {}) => (Module) => {
     const mergedOptions = Object.assign({}, defaultOptions, options);
 
     class SubscriptionContractProvider extends Component {
-        static mapStateToProps = ({subscriptionContracts}) => ({subscriptionContracts});
+        state = {contracts: []};
+        dummyContracts = Array(mergedOptions.amountOfDummyDataToGenerate).fill({});
+        hasGeneratedDummyData = false;
+        web3 = null;
 
-        state = {
-            isLoadingSubscriptionContracts: false,
-            liveSubscriptionContracts: []
-        };
-
-        componentDidMount(){
-            this.subscriptionContracts = (mergedOptions.useDummyData)
-                ? generateDummySubscriptionContracts(mergedOptions.amountOfDummyDataToGenerate)
-                : this.props.subscriptionContracts;
-
-            if(mergedOptions.useDummyData){
-                window.__DUMMY_SUBSCRIPTION_CONTRACTS__ = this.subscriptionContracts;
-            }
-
-            if(mergedOptions.maxLoad < 0){
-                this.loadContracts(0, this.subscriptionContracts.length-1);
-            } else {
-                this.loadContracts(0, mergedOptions.maxLoad-1);
-            }
+        static async getInitialProps (appContext){
+            const moduleProps = await getChildProps(Module, appContext);
+            return {...moduleProps};
         }
 
-        loadDummyContracts = (start, end) => {
-            this.setState({
-                liveSubscriptionContracts: this.subscriptionContracts.filter(
-                    (contract, i) => (i >= start) && (i <= end)
-                )
-            });
+        static mapStateToProps = ({subscriptionContracts, subscriptionTypes}) => ({
+            subscriptionContracts,
+            subscriptionTypes
+        });
+
+        getDummyData = () => {
+            if(this.hasGeneratedDummyData){
+                return this.dummyContracts;
+            }
+
+            this.dummyContracts = generateDummySubscriptionContracts(
+                mergedOptions.amountOfDummyDataToGenerate
+            );
+
+            this.hasGeneratedDummyData = true;
+            window.__DUMMY_SUBSCRIPTION_CONTRACTS__ = this.dummyContracts;
+
+            return this.dummyContracts;
         };
 
-        loadContracts = (start, end) =>{
-            if(mergedOptions.useDummyData) return this.loadDummyContracts(start, end);
-            if(!window.web3) return;
+        loadAllContracts = async (loadingOptions = {}) => {
+            const dbContracts = (mergedOptions.useDummyData)
+                ? this.getDummyData() : this.props.subscriptionContracts;
+            const options = Object.assign({}, {
+                amountToLoadPerBatch: dbContracts.length,
+                startIndex: 0
+            }, loadingOptions);
+
+            let start = options.startIndex;
+            let promises = [];
+            const loadingFunction = (mergedOptions.useDummyData)
+                ? this.loadDummyContracts : this.fetchContracts;
+
+            while(start < dbContracts.length){
+                promises.push(
+                    loadingFunction(start, start + options.amountToLoadPerBatch - 1)
+                        .then(data => {
+                            this.setState(prevState => ({
+                                contracts: [...prevState.contracts, ...data]
+                            }))
+                        })
+                );
+                start += options.amountToLoadPerBatch;
+            }
+
+            return Promise.all(promises).catch(this.handleError);
+        };
+
+        loadDummyContracts = (start, end) => {
+            return Promise.resolve(this.getDummyData()
+                .filter((contract, i) => (i >= start) && (i <= end)))
+                .catch(this.handleError);
+        };
+
+        fetchAndMergeContract = (contract) => {
             if(!this.web3) this.web3 = new Web3(window.web3.currentProvider);
 
-            this.setState({isLoadingSubscriptionContracts: true});
+            const subscriptionContract = new SubscriptionContract({
+                web3: this.web3,
+                address: contract.address
+            });
+
+            return subscriptionContract.fetchSubscriptionData()
+                .then(data => {
+                    const subscriptionType = this.props.subscriptionTypes
+                        .filter(type => type.id === contract.typeId)[0];
+
+                    return Object.assign({}, data, {
+                        ...contract,
+                        supplierName: contract.ownerUsername,
+                        type: subscriptionType.name
+                    });
+                });
+        };
+
+        handleError = (err) => {
+            console.error(err);
+            return err;
+        };
+
+        loadContract = (address) => {
+            if(mergedOptions.useDummyData){
+                if(!window.__DUMMY_SUBSCRIPTION_CONTRACTS__) return Promise.resolve([]);
+                return Promise.resolve(window.__DUMMY_SUBSCRIPTION_CONTRACTS__
+                    .filter(contract => contract.address.toLowerCase() === address.toLowerCase()))
+                    .then(contracts => {
+                        this.setState({contracts});
+                        return contracts;
+                    })
+                    .catch(this.handleError)
+            }
+            if(!window.web3) return Promise.resolve([]);
+
+            return Promise.all(
+                this.props.subscriptionContracts
+                    .filter(contract => contract.address.toLowerCase() === address.toLowerCase())
+                    .map(this.fetchAndMergeContract)
+            ).then(contracts => {
+                this.setState({contracts});
+                return contracts;
+            }).catch(this.handleError);
+        };
+
+        fetchContracts = (start, end) => {
+            if(mergedOptions.useDummyData) return this.loadDummyContracts(start, end);
+            if(!window.web3) return Promise.resolve([]);
 
             return Promise.all(
                 this.props.subscriptionContracts
                     .filter((contract, i) => (i >= start) && (i <= end))
-                    .map(contract =>{
-                        const subscriptionContract = new SubscriptionContract({
-                            web3: this.web3,
-                            address: contract.address
-                        });
-
-                        return subscriptionContract.fetchSubscriptionData();
-                    })
-            ).then(data =>{
-                console.log(data);
-                this.setState({
-                    isLoadingSubscriptionContracts: false,
-                    liveSubscriptionContracts: data
-                });
-            }).catch(err =>{
-                console.error(err);
-                this.setState({isLoadingSubscriptionContracts: false});
-            });
+                    .map(this.fetchAndMergeContract)
+            );
         };
 
         render(){
             return (
-                <Module
-                    {...this.props}
-                    {...this.state}
-                    loadContracts={this.loadContracts}
-                />
+                (mergedOptions.useDummyData)
+                    ? (
+                        <Module
+                            {...this.props}
+                            {...this.state}
+                            loadAllContracts={this.loadAllContracts}
+                            fetchContracts={this.fetchContracts}
+                            subscriptionContracts={this.dummyContracts}
+                            loadContract={this.loadContract}
+                        />
+                    )
+                    : (
+                        <Module
+                            {...this.props}
+                            {...this.state}
+                            loadAllContracts={this.loadAllContracts}
+                            fetchContracts={this.fetchContracts}
+                            loadContract={this.loadContract}
+                        />
+                    )
             );
         }
     }

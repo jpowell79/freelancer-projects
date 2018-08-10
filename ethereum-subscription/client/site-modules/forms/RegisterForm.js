@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
-import {recaptchaSiteKey} from "../../clientSettings";
+import {RECAPTCHA_SITE_KEY} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import axios from 'axios';
 import urls from '../../../services/constants/urls';
@@ -128,7 +128,7 @@ class RegisterForm extends Component {
                     fields={RegisterForm.fields}
                     submitButtonHtml={(messageState.isLoading) ? <LoaderTiny/> : "Register"}
                 >
-                    <RecaptchaWidget siteKey={recaptchaSiteKey}/>
+                    <RecaptchaWidget siteKey={RECAPTCHA_SITE_KEY}/>
                 </FormList>
             </Fragment>
         );

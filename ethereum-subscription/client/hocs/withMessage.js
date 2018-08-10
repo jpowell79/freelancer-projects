@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Message} from 'semantic-ui-react';
 import validation from "../../services/validation";
 import {isDefined} from "../../services/strings";
+import {getChildProps} from "../services/utils";
 
 const defaultInitialState = {
     successTitle: 'Your changes have been saved successfully!',
@@ -15,6 +16,11 @@ const defaultInitialState = {
 
 export default (Module, initialState) => {
     class MessageProvider extends Component {
+        static async getInitialProps (appContext){
+            const moduleProps = await getChildProps(Module, appContext);
+            return {...moduleProps};
+        }
+
         constructor(props){
             super(props);
 

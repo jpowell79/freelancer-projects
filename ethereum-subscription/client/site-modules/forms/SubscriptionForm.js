@@ -106,7 +106,7 @@ class SubscriptionForm extends Component {
                     }>
                         <label>Subscription Length (in weeks)</label>
                         <input
-                            type="text"
+                            type="number"
                             value={messageState.subscriptionLengthInWeeks}
                             disabled={isLoading || complete}
                             onChange={(event) => {
@@ -121,7 +121,7 @@ class SubscriptionForm extends Component {
                     }>
                         <label>Monthly Subscription Price (in Wei)</label>
                         <input
-                            type="text"
+                            type="number"
                             value={messageState.subscriptionPrice}
                             disabled={isLoading || complete}
                             onChange={(event) => {
@@ -136,7 +136,7 @@ class SubscriptionForm extends Component {
                     }>
                         <label>Joining Fee (in Wei)</label>
                         <input
-                            type="text"
+                            type="number"
                             value={messageState.joinFee}
                             disabled={isLoading || complete}
                             onChange={(event) => {
@@ -149,7 +149,7 @@ class SubscriptionForm extends Component {
                     }>
                         <label>Exit Fee (in Wei)</label>
                         <input
-                            type="text"
+                            type="number"
                             value={messageState.exitFee}
                             disabled={isLoading || complete}
                             onChange={(event) => {

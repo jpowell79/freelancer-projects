@@ -7,7 +7,9 @@ class Subscriptions extends Component {
 
     render(){
         return (
-            <SubscriptionTable username={this.props.user.username}/>
+            <SubscriptionTable
+                subscriptionContracts={[]}
+            />
         );
     }
 }

@@ -6,9 +6,15 @@ import {Message} from 'semantic-ui-react';
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from '../../services/objects';
 import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
+import {getChildProps} from "../services/utils";
 
 export default (Module, title) => {
     class SettingsEditor extends Component {
+        static async getInitialProps (appContext){
+            const moduleProps = await getChildProps(Module, appContext);
+            return {...moduleProps};
+        }
+
         static mapStateToProps = ({settings}) => ({settings});
 
         constructor(props){

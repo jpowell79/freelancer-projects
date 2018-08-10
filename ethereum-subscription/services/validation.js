@@ -72,7 +72,7 @@ module.exports.getNameError = (name, fieldName) => {
 
 module.exports.getNumberError = (number, fieldName) => {
     if(isNaN(number) || !strings.isDefined(number)){
-        return `${fieldName} is required and must be a number.`;
+        return `${fieldName} is required.`;
     }
 
     return '';

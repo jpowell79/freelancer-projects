@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {paths} from '../../services/constants';
 import validation from '../../services/validation';
 import strings from '../../services/strings';
@@ -7,6 +7,8 @@ import FullWidthSegment from "../containers/FullWidthSegment";
 import {Loader} from "../modules/icons";
 import {ProviderRating} from "../site-modules/ProviderRating";
 import {Grid, Segment} from 'semantic-ui-react';
+import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
+import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
 
 class SubscriptionInfo extends Component {
     static async getInitialProps({res, query}) {
@@ -26,29 +28,20 @@ class SubscriptionInfo extends Component {
     };
 
     componentDidMount(){
-        if(window.__DUMMY_SUBSCRIPTION_CONTRACTS__){
-            this.findRequestedAddress(window.__DUMMY_SUBSCRIPTION_CONTRACTS__);
-        } else {
-            //TODO: Pull from real contracts.
-            this.setState({isLoading: false});
-        }
+        this.props.loadContract(this.props.address)
+            .then(() => {
+                this.setState({isLoading: false});
+            });
     }
-
-    findRequestedAddress = (subscriptionContracts) => {
-        this.setState({
-            isLoading: false,
-            contract: subscriptionContracts.filter(
-                contract => contract.contractAddress === this.props.address
-            )[0]
-        });
-    };
 
     renderContract = () => {
         if(this.state.isLoading) {
             return <Loader/>;
         }
 
-        if(!this.state.contract){
+        const contract = this.props.contracts[0];
+
+        if(!contract){
             return (
                 <p className="text text-center">
                     A contract with the given address could not be found.
@@ -64,9 +57,7 @@ class SubscriptionInfo extends Component {
             joiningFee,
             exitFee,
             hasFreeTrials
-        } = this.state.contract;
-
-        console.log(this.state.contract);
+        } = contract;
 
         return (
             <div className="wrapper-2">
@@ -115,4 +106,6 @@ class SubscriptionInfo extends Component {
     }
 }
 
-export default SubscriptionInfo;
+export default withSubscriptionContracts({
+    useDummyData: USE_DUMMY_SUBSCRIPTION_DATA
+})(SubscriptionInfo);

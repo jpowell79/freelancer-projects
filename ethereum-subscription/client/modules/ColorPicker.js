@@ -36,19 +36,18 @@ class ColorPicker extends Component {
                             showPicker: !prevState.showPicker
                         }));
                     }}
-                >
-                    {(this.state.showPicker) && (
-                        <SketchPicker
-                            color={this.state.color}
-                            disableAlpha={true}
-                            onChangeComplete={(color) => {
-                                this.setState({color: color.hex});
-                                this.props.onChange(color.hex);
-                            }}
-                            presetColors={objects.values(colors)}
-                        />
-                    )}
-                </div>
+                />
+                {(this.state.showPicker) && (
+                    <SketchPicker
+                        color={this.state.color}
+                        disableAlpha={true}
+                        onChangeComplete={(color) => {
+                            this.setState({color: color.hex});
+                            this.props.onChange(color.hex);
+                        }}
+                        presetColors={objects.values(colors)}
+                    />
+                )}
                 {(this.state.showPicker) && (
                     <div
                         style={{

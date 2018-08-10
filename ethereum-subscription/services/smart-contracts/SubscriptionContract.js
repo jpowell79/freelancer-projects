@@ -48,7 +48,7 @@ const callGetters = (methods) => {
         methods.exitFee().call()
             .then(exitFee => ({exitFee})),
         methods.details().call()
-            .then(details => ({details})),
+            .then(smallDetails => ({smallDetails})),
         methods.subscriptionStartTime().call()
             .then(subscriptionStartTime => ({subscriptionStartTime})),
         methods.subscriptionFinishTime().call()
@@ -113,13 +113,6 @@ function SubscriptionContract({web3, address}){
      */
     this.setSupplierWalletAddress = ({walletAddress, admin}) => {
         return methods._setSupplierWalletAddress(walletAddress).send({
-            from: admin
-        });
-    };
-
-    //TODO: remove during production.
-    this.setAdmin = ({walletAddress, admin}) => {
-        return methods.setAdmin(walletAddress).send({
             from: admin
         });
     };

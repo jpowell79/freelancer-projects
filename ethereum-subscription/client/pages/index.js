@@ -9,6 +9,11 @@ import {connect} from 'react-redux';
 import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
 import SubscriptionFilters from "../site-modules/SubscriptionFilters";
 import {filterSubscriptionContracts} from "../services/filters";
+import {
+    USE_DUMMY_SUBSCRIPTION_DATA,
+    AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
+    AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
+} from "../clientSettings";
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
@@ -21,11 +26,14 @@ class Index extends Component {
         this.setState({filters: filterFormState});
     };
 
+    componentDidMount(){
+        this.props.loadAllContracts({
+            amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
+        });
+    }
+
     render () {
-        const {
-            settings,
-            liveSubscriptionContracts
-        } = this.props;
+        const {settings} = this.props;
 
         return (
             <Page>
@@ -58,7 +66,7 @@ class Index extends Component {
                         maxRows={parseInt(settings.homepageTableMaxRows.value, 10)}
                         subscriptionContracts={
                             filterSubscriptionContracts(
-                                liveSubscriptionContracts,
+                                this.props.contracts,
                                 this.state.filters
                             )
                         }
@@ -70,6 +78,9 @@ class Index extends Component {
 }
 
 export default compose(
-    withSubscriptionContracts({useDummyData: true}),
+    withSubscriptionContracts({
+        useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
+        amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE
+    }),
     connect(Index.mapStateToProps)
 )(Index);

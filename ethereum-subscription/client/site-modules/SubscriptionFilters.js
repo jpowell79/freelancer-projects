@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
 import {Grid, Segment, Form} from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
@@ -30,7 +30,7 @@ class SubscriptionFilters extends Component {
 
     handleCheckAllAdditional = () => {
         this.setState(prevState => {
-            const newState = (prevState.checkAllAdditional)
+            return (prevState.checkAllAdditional)
                 ? ({
                     showJoinFeeChecked: false,
                     showExitFeeChecked: false,
@@ -43,19 +43,14 @@ class SubscriptionFilters extends Component {
                     showZeroReputationChecked: true,
                     checkAllAdditional: true
                 });
-
-            this.props.onChange({
-                ...this.state,
-                ...newState
-            });
-
-            return newState;
+        }, () => {
+            this.props.onChange({...this.state});
         });
     };
 
     handleCheckAllSubscriptionTypes = () => {
         this.setState(prevState => {
-            const newState = (prevState.checkAllSubscriptionTypes)
+            return (prevState.checkAllSubscriptionTypes)
                 ? ({
                     gymMembershipChecked: false,
                     iptvSubscriptionChecked: false,
@@ -72,26 +67,16 @@ class SubscriptionFilters extends Component {
                     websiteMembershipChecked: true,
                     checkAllSubscriptionTypes: true
                 });
-
-            this.props.onChange({
-                ...this.state,
-                ...newState
-            });
-
-            return newState;
+        }, () => {
+            this.props.onChange({...this.state});
         });
     };
 
     handleCheckboxClick = (field) => {
-        this.setState((prevState) => {
-            this.props.onChange({
-                ...this.state,
-                [field]: !prevState[field]
-            });
-
-            return {
-                [field]: !prevState[field]
-            };
+        this.setState((prevState) => ({
+            [field]: !prevState[field]
+        }), () => {
+            this.props.onChange({...this.state});
         });
     };
 
@@ -226,13 +211,10 @@ class SubscriptionFilters extends Component {
                                 style={{width: "100%"}}
                                 value={txHashSearch}
                                 onChange={(event) => {
-                                    this.props.onChange({
-                                        ...this.state,
-                                        txHashSearch: event.target.value
-                                    });
-
                                     this.setState({
                                         txHashSearch: event.target.value
+                                    }, () => {
+                                        this.props.onChange({...this.state});
                                     });
                                 }}
                             />

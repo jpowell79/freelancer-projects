@@ -7,7 +7,7 @@ function createDatabaseIfNotExists(sequelizeOptions, dbName){
     return sequelize
         .query(`CREATE DATABASE IF NOT EXISTS ${dbName}`)
         .then(res => {
-            global.createdDatabase = res[0].affectedRows === 1
+            global.CREATED_DATABASE = res[0].affectedRows === 1
         })
         .then(() => sequelize.close());
 }
@@ -84,7 +84,7 @@ module.exports = async ({
         .then(() => Subscribers.sync())
         .then(() => Subscriptions.sync())
         .then(() => {
-            if(loadDefaultData && global.createdDatabase){
+            if(loadDefaultData && global.CREATED_DATABASE){
                 return defaultDatabase.load(sequelize);
             }
         })
