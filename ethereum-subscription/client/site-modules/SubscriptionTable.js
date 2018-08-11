@@ -9,17 +9,26 @@ import Link from 'next/link';
 import {ProviderRating} from "./ProviderRating";
 
 class SubscriptionTable extends Component {
-    static defaultProps = {
-        maxRows: -1
-    };
-
+    static defaultProps = {maxRows: -1};
     static propTypes = {
         subscriptionContracts: PropTypes.array.isRequired,
         maxRows: PropTypes.number,
         buttonRenderer: PropTypes.func,
     };
-
     state = {activePage: 1};
+
+    static getDerivedStateFromProps(props, state){
+        const totalPages = Math.ceil(props.subscriptionContracts.length/props.maxRows);
+
+        if(state.activePage > totalPages && totalPages > 0){
+            return {
+                ...state,
+                activePage: totalPages
+            }
+        }
+
+        return state;
+    }
 
     renderSubscriptionContracts = () => {
         const {activePage} = this.state;

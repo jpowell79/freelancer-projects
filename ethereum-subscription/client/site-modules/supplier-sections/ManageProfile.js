@@ -6,6 +6,7 @@ import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIn
 import FormList from "../../modules/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
+import {Segment} from "semantic-ui-react";
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});

@@ -50,7 +50,7 @@ export default (Module) => {
         }
 
         render(){
-            return <Module {...this.props}/>
+            return <Module {...this.props} web3={this.web3}/>
         }
     }
 

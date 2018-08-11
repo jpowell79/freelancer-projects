@@ -27,50 +27,50 @@ body.alert-scrollbar-filler {
         &.hidden {
             transform: scale(.8);
         }
-    }
 
-    .header {
-        position: relative;
-        padding-right: 4.5rem!important;
+        > .header {
+            position: relative;
+            padding-right: 4.5rem!important;
 
-        > .close {
-            cursor: pointer;
-            position: absolute;
-            right: 1.5rem;
-            top: 50%;
-            transform: translateY(-50%);
-        }
+            > .close {
+                cursor: pointer;
+                position: absolute;
+                right: 1.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+            }
 
-        > i {
-            float: left;
-            margin-right: 1.5rem;
-        }
+            > i {
+                float: left;
+                margin-right: 1.5rem;
+            }
 
-        .modal-title {
-            margin: 0;
+            .modal-title {
+                margin: 0;
+            }
         }
     }
 }
 
-.error-alert .header,
-.warning-alert .header,
-.info-alert .header,
-.success-alert .header {
+.error-alert .modal > .header,
+.warning-alert .modal > .header,
+.info-alert .modal > .header,
+.success-alert .modal > .header {
     color: #FFFFFF!important;
 }
 
-.error-alert .header {
+.error-alert .modal  > .header {
     background-color: $uiRed!important;
 }
 
-.warning-alert .header {
+.warning-alert .modal > .header {
     background-color: $uiYellow!important;
 }
 
-.info-alert .header {
+.info-alert .modal > .header {
     background-color: $uiTeal!important;
 }
 
-.success-alert .header {
-    background-color: $uiGreen!important;
+.success-alert .modal > .header {
+    background-color: $primary!important;
 }

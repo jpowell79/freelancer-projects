@@ -66,6 +66,11 @@
             }
         }
 
+        .column.grow {
+            display: flex;
+            flex: 1;
+        }
+
         .centered.column {
             display: flex;
             justify-content: center;
@@ -241,6 +246,17 @@
 @media (max-width: $mediaMedium){
     .ui {
         &.grid {
+            &.doubling {
+                &.reverse-order {
+                    > .column:first-child {
+                        order: 2;
+                    }
+
+                    > .column:last-child {
+                        order: 1;
+                    }
+                }
+            }
 
             &.unstack-md {
                 > .column {

@@ -4,13 +4,15 @@ const addGlobalHelpers = require('./server/config/addGlobalHelpers');
 const {removeDatabase} = require('./server/services/database/databaseUtils');
 const dummyDatabase = require('./server/services/database/dummyDatabase');
 const passwordHash = require('password-hash');
+const mysqldump = require('mysqldump');
 addGlobalHelpers();
 
 const arguments = {
     defaultDatabase: 'defaultDatabase',
     removeDatabase: 'removeDatabase',
     dummyDatabase: 'dummyDatabase',
-    hashPassword: 'hashPassword'
+    hashPassword: 'hashPassword',
+    dump: 'dump'
 };
 
 const printHelp = () => {
@@ -64,6 +66,20 @@ if(process.argv[2].includes('Database')){
     switch (process.argv[2]) {
     case arguments.hashPassword:
         console.log(passwordHash.generate(process.argv[3]));
+        break;
+    case arguments.dump:
+        const os = require('os');
+        console.log(os.networkInterfaces());
+        mysqldump({
+            connection: {
+                host: serverSettings.DATABASE_DUMP_HOST,
+                port: serverSettings.DATABASE_PORT,
+                user: serverSettings.DATABASE_USER,
+                password: serverSettings.DATABASE_PASSWORD,
+                database: serverSettings.DATABASE_NAME
+            },
+            dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
+        });
         break;
     case 'help':
         printHelp();

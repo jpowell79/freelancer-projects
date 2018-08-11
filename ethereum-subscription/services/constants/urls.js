@@ -3,6 +3,7 @@ const USERS = `${API}/users`;
 const SETTINGS = `${API}/settings`;
 const SESSIONS = `${API}/sessions`;
 const UPLOAD = `${API}/upload`;
+const DOWNLOAD = `${API}/download`;
 const EMAIL = `${API}/email`;
 const SUBSCRIPTIONS = `${API}/subscriptions`;
 const SUBSCRIPTION_TYPES = `${SUBSCRIPTIONS}/types`;
@@ -15,6 +16,7 @@ module.exports = {
     settings: SETTINGS,
     sessions: SESSIONS,
     upload: UPLOAD,
+    download: DOWNLOAD,
     email: EMAIL,
     subscriptions: SUBSCRIPTIONS,
     subscriptionTypes: SUBSCRIPTION_TYPES,

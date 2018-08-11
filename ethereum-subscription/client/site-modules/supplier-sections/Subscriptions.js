@@ -31,8 +31,9 @@ class Subscriptions extends Component {
 
         if(!objects.isEmpty(this.state.editContract)){
             return (
-                <div className="wrapper-3">
+                <div className="container-4">
                     <EditContractForm
+                        user={this.props.user}
                         contract={this.state.editContract}
                         onCancel={() => {
                             this.setState({editContract: {}});
@@ -45,19 +46,24 @@ class Subscriptions extends Component {
             );
         }
 
+        if(this.props.contracts.length === 0){
+            return (
+                <p className="text">You do currently not own any subscriptions.</p>
+            );
+        }
+
         return (
             <SubscriptionTable
                 subscriptionContracts={this.props.contracts}
-                buttonRenderer={({buttonClass, style, contract}) => {
+                buttonRenderer={({buttonClass, contract}) => {
                     return (
                         <button
-                            className={buttonClass}
-                            style={style}
+                            className="ui bg-color-uiBlue color-white button"
                             onClick={() => {
                                 this.setState({editContract: contract});
                             }}
                         >
-                            More Info
+                            Edit
                         </button>
                     );
                 }}

@@ -22,6 +22,7 @@ module.exports.getFieldError = (fieldName, field) => {
     case 'joinFee':
     case 'subscriptionPrice':
     case 'subscriptionLengthInWeeks':
+    case 'amount':
         return module.exports.getNumberError(field, strings.spaceCamelCase(fieldName));
     case 'subscriptionType':
     case 'contractType':

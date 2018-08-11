@@ -23,9 +23,11 @@ module.exports.MAX_UPLOAD_SIZE = '50mb';
  *------------------------------------------------------------*/
 module.exports.DATABASE_NAME = 'ethereum_subscription';
 module.exports.DATABASE_USER = 'root';
-module.exports.DATABASE_PASSWORD = null;
+module.exports.DATABASE_PASSWORD = '';
 module.exports.DATABASE_PORT = 3306;
 module.exports.DATABASE_DIALECT = 'mysql';
+module.exports.DATABASE_DUMP_HOST = 'localhost';
+module.exports.DATABASE_DUMP_FILE = 'dump.sql';
 
 
 /*------------------------------------------------------------

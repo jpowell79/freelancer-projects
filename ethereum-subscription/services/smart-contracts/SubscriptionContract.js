@@ -112,13 +112,46 @@ function SubscriptionContract({web3, address}){
      * Updates the wallet address for ALL smart contracts associated with the supplier.
      */
     this.setSupplierWalletAddress = ({walletAddress, admin}) => {
-        return methods._setSupplierWalletAddress(walletAddress).send({
-            from: admin
-        });
+        return methods._setSupplierWalletAddress(walletAddress)
+            .send({from: admin});
     };
     //endregion
 
     //region Supplier only methods
+    /**
+     * @param subscriptionName
+     * @param supplierWalletAddress
+     * @param subscriptionLengthInWeeks
+     * @param subscriptionPrice
+     * @param joinFee The amount of Wei required to join the subscription.
+     * @param exitFee The amount of Wei required to exit the subscription.
+     * @param supplierEmail
+     * @param details A string of other information about the subscription.
+     * @returns {PromiEvent<any>}
+     */
+    this.setSubscriptionDetailsAsSupplier = ({
+        subscriptionName,
+        supplierWalletAddress,
+        subscriptionLengthInWeeks,
+        subscriptionPrice,
+        joinFee,
+        exitFee,
+        supplierEmail,
+        subscriptionDetails,
+        supplier
+    }) => {
+        return methods._amendDetails(
+            subscriptionName,
+            supplierWalletAddress,
+            subscriptionLengthInWeeks,
+            subscriptionPrice,
+            joinFee,
+            exitFee,
+            supplierEmail,
+            subscriptionDetails
+        ).send({from: supplier});
+    };
+
     /**
      * Allows suppliers to add or amend details of the trial in the smart contract.
      * @param supplierAddress The suppliers wallet address.

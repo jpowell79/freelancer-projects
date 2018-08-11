@@ -12,7 +12,7 @@ export const AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH = 100;
 
 //Loads some dummy data into memory instead of loading information
 //from real smart contracts.
-export const USE_DUMMY_SUBSCRIPTION_DATA = false;
+export const USE_DUMMY_SUBSCRIPTION_DATA = true;
 export const AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE = 513;
 
 //Tells the validation which types to not consider as "other".

@@ -4,6 +4,8 @@ import PropTypes from 'prop-types';
 import withMetamask from '../../hocs/withMetamask';
 import {Loader} from "../../modules/icons";
 import objects from "../../../services/objects";
+import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
+import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 
 class EditContractForm extends Component {
     static defaultProps = {
@@ -13,16 +15,64 @@ class EditContractForm extends Component {
 
     static propTypes = {
         contract: PropTypes.object.isRequired,
+        user: PropTypes.object.isRequired,
         onCancel: PropTypes.func,
         onComplete: PropTypes.func
+    };
+
+    setSubscriptionDetails = (web3, metamaskAccount, {
+        subscriptionName,
+        subscriptionLengthInWeeks,
+        subscriptionPrice,
+        subscriptionDetails,
+        exitFee,
+        joinFee,
+    }) => {
+        const contract = new SubscriptionContract({
+            web3,
+            address: metamaskAccount.address
+        });
+
+        return contract.setSubscriptionDetailsAsSupplier({
+            subscriptionName,
+            supplierWalletAddress: metamaskAccount.address,
+            subscriptionLengthInWeeks: parseFloat(subscriptionLengthInWeeks),
+            subscriptionPrice: parseFloat(subscriptionPrice),
+            joinFee: parseFloat(joinFee),
+            exitFee: parseFloat(exitFee),
+            subscriptionDetails,
+            supplierEmail: this.props.user.email,
+            supplier: metamaskAccount.address
+        });
     };
 
     handleSubmit = (subscriptionForm) => {
         if(subscriptionForm.props.hasFieldErrors(this.state)) return;
 
-        //TODO: _amendDetails
+        const {
+            messageState,
+            setMessageState,
+            setIsLoading
+        } = subscriptionForm.props;
 
-        this.props.onComplete(this);
+        setIsLoading();
+
+        return this.setSubscriptionDetails(
+            this.props.web3,
+            this.props.metamaskAccount,
+            messageState
+        ).then(() => {
+            AlertOptionPane.showSuccessAlert({
+                message: 'The contract has been edited successfully'
+            });
+
+            this.props.onComplete(this);
+        }).catch(err => {
+            setMessageState({
+                isLoading: false,
+                errors: [err.toString()]
+            });
+        });
     };
 
     render(){
@@ -56,6 +106,7 @@ class EditContractForm extends Component {
 
         return (
             <Fragment>
+                <h2>Edit Contract</h2>
                 <SubscriptionForm
                     renderTopChildren={() => {
                         return (

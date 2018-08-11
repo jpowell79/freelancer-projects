@@ -11,6 +11,7 @@ import SuspendSuppliers from "../site-modules/admin-sections/SuspendSuppliers";
 import AddContract from "../site-modules/admin-sections/AddContract";
 import SmartContractData from "../site-modules/admin-sections/SmartContractData";
 import AddContractType from "../site-modules/admin-sections/AddContractType";
+import DatabaseBackup from "../site-modules/admin-sections/DatabaseBackup";
 
 class Admin extends Component {
     static sections = {
@@ -52,7 +53,7 @@ class Admin extends Component {
         case massEmail:
             return <MassEmail/>;
         case backupDatabase:
-            return <p>Backup</p>;
+            return <DatabaseBackup/>;
         case addContractType:
             return <AddContractType/>;
         case homepage:

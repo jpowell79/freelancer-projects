@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ProviderCalculator from "../ProviderCalculator";
-import {Form} from 'semantic-ui-react';
+import {Form, Segment, Grid} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import SubscriptionForm from "../forms/SubscriptionForm";
 import axios from "axios/index";
@@ -44,22 +44,30 @@ class RequestContract extends Component {
         const {user} = this.props;
 
         return (
-            <div className="container-4">
-                <h2>Provider Calculator</h2>
-                <ProviderCalculator/>
-                <h2>Request New Contract</h2>
-                <SubscriptionForm
-                    topChildren={
-                        <Form.Field>
-                            <label>Your Ethereum Wallet Address</label>
-                            <span style={{wordBreak: "break-all"}} className="field-text">
-                                {user.walletAddress}
-                            </span>
-                        </Form.Field>
-                    }
-                    onSubmit={this.handleSubmit}
-                />
-            </div>
+            <Grid stackable doubling columns={2} className="reverse-order">
+                <Grid.Column>
+                    <Segment padded>
+                        <h2>Request New Contract</h2>
+                        <SubscriptionForm
+                            topChildren={
+                                <Form.Field>
+                                    <label>Your Ethereum Wallet Address</label>
+                                    <span style={{wordBreak: "break-all"}} className="field-text">
+                                            {user.walletAddress}
+                                        </span>
+                                </Form.Field>
+                            }
+                            onSubmit={this.handleSubmit}
+                        />
+                    </Segment>
+                </Grid.Column>
+                <Grid.Column className="grow">
+                    <Segment padded style={{width: "100%"}}>
+                        <h2>Provider Calculator</h2>
+                        <ProviderCalculator/>
+                    </Segment>
+                </Grid.Column>
+            </Grid>
         );
     }
 }
