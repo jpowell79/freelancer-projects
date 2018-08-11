@@ -200,7 +200,7 @@ class SubscriptionInfo extends Component {
                         </strong>
                     </p>
                     <h2>Monthly Price: </h2>
-                    <div className="wrapper-4 bold">
+                    <div className="wrapper-3 bold">
                     <Grid stackable columns={3}>
                         <Grid.Column>
                             <p className="text">Join Fee: {joiningFee} Eth</p>

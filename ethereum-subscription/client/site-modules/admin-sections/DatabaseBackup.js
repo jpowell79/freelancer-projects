@@ -11,8 +11,8 @@ class DatabaseBackup extends Component {
             <Fragment>
                 <h2>Backup Database</h2>
                 <p className="h4">
-                    This option will both update the backup stored on the server
-                    and download a local copy of it to your computer.
+                    This option will both update a backup stored on the server
+                    and download a local copy to your computer.
                 </p>
                 <hr className="ui divider"/>
                 <button

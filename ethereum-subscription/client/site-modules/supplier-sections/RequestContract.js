@@ -53,8 +53,8 @@ class RequestContract extends Component {
                                 <Form.Field>
                                     <label>Your Ethereum Wallet Address</label>
                                     <span style={{wordBreak: "break-all"}} className="field-text">
-                                            {user.walletAddress}
-                                        </span>
+                                        {user.walletAddress}
+                                    </span>
                                 </Form.Field>
                             }
                             onSubmit={this.handleSubmit}
@@ -63,7 +63,7 @@ class RequestContract extends Component {
                 </Grid.Column>
                 <Grid.Column className="grow">
                     <Segment padded style={{width: "100%"}}>
-                        <h2>Provider Calculator</h2>
+                        <h2>Wei Calculator</h2>
                         <ProviderCalculator/>
                     </Segment>
                 </Grid.Column>

@@ -1,8 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import SubscriptionForm from "../forms/SubscriptionForm";
 import {Form} from 'semantic-ui-react';
-import MetamaskProvider from "../../containers/MetamaskProvider";
 import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
+import withMetamask from '../../hocs/withMetamask';
+import {LoaderSmall} from "../../modules/icons";
+import objects from "../../../services/objects";
 
 class SmartContractData extends Component {
     state = {
@@ -41,13 +43,16 @@ class SmartContractData extends Component {
         if(subscriptionForm.props.hasFieldErrors(this.state)) return;
 
         const {
-            web3,
-            metamaskAccount,
             messageState,
             setMessageState,
             setIsLoading,
             setComplete
         } = subscriptionForm.props;
+
+        const {
+            web3,
+            metamaskAccount,
+        } = this.props;
 
         setIsLoading();
 
@@ -65,61 +70,74 @@ class SmartContractData extends Component {
     };
 
     render(){
+        if(this.props.metamaskAccount.isLoading){
+            return (
+                <Fragment>
+                    <LoaderSmall/>
+                    <h4 className="text-center">Detecting account changes...</h4>
+                </Fragment>
+            );
+        }
+
+        if(objects.isEmpty(this.props.metamaskAccount)){
+            return (
+                <p className="text">
+                    Login to metamask in order to edit a smart contract.
+                </p>
+            );
+        }
+
         return (
             <Fragment>
                 <h2>Edit Smart Contract Data</h2>
-                <MetamaskProvider notFoundRenderer={() =>
-                    <p className="text">Login to metamask in order to add a new contract.</p>
-                }>
-                    <SubscriptionForm
-                        onSubmit={this.handleSubmit}
-                        renderTopChildren={({messageState}) => {
-                            return (
-                                <Form.Field error={
-                                    messageState.fieldsWithErrors.includes('supplierWalletAddress')
-                                }>
-                                    <label>Supplier Wallet Address</label>
-                                    <input
-                                        type="text"
-                                        value={this.state.supplierWalletAddress}
-                                        disabled={messageState.isLoading || messageState.complete}
-                                        onChange={(event) => {
-                                            if(event.target.value.length <= 42){
-                                                this.setState({
-                                                    supplierWalletAddress: event.target.value
-                                                });
-                                            }
-                                        }}
-                                    />
-                                </Form.Field>
-                            );
-                        }}
-                        renderBottomChildren={({messageState}) => {
-                            return (
-                                <Form.Field error={
-                                    messageState.fieldsWithErrors.includes('smartContractAddress')
-                                }>
-                                    <label>Smart Contract Address</label>
-                                    <input
-                                        type="text"
-                                        value={this.state.smartContractAddress}
-                                        disabled={messageState.isLoading || messageState.complete}
-                                        onChange={(event) => {
-                                            if(event.target.value.length <= 42){
-                                                this.setState({
-                                                    smartContractAddress: event.target.value
-                                                });
-                                            }
-                                        }}
-                                    />
-                                </Form.Field>
-                            );
-                        }}
-                    />
-                </MetamaskProvider>
+                <SubscriptionForm
+                    onSubmit={this.handleSubmit}
+                    renderTopChildren={({messageState}) => {
+                        return (
+                            <Form.Field error={
+                                messageState.fieldsWithErrors.includes('supplierWalletAddress')
+                            }>
+                                <label>Supplier Wallet Address</label>
+                                <input
+                                    type="text"
+                                    value={this.state.supplierWalletAddress}
+                                    disabled={messageState.isLoading || messageState.complete}
+                                    onChange={(event) => {
+                                        if(event.target.value.length <= 42){
+                                            this.setState({
+                                                supplierWalletAddress: event.target.value
+                                            });
+                                        }
+                                    }}
+                                />
+                            </Form.Field>
+                        );
+                    }}
+                    renderBottomChildren={({messageState}) => {
+                        return (
+                            <Form.Field error={
+                                messageState.fieldsWithErrors.includes('smartContractAddress')
+                            }>
+                                <label>Smart Contract Address</label>
+                                <input
+                                    type="text"
+                                    value={this.state.smartContractAddress}
+                                    disabled={messageState.isLoading || messageState.complete}
+                                    onChange={(event) => {
+                                        if(event.target.value.length <= 42){
+                                            this.setState({
+                                                smartContractAddress: event.target.value
+                                            });
+                                        }
+                                    }}
+                                />
+                            </Form.Field>
+                        );
+                    }}
+                />
             </Fragment>
         );
     }
 }
 
-export default SmartContractData;
+export default withMetamask(SmartContractData);

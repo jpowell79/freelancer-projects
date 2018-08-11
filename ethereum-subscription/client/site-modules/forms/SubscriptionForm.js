@@ -240,22 +240,22 @@ class SubscriptionForm extends Component {
                         <Form.Field error={
                             messageState.fieldsWithErrors.includes('subscriptionDetails')
                         }>
-                            <label>Subscription Details (max 2048 characters)</label>
+                            <label>Subscription Details (optional - max 50 characters)</label>
                             <span className="counter">
-                            {2048 - messageState.subscriptionDetails.length}
+                            {50 - messageState.subscriptionDetails.length}
                         </span>
-                            <textarea
+                            <input
+                                type="text"
                                 value={messageState.subscriptionDetails}
                                 disabled={isLoading || complete}
                                 placeholder={placeholders.subscriptionDetails}
                                 onChange={(event) =>{
-                                    if(event.target.value.length <= 2048){
+                                    if(event.target.value.length <= 50){
                                         setMessageState({
                                             subscriptionDetails: event.target.value
                                         });
                                     }
                                 }}
-                                rows={6}
                             />
                         </Form.Field>
                     )}

@@ -2,7 +2,8 @@ const abi = require('./subscriptionContractAbi');
 const {
     toMilliseconds,
     parseNumberStringsToNumbers,
-    parseContractArrayToObject
+    parseContractArrayToObject,
+    weiToEth
 } = require('./contractParser');
 
 const callGetters = (methods) => {
@@ -24,7 +25,7 @@ const callGetters = (methods) => {
         methods.amountClaimedSoFar().call()
             .then(amountClaimedSoFar => ({amountClaimedSoFar})),
         methods.trialPrice().call()
-            .then(trialPrice => ({trialPrice})),
+            .then(trialPrice => ({trialPrice: weiToEth(trialPrice)})),
         methods.trialDurationInDays().call()
             .then(trialDurationInDays => ({trialDurationInDays})),
         methods.trialInfoShared().call()
@@ -40,13 +41,21 @@ const callGetters = (methods) => {
         methods.subscriptionLengthInWeeks().call()
             .then(subscriptionLengthInWeeks => ({subscriptionLengthInWeeks})),
         methods.totalSubscriptionPrice().call()
-            .then(totalSubscriptionPrice => ({totalSubscriptionPrice})),
+            .then(totalSubscriptionPrice => ({
+                totalSubscriptionPrice: weiToEth(totalSubscriptionPrice)
+            })),
         methods.subscriptionAmountToPay().call()
-            .then(subscriptionAmountToPay => ({subscriptionAmountToPay})),
+            .then(subscriptionAmountToPay => ({
+                subscriptionAmountToPay: weiToEth(subscriptionAmountToPay)
+            })),
         methods.joiningFee().call()
-            .then(joiningFee => ({joiningFee})),
+            .then(joiningFee => ({
+                joiningFee: weiToEth(joiningFee)
+            })),
         methods.exitFee().call()
-            .then(exitFee => ({exitFee})),
+            .then(exitFee => ({
+                exitFee: weiToEth(exitFee)
+            })),
         methods.details().call()
             .then(smallDetails => ({smallDetails})),
         methods.subscriptionStartTime().call()

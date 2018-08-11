@@ -1,3 +1,7 @@
+const weiToEth = (wei) => {
+    return parseFloat((wei / 1000000000000000000).toFixed(4));
+};
+
 const isNumber = (string) => {
     return /^\d+$/.test(string);
 };
@@ -34,5 +38,6 @@ const toMilliseconds = (contractTime) => {
 module.exports = {
     toMilliseconds,
     parseNumberStringsToNumbers,
-    parseContractArrayToObject
+    parseContractArrayToObject,
+    weiToEth
 };
