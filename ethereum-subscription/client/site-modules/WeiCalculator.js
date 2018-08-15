@@ -3,8 +3,9 @@ import axios from 'axios';
 import CoinMarketCapApi from '../../services/CoinMarketCapApi';
 import {Form, Dropdown} from 'semantic-ui-react';
 import {isDefined} from '../../services/strings';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
-class ProviderCalculator extends Component {
+class WeiCalculator extends Component {
     static convertCurrencies = [
         CoinMarketCapApi.fiatCurrencies.USD,
         CoinMarketCapApi.fiatCurrencies.GBP,
@@ -20,7 +21,8 @@ class ProviderCalculator extends Component {
             dropdownOptions: [],
             selectedCurrency: '',
             conversionValue: '',
-            isLoading: true
+            isLoading: true,
+            copied: false
         }
     }
 
@@ -59,7 +61,7 @@ class ProviderCalculator extends Component {
     };
 
     componentDidMount(){
-        Promise.all(ProviderCalculator.convertCurrencies.map(currency => {
+        Promise.all(WeiCalculator.convertCurrencies.map(currency => {
             return axios.get(CoinMarketCapApi.ticker({
                 id: 1027,
                 convert: currency
@@ -168,17 +170,40 @@ class ProviderCalculator extends Component {
                                 type="text"
                                 value={conversionValue}
                                 onChange={(event) => {
-                                    this.setState({conversionValue: event.target.value});
+                                    this.setState({
+                                        conversionValue: event.target.value,
+                                        copied: false
+                                    });
                                 }}
                             />
                         </Form.Field>
                         {(isDefined(conversionValue)) && (
-                            <Form.Field>
-                                <p className="field-text">
-                                    This would be the equivalent of <strong>{
-                                    this.calcConversion()}</strong> Wei
-                                </p>
-                            </Form.Field>
+                            <Fragment>
+                                <Form.Field>
+                                    <CopyToClipboard
+                                        text={this.calcConversion()}
+                                        onCopy={() => this.setState({copied: true})}
+                                    >
+                                        <p className="field-text">
+                                            This would be the equivalent of <strong>{
+                                            this.calcConversion()}</strong> Wei
+                                        </p>
+                                    </CopyToClipboard>
+                                </Form.Field>
+                                <CopyToClipboard
+                                    text={this.calcConversion()}
+                                    onCopy={() => this.setState({copied: true})}
+                                >
+                                    <button
+                                        className="ui bg-color-uiBlue color-white button"
+                                        disabled={this.state.copied}
+                                    >
+                                        {this.state.copied
+                                            ? "Copied!"
+                                            : "Copy"}
+                                    </button>
+                                </CopyToClipboard>
+                            </Fragment>
                         )}
                     </Form>
                 </Fragment>
@@ -187,4 +212,4 @@ class ProviderCalculator extends Component {
     }
 }
 
-export default ProviderCalculator;
+export default WeiCalculator;

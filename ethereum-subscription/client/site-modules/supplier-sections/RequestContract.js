@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ProviderCalculator from "../ProviderCalculator";
+import WeiCalculator from "../WeiCalculator";
 import {Form, Segment, Grid} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import SubscriptionForm from "../forms/SubscriptionForm";
@@ -65,7 +65,7 @@ class RequestContract extends Component {
                 <Grid.Column className="grow">
                     <Segment padded style={{width: "100%"}}>
                         <h2>Wei Calculator</h2>
-                        <ProviderCalculator/>
+                        <WeiCalculator/>
                     </Segment>
                 </Grid.Column>
             </Grid>
