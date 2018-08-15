@@ -23,8 +23,8 @@ module.exports.sendContractRequestMail = (req) => {
         subscriptionType
     } = req.body;
 
-    if(!exitFee || !joinFee || !subscriptionDetails || !subscriptionLengthInWeeks ||
-        !subscriptionName || !subscriptionPrice || !subscriptionType
+    if(!exitFee || !joinFee || !subscriptionLengthInWeeks || !subscriptionName ||
+        !subscriptionPrice || !subscriptionType
     ){
         return new Promise(() => {
             throw new Error("Missing required fields.");
@@ -38,7 +38,7 @@ module.exports.sendContractRequestMail = (req) => {
         html: (
             `<div>
                 <p><strong>Contact Details:</strong></p>
-                <p>${escapeHtml(contactDetails)}</p>
+                <p>${escapeHtml(contactDetails ? contactDetails : '')}</p>
                 <hr>
                 <p><strong>Subscription Name:</strong></p>
                 <p>${escapeHtml(subscriptionName)}</p>
@@ -62,7 +62,7 @@ module.exports.sendContractRequestMail = (req) => {
                 <p>${(hasFreeTrials) ? "Yes" : "No"}</p>
                 <hr>
                 <p><strong>Subscription Details:</strong></p>
-                <p>${escapeHtml(subscriptionDetails)}</p>
+                <p>${escapeHtml(subscriptionDetails ? subscriptionDetails : '')}</p>
              </div>`
         )
     };
