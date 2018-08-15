@@ -68,8 +68,6 @@ if(process.argv[2].includes('Database')){
         console.log(passwordHash.generate(process.argv[3]));
         break;
     case arguments.dump:
-        const os = require('os');
-        console.log(os.networkInterfaces());
         mysqldump({
             connection: {
                 host: serverSettings.DATABASE_DUMP_HOST,

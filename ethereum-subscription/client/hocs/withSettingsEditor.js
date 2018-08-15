@@ -6,7 +6,7 @@ import {Message} from 'semantic-ui-react';
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from '../../services/objects';
 import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
-import {getChildProps} from "../services/utils";
+import {getChildProps, getErrorString} from "../services/utils";
 
 export default (Module, title) => {
     class SettingsEditor extends Component {
@@ -50,7 +50,9 @@ export default (Module, title) => {
                     });
                 })
                 .catch(err => {
-                    AlertOptionPane.showErrorAlert({message: err.toString()});
+                    AlertOptionPane.showErrorAlert({
+                        message: getErrorString(err)
+                    });
                     this.setState({isSaving: false});
                 });
         };

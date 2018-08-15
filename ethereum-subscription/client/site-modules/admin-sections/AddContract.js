@@ -4,6 +4,7 @@ import axios from 'axios';
 import AddContractForm from "../forms/AddContractForm";
 import {connect} from 'react-redux';
 import Dispatcher from '../../services/Dispatcher';
+import {getErrorString} from "../../services/utils";
 
 class AddContract extends Component {
     sendContractCreatedEmail = async ({email, subscriptionName}) => {
@@ -46,7 +47,7 @@ class AddContract extends Component {
             .catch(err => {
                 setMessageState({
                     isLoading: false,
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };

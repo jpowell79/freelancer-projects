@@ -1,14 +1,9 @@
-const {httpCodes} = require('../../../services/constants/index');
 const {isLoggedInAdmin} = require('../../../services/session');
 const {getAllModelEntries} = require('./apiUtils');
-const {
-    SUCCESS,
-    CREATED,
-    UNAUTHORIZED,
-    BAD_REQUEST,
-} = httpCodes;
+const ResponseHandler = require('./ResponseHandler');
 
 function SubscriptionTypes({req, res, sequelize}){
+    const responseHandler = new ResponseHandler(res);
     this.model = sequelize.models.subscriptionTypes;
 
     this.create = ({name}) => {
@@ -19,30 +14,27 @@ function SubscriptionTypes({req, res, sequelize}){
         return this.model.update({name}, {where: {id}});
     };
 
-    this.sendGetAll = async () => getAllModelEntries(res, this.model);
+    this.sendGetAll = async () => getAllModelEntries(responseHandler, this.model);
 
     this.sendUpdate = async () => {
         const loggedInAdmin = await isLoggedInAdmin(req);
 
         if(!loggedInAdmin){
-            res.sendStatus(UNAUTHORIZED);
-            return;
+            return responseHandler.sendUnauthorized();
         }
 
         const {name, id} = req.body;
 
         if(!name || !id){
-            res.sendStatus(BAD_REQUEST);
-            return;
+            return responseHandler.sendBadRequest('Subscription Type and Id is required.');
         }
 
         return this.update({name, id})
             .then(() => {
-                res.sendStatus(SUCCESS);
+                responseHandler.sendSuccess();
             })
             .catch(err => {
-                if(global.isDevelopment()) console.error(err);
-                res.sendStatus(BAD_REQUEST);
+                responseHandler.sendBadRequest(err);
             });
     };
 
@@ -50,24 +42,21 @@ function SubscriptionTypes({req, res, sequelize}){
         const loggedInAdmin = await isLoggedInAdmin(req);
 
         if(!loggedInAdmin){
-            res.sendStatus(UNAUTHORIZED);
-            return;
+            return responseHandler.sendUnauthorized();
         }
 
         const {name} = req.body;
 
         if(!name){
-            res.sendStatus(BAD_REQUEST);
-            return;
+            return responseHandler.sendBadRequest('Name is required');
         }
 
         return this.create({name})
             .then(() => {
-                res.sendStatus(CREATED);
+                responseHandler.sendCreated();
             })
             .catch(err => {
-                if(global.isDevelopment()) console.error(err);
-                res.sendStatus(BAD_REQUEST);
+                responseHandler.sendBadRequest(err);
             });
     }
 }

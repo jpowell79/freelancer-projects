@@ -5,6 +5,7 @@ import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import SortableTable from "../../modules/SortableTable";
 import {LoaderSmall} from "../../modules/icons";
 import {hideOnMobile} from "../../services/css";
+import {getErrorString} from "../../services/utils";
 
 class SuspendSuppliers extends Component {
     constructor(props){
@@ -28,7 +29,7 @@ class SuspendSuppliers extends Component {
             })
             .catch(err => {
                 AlertOptionPane.showErrorAlert({
-                    message: err.toString()
+                    message: getErrorString(err)
                 });
             });
     }
@@ -58,7 +59,7 @@ class SuspendSuppliers extends Component {
                     this.setState({isLoading: false});
                 }).catch(err => {
                     AlertOptionPane.showErrorAlert({
-                        message: err.toString()
+                        message: getErrorString(err)
                     });
                     this.setState({isLoading: false});
                 });

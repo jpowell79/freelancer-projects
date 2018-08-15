@@ -11,6 +11,7 @@ import withMetamask from '../../hocs/withMetamask';
 import objects from "../../../services/objects";
 import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
+import {getErrorString} from "../../services/utils";
 
 class RegisterForm extends Component {
     static fields = [
@@ -71,10 +72,9 @@ class RegisterForm extends Component {
                 }
             })
             .catch(err => {
-                console.error(err);
                 grecaptcha.reset();
                 this.props.setMessageState({
-                    errors: ['Something went wrong when processing the request.'],
+                    errors: [getErrorString(err)],
                     isLoading: false,
                 });
             });

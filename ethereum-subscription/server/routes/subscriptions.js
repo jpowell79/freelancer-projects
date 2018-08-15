@@ -1,26 +1,23 @@
-const {urls, httpCodes} = require('../../services/constants/');
+const {urls} = require('../../services/constants/');
 const SubscriptionTypes = require('../services/api/SubscriptionTypes');
 const SubscriptionContracts = require('../services/api/SubscriptionContracts');
 const Subscriptions = require('../services/api/Subscriptions');
 const Subscribers = require('../services/api/Subscribers');
-const {
-    METHOD_NOT_ALLOWED,
-    NOT_FOUND
-} = httpCodes;
+const ResponseHandler = require('../services/api/ResponseHandler');
 
-const handleSubscriptionsRequest = (req, res, sequelize) => {
+const handleSubscriptionsRequest = (req, res, sequelize, responseHandler) => {
     const subscriptions = new Subscriptions({req, res, sequelize});
 
     switch (req.method){
     case "GET":
         return subscriptions.sendGetAll();
     default:
-        res.sendStatus(METHOD_NOT_ALLOWED);
+        responseHandler.sendMethodNotAllowed();
         break;
     }
 };
 
-const handleContractsRequest = (req, res, sequelize) => {
+const handleContractsRequest = (req, res, sequelize, responseHandler) => {
     const subscriptionContracts = new SubscriptionContracts({req, res, sequelize});
 
     switch (req.method){
@@ -29,12 +26,12 @@ const handleContractsRequest = (req, res, sequelize) => {
     case "POST":
         return subscriptionContracts.sendCreate();
     default:
-        res.sendStatus(METHOD_NOT_ALLOWED);
+        responseHandler.sendMethodNotAllowed();
         break;
     }
 };
 
-const handleTypesRequest = (req, res, sequelize) => {
+const handleTypesRequest = (req, res, sequelize, responseHandler) => {
     const subscriptionTypes = new SubscriptionTypes({req, res, sequelize});
 
     switch (req.method){
@@ -47,19 +44,19 @@ const handleTypesRequest = (req, res, sequelize) => {
 
         return subscriptionTypes.sendCreate();
     default:
-        res.sendStatus(METHOD_NOT_ALLOWED);
+        responseHandler.sendMethodNotAllowed();
         break;
     }
 };
 
-const handleSubscribersRequest = (req, res, sequelize) => {
+const handleSubscribersRequest = (req, res, sequelize, responseHandler) => {
     const subscribers = new Subscribers({req, res, sequelize});
 
     switch (req.method){
     case "GET":
         return subscribers.sendGetAll();
     default:
-        res.sendStatus(METHOD_NOT_ALLOWED);
+        responseHandler.sendMethodNotAllowed();
         break;
     }
 };
@@ -74,17 +71,19 @@ const parseUrl = (url) => {
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.subscriptions}`, server.initSession, (req, res) => {
+        const responseHandler = new ResponseHandler(res);
+
         switch(parseUrl(req.url)){
         case parseUrl(urls.subscriptions):
-            return handleSubscriptionsRequest(req, res, sequelize);
+            return handleSubscriptionsRequest(req, res, sequelize, responseHandler);
         case parseUrl(urls.subscriptionContracts):
-            return handleContractsRequest(req, res, sequelize);
+            return handleContractsRequest(req, res, sequelize, responseHandler);
         case parseUrl(urls.subscriptionTypes):
-            return handleTypesRequest(req, res, sequelize);
+            return handleTypesRequest(req, res, sequelize, responseHandler);
         case parseUrl(urls.subscriptionSubscribers):
-            return handleSubscribersRequest(req, res, sequelize);
+            return handleSubscribersRequest(req, res, sequelize, responseHandler);
         default:
-            res.sendStatus(NOT_FOUND);
+            responseHandler.sendNotFound();
             break;
         }
     });

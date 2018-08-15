@@ -1,18 +1,13 @@
-const {httpCodes} = require('../../../services/constants/index');
 const {getAllModelEntries} = require('./apiUtils');
 const {isLoggedInAdmin} = require('../../../services/session');
-const {
-    CREATED,
-    BAD_REQUEST,
-    UNAUTHORIZED,
-    SOMETHING_WENT_WRONG
-} = httpCodes;
+const ResponseHandler = require('./ResponseHandler');
 
 function SubscriptionContracts({req, res, sequelize}){
+    const responseHandler = new ResponseHandler(res);
     this.model = sequelize.models.subscriptionContracts;
     this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
 
-    this.sendGetAll = async () => getAllModelEntries(res, this.model);
+    this.sendGetAll = async () => getAllModelEntries(responseHandler, this.model);
 
     this.sendJoinedGetAll = async () => {
         return this.model
@@ -21,11 +16,10 @@ function SubscriptionContracts({req, res, sequelize}){
             })
             .then(entries => entries.map(entry => entry.dataValues))
             .then(entries => {
-                res.send(entries);
+                responseHandler.sendSuccess(entries);
             })
             .catch(err => {
-                if(global.isDevelopment()) console.error(err);
-                res.sendStatus(SOMETHING_WENT_WRONG);
+                responseHandler.sendSomethingWentWrong(err);
             });
     };
 
@@ -33,19 +27,17 @@ function SubscriptionContracts({req, res, sequelize}){
         const loggedInAdmin = await isLoggedInAdmin(req);
 
         if(!loggedInAdmin){
-            res.sendStatus(UNAUTHORIZED);
-            return;
+            return responseHandler.sendUnauthorized();
         }
 
         const contract = req.body;
 
         this.model.create(contract)
             .then(() => {
-                res.sendStatus(CREATED);
+                responseHandler.sendCreated();
             })
             .catch(err => {
-                if(global.isDevelopment()) console.error(err);
-                res.sendStatus(BAD_REQUEST);
+                responseHandler.sendBadRequest(err);
             })
     };
 

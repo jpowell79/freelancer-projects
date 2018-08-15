@@ -7,6 +7,7 @@ import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
 import roles from '../../../services/constants/roles';
 import withMessage from '../../hocs/withMessage';
+import {getErrorString} from "../../services/utils";
 
 class LoginForm extends Component {
     static fields = [
@@ -45,9 +46,9 @@ class LoginForm extends Component {
                     }
                 }
             })
-            .catch(() => {
+            .catch(err => {
                 this.props.setMessageState({
-                    errors: ['Something went wrong when processing the request.'],
+                    errors: [getErrorString(err)],
                     isLoading: false
                 });
             });

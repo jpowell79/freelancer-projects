@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import SubscriptionForm from "../forms/SubscriptionForm";
 import axios from "axios/index";
 import {mailTypes, urls} from "../../../services/constants";
+import {getErrorString} from "../../services/utils";
 
 class RequestContract extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -35,7 +36,7 @@ class RequestContract extends Component {
             .catch(err => {
                 setMessageState({
                     isLoading: false,
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };

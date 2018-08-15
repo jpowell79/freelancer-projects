@@ -1,24 +1,17 @@
-const {urls, httpCodes} = require('../../services/constants/');
+const {urls} = require('../../services/constants/');
 const strings = require('../../services/strings');
 const {isLoggedInAdmin} = require('../../services/session');
-const {
-    SUCCESS,
-    UNAUTHORIZED,
-    BAD_REQUEST,
-    SOMETHING_WENT_WRONG,
-    METHOD_NOT_ALLOWED,
-    NOT_FOUND
-} = httpCodes;
+const ResponseHandler = require('../services/api/ResponseHandler');
 
-const handleGet = (res, sequelize, name) => {
+const handleGet = (res, sequelize, name, responseHandler) => {
     if(!strings.isDefined(name)){
         return sequelize.models.settings
             .findAll()
             .then(settings => {
-                res.status(SUCCESS).send(settings);
+                responseHandler.sendSuccess(settings);
             })
             .catch(err => {
-                res.status(SOMETHING_WENT_WRONG).send(err.toString());
+                responseHandler.sendSomethingWentWrong(err);
             });
     }
 
@@ -26,25 +19,23 @@ const handleGet = (res, sequelize, name) => {
         .findOne({where: {name}})
         .then(setting => {
             if(!setting) throw new Error("No setting with the given name exists.");
-            res.send(setting);
+            responseHandler.sendSuccess(setting)
         })
         .catch(err => {
-            res.status(NOT_FOUND).send(err.toString());
+            responseHandler.sendNotFound(err);
         });
 };
 
-const handlePost = async (req, res, sequelize, {name, value, update}) => {
+const handlePost = async (req, res, sequelize, {name, value, update}, responseHandler) => {
     if(!strings.isDefined(name)){
-        res.sendStatus(BAD_REQUEST);
-        return;
+        return responseHandler.sendBadRequest('Setting name is required');
     }
 
     //TODO: Give suppliers access to certain settings
     const loggedInAdmin = await isLoggedInAdmin(req);
 
     if(!loggedInAdmin){
-        res.sendStatus(UNAUTHORIZED);
-        return;
+        return responseHandler.sendUnauthorized();
     }
 
     if(update){
@@ -54,34 +45,36 @@ const handlePost = async (req, res, sequelize, {name, value, update}) => {
                 if(affectedRows[0] === '0' || affectedRows[0] === 0)
                     throw new Error("No setting with the given name exists.");
 
-                res.status(SUCCESS).send(affectedRows);
+                responseHandler.sendSuccess(affectedRows);
             })
             .catch(err => {
-                res.status(NOT_FOUND).send(err.toString());
+                responseHandler.sendBadRequest(err);
             });
     } else {
         return sequelize.models.settings
             .create({name, value})
             .then(() => {
-                res.sendStatus(SUCCESS);
+                responseHandler.sendSuccess();
             })
             .catch(err => {
-                res.status(BAD_REQUEST).send(err.toString());
+                responseHandler.sendBadRequest(err);
             });
     }
 };
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.settings}/:name?`, server.initSession, (req, res) => {
+        const responseHandler = new ResponseHandler(res);
+
         switch (req.method){
         case "GET":
-            handleGet(res, sequelize, req.params.name);
+            handleGet(res, sequelize, req.params.name, responseHandler);
             break;
         case "POST":
-            handlePost(req, res, sequelize, req.body);
+            handlePost(req, res, sequelize, req.body, responseHandler);
             break;
         default:
-            res.sendStatus(METHOD_NOT_ALLOWED);
+            responseHandler.sendMethodNotAllowed();
             break;
         }
     });

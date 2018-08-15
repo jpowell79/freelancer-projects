@@ -13,7 +13,7 @@ const upload = (res, file, path) => {
     fs.copyFile(file.path, `client/${path}/${file.name}`, (err) => {
         if(err){
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(BAD_REQUEST);
+            res.status(BAD_REQUEST).send(err.toString());
             return;
         }
 
@@ -48,7 +48,7 @@ const handlePost = async (req, res) => {
 
         if(err || !file){
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(BAD_REQUEST);
+            res.status(BAD_REQUEST).send(err.toString());
             return;
         }
 

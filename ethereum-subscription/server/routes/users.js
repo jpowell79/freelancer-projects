@@ -247,7 +247,7 @@ const handleDelete = async (req, res, sequelize) => {
     const username = req.query.username;
 
     if(!username){
-        res.sendStatus(BAD_REQUEST);
+        res.status(BAD_REQUEST).send('Username is required.');
         return;
     }
 
@@ -258,7 +258,7 @@ const handleDelete = async (req, res, sequelize) => {
         })
         .catch(err => {
             if(global.isDevelopment()) console.error(err);
-            res.sendStatus(NOT_FOUND);
+            res.status(NOT_FOUND).send(err.toString());
         })
 };
 

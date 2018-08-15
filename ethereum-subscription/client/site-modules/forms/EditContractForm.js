@@ -6,6 +6,7 @@ import {Loader} from "../../modules/icons";
 import objects from "../../../services/objects";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
+import {getErrorString} from "../../services/utils";
 
 class EditContractForm extends Component {
     static defaultProps = {
@@ -70,7 +71,7 @@ class EditContractForm extends Component {
         }).catch(err => {
             setMessageState({
                 isLoading: false,
-                errors: [err.toString()]
+                errors: [getErrorString(err)]
             });
         });
     };

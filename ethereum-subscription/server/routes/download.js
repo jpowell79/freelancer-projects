@@ -1,26 +1,18 @@
-const {urls, httpCodes} = require('../../services/constants/');
+const {urls} = require('../../services/constants/');
 const {isLoggedInAdmin} = require('../../services/session');
 const mysqlDump = require('mysqldump');
 const serverSettings = require('../serverSettings');
-const {
-    SUCCESS,
-    UNAUTHORIZED,
-    BAD_REQUEST,
-    METHOD_NOT_ALLOWED,
-    SOMETHING_WENT_WRONG
-} = httpCodes;
+const ResponseHandler = require('../services/api/ResponseHandler');
 
-const handleGet = async (req, res) => {
+const handleGet = async (req, res, responseHandler) => {
     const loggedInAdmin = await isLoggedInAdmin(req);
 
     if(!loggedInAdmin){
-        res.sendStatus(UNAUTHORIZED);
-        return;
+        return responseHandler.sendUnauthorized();
     }
 
     if(!req.params.dump){
-        res.sendStatus(BAD_REQUEST);
-        return;
+        return responseHandler.sendBadRequest('Unexpected download type.');
     }
 
     try {
@@ -40,19 +32,20 @@ const handleGet = async (req, res) => {
         const dumpFile = `${rootPath}/${serverSettings.DATABASE_DUMP_FILE}`;
         res.download(dumpFile, serverSettings.DATABASE_DUMP_FILE);
     } catch(err){
-        if(global.isDevelopment()) console.error(err);
-        res.sendStatus(SOMETHING_WENT_WRONG)
+        responseHandler.sendSomethingWentWrong(err);
     }
 };
 
 module.exports = (server) => {
     server.use(`${urls.download}/:dump?`, server.initSession, (req, res) => {
+        const responseHandler = new ResponseHandler(res);
+
         switch (req.method){
         case "GET":
-            handleGet(req, res);
+            handleGet(req, res, responseHandler);
             break;
         default:
-            res.sendStatus(METHOD_NOT_ALLOWED);
+            responseHandler.sendMethodNotAllowed();
             break;
         }
     });

@@ -5,6 +5,7 @@ import SubscriptionContract from '../../../services/smart-contracts/Subscription
 import withMetamask from '../../hocs/withMetamask';
 import {LoaderSmall} from "../../modules/icons";
 import objects from "../../../services/objects";
+import {getErrorString} from "../../services/utils";
 
 class SmartContractData extends Component {
     state = {
@@ -64,7 +65,7 @@ class SmartContractData extends Component {
             }).catch(err => {
                 setMessageState({
                     isLoading: false,
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };

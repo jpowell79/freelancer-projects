@@ -1,16 +1,14 @@
-const {httpCodes} = require('../../../services/constants/index');
 const {getAllModelEntries} = require('./apiUtils');
-const {
-    SOMETHING_WENT_WRONG
-} = httpCodes;
+const ResponseHandler = require('./ResponseHandler');
 
 function SubscriptionContracts({req, res, sequelize}){
+    const responseHandler = new ResponseHandler(res);
     this.model = sequelize.models.subscriptions;
     this.subscriptionContractsModel = sequelize.models.subscriptionContracts;
     this.subscribersModel = sequelize.models.subscribers;
     this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
 
-    this.sendGetAll = async () => getAllModelEntries(res, this.model);
+    this.sendGetAll = async () => getAllModelEntries(responseHandler, this.model);
 
     this.sendJoinedGetAll = () => {
         return this.subscribersModel
@@ -28,10 +26,9 @@ function SubscriptionContracts({req, res, sequelize}){
                 ]
             })
             .then(entries => entries.map(entry => entry.dataValues))
-            .then(entries => { res.send(entries); })
+            .then(entries => { responseHandler.sendSuccess(entries); })
             .catch(err => {
-                if(global.isDevelopment()) console.error(err);
-                res.sendStatus(SOMETHING_WENT_WRONG);
+                responseHandler.sendSomethingWentWrong(err);
             });
     };
 

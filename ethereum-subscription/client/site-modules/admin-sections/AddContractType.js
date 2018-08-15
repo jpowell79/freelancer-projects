@@ -8,6 +8,7 @@ import {urls} from '../../../services/constants';
 import Dispatcher from '../../services/Dispatcher';
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import {Form} from 'semantic-ui-react';
+import {getErrorString} from "../../services/utils";
 
 class AddContractType extends Component {
     static mapStateToProps = ({subscriptionTypes}) => ({subscriptionTypes});
@@ -36,7 +37,7 @@ class AddContractType extends Component {
             .catch(err => {
                 setMessageState({
                     isLoading: false,
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };
@@ -59,7 +60,7 @@ class AddContractType extends Component {
         }).then(() => this.dispatcher.dispatchUpdateSubscriptionTypes({}))
             .catch(err => {
                 AlertOptionPane.showErrorAlert({
-                    message: err.toString()
+                    message: getErrorString(err)
                 });
             });
     };
