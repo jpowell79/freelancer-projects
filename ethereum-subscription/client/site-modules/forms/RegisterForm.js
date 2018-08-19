@@ -7,7 +7,7 @@ import urls from '../../../services/constants/urls';
 import roles from '../../../services/constants/roles';
 import {Loader, LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
-import withMetamask from '../../hocs/withMetamask';
+import withMetamaskAccount from '../../hocs/withMetamaskAccount';
 import objects from "../../../services/objects";
 import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
@@ -52,24 +52,16 @@ class RegisterForm extends Component {
         });
 
         this.registerUser({username, password, email})
-            .then(res => {
-                if(typeof res.data === 'string' && res.data.startsWith("Error: ")){
-                    grecaptcha.reset();
-                    this.props.setMessageState({
-                        errors: [res.data.toString().split("Error: ")[1]],
-                        isLoading: false
-                    });
-                } else {
-                    this.props.setMessageState({
-                        isLoading: false,
-                        showSuccess: true,
-                        successTitle: 'Your registration was completed successfully.',
-                        success: [
-                            'Check your email to activate the account. ' +
-                            'It will expire after 1 hour.'
-                        ]
-                    });
-                }
+            .then(() => {
+                this.props.setMessageState({
+                    isLoading: false,
+                    showSuccess: true,
+                    successTitle: 'Your registration was completed successfully.',
+                    success: [
+                        'Check your email to activate the account. ' +
+                        'It will expire after 1 hour.'
+                    ]
+                });
             })
             .catch(err => {
                 grecaptcha.reset();
@@ -135,4 +127,4 @@ class RegisterForm extends Component {
     }
 }
 
-export default withMessage(withMetamask(RegisterForm));
+export default withMessage(withMetamaskAccount(RegisterForm));

@@ -33,17 +33,10 @@ class LoginForm extends Component {
 
         this.login(username, password)
             .then(res => {
-                if(typeof res.data === 'string'){
-                    this.props.setMessageState({
-                        errors: [res.data.toString().split("Error: ")[1]],
-                        isLoading: false
-                    });
+                if(res.data.role === roles.admin){
+                    redirect(paths.pages.admin);
                 } else {
-                    if(res.data.role === roles.admin){
-                        redirect(paths.pages.admin);
-                    } else {
-                        redirect(paths.pages.supplier);
-                    }
+                    redirect(paths.pages.supplier);
                 }
             })
             .catch(err => {

@@ -3,7 +3,7 @@ import {Loader} from "../modules/icons";
 import PropTypes from 'prop-types';
 import objects from '../../services/objects';
 import HideFragment from './HideFragment';
-import withMetamask from '../hocs/withMetamask';
+import withMetamaskAccount from '../hocs/withMetamaskAccount';
 
 /**
  * Will rerender whenever metamaskAccount changes occurs in metamask and
@@ -48,4 +48,4 @@ class MetamaskProvider extends Component {
     }
 }
 
-export default withMetamask(MetamaskProvider);
+export default withMetamaskAccount(MetamaskProvider);

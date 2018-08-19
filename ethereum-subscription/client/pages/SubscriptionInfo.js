@@ -10,7 +10,7 @@ import {ProviderRating} from "../site-modules/ProviderRating";
 import {Grid, Segment, Form, Message} from 'semantic-ui-react';
 import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
-import withMetamask from "../hocs/withMetamask";
+import withMetamaskAccount from "../hocs/withMetamaskAccount";
 import SubscriptionContract from '../../services/smart-contracts/SubscriptionContract';
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from "../../services/objects";
@@ -242,6 +242,6 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
-    withMetamask,
+    withMetamaskAccount,
     withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA})
 )(SubscriptionInfo);

@@ -58,7 +58,7 @@ describe('Rest API', () => {
                     expect(response.status).to.be.equal(200);
                 });
             });
-    }).timeout(1000 * 100);
+    }).timeout(1000 * 10);
 
     describe(urls.subscriptionTypes, () => {
         it('Should be unauthorized to create new subscription type', () => {
@@ -205,12 +205,6 @@ describe('Rest API', () => {
     });
 
     describe(`${urls.email}`, () => {
-        it('Should return bad request with unexisting type', () => {
-            return setupOrGetMockApp()
-                .then(app => request(app).post(`${urls.email}/includes`).send({}))
-                .then(checkBadRequest);
-        });
-
         it('Should be unauthorized to send email', () => {
             return setupOrGetMockApp()
                 .then(app => (

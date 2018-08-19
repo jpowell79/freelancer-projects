@@ -2,7 +2,7 @@ import React, {Component, Fragment} from 'react';
 import SubscriptionForm from "../forms/SubscriptionForm";
 import {Form} from 'semantic-ui-react';
 import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
-import withMetamask from '../../hocs/withMetamask';
+import withMetamaskAccount from '../../hocs/withMetamaskAccount';
 import {LoaderSmall} from "../../modules/icons";
 import objects from "../../../services/objects";
 import {getErrorString} from "../../services/utils";
@@ -141,4 +141,4 @@ class SmartContractData extends Component {
     }
 }
 
-export default withMetamask(SmartContractData);
+export default withMetamaskAccount(SmartContractData);

@@ -1,70 +1,63 @@
-const {urls, paths, httpCodes} = require('../../services/constants/');
+const {urls, paths} = require('../../services/constants/');
 const {isLoggedInAdmin} = require('../../services/session');
 const formidable = require('formidable');
 const fs = require('fs');
-const {
-    SUCCESS,
-    UNAUTHORIZED,
-    BAD_REQUEST,
-    METHOD_NOT_ALLOWED,
-} = httpCodes;
+const ResponseHandler = require('../services/api/ResponseHandler');
 
-const upload = (res, file, path) => {
-    fs.copyFile(file.path, `client/${path}/${file.name}`, (err) => {
-        if(err){
-            if(global.isDevelopment()) console.error(err);
-            res.status(BAD_REQUEST).send(err.toString());
-            return;
+function UploadRequest({req, res, responseHandler}){
+    const upload = (file, path) => {
+        fs.copyFile(file.path, `client/${path}/${file.name}`, (err) => {
+            if(err){
+                return responseHandler.sendSomethingWentWrong(err);
+            }
+
+            responseHandler.sendSuccess();
+        });
+    };
+
+    const checkTypeThenUpload = (file) => {
+        if(file.type.startsWith('image')){
+            upload(file, paths.static.images);
+        } else if(file.type.startsWith('audio')){
+            upload(file, paths.static.audio);
+        } else if(file.type.startsWith('video')){
+            upload(file, paths.static.video);
+        } else {
+            upload(file, paths.static.files);
+        }
+    };
+
+    this.handlePost = async () => {
+        const loggedInAdmin = await isLoggedInAdmin(req);
+
+        if(!loggedInAdmin){
+            return responseHandler.sendUnauthorized();
         }
 
-        res.sendStatus(SUCCESS);
-    });
-};
+        const form = new formidable.IncomingForm();
 
-const checkTypeThenUpload = (res, file) => {
-    if(file.type.startsWith('image')){
-        upload(res, file, paths.static.images);
-    } else if(file.type.startsWith('audio')){
-        upload(res, file, paths.static.audio);
-    } else if(file.type.startsWith('video')){
-        upload(res, file, paths.static.video);
-    } else {
-        upload(res, file, paths.static.files);
-    }
-};
+        form.parse(req, (err, fields, files) => {
+            const file = files.file;
 
-const handlePost = async (req, res) => {
-    const loggedInAdmin = await isLoggedInAdmin(req);
+            if(err || !file){
+                return responseHandler.sendBadRequest(err);
+            }
 
-    if(!loggedInAdmin){
-        res.sendStatus(UNAUTHORIZED);
-        return;
-    }
-
-    const form = new formidable.IncomingForm();
-
-    form.parse(req, (err, fields, files) => {
-        const file = files.file;
-
-        if(err || !file){
-            if(global.isDevelopment()) console.error(err);
-            res.status(BAD_REQUEST).send(err.toString());
-            return;
-        }
-
-        checkTypeThenUpload(res, file);
-    });
-};
+            checkTypeThenUpload(file);
+        });
+    };
+}
 
 module.exports = (server) => {
     server.use(urls.upload, server.initSession, (req, res) => {
+        const responseHandler = new ResponseHandler(res);
+        const uploadRequest = new UploadRequest({req, res, responseHandler});
+
         switch (req.method){
         case "POST":
-            handlePost(req, res, req.body);
-            break;
+            return uploadRequest.handlePost();
         default:
-            res.sendStatus(METHOD_NOT_ALLOWED);
-            break;
+            return responseHandler.sendMethodNotAllowed();
         }
     });
 };

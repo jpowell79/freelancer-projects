@@ -17,5 +17,7 @@ export const hasResponseData = (err) => {
 };
 
 export const getErrorString = (err) => {
-    return hasResponseData(err) ? err.response.data : err.toString();
+    const error = hasResponseData(err) ? err.response.data : err.toString();
+
+    return (error.startsWith('Error: ')) ? error.split('Error: ')[1] : error;
 };

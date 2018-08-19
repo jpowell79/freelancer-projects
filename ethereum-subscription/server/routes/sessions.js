@@ -4,56 +4,65 @@ const {isLoggedIn, saveUser} = require('../../services/session');
 const ResponseHandler = require('../services/api/ResponseHandler');
 const serverSettings = require('../serverSettings');
 
-const login = (req, res, sequelize, {username, password}, responseHandler) => {
-    if(!username || !password){
-        return responseHandler.sendBadRequest('Missing username or password.');
-    }
+function SessionsRequest({req, sequelize, responseHandler}){
+    const login = () => {
+        const {
+            username,
+            password
+        } = req.body;
 
-    return sequelize.models.users
-        .findOne({where: {username}})
-        .then(userRes => {
-            if(!userRes)
-                throw new Error('User does not exist.');
-            if(!passwordHash.verify(password, userRes.password))
-                throw new Error('Invalid password.');
+        if(!username || !password){
+            return responseHandler.sendBadRequest('Missing username or password.');
+        }
 
-            saveUser(req, userRes.dataValues);
-            responseHandler.sendSuccess(req.session.user);
-        })
-        .catch(err => {
-            responseHandler.sendSomethingWentWrong(err);
-        });
-};
+        return sequelize.models.users
+            .findOne({where: {username}})
+            .then(userRes => {
+                if(!userRes)
+                    throw new Error('User does not exist.');
+                if(!passwordHash.verify(password, userRes.password))
+                    throw new Error('Invalid password.');
 
-const logout = (req, res, responseHandler) => {
-    return isLoggedIn(req)
-        .then(loggedIn => {
-            if(loggedIn){
-                res.clearCookie(serverSettings.COOKIE_NAME);
-                responseHandler.sendSuccess();
-            } else {
-                responseHandler.sendUnauthorized();
-            }
-        })
-        .catch(err => {
-            responseHandler.sendSomethingWentWrong(err);
-        });
-};
+                saveUser(req, userRes.dataValues);
+                responseHandler.sendSuccess(req.session.user);
+            })
+            .catch(err => {
+                responseHandler.sendSomethingWentWrong(err);
+            });
+    };
+
+    const logout = () => {
+        return isLoggedIn(req)
+            .then(loggedIn => {
+                if(loggedIn){
+                    responseHandler.res.clearCookie(serverSettings.COOKIE_NAME);
+                    responseHandler.sendSuccess();
+                } else {
+                    responseHandler.sendUnauthorized();
+                }
+            })
+            .catch(err => {
+                responseHandler.sendSomethingWentWrong(err);
+            });
+    };
+
+    this.handleGet = async () => responseHandler.sendSuccess(req.session.user);
+    this.handlePost = async () => login();
+    this.handleDelete = async () => logout();
+}
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.sessions}`, server.initSession, (req, res) => {
         const responseHandler = new ResponseHandler(res);
+        const sessionsRequest = new SessionsRequest({req, sequelize, responseHandler});
 
         switch (req.method){
         case "GET":
-            responseHandler.sendSuccess(req.session.user);
-            break;
+            return sessionsRequest.handleGet();
         case "POST":
-            login(req, res, sequelize, req.body, responseHandler);
-            break;
+            return sessionsRequest.handlePost();
         case "DELETE":
-            logout(req, res, responseHandler);
-            break;
+            return sessionsRequest.handleDelete();
         default:
             responseHandler.sendMethodNotAllowed();
             break;

@@ -52,9 +52,11 @@ module.exports = (app, sequelize) => {
         app.render(req, res, page, mergedQuery);
     };
 
-    server.get('/form', csrfProtection, (req, res) => {
-        res.render('send', {csrfToken: req.csrfToken()})
-    });
+    if(global.isProduction()){
+        server.get('/form', csrfProtection, (req, res) => {
+            res.render('send', {csrfToken: req.csrfToken()})
+        });
+    }
     server.get(urls.base, customRequestHandler.bind(undefined, urls.base));
     server.get('*', app.getRequestHandler());
 

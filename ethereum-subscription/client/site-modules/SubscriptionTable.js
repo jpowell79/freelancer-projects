@@ -7,6 +7,7 @@ import {Pagination} from 'semantic-ui-react';
 import {paths} from '../../services/constants';
 import Link from 'next/link';
 import {ProviderRating} from "./ProviderRating";
+import {hideOnTablet} from "../services/css";
 
 class SubscriptionTable extends Component {
     static defaultProps = {maxRows: -1};
@@ -57,14 +58,16 @@ class SubscriptionTable extends Component {
                                     reputation={contract.reputation}
                                 />
                             </td>
-                            <td>{contract.reputation}</td>
-                            <td>{strings.toDateString(new Date(contract.contractCreation))}</td>
-                            <td>TBI</td>
+                            <td className={hideOnTablet()}>{contract.reputation}</td>
+                            <td className={hideOnTablet()}>{
+                                strings.toDateString(new Date(contract.contractCreation))
+                            }</td>
+                            <td className={hideOnTablet()}>TBI</td>
                             <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
-                            <td>{contract.joiningFee} Eth</td>
-                            <td>{contract.exitFee} Eth</td>
+                            <td className={hideOnTablet()}>{contract.joiningFee} Eth</td>
+                            <td className={hideOnTablet()}>{contract.exitFee} Eth</td>
                             <td>{contract.subscriptionLengthInWeeks} Weeks</td>
-                            <td>{contract.subscriptionAmountToPay} Eth</td>
+                            <td className={hideOnTablet()}>{contract.subscriptionAmountToPay} Eth</td>
                             <td>
                                 {(this.props.buttonRenderer)
                                     ? this.props.buttonRenderer({
@@ -105,14 +108,14 @@ class SubscriptionTable extends Component {
                         <tr>
                             <th>Subscription Type</th>
                             <th>Supplier</th>
-                            <th>Reputation</th>
-                            <th>Registration Age</th>
-                            <th>Wallet Age</th>
+                            <th className={hideOnTablet()}>Reputation</th>
+                            <th className={hideOnTablet()}>Registration Age</th>
+                            <th className={hideOnTablet()}>Wallet Age</th>
                             <th>Free Trial</th>
-                            <th>Join Fee</th>
-                            <th>Exit Fee</th>
-                            <th>Contract Length</th>
-                            <th>Monthly Price</th>
+                            <th className={hideOnTablet()}>Join Fee</th>
+                            <th className={hideOnTablet()}>Exit Fee</th>
+                            <th className={hideOnTablet()}>Contract Length</th>
+                            <th>Weekly Price</th>
                             <th className="no-sort"/>
                         </tr>
                     </thead>

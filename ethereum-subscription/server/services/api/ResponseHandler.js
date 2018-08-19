@@ -6,11 +6,16 @@ const {
     UNAUTHORIZED,
     METHOD_NOT_ALLOWED,
     NOT_FOUND,
+    REDIRECT,
     CREATED
 } = httpCodes;
 
 function ResponseHandler(res){
     this.res = res;
+
+    this.redirect = (page) => {
+        res.redirect(REDIRECT, page);
+    };
 
     this.sendSuccess = (data = {}) => {
         this.res.send(data);
@@ -21,6 +26,7 @@ function ResponseHandler(res){
     };
 
     this.sendNotFound = (err = '') => {
+        if(global.isDevelopment()) console.error(err);
         this.res.status(NOT_FOUND).send(err.toString());
     };
 
@@ -42,7 +48,7 @@ function ResponseHandler(res){
         this.res.status(BAD_REQUEST).send(err.toString());
     };
 
-    this.handleResponse = (promise) => {
+    this.handlePromiseResponse = (promise) => {
         return (
             promise.then(() => {
                 this.res.sendStatus(SUCCESS);

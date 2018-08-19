@@ -1,9 +1,7 @@
 const {getAllModelEntries} = require('./apiUtils');
 const {isLoggedInAdmin} = require('../../../services/session');
-const ResponseHandler = require('./ResponseHandler');
 
-function SubscriptionContracts({req, res, sequelize}){
-    const responseHandler = new ResponseHandler(res);
+function SubscriptionContracts({req, sequelize, responseHandler}){
     this.model = sequelize.models.subscriptionContracts;
     this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
 

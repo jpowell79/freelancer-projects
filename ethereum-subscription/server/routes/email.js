@@ -3,49 +3,56 @@ const mail = require('../services/api/mail');
 const {isLoggedIn, isLoggedInAdmin} = require('../../services/session');
 const ResponseHandler = require('../services/api/ResponseHandler');
 
-const handlePost = async (req, res, sequelize, responseHandler) => {
-    if(!mailTypes.includes(req.params.type)){
-        return responseHandler.sendBadRequest(`Invalid email type: ${req.params.type}`);
-    }
+function EmailRequest({req, sequelize, responseHandler}){
+    const sendMail = async () => {
+        const mailType = req.params.type;
 
-    const loggedIn = await isLoggedIn(req);
+        if(!mailTypes.includes(mailType)){
+            return responseHandler.sendBadRequest(`Invalid email type: ${req.params.type}`);
+        }
 
-    if(!loggedIn){
-        return responseHandler.sendUnauthorized();
-    }
+        switch(mailType){
+        case mailTypes.confirmationMail:
+            return responseHandler.handlePromiseResponse(mail.sendConfirmEmail(req));
+        case mailTypes.contractCreated:
+            return responseHandler.handlePromiseResponse(mail.sendContractCreatedMail(req));
+        case mailTypes.requestContract:
+            return responseHandler.handlePromiseResponse(mail.sendContractRequestMail(req));
+        case mailTypes.massMailSuppliers:
+            const loggedInAdmin = await isLoggedInAdmin(req);
 
-    switch(req.params.type){
-    case mailTypes.confirmationMail:
-        return responseHandler.handleResponse(mail.sendConfirmEmail(req));
-    case mailTypes.contractCreated:
-        return responseHandler.handleResponse(mail.sendContractCreatedMail(req));
-    case mailTypes.requestContract:
-        return responseHandler.handleResponse(mail.sendContractRequestMail(req));
-    case mailTypes.massMailSuppliers:
-        const loggedInAdmin = await isLoggedInAdmin(req);
+            if(!loggedInAdmin){
+                return responseHandler.sendUnauthorized();
+            }
 
-        if(!loggedInAdmin){
+            return responseHandler.handlePromiseResponse(mail.sendMassSupplierMail(req, sequelize));
+        default:
+            responseHandler.sendBadRequest(`Invalid email type: ${req.params.type}`);
+            break;
+        }
+    };
+
+    this.handlePost = async () => {
+        const loggedIn = await isLoggedIn(req);
+
+        if(!loggedIn){
             return responseHandler.sendUnauthorized();
         }
 
-        return responseHandler.handleResponse(mail.sendMassSupplierMail(req, sequelize));
-    default:
-        responseHandler.sendBadRequest(`Invalid email type: ${req.params.type}`);
-        break;
-    }
-};
+        return sendMail();
+    };
+}
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.email}/:type`, server.initSession, (req, res) => {
         const responseHandler = new ResponseHandler(res);
+        const emailRequest = new EmailRequest({req, sequelize, responseHandler});
 
         switch (req.method){
         case "POST":
-            handlePost(req, res, sequelize, responseHandler);
-            break;
+            return emailRequest.handlePost();
         default:
-            responseHandler.sendMethodNotAllowed();
-            break;
+            return responseHandler.sendMethodNotAllowed();
         }
     });
 };

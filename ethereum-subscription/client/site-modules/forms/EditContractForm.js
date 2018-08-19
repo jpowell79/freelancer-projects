@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import SubscriptionForm from "./SubscriptionForm";
 import PropTypes from 'prop-types';
-import withMetamask from '../../hocs/withMetamask';
+import withMetamaskAccount from '../../hocs/withMetamaskAccount';
 import {Loader} from "../../modules/icons";
 import objects from "../../../services/objects";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
@@ -154,4 +154,4 @@ class EditContractForm extends Component {
     }
 }
 
-export default withMetamask(EditContractForm);
+export default withMetamaskAccount(EditContractForm);

@@ -5,7 +5,7 @@ import Web3 from "../../services/Web3";
 import {getChildProps} from "../services/utils";
 
 export default (Module) => {
-    class Metamask extends Component {
+    class MetamaskAccount extends Component {
         static async getInitialProps (appContext){
             const moduleProps = await getChildProps(Module, appContext);
             return {...moduleProps};
@@ -54,5 +54,5 @@ export default (Module) => {
         }
     }
 
-    return connect(Metamask.mapStateToProps)(Metamask);
+    return connect(MetamaskAccount.mapStateToProps)(MetamaskAccount);
 };

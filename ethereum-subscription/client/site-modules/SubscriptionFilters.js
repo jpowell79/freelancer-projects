@@ -44,7 +44,7 @@ class SubscriptionFilters extends Component {
                     checkAllAdditional: true
                 });
         }, () => {
-            this.props.onChange({...this.state});
+            this.props.onChange(this.state);
         });
     };
 
@@ -68,7 +68,7 @@ class SubscriptionFilters extends Component {
                     checkAllSubscriptionTypes: true
                 });
         }, () => {
-            this.props.onChange({...this.state});
+            this.props.onChange(this.state);
         });
     };
 
@@ -76,7 +76,7 @@ class SubscriptionFilters extends Component {
         this.setState((prevState) => ({
             [field]: !prevState[field]
         }), () => {
-            this.props.onChange({...this.state});
+            this.props.onChange(this.state);
         });
     };
 
@@ -214,7 +214,7 @@ class SubscriptionFilters extends Component {
                                     this.setState({
                                         txHashSearch: event.target.value
                                     }, () => {
-                                        this.props.onChange({...this.state});
+                                        this.props.onChange(this.state);
                                     });
                                 }}
                             />

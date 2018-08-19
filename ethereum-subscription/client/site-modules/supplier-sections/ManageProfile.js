@@ -6,6 +6,8 @@ import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIn
 import FormList from "../../modules/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
+import {getErrorString} from "../../services/utils";
+import {Message} from 'semantic-ui-react';
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -23,11 +25,16 @@ class ManageProfile extends Component {
                 type: 'email',
                 label: 'Email:',
                 defaultValue: props.user.email
+            },
+            {
+                type: 'password',
+                label: 'Password:',
+                defaultValue: ''
             }
         ];
     }
 
-    handleSubmit = ({username, email}) => {
+    handleSubmit = ({username, email, password}) => {
         this.props.setMessageState({
             errors: [],
             showSuccess: false,
@@ -38,6 +45,7 @@ class ManageProfile extends Component {
             originalUsername: this.props.user.username,
             username,
             email,
+            password,
             update: true
         }).then(userResponse => {
             return loadServerDataIntoStoreFromClient(this.props.dispatch, {
@@ -52,9 +60,9 @@ class ManageProfile extends Component {
                 showSuccess: true,
                 isLoading: false
             });
-        }).catch(() => {
+        }).catch(err => {
             this.props.setMessageState({
-                errors: ['The provided username is already taken.'],
+                errors: [getErrorString(err)],
                 isLoading: false
             });
         });
@@ -63,6 +71,13 @@ class ManageProfile extends Component {
     render(){
         return (
             <div className="container-5">
+                <Message
+                    header={`Your wallet address is: ${user.walletAddress}`}
+                    list={[
+                        'You will need to contact our support team if you ever need to change this address',
+                        'You will lose all feedback if you do this.'
+                    ]}
+                />
                 <h2>Manage Your Profile</h2>
                 {this.props.renderMessages()}
                 <FormList

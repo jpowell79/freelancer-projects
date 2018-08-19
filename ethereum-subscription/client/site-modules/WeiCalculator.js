@@ -93,6 +93,7 @@ class WeiCalculator extends Component {
             }
         }).catch(err => {
             console.error(err);
+            this.setState({isLoading: false});
         });
     }
 

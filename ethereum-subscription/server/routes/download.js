@@ -4,49 +4,54 @@ const mysqlDump = require('mysqldump');
 const serverSettings = require('../serverSettings');
 const ResponseHandler = require('../services/api/ResponseHandler');
 
-const handleGet = async (req, res, responseHandler) => {
-    const loggedInAdmin = await isLoggedInAdmin(req);
+function DownloadRequest({req, sequelize, responseHandler}){
+    const downloadAndCreateDatabaseDump = async () => {
+        try {
+            const host = req.headers.host.startsWith('localhost') ? 'localhost' : req.headers.host;
+            await mysqlDump({
+                connection: {
+                    host: host,
+                    port: serverSettings.DATABASE_PORT,
+                    user: serverSettings.DATABASE_USER,
+                    password: serverSettings.DATABASE_PASSWORD,
+                    database: serverSettings.DATABASE_NAME
+                },
+                dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
+            });
 
-    if(!loggedInAdmin){
-        return responseHandler.sendUnauthorized();
-    }
+            const rootPath = require('path').normalize(__dirname + '/../..');
+            const dumpFile = `${rootPath}/${serverSettings.DATABASE_DUMP_FILE}`;
+            responseHandler.res.download(dumpFile, serverSettings.DATABASE_DUMP_FILE);
+        } catch(err){
+            responseHandler.sendSomethingWentWrong(err);
+        }
+    };
 
-    if(!req.params.dump){
-        return responseHandler.sendBadRequest('Unexpected download type.');
-    }
+    this.handleGet = async () => {
+        const loggedInAdmin = await isLoggedInAdmin(req);
 
-    try {
-        const host = req.headers.host.startsWith('localhost') ? 'localhost' : req.headers.host;
-        await mysqlDump({
-            connection: {
-                host: host,
-                port: serverSettings.DATABASE_PORT,
-                user: serverSettings.DATABASE_USER,
-                password: serverSettings.DATABASE_PASSWORD,
-                database: serverSettings.DATABASE_NAME
-            },
-            dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
-        });
+        if(!loggedInAdmin){
+            return responseHandler.sendUnauthorized();
+        }
 
-        const rootPath = require('path').normalize(__dirname + '/../..');
-        const dumpFile = `${rootPath}/${serverSettings.DATABASE_DUMP_FILE}`;
-        res.download(dumpFile, serverSettings.DATABASE_DUMP_FILE);
-    } catch(err){
-        responseHandler.sendSomethingWentWrong(err);
-    }
-};
+        if(!req.params.dump){
+            return responseHandler.sendBadRequest('Unexpected download type.');
+        }
+
+        return downloadAndCreateDatabaseDump();
+    };
+}
 
 module.exports = (server) => {
     server.use(`${urls.download}/:dump?`, server.initSession, (req, res) => {
         const responseHandler = new ResponseHandler(res);
+        const downloadRequest = new DownloadRequest({req, sequelize, responseHandler});
 
         switch (req.method){
         case "GET":
-            handleGet(req, res, responseHandler);
-            break;
+            return downloadRequest.handleGet();
         default:
-            responseHandler.sendMethodNotAllowed();
-            break;
+            return responseHandler.sendMethodNotAllowed();
         }
     });
 };
