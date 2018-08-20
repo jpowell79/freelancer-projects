@@ -42,7 +42,7 @@ function DownloadRequest({req, sequelize, responseHandler}){
     };
 }
 
-module.exports = (server) => {
+module.exports = (server, sequelize) => {
     server.use(`${urls.download}/:dump?`, server.initSession, (req, res) => {
         const responseHandler = new ResponseHandler(res);
         const downloadRequest = new DownloadRequest({req, sequelize, responseHandler});

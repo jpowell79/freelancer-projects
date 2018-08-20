@@ -41,9 +41,11 @@ class Homepage extends Component {
                                     : homepageBanner.value
                             }
                             onFileUploaded={(file) => {
-                                this.setState({homepage: {
+                                this.setState({
+                                    homepageBanner: {
                                         value: file
-                                    }});
+                                    }
+                                });
                             }}/>
                     </Form.Field>
                     <Form.Field>

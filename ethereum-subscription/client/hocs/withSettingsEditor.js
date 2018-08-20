@@ -39,22 +39,23 @@ export default (Module, title) => {
                 .keys(componentState)
                 .map(settingsKey =>
                     this.settingsUpdater[settingsKey](componentState[settingsKey].value)
-                ))
-                .then(() =>
-                    loadServerDataIntoStoreFromClient(this.props.dispatch, {settings: true})
                 )
-                .then(() => {
-                    this.setState({
-                        hasSaved: true,
-                        isSaving: false
-                    });
-                })
-                .catch(err => {
-                    AlertOptionPane.showErrorAlert({
-                        message: getErrorString(err)
-                    });
-                    this.setState({isSaving: false});
+            )
+            .then(() =>
+                loadServerDataIntoStoreFromClient(this.props.dispatch, {settings: true})
+            )
+            .then(() => {
+                this.setState({
+                    hasSaved: true,
+                    isSaving: false
                 });
+            })
+            .catch(err => {
+                AlertOptionPane.showErrorAlert({
+                    message: getErrorString(err)
+                });
+                this.setState({isSaving: false});
+            });
         };
 
         getDefaultsOrState = (state) => {

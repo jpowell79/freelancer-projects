@@ -143,8 +143,8 @@ class SubscriptionTable extends Component {
                                 size="mini"
                                 totalPages={totalPages}
                                 siblingRange={0}
-                                prevItem={null}
-                                nextItem={null}
+                                firstItem={null}
+                                lastItem={null}
                             />
                         </div>
                     </div>
