@@ -1,4 +1,5 @@
 import strings from '../../services/strings';
+import objects from '../../services/objects';
 
 export const getChildProps = async (ChildClass, appContext) => {
     let childProps = {};
@@ -20,4 +21,8 @@ export const getErrorString = (err) => {
     const error = hasResponseData(err) ? err.response.data : err.toString();
 
     return (error.startsWith('Error: ')) ? error.split('Error: ')[1] : error;
+};
+
+export const childrenToArray = (children) => {
+    return (objects.length(children) <= 1) ? [children] : children;
 };

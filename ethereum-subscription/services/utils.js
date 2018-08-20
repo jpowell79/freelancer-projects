@@ -28,6 +28,14 @@ module.exports.weiToEth = (wei) => {
     return wei/1000000000000000000;
 };
 
+module.exports.sleep = async (length) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, length);
+    });
+};
+
 module.exports.random = (lowest, highest) => {
     return Math.floor((Math.random() * highest) + lowest);
 };

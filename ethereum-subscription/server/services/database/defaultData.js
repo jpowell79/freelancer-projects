@@ -6,13 +6,6 @@ module.exports.settings = {
     homepageBanner: 'header.jpg',
     homepageBannerOverlayColor: '#33363f',
     homepageBannerTextColor: "#FFFFFF",
-    homepageBannerText: (
-        `Take out a subscription to a service, and pay for the service ` +
-        `using Ethereum, with a public record of the terms of the ` +
-        `contract and an easy way to request a subscription cancellation ` +
-        `if it ever becomes necessary.`
-    ),
-    homepageBannerTitle: 'Ethereum Subscriptions',
     homepageTableMaxRows: '100',
     logo: 'logo.png',
     siteTitle: 'Ethereum Subscriptions'

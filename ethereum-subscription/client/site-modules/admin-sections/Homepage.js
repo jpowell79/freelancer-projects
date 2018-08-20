@@ -11,8 +11,6 @@ class Homepage extends Component {
         this.state = {
             homepageBanner: null,
             homepageBannerOverlayColor: null,
-            homepageBannerText: null,
-            homepageBannerTitle: null,
             homepageBannerTextColor: null,
             homepageTableMaxRows: null
         };
@@ -22,8 +20,6 @@ class Homepage extends Component {
         const {
             homepageBanner,
             homepageBannerOverlayColor,
-            homepageBannerText,
-            homepageBannerTitle,
             homepageBannerTextColor,
             homepageTableMaxRows
         } = this.props.getDefaultsOrState(this.state);
@@ -74,35 +70,6 @@ class Homepage extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field>
-                        <label>Title:</label>
-                        <input
-                            type="text"
-                            value={homepageBannerTitle.value}
-                            onChange={(event) => {
-                                this.setState({
-                                    homepageBannerTitle: {
-                                        value: event.target.value
-                                    }
-                                });
-                            }}
-                        />
-                    </Form.Field>
-                    <Form.Field>
-                        <label>Text:</label>
-                        <textarea
-                            value={homepageBannerText.value}
-                            onChange={(event) => {
-                                this.setState({
-                                    homepageBannerText: {
-                                        value: event.target.value
-                                    }
-                                });
-                            }}
-                            rows={5}
-                        />
-                    </Form.Field>
-
                     <h2>Table</h2>
                     <Form.Field>
                         <label>Max Rows:</label>

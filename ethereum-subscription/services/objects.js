@@ -21,6 +21,10 @@ module.exports.filter = (object, predicate) => {
     return filteredObject;
 };
 
+module.exports.length = (object) => {
+    return Object.keys(object).length;
+};
+
 module.exports.map = (object, transform) => {
     const mappedObject = {};
 

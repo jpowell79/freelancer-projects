@@ -7,8 +7,6 @@ function SettingsRequest({req, sequelize, responseHandler}){
     this.handleGet = () => {
         const name = req.params.name;
 
-        console.log(name);
-
         if(!strings.isDefined(name)){
             return sequelize.models.settings
                 .findAll()

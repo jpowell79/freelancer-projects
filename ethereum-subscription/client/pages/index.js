@@ -14,6 +14,7 @@ import {
     AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
     AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
 } from "../clientSettings";
+import Slideshow from '../modules/Slideshow';
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
@@ -47,10 +48,37 @@ class Index extends Component {
                         color: settings.homepageBannerTextColor.value
                     }}
                     centered
-                    wrapper={4}
                 >
-                    <h1 className="display-4">{settings.homepageBannerTitle.value}</h1>
-                    <p className="text h2">{settings.homepageBannerText.value}</p>
+                    <Slideshow className="wrapper-3">
+                        <div className="wrapper-4">
+                            <h1 className="title">Ethereum Subscriptions</h1>
+                            <p className="text">
+                                Take out a subscription to a service, and pay for the service
+                                using Ethereum, with a public record of the terms of the
+                                contract and an easy way to request a subscription cancellation
+                                if it ever becomes necessary.
+                            </p>
+                        </div>
+                        <div className="wrapper-4">
+                            <h2 className="title">Slide 2</h2>
+                            <p className="text">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+                                congue justo purus, pharetra finibus odio pellentesque imperdiet.
+                                Duis finibus viverra lectus non bibendum. In quis euismod urna,
+                                sit amet tincidunt mauris. Aliquam vel lectus vitae orci imperdiet
+                                faucibus. Interdum et malesuada fames ac ante ipsum primis in
+                                faucibus.
+                            </p>
+                        </div>
+                        <div className="wrapper-4">
+                            <h2 className="title">Slide 3</h2>
+                            <p className="text">
+                                Nam ultricies, nulla sit amet auctor euismod, mauris
+                                enim mattis nisl, nec dapibus nisi velit sit amet turpis.
+                                Morbi posuere rhoncus leo, eu sodales enim ullamcorper et.
+                            </p>
+                        </div>
+                    </Slideshow>
                     <div className="overlay" style={{
                         backgroundColor: settings.homepageBannerOverlayColor.value
                     }}/>
