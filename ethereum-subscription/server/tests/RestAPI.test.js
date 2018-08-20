@@ -323,7 +323,9 @@ describe('Rest API', () => {
         it('Should create unexisting user.', () => {
             return setupOrGetMockApp()
                 .then(app => request(app).post(urls.users).send(mockUser))
-                .then(checkSuccess);
+                .then((res) => {
+                    expect(res.status).to.be.equal(403);
+                });
         }).timeout(1000 * 10);
 
         it('Should not allow creating unexisting user.', () => {
