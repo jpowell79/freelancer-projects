@@ -7,6 +7,7 @@ const {sendConfirmEmail, isValidEmailConfirmation} = require('../services/api/ma
 const uuidv4 = require('uuid/v4');
 const paths = require('../../services/constants/paths');
 const ResponseHandler = require('../services/api/ResponseHandler');
+const passwordHash = require('password-hash');
 
 function UsersRequest({req, res, sequelize, responseHandler}){
     const validateGrecaptcha = async () => {
@@ -148,7 +149,8 @@ function UsersRequest({req, res, sequelize, responseHandler}){
         const {
             username,
             originalUsername,
-            email
+            email,
+            password
         } = req.body;
 
         const loggedIn = await isLoggedIn(req);
@@ -161,8 +163,13 @@ function UsersRequest({req, res, sequelize, responseHandler}){
             return responseHandler.sendUnauthorized();
         }
 
+        const hashedPassword = passwordHash.generate(password);
+
         return sequelize.models.users
-            .update({username, email}, {where: {username: originalUsername}})
+            .update(
+                {username, email, password: hashedPassword},
+                {where: {username: originalUsername}}
+            )
             .then(() => sequelize.models.users.findOne({where: {username}}))
             .then(userRes => {
                 saveUser(req, userRes.dataValues);

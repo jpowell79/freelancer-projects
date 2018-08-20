@@ -88,7 +88,7 @@ class SubscriptionInfo extends Component {
         const contract = this.props.contracts[0];
 
         if(objects.isEmpty(this.props.metamaskAccount)){
-            AlertOptionPane.showErrorAlert({
+            AlertOptionPane.showInfoAlert({
                 message: "You need to login to metamask in order to make a subscription"
             });
 

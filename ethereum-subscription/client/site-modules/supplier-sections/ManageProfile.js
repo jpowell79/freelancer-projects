@@ -70,9 +70,10 @@ class ManageProfile extends Component {
 
     render(){
         return (
-            <div className="container-5">
+            <div className="container-3">
                 <Message
-                    header={`Your wallet address is: ${user.walletAddress}`}
+                    info
+                    header={`Your wallet address is: ${this.props.user.walletAddress}`}
                     list={[
                         'You will need to contact our support team if you ever need to change this address',
                         'You will lose all feedback if you do this.'

@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react';
 import TableSorter from './TableSorter';
+import $ from 'jquery';
 
 class SortableTable extends Component {
     static defaultProps = {
