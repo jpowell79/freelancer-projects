@@ -7,6 +7,7 @@ import objects from '../../services/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
+import {classNames, joinClassNames} from "../services/className";
 
 class Supplier extends Component {
     static sections = {
@@ -23,14 +24,14 @@ class Supplier extends Component {
         }
     }
 
-    renderSection = (active) => {
+    renderSection = (activeSection) => {
         const {
             subscriptions,
             requestContract,
             manageProfile
         } = Supplier.sections;
 
-        switch(objects.values(Supplier.sections)[active]){
+        switch(activeSection){
         case subscriptions:
             return <Subscriptions/>;
         case requestContract:
@@ -43,13 +44,15 @@ class Supplier extends Component {
     };
 
     render () {
-        const {
-            active
-        } = this.state;
+        const {active} = this.state;
+        const activeSection = objects.values(Supplier.sections)[active];
+        const segmentClass = classNames({
+            'widthless-mobile': activeSection === Supplier.sections.subscriptions
+        });
 
         return (
             <Page>
-                <FullWidthSegment className="gray" skinny wrapper={1}>
+                <FullWidthSegment className={joinClassNames('gray', segmentClass)} skinny wrapper={1}>
                     <Menu fluid stackable>
                         {objects.values(Supplier.sections)
                             .map((section, i) => {
@@ -66,8 +69,8 @@ class Supplier extends Component {
                             })
                         }
                     </Menu>
-                    <Segment>
-                        {this.renderSection(active)}
+                    <Segment className={segmentClass}>
+                        {this.renderSection(activeSection)}
                     </Segment>
                 </FullWidthSegment>
             </Page>

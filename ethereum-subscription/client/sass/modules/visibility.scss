@@ -29,4 +29,10 @@
             @include forceReveal();
         }
     }
+
+    @media (max-width: $size) {
+        .remove-#{$name}{
+            display: none;
+        }
+    }
 }

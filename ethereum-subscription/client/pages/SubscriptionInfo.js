@@ -194,7 +194,7 @@ class SubscriptionInfo extends Component {
         return (
             <div className="wrapper-2">
                 <div className="text-center">
-                    <h1 className="display-4">{subscriptionName}</h1>
+                    <h1 className="title">{subscriptionName}</h1>
                     <p className="text">Provided by: <strong>
                             <ProviderRating name={supplierName} reputation={reputation}/>
                         </strong>

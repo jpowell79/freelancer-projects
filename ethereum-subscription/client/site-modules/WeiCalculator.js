@@ -200,7 +200,7 @@ class WeiCalculator extends Component {
                                         disabled={this.state.copied}
                                     >
                                         {this.state.copied
-                                            ? "Copied!"
+                                            ? "Copied Wei"
                                             : "Copy"}
                                     </button>
                                 </CopyToClipboard>

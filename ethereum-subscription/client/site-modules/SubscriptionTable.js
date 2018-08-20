@@ -7,7 +7,7 @@ import {Pagination} from 'semantic-ui-react';
 import {paths} from '../../services/constants';
 import Link from 'next/link';
 import {ProviderRating} from "./ProviderRating";
-import {hideOnTablet} from "../services/css";
+import {hideOnMobile, hideOnTablet, showOnMobile} from "../services/css";
 
 class SubscriptionTable extends Component {
     static defaultProps = {maxRows: -1};
@@ -66,8 +66,8 @@ class SubscriptionTable extends Component {
                             <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
                             <td className={hideOnTablet()}>{contract.joiningFee} Eth</td>
                             <td className={hideOnTablet()}>{contract.exitFee} Eth</td>
-                            <td>{contract.subscriptionLengthInWeeks} Weeks</td>
-                            <td className={hideOnTablet()}>{contract.subscriptionAmountToPay} Eth</td>
+                            <td className={hideOnTablet()}>{contract.subscriptionLengthInWeeks} Weeks</td>
+                            <td>{contract.subscriptionAmountToPay} Eth</td>
                             <td>
                                 {(this.props.buttonRenderer)
                                     ? this.props.buttonRenderer({
@@ -82,7 +82,7 @@ class SubscriptionTable extends Component {
                                             <Link href={{
                                                 pathname: paths.pages.subscriptionInfo,
                                                 query: {address: contract.contractAddress}
-                                            }}><a>More Info</a></Link>
+                                            }}><a><span className={hideOnMobile()}>More </span>Info</a></Link>
                                         </button>
                                     )
                                 }
@@ -106,16 +106,16 @@ class SubscriptionTable extends Component {
                 <SortableTable>
                     <thead>
                         <tr>
-                            <th>Subscription Type</th>
+                            <th>Subscription<span className={hideOnMobile()}> Type</span></th>
                             <th>Supplier</th>
                             <th className={hideOnTablet()}>Reputation</th>
                             <th className={hideOnTablet()}>Registration Age</th>
                             <th className={hideOnTablet()}>Wallet Age</th>
-                            <th>Free Trial</th>
+                            <th><span className={hideOnMobile()}>Free </span>Trial</th>
                             <th className={hideOnTablet()}>Join Fee</th>
                             <th className={hideOnTablet()}>Exit Fee</th>
                             <th className={hideOnTablet()}>Contract Length</th>
-                            <th>Weekly Price</th>
+                            <th><span className={hideOnMobile()}>Monthly </span>Price</th>
                             <th className="no-sort"/>
                         </tr>
                     </thead>
@@ -125,13 +125,28 @@ class SubscriptionTable extends Component {
                 </SortableTable>
                 {(totalPages > 1) && (
                     <div className="text-center">
-                        <Pagination
-                            activePage={this.state.activePage}
-                            onPageChange={(e, {activePage}) => {
-                                this.setState({activePage});
-                            }}
-                            totalPages={totalPages}
-                        />
+                        <div className={hideOnMobile()}>
+                            <Pagination
+                                activePage={this.state.activePage}
+                                onPageChange={(e, {activePage}) => {
+                                    this.setState({activePage});
+                                }}
+                                totalPages={totalPages}
+                            />
+                        </div>
+                        <div className={showOnMobile()}>
+                            <Pagination
+                                activePage={this.state.activePage}
+                                onPageChange={(e, {activePage}) => {
+                                    this.setState({activePage});
+                                }}
+                                size="mini"
+                                totalPages={totalPages}
+                                siblingRange={0}
+                                prevItem={null}
+                                nextItem={null}
+                            />
+                        </div>
                     </div>
                 )}
             </Fragment>

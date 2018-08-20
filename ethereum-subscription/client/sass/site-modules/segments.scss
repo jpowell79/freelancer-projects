@@ -76,12 +76,16 @@
 
 @media (max-width: $mediaSmall){
     .ui.segment {
-        &.full:not(.widthless) {
+        &.full:not(.widthless):not(.widthless-mobile) {
             padding: $segmentPadding/2!important;
 
             &.skinny {
                 padding: $segmentPadding/4!important;
             }
+        }
+
+        &.widthless-mobile {
+            padding: $segmentPadding/4 0!important;
         }
     }
 }
