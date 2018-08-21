@@ -5,7 +5,7 @@ export const hideOnTablet = (className = '') =>{
 };
 
 export const showOnMobile = (className = '') =>{
-    return joinClassNames("hide-md", className);
+    return joinClassNames("hide-sm", className);
 };
 
 export const hideOnMobile = (className = '') =>{

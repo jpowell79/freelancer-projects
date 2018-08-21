@@ -12,6 +12,7 @@ import objects from "../../../services/objects";
 import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
 import {getErrorString} from "../../services/utils";
+import {Message} from 'semantic-ui-react';
 
 class RegisterForm extends Component {
     static fields = [
@@ -108,6 +109,11 @@ class RegisterForm extends Component {
         return (
             <Fragment>
                 {this.props.renderMessages()}
+                <Message
+                    info
+                    header="The following wallet address will be associated with your account:"
+                    list={[metamaskAccount.address]}
+                />
                 <FormList
                     onSubmit={this.handleSubmit}
                     onError={() => {
