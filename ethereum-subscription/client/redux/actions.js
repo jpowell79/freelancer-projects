@@ -12,6 +12,11 @@ export const isLoadingAccount = () => ({
     }
 });
 
+export const updateUsers = (users) => ({
+    type: constants.UPDATE_USERS,
+    payload: users
+});
+
 export const updateUser = (user) => ({
     type: constants.UPDATE_USER,
     payload: user

@@ -2,15 +2,10 @@ import React, {Component} from 'react';
 import {joinClassNames, classNames} from "../services/className";
 import {sleep} from '../../services/utils';
 import PropTypes from 'prop-types';
-import {childrenToArray} from "../services/utils";
+import {childrenToArray} from '../services/utils';
+import Animation from './Animation';
 
 class Slideshow extends Component {
-    static animationStatus = {
-        IN: "IN",
-        OUT: "OUT",
-        IDLE: "IDLE"
-    };
-
     static defaultProps = {
         className: "",
         leftIcon: <i className="angle left icon"/>,
@@ -41,7 +36,7 @@ class Slideshow extends Component {
             active: 0,
             animating: false,
             canChangeSlide: true,
-            animationStatus: Slideshow.animationStatus.IDLE
+            animationStatus: Animation.status.IDLE
         }
     }
 
@@ -63,18 +58,18 @@ class Slideshow extends Component {
         this.internalSetState({
             canChangeSlide: false,
             animating: true,
-            animationStatus: Slideshow.animationStatus.OUT
+            animationStatus: Animation.status.OUT
         }, () => {
             this.awaitAnimation().then(() => {
                 this.internalSetState({
                     active: activeUpdater(this.state.active),
-                    animationStatus: Slideshow.animationStatus.IN
+                    animationStatus: Animation.status.IN
                 }, () => {
                     this.awaitAnimation().then(() => {
                         this.internalSetState({
                             canChangeSlide: true,
                             animating: false,
-                            animationStatus: Slideshow.animationStatus.IDLE
+                            animationStatus: Animation.status.IDLE
                         });
                     });
                 });
@@ -122,24 +117,15 @@ class Slideshow extends Component {
                     }
                 })}
                 {childrenArray.map((child, i) => {
-                    const {IN, OUT} = Slideshow.animationStatus;
-
-                    const slideClass = classNames({
-                        'ui transition': true,
-                        [animation]: this.state.animating && this.state.active === i,
-                        'animating': this.state.animating && this.state.active === i,
-                        'visible': this.state.active === i,
-                        'hidden': this.state.active !== i,
-                        'in': this.state.animationStatus === IN,
-                        'out': this.state.animationStatus === OUT
-                    });
-
                     return (
-                        <div
-                            className={slideClass}
-                            style={{animationDuration: `${duration}ms`}}
+                        <Animation
                             key={i}
-                        >{child}</div>
+                            animation={animation}
+                            animating={this.state.animating && this.state.active === i}
+                            visible={this.state.active === i}
+                            status={this.state.animationStatus}
+                            duration={duration}
+                        >{child}</Animation>
                     );
                 })}
                 {React.cloneElement(rightIcon, {

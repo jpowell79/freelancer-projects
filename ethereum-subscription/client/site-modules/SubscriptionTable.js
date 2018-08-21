@@ -10,11 +10,12 @@ import {ProviderRating} from "./ProviderRating";
 import {hideOnMobile, hideOnTablet, showOnMobile} from "../services/css";
 
 class SubscriptionTable extends Component {
-    static defaultProps = {maxRows: -1};
+    static defaultProps = {maxRows: -1, isLoading: false};
     static propTypes = {
         subscriptionContracts: PropTypes.array.isRequired,
         maxRows: PropTypes.number,
         buttonRenderer: PropTypes.func,
+        isLoading: PropTypes.bool
     };
     state = {activePage: 1};
 
@@ -62,7 +63,7 @@ class SubscriptionTable extends Component {
                             <td className={hideOnTablet()}>{
                                 strings.toDateString(new Date(contract.contractCreation))
                             }</td>
-                            <td className={hideOnTablet()}>TBI</td>
+                            <td className={hideOnTablet()}>{contract.walletAge}</td>
                             <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
                             <td className={hideOnTablet()}>{contract.joiningFee} Eth</td>
                             <td className={hideOnTablet()}>{contract.exitFee} Eth</td>

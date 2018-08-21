@@ -8,7 +8,8 @@ export const initialState = {
     subscriptionTypes: [],
     subscribers: [],
     subscriptions: [],
-    user: {}
+    user: {},
+    users: []
 };
 
 export const subscriptions = (subscriptions = [], action) => {
@@ -47,6 +48,15 @@ export const subscriptionTypes = (subscriptionTypes = [], action) => {
     }
 };
 
+export const users = (users = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_USERS:
+        return action.payload;
+    default:
+        return users;
+    }
+};
+
 export const user = (user = {}, action) => {
     switch(action.type){
     case constants.UPDATE_USER:
@@ -78,6 +88,7 @@ export default combineReducers({
     settings,
     metamaskAccount,
     user,
+    users,
     subscriptionContracts,
     subscriptionTypes,
     subscribers,

@@ -128,6 +128,7 @@ function UsersRequest({req, res, sequelize, responseHandler}){
             .map(entry => entry.dataValues)
             .map(user => ({
                 username: user.username,
+                walletAddress: user.walletAddress,
                 role: user.role,
                 rating: user.rating
             }));

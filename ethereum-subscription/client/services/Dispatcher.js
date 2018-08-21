@@ -8,7 +8,7 @@ import {
     updateSubscribers,
     updateSubscriptions,
     isLoadingAccount,
-    updateUser
+    updateUser, updateUsers
 } from "../redux/actions";
 import {isServer, serverRequest} from '../../services/utils';
 import parser from './parser';
@@ -72,6 +72,16 @@ class Dispatcher {
                 this.dispatch(updateSubscriptionTypes(response.data));
             }
         });
+    };
+
+    disptachUpdateUsers = async ({req}) => {
+        return this.request({
+            req,
+            url: urls.users,
+            callback: (response) => {
+                this.dispatch(updateUsers(response.data));
+            }
+        })
     };
 
     dispatchUpdateUser = async (user) => {

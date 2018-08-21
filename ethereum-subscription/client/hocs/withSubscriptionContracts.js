@@ -6,6 +6,7 @@ import strings from '../../services/strings';
 import {random} from '../../services/utils';
 import {getChildProps} from "../services/utils";
 import {FILTERABLE_SUBSCRIPTION_TYPES} from "../clientSettings";
+import etherscan from '../../services/etherscan';
 
 const generateDummySubscriptionContracts = (amount) => {
     const subscriptionContracts = [];
@@ -37,6 +38,9 @@ const generateDummySubscriptionContracts = (amount) => {
             contractAddress: address,
             address: address,
             contractCreation: Date.now() - random(0, 1000 * 60 * 60 * 24 * 600),
+            walletAge: strings.toDateString(new Date(
+                Date.now() - random(0, 1000 * 60 * 60 * 24 * 900))
+            ),
             details: strings.generateRandom(100),
             exitFee: random(0, 50)/100,
             joiningFee: random(0, 50)/100,
@@ -80,9 +84,10 @@ export default (options = {}) => (Module) => {
             return {...moduleProps};
         }
 
-        static mapStateToProps = ({subscriptionContracts, subscriptionTypes}) => ({
+        static mapStateToProps = ({subscriptionContracts, subscriptionTypes, users}) => ({
             subscriptionContracts,
-            subscriptionTypes
+            subscriptionTypes,
+            users
         });
 
         getDummyData = () => {
@@ -141,16 +146,32 @@ export default (options = {}) => (Module) => {
                 address: contract.address
             });
 
+            let subscriptionData;
+
             return subscriptionContract.fetchSubscriptionData()
                 .then(data => {
                     const subscriptionType = this.props.subscriptionTypes
                         .filter(type => type.id === contract.typeId)[0];
+                    const user = this.props.users.filter(user =>
+                        user.username === contract.ownerUsername
+                    )[0];
 
-                    return Object.assign({}, data, {
+                    subscriptionData = Object.assign({}, data, {
                         ...contract,
                         supplierName: contract.ownerUsername,
                         type: subscriptionType.name
                     });
+
+                    return etherscan.getWalletAddressTransactions({
+                        walletAddress: user.walletAddress
+                    })
+                })
+                .then(transactions => {
+                    const walletAge = (transactions.result[0])
+                        ? strings.toDateString(transactions.result[0])
+                        : "Unavailable";
+
+                    return Object.assign({}, subscriptionData, {walletAge});
                 });
         };
 

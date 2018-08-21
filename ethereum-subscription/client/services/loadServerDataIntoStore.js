@@ -27,6 +27,10 @@ export const loadServerDataIntoStoreFromClient = async (dispatch, options) => {
         promises.push(dispatcher.dispatchLoadSettings({}));
     }
 
+    if(load.users && state.users.length === 0){
+        promises.push(dispatcher.disptachUpdateUsers({req}));
+    }
+
     if(load.subscriptionContracts){
         promises.push(dispatcher.dispatchUpdateSubcriptionContracts({}));
     }
@@ -54,6 +58,10 @@ export const loadServerDataIntoStore = async (reduxStore, req, options) => {
 
     if(load.settings && objects.isEmpty(state.settings)){
         promises.push(dispatcher.dispatchLoadSettings({req}));
+    }
+
+    if(load.users && state.users.length === 0){
+        promises.push(dispatcher.disptachUpdateUsers({req}));
     }
 
     if(load.subscriptionTypes && state.subscriptionTypes.length === 0){

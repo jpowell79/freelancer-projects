@@ -14,13 +14,16 @@ import {
     AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
     AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
 } from "../clientSettings";
-import Slideshow from '../modules/Slideshow';
+import Slideshow from '../containers/Slideshow';
+import {LoaderTiny} from "../modules/icons";
+import {Notice} from '../modules/Notice';
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
 
     state = {
-        filters: {}
+        filters: {},
+        noticeOpen: true
     };
 
     handleSubscriptionFormChange = (filterFormState) => {
@@ -30,6 +33,8 @@ class Index extends Component {
     componentDidMount(){
         this.props.loadAllContracts({
             amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
+        }).then(() => {
+            this.setState({noticeOpen: false})
         });
     }
 
@@ -45,7 +50,8 @@ class Index extends Component {
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        color: settings.homepageBannerTextColor.value
+                        color: settings.homepageBannerTextColor.value,
+                        minHeight: "375px"
                     }}
                     centered
                 >
@@ -100,6 +106,14 @@ class Index extends Component {
                         }
                     />
                 </FullWidthSegment>
+                <Notice open={this.state.noticeOpen}>
+                    <div style={{display: "flex"}}>
+                        <span className="lighter h3" style={{
+                            marginRight: "15px"
+                        }}>Loading contracts...</span>
+                        <LoaderTiny/>
+                    </div>
+                </Notice>
             </Page>
         )
     }
