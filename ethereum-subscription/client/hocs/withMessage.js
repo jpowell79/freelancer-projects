@@ -7,9 +7,12 @@ import {getChildProps} from "../services/utils";
 const defaultInitialState = {
     successTitle: 'Your changes have been saved successfully!',
     errorTitle: 'There was some errors with your submission',
+    infoTitle: '',
     errors: [],
     fieldsWithErrors: [],
     success: [],
+    info: [],
+    showInfo: false,
     showSuccess: false,
     showError: false
 };
@@ -85,14 +88,24 @@ export default (Module, initialState) => {
                             {...(this.state.errors.length > 0 ? {list: this.state.errors} : {})}
                         />
                     )}
+                    {(this.state.info.length > 0 || this.state.showInfo) && (
+                        <Message
+                            info
+                            header={this.state.infoTitle}
+                            {...(this.state.info.length > 0 ? {list: this.state.info} : {})}
+                        />
+                    )}
                 </Fragment>
             );
         };
+
+        onSubmit = async () => this.child.onSubmit();
 
         render() {
             return (
                 <Module
                     {...this.props}
+                    ref={module => {this.child = module}}
                     renderMessages={this.renderMessages}
                     setMessageState={this.setMessageState}
                     messageState={this.state}

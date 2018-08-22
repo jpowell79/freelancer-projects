@@ -1,6 +1,18 @@
 const axios = require('axios');
 const {urls, mailTypes} = require('../constants');
 
+const sendRequestSubscriptionMails = async ({
+    supplierEmail,
+    subscriberEmail,
+    subscriptionName
+}) => {
+    return axios.post(`${urls.email}/${mailTypes.requestSubscription}`, {
+        supplierEmail,
+        subscriberEmail,
+        subscriptionName
+    });
+};
+
 const sendContractRequestMail = async ({
     contactDetails,
     exitFee,
@@ -42,5 +54,6 @@ const sendContractCreatedMail = async ({subscriptionName, email}) => {
 module.exports = {
     sendMassSupplierMail,
     sendContractCreatedMail,
-    sendContractRequestMail
+    sendContractRequestMail,
+    sendRequestSubscriptionMails
 };

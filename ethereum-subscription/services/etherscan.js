@@ -18,6 +18,11 @@ const getWalletAddressTransactions = ({
     ).then(res => res.data);
 };
 
+const getTransactionUrl = (baseUrl, address) => {
+    return `${baseUrl}/tx/${address}`;
+};
+
 module.exports = {
-    getWalletAddressTransactions
+    getWalletAddressTransactions,
+    getTransactionUrl
 };

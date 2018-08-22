@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
+import {LoaderTiny} from "../../modules/icons";
 
 class AlertContent extends Component {
     static CLASS_NAMES = {
@@ -18,7 +19,10 @@ class AlertContent extends Component {
     constructor(props){
         super(props);
 
-        this.state = { hidden: true };
+        this.state = {
+            hidden: true,
+            disabled: false
+        };
 
         this.renderContent = this.renderContent.bind(this);
         this.removeAlert = this.removeAlert.bind(this);
@@ -31,6 +35,12 @@ class AlertContent extends Component {
             }
         )}, AlertContent.ANIMATION_TIME);
     }
+
+    disableAlert = async () => {
+        return new Promise(resolve => {
+            this.setState({disabled: true}, () => resolve());
+        });
+    };
 
     removeAlert(){
         new Promise(resolve => {
@@ -78,14 +88,16 @@ class AlertContent extends Component {
                     <div className={`${HEADER}`}>
                         {titleIcon}
                         <h3 className={`${TITLE}`}>{title}</h3>
-                        <div
-                            id={closeButtonId}
-                            className="close"
-                            onClick={(event) => {
-                                (onClose !== undefined)
-                                    ? onClose(event, this.removeAlert)
-                                    : this.removeAlert();
-                            }}>{closeIcon}</div>
+                        {(!this.state.disabled) && (
+                            <div
+                                id={closeButtonId}
+                                className="close"
+                                onClick={(event) => {
+                                    (onClose !== undefined)
+                                        ? onClose(event, this.removeAlert)
+                                        : this.removeAlert();
+                                }}>{closeIcon}</div>
+                        )}
                     </div>
                     <div className={`${CONTENT_CONTAINER}`}>
                         {message}
@@ -95,9 +107,10 @@ class AlertContent extends Component {
                             ? <button
                                 id={cancelButtonId}
                                 className="ui button"
+                                disabled={this.state.disabled}
                                 onClick={(event) => {
                                     (onCancel !== undefined)
-                                        ? onCancel(event, this.removeAlert)
+                                        ? onCancel(event, this.removeAlert, this.disableAlert)
                                         : this.removeAlert();
                                 }}>{cancelText}</button>
                             : null}
@@ -105,11 +118,17 @@ class AlertContent extends Component {
                             id={confirmButtonId}
                             className="ui primary button"
                             autoFocus
+                            disabled={this.state.disabled}
                             onClick={(event) => {
                                 (onConfirm !== undefined)
-                                    ? onConfirm(event, this.removeAlert)
+                                    ? onConfirm(event, this.removeAlert, this.disableAlert)
                                     : this.removeAlert();
-                            }}>{confirmText}</button>
+                            }}
+                        >
+                            {(this.state.disabled)
+                                ? <LoaderTiny/>
+                                : confirmText}
+                        </button>
                     </div>
                 </div>
             </div>

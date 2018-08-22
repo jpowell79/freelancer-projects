@@ -2,22 +2,26 @@ import React, {Component} from 'react';
 import {compose} from 'redux';
 import {paths} from '../../services/constants';
 import validation from '../../services/validation';
-import strings, {isDefined} from '../../services/strings';
+import strings from '../../services/strings';
 import Page from '../containers/Page'
 import FullWidthSegment from "../containers/FullWidthSegment";
 import {Loader} from "../modules/icons";
-import {ProviderRating} from "../site-modules/ProviderRating";
-import {Grid, Segment, Form, Message} from 'semantic-ui-react';
+import {Segment, Message} from 'semantic-ui-react';
 import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
+import withMetamaskAccount from '../hocs/withMetamaskAccount';
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
-import withMetamaskAccount from "../hocs/withMetamaskAccount";
-import SubscriptionContract from '../../services/smart-contracts/SubscriptionContract';
-import AlertOptionPane from "../services/Alert/AlertOptionPane";
+import {SubscriptionDetails} from "../site-modules/SubscriptionDetails";
 import objects from "../../services/objects";
+import AddSubscriptionForm from "../site-modules/forms/AddSubscriptionForm";
+import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import {connect} from 'react-redux';
+import etherscan from '../../services/etherscan';
+import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
 
 class SubscriptionInfo extends Component {
-    static mapStateToProps = ({users}) => ({users});
+    static mapStateToProps = ({settings, subscribers, subscriptions}) => ({
+        settings, subscribers, subscriptions
+    });
 
     static async getInitialProps({res, query}) {
         if(strings.isDefined(validation.getEthereumAddressError(query.address))){
@@ -35,7 +39,7 @@ class SubscriptionInfo extends Component {
 
         this.state = {
             isLoading: true,
-            email: ''
+            showSubscriptionAlert: false
         };
     }
 
@@ -47,65 +51,56 @@ class SubscriptionInfo extends Component {
         });
     }
 
-    hasFieldErrors = () => {
-        const errors = Object.keys(this.state)
-            .map(key => validation.getFieldError(key, this.state[key]))
-            .filter(error => isDefined(error));
+    handleAddSubscriptionFormSubmit = (event, removeAlert, disableAlert) => {
+        if(this.addSubscriptionForm.hasFieldErrors()) return;
 
-        if(errors.length > 0){
-            AlertOptionPane.showErrorAlert({
-                htmlMessage: (
-                    <Message
-                        error
-                        header="There was some errors with your submission"
-                        list={errors}
-                    />
-                )
+        disableAlert()
+            .then(() => this.addSubscriptionForm.onSubmit())
+            .then(transaction => {
+                console.log(transaction);
+
+                //TODO: Update Subscriptions
+                AlertOptionPane.showSuccessAlert({
+                    title: 'Subscription Request Sent',
+                    titleIcon: null,
+                    htmlMessage: (
+                        <Message
+                            header="Your subscription request has been sent successfully!"
+                            list={[
+                                <li key={transaction.transactionHash}>
+                                    Transaction Hash: <strong><a target="_blank" href={
+                                        etherscan.getTransactionUrl(
+                                            this.props.settings.etherScanUrl.value,
+                                            transaction.transactionHash
+                                        )
+                                    }>{transaction.transactionHash}</a></strong>
+                                </li>,
+                                'The supplier has been notified of your request. You will ' +
+                                'receive an email within 24 hours.'
+                            ]}
+                        />
+                    )
+                });
+
+                removeAlert();
+            })
+            .then(() => loadServerDataIntoStoreFromClient(this.props.dispatch, {
+                subscribers: true,
+                subscriptions: true
+            }))
+            .catch(err => {
+                console.error(err);
+
+                AlertOptionPane.showErrorAlert({
+                    title: 'Subscription Cancelled',
+                    message: 'Something went wrong during the transaction'
+                });
+
+                removeAlert();
             });
-            return true;
-        }
-
-        return false;
     };
 
-    handleSubscriptionConfirm = (event, removeAlert) => {
-        if(this.hasFieldErrors()) return;
-
-        const contract = this.props.contracts[0];
-        const subscriptionContract = new SubscriptionContract({
-            web3: this.props.web3,
-            address: contract.address
-        });
-        const supplier = this.props.users.filter(user =>
-            user.username === contract.ownerUsername
-        )[0];
-
-        console.log(supplier);
-
-        //TODO: Send supplier email.
-        //TODO: Send customer email.
-        //TODO: Add subscription to DB.
-        //TODO: Store transaction hash in DB.
-        console.log(this.state);
-        console.log(contract);
-
-        /*
-        subscriptionContract.depositSubscription({
-            trialPrice: contract.trialPrice,
-            subscriberAddress: this.props.metamaskAccount.address
-        }).then(res => {
-            console.log(res);
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            console.error(err);
-        });
-        */
-    };
-
-    showConfirmSubscriptionAlert = () => {
-        const contract = this.props.contracts[0];
-
+    handleSubscribe = (contract) => {
         if(objects.isEmpty(this.props.metamaskAccount)){
             AlertOptionPane.showInfoAlert({
                 message: "You need to login to metamask in order to make a subscription"
@@ -118,61 +113,36 @@ class SubscriptionInfo extends Component {
             title: `Subscribe to ${contract.subscriptionName}`,
             titleIcon: null,
             htmlMessage: (
-                <div>
-                    <h4>
-                        Please confirm the following details are correct before proceeding
-                    </h4>
-                    <Form>
-                        <Form.Field>
-                            <label>
-                                Your contact email address is:
-                            </label>
-                            <input
-                                type="text"
-                                defaultValue={this.state.email}
-                                onChange={event => {
-                                    this.setState({
-                                        email: event.target.value
-                                    });
-                                }}
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>
-                                Your ethereum wallet address is:
-                            </label>
-                            <input
-                                type="text"
-                                disabled={true}
-                                defaultValue={this.props.metamaskAccount.address}
-                            />
-                        </Form.Field>
-                        <Form.Field>
-                            <label>
-                                The amount of Eth you will be sending is:
-                            </label>
-                            <input
-                                type="text"
-                                defaultValue={contract.joiningFee}
-                                disabled
-                            />
-                        </Form.Field>
-                    </Form>
-                </div>
+                <AddSubscriptionForm
+                    ref={form => {this.addSubscriptionForm = form;}}
+                    contract={contract}
+                    metamaskAccount={this.props.metamaskAccount}
+                    users={this.props.users}
+                    web3={this.props.web3}
+                />
             ),
-            onCancel: (event, removeAlert) => {
-                removeAlert();
-            },
-            onConfirm: this.handleSubscriptionConfirm
+            onCancel: (event, removeAlert) => removeAlert(),
+            onConfirm: this.handleAddSubscriptionFormSubmit
         });
     };
 
-    handleSubscribe = () => {
-        this.showConfirmSubscriptionAlert();
+    isSubscriberOfContract = () => {
+        const contract = this.props.contracts[0];
+        const subscribers = this.props.subscribers.filter(subscriber =>
+            subscriber.walletAddress === this.props.metamaskAccount.address
+        );
+        const subscriber = (subscribers[0]) ? subscribers[0] : {};
+        const subscriptions = this.props.subscriptions.filter(subscription =>
+            subscription.contractId === contract.id
+        );
+
+        return subscriptions.filter(subscription =>
+            subscription.subscriberId === subscriber.id
+        ).length > 0;
     };
 
-    renderContract = () => {
-        if(this.state.isLoading) {
+    render(){
+        if(this.state.isLoading || this.props.metamaskAccount.isLoading) {
             return <Loader/>;
         }
 
@@ -186,59 +156,15 @@ class SubscriptionInfo extends Component {
             );
         }
 
-        const {
-            subscriptionName,
-            supplierName,
-            reputation,
-            details,
-            joiningFee,
-            exitFee,
-            hasFreeTrials
-        } = contract;
-
-        return (
-            <div className="wrapper-2">
-                <div className="text-center">
-                    <h1 className="title">{subscriptionName}</h1>
-                    <p className="text">Provided by: <strong>
-                            <ProviderRating name={supplierName} reputation={reputation}/>
-                        </strong>
-                    </p>
-                    <h2>Monthly Price: </h2>
-                    <div className="wrapper-3 bold">
-                    <Grid stackable columns={3}>
-                        <Grid.Column>
-                            <p className="text">Join Fee: {joiningFee} Eth</p>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <p className="text">Exit Fee: {exitFee} Eth</p>
-                        </Grid.Column>
-                        <Grid.Column>
-                            <p className="text">Free Trial: {hasFreeTrials ? "Yes" : "No"}</p>
-                        </Grid.Column>
-                    </Grid>
-                    </div>
-                </div>
-                <h2>Details:</h2>
-                <p className="text">{details}</p>
-                <div className="text-center divider-2">
-                    <button
-                        className="ui huge primary button"
-                        onClick={this.handleSubscribe}
-                    >
-                        Subscribe
-                    </button>
-                </div>
-            </div>
-        );
-    };
-
-    render(){
         return (
             <Page>
                 <FullWidthSegment className="gray" wrapper={1}>
                     <Segment padded>
-                        {this.renderContract()}
+                        <SubscriptionDetails
+                            {...contract}
+                            isSubscriber={this.isSubscriberOfContract()}
+                            onSubscribe={() => this.handleSubscribe(contract)}
+                        />
                     </Segment>
                 </FullWidthSegment>
             </Page>
@@ -247,7 +173,9 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
-    connect(SubscriptionInfo.mapStateToProps),
+    withSubscriptionContracts({
+        useDummyData: USE_DUMMY_SUBSCRIPTION_DATA
+    }),
     withMetamaskAccount,
-    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA})
+    connect(SubscriptionInfo.mapStateToProps)
 )(SubscriptionInfo);

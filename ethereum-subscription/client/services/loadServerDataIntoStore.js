@@ -27,8 +27,16 @@ export const loadServerDataIntoStoreFromClient = async (dispatch, options) => {
         promises.push(dispatcher.dispatchLoadSettings({}));
     }
 
-    if(load.users && state.users.length === 0){
-        promises.push(dispatcher.disptachUpdateUsers({req}));
+    if(load.users){
+        promises.push(dispatcher.disptachUpdateUsers({}));
+    }
+
+    if(load.subscribers){
+        promises.push(dispatcher.dispatchUpdateSubscribers({}));
+    }
+
+    if(load.subscriptions){
+        promises.push(dispatcher.dispatchUpdateSubscriptions({}));
     }
 
     if(load.subscriptionContracts){

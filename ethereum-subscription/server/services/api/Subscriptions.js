@@ -30,6 +30,12 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
             });
     };
 
+    this.sendCreate = () => {
+        return this.create(req.body)
+            .then(data => responseHandler.sendSuccess(data))
+            .catch(err => responseHandler.sendSomethingWentWrong(err));
+    };
+
     this.create = ({contractAddress, subscriberAddress}) => {
         let subscriptionContract;
 

@@ -1,31 +1,27 @@
 const expect = require('chai').expect;
 const request = require("supertest");
 const setupOrGetMockApp = require('./resources/mockApp');
-const {urls, roles, mailTypes} = require('../../services/constants/');
+const {urls, roles, mailTypes, httpCodes} = require('../../services/constants/');
 const random = require('../../services/utils').random;
 const mocks = require('./resources/mocks');
 
 const checkSuccess = (response) => {
     console.log(response.text);
-    expect(response.status).to.be.equal(200);
+    expect(response.status).to.be.equal(httpCodes.SUCCESS);
 };
 
 const checkBadRequest = (response) => {
-    console.log(response.text);
-    
     if(!response.text.startsWith('Error:')){
-        expect(response.status).to.be.equal(400);
+        expect(response.status).to.be.equal(httpCodes.BAD_REQUEST);
     }
 };
 
 const checkUnauthorized = (response) => {
-    console.log(response.text);
-    expect(response.status).to.be.equal(401);
+    expect(response.status).to.be.equal(httpCodes.UNAUTHORIZED);
 };
 
 const checkNotExists = (response) => {
-    console.log(response.text);
-    expect(response.status).to.be.equal(404);
+    expect(response.status).to.be.equal(httpCodes.NOT_FOUND);
 };
 
 const loginAsSupplier = () => {
@@ -66,6 +62,18 @@ describe('Rest API', () => {
                 .then(app => request(app).post(`${urls.subscriptionTypes}`)
                     .send({name: 'Foo'}))
                 .then(checkUnauthorized);
+        });
+    });
+
+    describe(urls.subscriptions, () => {
+        it('Should create subscription', () => {
+            return setupOrGetMockApp()
+                .then(app => request(app).post(`${urls.subscriptions}`)
+                    .send({
+                        subscriberAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
+                        contractAddress: mocks.subscription.contractAddress
+                    }))
+                .then(checkSuccess);
         });
     });
 

@@ -8,10 +8,14 @@ const ResponseHandler = require('../services/api/ResponseHandler');
 function SubscriptionsRequest({req, res, sequelize, responseHandler}){
     this.handleRequest = () => {
         const subscriptions = new Subscriptions({req, sequelize, responseHandler});
+        const subscribers = new Subscribers({req, sequelize, responseHandler});
 
         switch (req.method){
         case "GET":
             return subscriptions.sendGetAll();
+        case "POST":
+            return subscribers.createIfNotExists()
+                .then(() => subscriptions.sendCreate());
         default:
             responseHandler.sendMethodNotAllowed();
             break;
