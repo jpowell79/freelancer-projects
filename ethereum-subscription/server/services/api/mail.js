@@ -6,9 +6,60 @@ const serverSettings = require('../../serverSettings');
 
 const smtpTransport = nodemailer.createTransport(serverSettings.NODEMAILER_TRANSPORT);
 
-module.exports.sendMail = (mailOptions) => (
+const sendMail = (mailOptions) => (
     smtpTransport.sendMail(mailOptions)
 );
+
+const sendSubscriberNotificationMail = ({subscriberEmail, supplierEmail, subscriptionName}) => {
+    const mailOptions = {
+        to: subscriberEmail,
+        from: supplierEmail,
+        subject: `[Ethereum Subscription] You have purchased ${subscriptionName}`,
+        html: (
+            `<div>
+                <p>The supplier has been notified of your payment.</p>
+                <p>
+                    You can expect an email with details of how to start the subscription 
+                    within 24 hours.
+                </p>
+             </div>`
+        )
+    };
+
+    return sendMail(mailOptions);
+};
+
+module.exports.sendRequestSubscriptionMails = (req) => {
+    const {
+        supplierEmail,
+        subscriberEmail,
+        subscriptionName
+    } = req.body;
+
+    if(!supplierEmail || !subscriberEmail || !subscriptionName){
+        return new Promise(() => {
+            throw new Error("Missing required fields.");
+        });
+    }
+
+    const mailOptions = {
+        to: supplierEmail,
+        from: subscriberEmail,
+        subject: `[Ethereum Subscription] ${subscriberEmail} has just purchased ${subscriptionName}!`,
+        html: (
+            `<div>
+                <p>
+                    Please re-visit the contract in your control panel to add any necessary 
+                    username/password details and activate the subscription. Failure to 
+                    activate the subsription within 24 hours will result in an automatic 
+                    refund of all Eth to the subscriber.
+                </p>
+             </div>`
+        )
+    };
+
+    return sendMail(mailOptions).then(() => sendSubscriberNotificationMail(req.body));
+};
 
 module.exports.sendContractRequestMail = (req) => {
     const {
@@ -34,7 +85,7 @@ module.exports.sendContractRequestMail = (req) => {
     const mailOptions = {
         to: "sampletonexample@gmail.com",
         from: req.session.user.email,
-        subject: `Contract request from ${req.session.user.username}`,
+        subject: `[Ethereum Subscription] Contract request from ${req.session.user.username}`,
         html: (
             `<div>
                 <p><strong>Contact Details:</strong></p>
@@ -67,7 +118,7 @@ module.exports.sendContractRequestMail = (req) => {
         )
     };
 
-    return module.exports.sendMail(mailOptions);
+    return sendMail(mailOptions);
 };
 
 module.exports.sendMassSupplierMail = (req, sequelize) => {
@@ -98,7 +149,7 @@ module.exports.sendMassSupplierMail = (req, sequelize) => {
                     )
                 };
 
-                return module.exports.sendMail(mailOptions);
+                return sendMail(mailOptions);
             }));
         });
 };
@@ -135,7 +186,7 @@ module.exports.sendContractCreatedMail = (req) => {
         )
     };
 
-    return module.exports.sendMail(mailOptions);
+    return sendMail(mailOptions);
 };
 
 module.exports.sendConfirmEmail = (req) => {
@@ -163,7 +214,7 @@ module.exports.sendConfirmEmail = (req) => {
         )
     };
 
-    return module.exports.sendMail(mailOptions);
+    return sendMail(mailOptions);
 };
 
 module.exports.isValidEmailConfirmation = (req, uuid) => {

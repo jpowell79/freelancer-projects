@@ -1,19 +1,13 @@
 import React, {Component, Fragment} from 'react';
-import {mailTypes, urls} from '../../../services/constants';
-import axios from 'axios';
 import AddContractForm from "../forms/AddContractForm";
 import {connect} from 'react-redux';
 import Dispatcher from '../../services/Dispatcher';
 import {getErrorString} from "../../services/utils";
+import email from '../../../services/api/email';
+import subscriptions from '../../../services/api/subscriptions';
+import users from '../../../services/api/users';
 
 class AddContract extends Component {
-    sendContractCreatedEmail = async ({email, subscriptionName}) => {
-        return axios.post(`${urls.email}/${mailTypes.contractCreated}`, {
-            email,
-            subscriptionName,
-        });
-    };
-
     handleSubmit = (addContractForm) => {
         const {
             messageState,
@@ -27,13 +21,13 @@ class AddContract extends Component {
 
         setIsLoading();
 
-        return axios.post(urls.subscriptionContracts, {
+        return subscriptions.addSubscriptionContract({
             address: messageState.contractAddress,
             details: messageState.subscriptionDetails,
             ownerUsername: messageState.supplierUsername,
             typeId: messageState.subscriptionTypeId
-        }).then(() => axios.get(`${urls.users}/${messageState.supplierUsername}`))
-            .then(userRes => this.sendContractCreatedEmail({
+        }).then(() => users.getSupplier(messageState.supplierUsername))
+            .then(userRes => email.sendContractCreatedMail({
                 email: userRes.data[0].email,
                 subscriptionName: messageState.subscriptionName
             }))

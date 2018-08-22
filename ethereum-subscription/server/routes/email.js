@@ -11,6 +11,12 @@ function EmailRequest({req, sequelize, responseHandler}){
             return responseHandler.sendBadRequest(`Invalid email type: ${req.params.type}`);
         }
 
+        const loggedIn = await isLoggedIn(req);
+
+        if(!loggedIn){
+            return responseHandler.sendUnauthorized();
+        }
+
         switch(mailType){
         case mailTypes.confirmationMail:
             return responseHandler.handlePromiseResponse(mail.sendConfirmEmail(req));
@@ -18,6 +24,8 @@ function EmailRequest({req, sequelize, responseHandler}){
             return responseHandler.handlePromiseResponse(mail.sendContractCreatedMail(req));
         case mailTypes.requestContract:
             return responseHandler.handlePromiseResponse(mail.sendContractRequestMail(req));
+        case mailTypes.requestSubscription:
+            return responseHandler.handlePromiseResponse(mail.sendRequestSubscriptionMails(req));
         case mailTypes.massMailSuppliers:
             const loggedInAdmin = await isLoggedInAdmin(req);
 
@@ -32,15 +40,7 @@ function EmailRequest({req, sequelize, responseHandler}){
         }
     };
 
-    this.handlePost = async () => {
-        const loggedIn = await isLoggedIn(req);
-
-        if(!loggedIn){
-            return responseHandler.sendUnauthorized();
-        }
-
-        return sendMail();
-    };
+    this.handlePost = async () => sendMail();
 }
 
 module.exports = (server, sequelize) => {

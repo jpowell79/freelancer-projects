@@ -2,13 +2,12 @@ import React, {Component, Fragment} from 'react';
 import SortableTable from "../../modules/SortableTable";
 import {connect} from 'react-redux';
 import AddContractTypeForm from "../forms/AddContractTypeForm";
-import axios from 'axios';
 import strings from '../../../services/strings';
-import {urls} from '../../../services/constants';
 import Dispatcher from '../../services/Dispatcher';
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import {Form} from 'semantic-ui-react';
 import {getErrorString} from "../../services/utils";
+import subscriptions from '../../../services/api/subscriptions';
 
 class AddContractType extends Component {
     static mapStateToProps = ({subscriptionTypes}) => ({subscriptionTypes});
@@ -28,7 +27,7 @@ class AddContractType extends Component {
 
         setIsLoading();
 
-        return axios.post(urls.subscriptionTypes, {
+        return subscriptions.addContractType({
             name: messageState.contractType
         }).then(() => this.dispatcher.dispatchUpdateSubscriptionTypes({}))
             .then(() => {
@@ -53,10 +52,9 @@ class AddContractType extends Component {
 
         removeAlert();
 
-        return axios.post(urls.subscriptionTypes, {
+        return subscriptions.editContractType({
             name: this.state.contractType.name,
-            id: this.state.contractType.id,
-            update: true
+            id: this.state.contractType.id
         }).then(() => this.dispatcher.dispatchUpdateSubscriptionTypes({}))
             .catch(err => {
                 AlertOptionPane.showErrorAlert({

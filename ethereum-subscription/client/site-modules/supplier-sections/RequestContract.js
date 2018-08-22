@@ -3,9 +3,8 @@ import WeiCalculator from "../WeiCalculator";
 import {Form, Segment, Grid} from 'semantic-ui-react';
 import {connect} from 'react-redux';
 import SubscriptionForm from "../forms/SubscriptionForm";
-import axios from "axios/index";
-import {mailTypes, urls} from "../../../services/constants";
 import {getErrorString} from "../../services/utils";
+import email from '../../../services/api/email';
 
 class RequestContract extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -23,7 +22,7 @@ class RequestContract extends Component {
             errors: []
         });
 
-        return axios.post(`${urls.email}/${mailTypes.requestContract}`, messageState)
+        return email.sendContractRequestMail(messageState)
             .then(() => {
                 setMessageState({
                     isLoading: false,

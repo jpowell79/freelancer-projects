@@ -1,13 +1,12 @@
 import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
-import axios from 'axios';
-import urls from '../../../services/constants/urls';
 import paths, {redirect} from '../../../services/constants/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";
 import roles from '../../../services/constants/roles';
 import withMessage from '../../hocs/withMessage';
 import {getErrorString} from "../../services/utils";
+import sessions from '../../../services/api/sessions';
 
 class LoginForm extends Component {
     static fields = [
@@ -21,17 +20,13 @@ class LoginForm extends Component {
         }
     ];
 
-    login = (username, password) => {
-        return axios.post(urls.sessions, {username, password});
-    };
-
     handleSubmit = ({username, password}) => {
         this.props.setMessageState({
             errors: [],
             isLoading: true
         });
 
-        this.login(username, password)
+        sessions.login({username, password})
             .then(res => {
                 if(res.data.role === roles.admin){
                     redirect(paths.pages.admin);

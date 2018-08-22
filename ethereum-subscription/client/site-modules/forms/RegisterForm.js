@@ -2,9 +2,6 @@ import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
 import {RECAPTCHA_SITE_KEY} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
-import axios from 'axios';
-import urls from '../../../services/constants/urls';
-import roles from '../../../services/constants/roles';
 import {Loader, LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
 import withMetamaskAccount from '../../hocs/withMetamaskAccount';
@@ -13,6 +10,7 @@ import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
 import {getErrorString} from "../../services/utils";
 import {Message} from 'semantic-ui-react';
+import users from '../../../services/api/users';
 
 class RegisterForm extends Component {
     static fields = [
@@ -34,17 +32,6 @@ class RegisterForm extends Component {
         }
     ];
 
-    registerUser = ({username, password, email}) => {
-        return axios.post(urls.users, {
-            username,
-            email,
-            password,
-            role: roles.supplier,
-            walletAddress: this.props.metamaskAccount.address,
-            grecaptcha: grecaptcha.getResponse()
-        });
-    };
-
     handleSubmit = ({username, password, email}) => {
         this.props.setMessageState({
             isLoading: true,
@@ -52,25 +39,29 @@ class RegisterForm extends Component {
             errors: []
         });
 
-        this.registerUser({username, password, email})
-            .then(() => {
-                this.props.setMessageState({
-                    isLoading: false,
-                    showSuccess: true,
-                    successTitle: 'Your registration was completed successfully.',
-                    success: [
-                        'Check your email to activate the account. ' +
-                        'It will expire after 1 hour.'
-                    ]
-                });
-            })
-            .catch(err => {
-                grecaptcha.reset();
-                this.props.setMessageState({
-                    errors: [getErrorString(err)],
-                    isLoading: false,
-                });
+        users.registerSupplier({
+            username,
+            password,
+            email,
+            walletAddress: this.props.metamaskAccount.address
+        }).then(() => {
+            this.props.setMessageState({
+                isLoading: false,
+                showSuccess: true,
+                successTitle: 'Your registration was completed successfully.',
+                success: [
+                    'Check your email to activate the account. ' +
+                    'It will expire after 1 hour.'
+                ]
             });
+        })
+        .catch(err => {
+            grecaptcha.reset();
+            this.props.setMessageState({
+                errors: [getErrorString(err)],
+                isLoading: false,
+            });
+        });
     };
 
     renderMetamaskAccountNotFound = () => {
@@ -109,11 +100,13 @@ class RegisterForm extends Component {
         return (
             <Fragment>
                 {this.props.renderMessages()}
-                <Message
-                    info
-                    header="The following wallet address will be associated with your account:"
-                    list={[metamaskAccount.address]}
-                />
+                {!messageState.showSuccess && (
+                    <Message
+                        info
+                        header="The following wallet address will be associated with your account:"
+                        list={[metamaskAccount.address]}
+                    />
+                )}
                 <FormList
                     onSubmit={this.handleSubmit}
                     onError={() => {

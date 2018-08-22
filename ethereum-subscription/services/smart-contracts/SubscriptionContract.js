@@ -5,6 +5,7 @@ const {
     parseContractArrayToObject,
     weiToEth
 } = require('./contractParser');
+const utils = require('../utils');
 
 const callGetters = (methods) => {
     return Promise.all([
@@ -236,14 +237,14 @@ function SubscriptionContract({web3, address}){
     this.depositTrialFee = ({trialPrice, subscriberAddress}) => {
         return methods.depositTrialFee().send({
             from: subscriberAddress,
-            value: web3.utils.toWei(trialPrice, 'ether')
+            value: utils.ethToWei(trialPrice)
         });
     };
 
     this.depositSubscription = ({subscriptionAmountToPay, subscriberAddress}) => {
         return methods.depositTrialFee().send({
             from: subscriberAddress,
-            value: web3.utils.toWei(subscriptionAmountToPay, 'ether')
+            value: utils.ethToWei(subscriptionAmountToPay)
         });
     };
 

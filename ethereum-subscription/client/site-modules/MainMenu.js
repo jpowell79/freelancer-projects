@@ -3,10 +3,10 @@ import Link from 'next/link';
 import {withRouter} from 'next/router';
 import {MobileMenuIcon} from "../modules/icons";
 import $ from 'jquery';
-import {paths, urls, roles} from '../../services/constants';
+import {paths, roles} from '../../services/constants';
 import {connect} from 'react-redux';
-import axios from 'axios';
 import {hideOnMobile} from "../services/css";
+import sessions from '../../services/api/sessions';
 
 class MainMenu extends Component {
     static mapStateToProps = ({user, settings}) => ({user, settings});
@@ -107,10 +107,9 @@ class MainMenu extends Component {
                         <button
                             className="ui bg-color-uiBlue color-white button"
                             onClick={() =>{
-                                axios.delete(urls.sessions)
-                                    .then(() =>{
-                                        paths.redirect(paths.pages.login);
-                                    });
+                                sessions.logout().then(() =>{
+                                    paths.redirect(paths.pages.login);
+                                });
                             }}>Logout</button>
                     </div>
                 </nav>
@@ -144,10 +143,9 @@ class MainMenu extends Component {
                         <button
                             className="ui bg-color-uiBlue color-white button"
                             onClick={() =>{
-                                axios.delete(urls.sessions)
-                                     .then(() =>{
-                                         paths.redirect(paths.pages.login);
-                                     });
+                                sessions.logout().then(() =>{
+                                    paths.redirect(paths.pages.login);
+                                });
                             }}>Logout</button>
                     </div>
                 </nav>

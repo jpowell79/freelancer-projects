@@ -14,8 +14,11 @@ import withMetamaskAccount from "../hocs/withMetamaskAccount";
 import SubscriptionContract from '../../services/smart-contracts/SubscriptionContract';
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from "../../services/objects";
+import {connect} from 'react-redux';
 
 class SubscriptionInfo extends Component {
+    static mapStateToProps = ({users}) => ({users});
+
     static async getInitialProps({res, query}) {
         if(strings.isDefined(validation.getEthereumAddressError(query.address))){
             paths.redirect(paths.pages.index, res);
@@ -32,9 +35,7 @@ class SubscriptionInfo extends Component {
 
         this.state = {
             isLoading: true,
-            email: '',
-            walletAddress: '',
-            amount: ''
+            email: ''
         };
     }
 
@@ -75,13 +76,31 @@ class SubscriptionInfo extends Component {
             web3: this.props.web3,
             address: contract.address
         });
+        const supplier = this.props.users.filter(user =>
+            user.username === contract.ownerUsername
+        )[0];
+
+        console.log(supplier);
 
         //TODO: Send supplier email.
         //TODO: Send customer email.
         //TODO: Add subscription to DB.
         //TODO: Store transaction hash in DB.
         console.log(this.state);
-        removeAlert();
+        console.log(contract);
+
+        /*
+        subscriptionContract.depositSubscription({
+            trialPrice: contract.trialPrice,
+            subscriberAddress: this.props.metamaskAccount.address
+        }).then(res => {
+            console.log(res);
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            console.error(err);
+        });
+        */
     };
 
     showConfirmSubscriptionAlert = () => {
@@ -94,11 +113,6 @@ class SubscriptionInfo extends Component {
 
             return;
         }
-
-        this.setState({
-            walletAddress: this.props.metamaskAccount.address,
-            amount: contract.joiningFee
-        });
 
         AlertOptionPane.showSuccessAlert({
             title: `Subscribe to ${contract.subscriptionName}`,
@@ -129,12 +143,8 @@ class SubscriptionInfo extends Component {
                             </label>
                             <input
                                 type="text"
+                                disabled={true}
                                 defaultValue={this.props.metamaskAccount.address}
-                                onChange={event => {
-                                    this.setState({
-                                        walletAddress: event.target.value
-                                    });
-                                }}
                             />
                         </Form.Field>
                         <Form.Field>
@@ -145,11 +155,6 @@ class SubscriptionInfo extends Component {
                                 type="text"
                                 defaultValue={contract.joiningFee}
                                 disabled
-                                onChange={event => {
-                                    this.setState({
-                                        amount: event.target.value
-                                    });
-                                }}
                             />
                         </Form.Field>
                     </Form>
@@ -242,6 +247,7 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
+    connect(SubscriptionInfo.mapStateToProps),
     withMetamaskAccount,
     withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA})
 )(SubscriptionInfo);

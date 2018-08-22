@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
-import {urls} from '../../../services/constants';
 import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIntoStore";
 import FormList from "../../modules/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
 import {getErrorString} from "../../services/utils";
 import {Message} from 'semantic-ui-react';
+import users from '../../../services/api/users';
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -41,12 +40,11 @@ class ManageProfile extends Component {
             isLoading: true
         });
 
-        axios.post(urls.users, {
+        users.updateSupplier({
             originalUsername: this.props.user.username,
             username,
             email,
             password,
-            update: true
         }).then(userResponse => {
             return loadServerDataIntoStoreFromClient(this.props.dispatch, {
                 user: true,

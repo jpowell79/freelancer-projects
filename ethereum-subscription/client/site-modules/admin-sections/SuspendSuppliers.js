@@ -1,37 +1,24 @@
 import React, {Component, Fragment} from 'react';
-import {urls, roles} from '../../../services/constants';
-import axios from 'axios';
+import {roles} from '../../../services/constants';
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import SortableTable from "../../modules/SortableTable";
 import {LoaderSmall} from "../../modules/icons";
 import {hideOnMobile} from "../../services/css";
 import {getErrorString} from "../../services/utils";
+import {connect} from 'react-redux';
+import users from '../../../services/api/users';
 
 class SuspendSuppliers extends Component {
+    static mapStateToProps = ({users}) => ({
+        suppliers: users.filter(user => user.role === roles.supplier)
+    });
+
     constructor(props){
         super(props);
 
         this.state = {
-            suppliers: [],
-            isLoading: false
+            suppliers: props.suppliers
         }
-    }
-
-    componentDidMount(){
-        axios.get(urls.users)
-            .then(userResponse => userResponse.data)
-            .then(users => users.filter(user => user.role === roles.supplier))
-            .then(suppliers => {
-                this.setState({
-                    suppliers,
-                    isLoading: false
-                });
-            })
-            .catch(err => {
-                AlertOptionPane.showErrorAlert({
-                    message: getErrorString(err)
-                });
-            });
     }
 
     showSuccessAlert = (supplier) => {
@@ -52,17 +39,16 @@ class SuspendSuppliers extends Component {
                 removeAlert();
                 this.setState({isLoading: true});
 
-                axios.delete(urls.users, {
-                    params: {username: supplier.username}
-                }).then(() => {
-                    this.showSuccessAlert(supplier);
-                    this.setState({isLoading: false});
-                }).catch(err => {
-                    AlertOptionPane.showErrorAlert({
-                        message: getErrorString(err)
+                users.suspendSupplier({username: supplier.username})
+                    .then(() => {
+                        this.showSuccessAlert(supplier);
+                        this.setState({isLoading: false});
+                    }).catch(err => {
+                        AlertOptionPane.showErrorAlert({
+                            message: getErrorString(err)
+                        });
+                        this.setState({isLoading: false});
                     });
-                    this.setState({isLoading: false});
-                });
             },
             onCancel: (event, removeAlert) => {removeAlert();}
         });
@@ -121,4 +107,4 @@ class SuspendSuppliers extends Component {
     }
 }
 
-export default SuspendSuppliers;
+export default connect(SuspendSuppliers.mapStateToProps)(SuspendSuppliers);

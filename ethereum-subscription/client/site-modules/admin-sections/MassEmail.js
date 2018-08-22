@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from 'react';
 import {Form} from 'semantic-ui-react';
-import axios from 'axios';
-import {urls, mailTypes} from '../../../services/constants';
 import withMessage from '../../hocs/withMessage';
 import {LoaderTiny} from "../../modules/icons";
+import email from '../../../services/api/email';
+import {getErrorString} from "../../services/utils";
 
 class MassEmail extends Component {
     handleSubmit = () => {
@@ -11,17 +11,17 @@ class MassEmail extends Component {
 
         this.props.setIsLoading();
 
-        return axios.post(`${urls.email}/${mailTypes.massMailSuppliers}`, {
+        return email.sendMassSupplierMail({
             subject: this.props.messageState.subject,
             body: this.props.messageState.body
         }).then(() => {
             this.props.setComplete({
                 successTitle: 'The emails was sent successfully!',
             });
-        }).catch(() => {
+        }).catch(err => {
             this.props.setMessageState({
                 isLoading: false,
-                errors: []
+                errors: [getErrorString(err)]
             });
         });
     };
