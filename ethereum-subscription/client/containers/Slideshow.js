@@ -4,6 +4,7 @@ import {sleep} from '../../services/utils';
 import PropTypes from 'prop-types';
 import {childrenToArray} from '../services/utils';
 import Animation from './Animation';
+import {animationTypes} from "../services/constants/animationTypes";
 
 class Slideshow extends Component {
     static defaultProps = {
@@ -20,13 +21,7 @@ class Slideshow extends Component {
         onStateChange: PropTypes.func,
         stateReducer: PropTypes.func,
         duration: PropTypes.number,
-        animation: PropTypes.oneOf([
-            'browse', 'browse right', 'drop', 'fade', 'fade up', 'fade down', 'fade left',
-            'fade right', 'fly up', 'fly down', 'fly left', 'fly right', 'horizontal flip',
-            'vertical flip', 'scale', 'slide up', 'slide down', 'slide left', 'slide right',
-            'swing up', 'swing down', 'swing left', 'swing right', 'zoom', 'jiggle',
-            'flash', 'shake', 'pulse', 'tada', 'bounce', 'glow'
-        ])
+        animation: PropTypes.oneOf(animationTypes)
     };
 
     constructor(props){

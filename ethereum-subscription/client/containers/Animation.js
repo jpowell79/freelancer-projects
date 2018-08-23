@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {classNames} from "../services/className";
 import PropTypes from 'prop-types';
 import objects from '../../services/objects';
+import {animationTypes} from "../services/constants/animationTypes";
 
 class Animation extends Component {
     static status = {
@@ -21,13 +22,7 @@ class Animation extends Component {
     };
 
     static propTypes = {
-        animation: PropTypes.oneOf([
-            'browse', 'browse right', 'drop', 'fade', 'fade up', 'fade down', 'fade left',
-            'fade right', 'fly up', 'fly down', 'fly left', 'fly right', 'horizontal flip',
-            'vertical flip', 'scale', 'slide up', 'slide down', 'slide left', 'slide right',
-            'swing up', 'swing down', 'swing left', 'swing right', 'zoom', 'jiggle',
-            'flash', 'shake', 'pulse', 'tada', 'bounce', 'glow'
-        ]),
+        animation: PropTypes.oneOf(animationTypes),
         status: PropTypes.oneOf(objects.values(Animation.status)),
         animating: PropTypes.bool,
         visible: PropTypes.bool,

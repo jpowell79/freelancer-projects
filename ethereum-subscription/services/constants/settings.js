@@ -7,6 +7,7 @@ module.exports = {
     homepageBannerText: 'homepageBannerText',
     homepageBannerTitle: 'homepageBannerTitle',
     homepageTableMaxRows: 'homepageTableMaxRows',
+    homepageSlideshowAnimation: 'homepageSlideshowAnimation',
     logo: 'logo',
     siteTitle: 'siteTitle'
 };

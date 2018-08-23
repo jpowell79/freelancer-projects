@@ -55,7 +55,10 @@ class Index extends Component {
                     }}
                     centered
                 >
-                    <Slideshow className="wrapper-3">
+                    <Slideshow
+                        className="wrapper-3"
+                        animation={settings.homepageSlideshowAnimation.value}
+                    >
                         <div className="wrapper-4">
                             <h1 className="title">Ethereum Subscriptions</h1>
                             <p className="text">

@@ -6,9 +6,10 @@ module.exports.settings = {
     homepageBanner: 'header.jpg',
     homepageBannerOverlayColor: '#33363f',
     homepageBannerTextColor: "#FFFFFF",
+    homepageSlideshowAnimation: 'scale',
     homepageTableMaxRows: '100',
     logo: 'logo.png',
-    siteTitle: 'Ethereum Subscriptions'
+    siteTitle: 'Ethereum Subscriptions',
 };
 
 module.exports.subscriptionTypes = [

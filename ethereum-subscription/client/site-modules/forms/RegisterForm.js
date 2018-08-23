@@ -102,7 +102,6 @@ class RegisterForm extends Component {
                 {this.props.renderMessages()}
                 {!messageState.showSuccess && (
                     <Message
-                        info
                         header="The following wallet address will be associated with your account:"
                         list={[metamaskAccount.address]}
                     />

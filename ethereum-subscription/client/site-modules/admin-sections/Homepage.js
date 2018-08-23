@@ -3,6 +3,7 @@ import {Form} from 'semantic-ui-react';
 import FileInput from '../../modules/FileInput';
 import ColorPicker from '../../modules/ColorPicker';
 import withSettingsEditor from '../../hocs/withSettingsEditor';
+import {AnimationDropdown} from "../AnimationDropdown";
 
 class Homepage extends Component {
     constructor(props){
@@ -12,7 +13,8 @@ class Homepage extends Component {
             homepageBanner: null,
             homepageBannerOverlayColor: null,
             homepageBannerTextColor: null,
-            homepageTableMaxRows: null
+            homepageTableMaxRows: null,
+            homepageSlideshowAnimation: null
         };
     }
 
@@ -21,7 +23,8 @@ class Homepage extends Component {
             homepageBanner,
             homepageBannerOverlayColor,
             homepageBannerTextColor,
-            homepageTableMaxRows
+            homepageTableMaxRows,
+            homepageSlideshowAnimation
         } = this.props.getDefaultsOrState(this.state);
 
         return (
@@ -66,6 +69,17 @@ class Homepage extends Component {
                                     homepageBannerTextColor: {
                                         value: color
                                     }
+                                });
+                            }}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Slideshow Animation:</label>
+                        <AnimationDropdown
+                            value={homepageSlideshowAnimation.value}
+                            onChange={(event, {value}) => {
+                                this.setState({
+                                    homepageSlideshowAnimation: {value}
                                 });
                             }}
                         />
