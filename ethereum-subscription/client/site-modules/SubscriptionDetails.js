@@ -11,7 +11,8 @@ export const SubscriptionDetails = ({
     details,
     hasFreeTrials,
     isSubscriber,
-    onSubscribe
+    onSubscribe,
+    onCancelSubscription
 }) => {
     return (
         <div className="wrapper-2">
@@ -39,9 +40,16 @@ export const SubscriptionDetails = ({
             <h2>Details:</h2>
             <p className="text">{details}</p>
             <div className="text-center divider-2">
-                {(!isSubscriber) && (
+                {(!isSubscriber) ? (
                     <button className="ui huge primary button" onClick={onSubscribe}>
                         Subscribe
+                    </button>
+                ) : (
+                    <button
+                        className="ui huge bg-color-uiRed color-white button"
+                        onClick={onCancelSubscription}
+                    >
+                        Cancel Subscription
                     </button>
                 )}
             </div>

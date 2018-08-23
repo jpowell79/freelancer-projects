@@ -194,8 +194,10 @@ function SubscriptionContract({web3, address}){
     /**
      * Can only be called after the subscription details have been set.
      */
-    this.startTheTrial = () => {
-        return methods.startTheTrial().call();
+    this.startTheTrial = ({supplierAddress}) => {
+        return methods.startTheTrial().call({
+            from: supplierAddress
+        });
     };
 
     /**
@@ -222,12 +224,26 @@ function SubscriptionContract({web3, address}){
         });
     };
 
-    this.startTheSubscription = () => {
-        return methods.startTheSubscription().call();
+    this.startTheSubscription = ({supplierAddress}) => {
+        return methods.startTheSubscription().call({
+            from: supplierAddress
+        });
     };
 
     this.claimSubscriptionEth = ({supplierAddress}) => {
-        return methods.claimSubscriptionEth.call({
+        return methods.claimSubscriptionEth().call({
+            from: supplierAddress
+        });
+    };
+
+    this.viewTrialSubscriptionDetails = ({supplierAddress}) => {
+        return methods.viewTrialSubscriptionDetails().call({
+            from: supplierAddress
+        });
+    };
+
+    this.viewFullSubscriptionDetails = ({supplierAddress}) => {
+        return methods.viewFullSubscriptionDetails().call({
             from: supplierAddress
         });
     };

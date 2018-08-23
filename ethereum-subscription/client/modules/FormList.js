@@ -29,6 +29,7 @@ class FormList extends Component {
             PropTypes.string,
             PropTypes.element
         ]).isRequired,
+        buttonChildren: PropTypes.element,
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
@@ -147,6 +148,7 @@ class FormList extends Component {
                         ref={button => {this.submitButton = button;}}
                         className="ui primary button"
                         onClick={this.handleSubmit}>{this.props.submitButtonHtml}</button>
+                    {this.props.buttonChildren}
                 </form>
             </Fragment>
         );

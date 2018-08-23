@@ -17,6 +17,7 @@ import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import {connect} from 'react-redux';
 import etherscan from '../../services/etherscan';
 import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
+import SubscriptionContract from "../../services/smart-contracts/SubscriptionContract";
 
 class SubscriptionInfo extends Component {
     static mapStateToProps = ({settings, subscribers, subscriptions}) => ({
@@ -59,7 +60,6 @@ class SubscriptionInfo extends Component {
             .then(transaction => {
                 console.log(transaction);
 
-                //TODO: Update Subscriptions
                 AlertOptionPane.showSuccessAlert({
                     title: 'Subscription Request Sent',
                     titleIcon: null,
@@ -98,6 +98,26 @@ class SubscriptionInfo extends Component {
 
                 removeAlert();
             });
+    };
+
+    handleCancelSubscription = (contract) => {
+        const subscriptionContract = new SubscriptionContract({
+            web3: this.props.web3,
+            address: contract.address
+        });
+
+        return subscriptionContract.cancelSubscription({
+            subscriberOrSupplier: this.props.metamaskAccount.address
+        }).then(() => {
+            //TODO: Safely delete subscription from database.
+            AlertOptionPane.showSuccessAlert({
+                message: 'The subscription was cancelled successfully!'
+            });
+        }).catch(() => {
+            AlertOptionPane.showErrorAlert({
+                message: 'Something went wrong when trying to cancel the subscription'
+            });
+        })
     };
 
     handleSubscribe = (contract) => {
@@ -164,6 +184,7 @@ class SubscriptionInfo extends Component {
                             {...contract}
                             isSubscriber={this.isSubscriberOfContract()}
                             onSubscribe={() => this.handleSubscribe(contract)}
+                            onCancelSubscription={() => this.handleCancelSubscription(contract)}
                         />
                     </Segment>
                 </FullWidthSegment>
