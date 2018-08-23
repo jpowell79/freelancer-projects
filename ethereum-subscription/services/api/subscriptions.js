@@ -17,6 +17,14 @@ const addSubscriptionContract = async ({address, details, ownerUsername, typeId}
     });
 };
 
+const activateSubscriptionContract = async ({address}) => {
+    return axios.post(urls.subscriptionContracts, {
+        address,
+        isActive: true,
+        update: true
+    })
+};
+
 const addContractType = async ({name}) => {
     return axios.post(urls.subscriptionTypes, {name});
 };
@@ -30,6 +38,7 @@ const editContractType = async ({name, id}) => {
 module.exports = {
     addSubscription,
     addSubscriptionContract,
+    activateSubscriptionContract,
     addContractType,
     editContractType
 };

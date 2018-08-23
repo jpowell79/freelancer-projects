@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import SubscriptionTable from "../SubscriptionTable";
@@ -10,6 +10,10 @@ import EditContractForm from "../forms/EditContractForm";
 import {Menu, Segment} from 'semantic-ui-react';
 import EditSubscriptionForm from "../forms/EditSubscriptionForm";
 import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
+import subscriptions from '../../../services/api/subscriptions';
+import AlertOptionPane from "../../services/Alert/AlertOptionPane";
+import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIntoStore";
+import {getErrorString} from "../../services/utils";
 
 class Subscriptions extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -68,7 +72,7 @@ class Subscriptions extends Component {
         });
     };
 
-    handleActivate = (state, trial = false) => {
+    handleActivateSubscription = (state, trial = false) => {
         const {web3} = state;
 
         const subscriptionContract = new SubscriptionContract({
@@ -87,6 +91,30 @@ class Subscriptions extends Component {
         });
     };
 
+    handleActivateContract = async () => {
+        return subscriptions.activateSubscriptionContract({
+            address: this.state.editContract.address
+        }).then(() => loadServerDataIntoStoreFromClient(
+            this.props.dispatch,
+            {subscriptionContracts: true}
+        )).then(() => {
+            this.setState((prevState) => ({
+                editContract: {
+                    ...prevState.editContract,
+                    isActive: true
+                }
+            }), () => {
+                AlertOptionPane.showSuccessAlert({
+                    message: 'The contract is now active and visible to subscribers.'
+                });
+            });
+        }).catch(err => {
+            AlertOptionPane.showErrorAlert({
+                message: getErrorString(err)
+            })
+        });
+    };
+
     renderSection = () => {
         const {
             editContract,
@@ -99,16 +127,29 @@ class Subscriptions extends Component {
         switch(activeSection){
         case editContract:
             return (
-                <EditContractForm
-                    user={this.props.user}
-                    contract={this.state.editContract}
-                    onCancel={() => {
-                        this.setState({editContract: {}});
-                    }}
-                    onComplete={() => {
-                        this.setState({editContract: {}});
-                    }}
-                />
+                <Fragment>
+                    <EditContractForm
+                        user={this.props.user}
+                        contract={this.state.editContract}
+                        onCancel={() => {
+                            this.setState({editContract: {}});
+                        }}
+                        onComplete={() => {
+                            this.setState({editContract: {}});
+                        }}
+                    />
+                    {(!this.state.editContract.isActive) && (
+                        <Fragment>
+                            <hr className="ui divider"/>
+                            <button
+                                className="ui bg-color-uiRed color-white button"
+                                onClick={this.handleActivateContract}
+                            >
+                                Activate Contract
+                            </button>
+                        </Fragment>
+                    )}
+                </Fragment>
             );
         case editSubscription:
             //TODO: Fill with viewFullSubscriptionDetails as defaults
@@ -116,7 +157,7 @@ class Subscriptions extends Component {
                 <EditSubscriptionForm
                     onSubmit={this.handleAuthFormSubmit}
                     showActivate={!this.state.editContract.subscriptionActive}
-                    onActivate={this.handleActivate}
+                    onActivate={this.handleActivateSubscription}
                 />
             );
         case editSubscriptionTrial:
@@ -126,7 +167,7 @@ class Subscriptions extends Component {
                     title="Edit Subscription Trial"
                     onSubmit={(state) => this.handleAuthFormSubmit(state, true)}
                     showActivate={this.state.editContract.trialInfoShared}
-                    onActivate={(state) => this.handleActivate(state, true)}
+                    onActivate={(state) => this.handleActivateSubscription(state, true)}
                     activateButtonText="Start the Trial"
                     labels={{
                         username: 'Trial username:',
@@ -190,7 +231,7 @@ class Subscriptions extends Component {
                                 this.setState({editContract: contract});
                             }}
                         >
-                            Edit
+                            {!contract.isActive ? "Activate" : "Edit"}
                         </button>
                     );
                 }}

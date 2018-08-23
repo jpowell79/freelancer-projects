@@ -21,6 +21,29 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
             });
     };
 
+    this.sendUpdate = async () => {
+        const {address} = req.body;
+        const loggedInAdmin = await isLoggedInAdmin(req);
+
+        if(!address){
+            return responseHandler.sendBadRequest('Missing required fields');
+        }
+
+        return this.model.findOne({where: {address}})
+            .then(contractEntry => {
+                if(!contractEntry) throw new Error('Contract does not exists');
+                if(req.session.user.username !== contractEntry.dataValues.ownerUsername
+                    && !loggedInAdmin) throw new Error('Unauthorized');
+
+                return this.model.update(req.body, {where: {address}});
+            }).then(res => {
+                responseHandler.sendSuccess(res);
+            })
+            .catch(err => {
+                responseHandler.sendSomethingWentWrong(err);
+            });
+    };
+
     this.sendCreate = async () => {
         const loggedInAdmin = await isLoggedInAdmin(req);
 
@@ -30,7 +53,7 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
 
         const contract = req.body;
 
-        this.model.create(contract)
+        return this.model.create(contract)
             .then(() => {
                 responseHandler.sendCreated();
             })

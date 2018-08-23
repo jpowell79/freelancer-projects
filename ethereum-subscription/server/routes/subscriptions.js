@@ -29,6 +29,10 @@ function SubscriptionsRequest({req, res, sequelize, responseHandler}){
         case "GET":
             return subscriptionContracts.sendGetAll();
         case "POST":
+            if(req.body.update){
+                return subscriptionContracts.sendUpdate();
+            }
+
             return subscriptionContracts.sendCreate();
         default:
             responseHandler.sendMethodNotAllowed();

@@ -105,7 +105,7 @@ class Index extends Component {
                             filterSubscriptionContracts(
                                 this.props.contracts,
                                 this.state.filters
-                            )
+                            ).filter(contract => contract.isActive)
                         }
                     />
                 </FullWidthSegment>

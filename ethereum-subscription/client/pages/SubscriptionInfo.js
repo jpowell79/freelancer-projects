@@ -46,7 +46,8 @@ class SubscriptionInfo extends Component {
 
     componentDidMount(){
         this.props.loadContracts(contract =>
-            contract.address.toLowerCase() === this.props.address.toLowerCase()
+            contract.address.toLowerCase() === this.props.address.toLowerCase() &&
+            contract.isActive
         ).then(() => {
             this.setState({isLoading: false});
         });
@@ -168,24 +169,24 @@ class SubscriptionInfo extends Component {
 
         const contract = this.props.contracts[0];
 
-        if(!contract){
-            return (
-                <p className="text text-center">
-                    A contract with the given address could not be found.
-                </p>
-            );
-        }
-
         return (
             <Page>
                 <FullWidthSegment className="gray" wrapper={1}>
                     <Segment padded>
-                        <SubscriptionDetails
-                            {...contract}
-                            isSubscriber={this.isSubscriberOfContract()}
-                            onSubscribe={() => this.handleSubscribe(contract)}
-                            onCancelSubscription={() => this.handleCancelSubscription(contract)}
-                        />
+                        {!contract
+                            ? (
+                                <p className="text text-center">
+                                    A contract with the given address could not be found.
+                                </p>
+                            ) : (
+                                <SubscriptionDetails
+                                    {...contract}
+                                    isSubscriber={this.isSubscriberOfContract()}
+                                    onSubscribe={() => this.handleSubscribe(contract)}
+                                    onCancelSubscription={() => this.handleCancelSubscription(contract)}
+                                />
+                            )
+                        }
                     </Segment>
                 </FullWidthSegment>
             </Page>

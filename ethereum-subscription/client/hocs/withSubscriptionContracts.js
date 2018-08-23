@@ -27,6 +27,7 @@ const generateDummySubscriptionContracts = (amount) => {
 
         subscriptionContracts.push({
             index: i,
+            isActive: true,
             type: subsriptionTypes[random(0, subsriptionTypes.length)],
             txHash: `0x${strings.generateRandom(40)}`,
             supplierName: username,
