@@ -1,3 +1,5 @@
+"use strict";
+
 const {httpCodes} = require('../../../services/constants/index');
 const {
     SUCCESS,
@@ -10,45 +12,47 @@ const {
     CREATED
 } = httpCodes;
 
-function ResponseHandler(res){
-    this.res = res;
+class ResponseHandler {
+    constructor(res){
+        this.res = res;
+    }
 
-    this.redirect = (page) => {
-        res.redirect(REDIRECT, page);
+    redirect(page){
+        this.res.redirect(REDIRECT, page);
     };
 
-    this.sendSuccess = (data = {}) => {
+    sendSuccess(data = {}){
         this.res.send(data);
     };
 
-    this.sendCreated = () => {
+    sendCreated(){
         this.res.sendStatus(CREATED);
     };
 
-    this.sendNotFound = (err = '') => {
+    sendNotFound(err = ''){
         if(global.isDevelopment()) console.error(err);
         this.res.status(NOT_FOUND).send(err.toString());
     };
 
-    this.sendUnauthorized = () => {
+    sendUnauthorized(){
         this.res.sendStatus(UNAUTHORIZED);
     };
 
-    this.sendMethodNotAllowed = () => {
+    sendMethodNotAllowed(){
         this.res.sendStatus(METHOD_NOT_ALLOWED);
     };
 
-    this.sendSomethingWentWrong = (err = '') => {
+    sendSomethingWentWrong(err = ''){
         if(global.isDevelopment()) console.error(err);
         this.res.status(SOMETHING_WENT_WRONG).send(err.toString());
     };
 
-    this.sendBadRequest = (err = '') => {
+    sendBadRequest(err = ''){
         if(global.isDevelopment()) console.error(err);
         this.res.status(BAD_REQUEST).send(err.toString());
     };
 
-    this.handlePromiseResponse = (promise) => {
+    handlePromiseResponse(promise){
         return (
             promise.then(() => {
                 this.res.sendStatus(SUCCESS);
