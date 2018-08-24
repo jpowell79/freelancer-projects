@@ -32,7 +32,8 @@ module.exports.subscriptionContracts = [
         address: '0x4d3566afa9e15b158fb1d89aa921c1c73a22c552',
         ownerUsername: 'smnrkssn',
         typeName: 'Gym Membership',
-        details: 'Random details'
+        details: 'Random details',
+        isActive: true
     }
 ];
 
@@ -58,7 +59,7 @@ module.exports.users = [
         email: 'admin@example.com',
         role: roles.admin,
         password: 'admin',
-        walletAddress: '0xB736a9bACC8855531AeF429735D477D4b5A4D208'
+        walletAddress: '0xfB5136361ab5faB28E602EA868909828d2ce23ca'
     },
     {
         username: 'supplier',

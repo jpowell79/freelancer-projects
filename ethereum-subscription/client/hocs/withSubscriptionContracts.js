@@ -140,40 +140,46 @@ export default (options = {}) => (Module) => {
         };
 
         fetchAndMergeContract = (contract) => {
-            if(!this.web3) this.web3 = new Web3(window.web3.currentProvider);
-
-            const subscriptionContract = new SubscriptionContract({
-                web3: this.web3,
-                address: contract.address
-            });
-
-            let subscriptionData;
-
-            return subscriptionContract.fetchSubscriptionData()
-                .then(data => {
-                    const subscriptionType = this.props.subscriptionTypes
-                        .filter(type => type.id === contract.typeId)[0];
-                    const user = this.props.users.filter(user =>
-                        user.username === contract.ownerUsername
-                    )[0];
-
-                    subscriptionData = Object.assign({}, data, {
-                        ...contract,
-                        supplierName: contract.ownerUsername,
-                        type: subscriptionType.name
-                    });
-
-                    return etherscan.getWalletAddressTransactions({
-                        walletAddress: user.walletAddress
-                    })
-                })
-                .then(transactions => {
-                    const walletAge = (transactions.result[0])
-                        ? strings.toDateString(transactions.result[0])
-                        : "Unavailable";
-
-                    return Object.assign({}, subscriptionData, {walletAge});
+            try {
+                if(!this.web3) this.web3 = new Web3(window.web3.currentProvider);
+                const subscriptionContract = new SubscriptionContract({
+                    web3: this.web3,
+                    address: contract.address
                 });
+
+                let subscriptionData;
+
+                return subscriptionContract.fetchSubscriptionData()
+                    .then(data => {
+                        const subscriptionType = this.props.subscriptionTypes
+                            .filter(type => type.id === contract.typeId)[0];
+                        const user = this.props.users.filter(user =>
+                            user.username === contract.ownerUsername
+                        )[0];
+
+                        subscriptionData = Object.assign({}, data, {
+                            ...contract,
+                            supplierName: contract.ownerUsername,
+                            type: subscriptionType.name
+                        });
+
+                        return etherscan.getWalletAddressTransactions({
+                            walletAddress: user.walletAddress
+                        })
+                    })
+                    .then(transactions => {
+                        const walletAge = (transactions.result[0])
+                            ? strings.toDateString(
+                                new Date(parseInt(transactions.result[0].timeStamp, 10) * 1000)
+                            )
+                            : "Unavailable";
+
+                        return Object.assign({}, subscriptionData, {walletAge});
+                    });
+            } catch(err){
+                console.error(err);
+                return {};
+            }
         };
 
         handleError = (err) => {
