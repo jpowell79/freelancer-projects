@@ -1,9 +1,15 @@
 import React, {Component, Fragment} from 'react';
+import {connect} from 'react-redux';
 import SubscriptionForm from "./SubscriptionForm";
 import PropTypes from 'prop-types';
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
+import {getTransactionMessage, waitingForBlockchain} from "../../services/messages";
 
 class EditContractForm extends Component {
+    static mapStateToProps = ({settings}) => ({
+        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ''
+    });
+
     static defaultProps = {
         onCancel: () => {},
         onComplete: () => {}
@@ -47,26 +53,24 @@ class EditContractForm extends Component {
 
         const {
             messageState,
-            setMessageState,
+            setClearedMessageState,
             setIsLoading
         } = subscriptionForm.props;
 
-        return setIsLoading()
+        return setIsLoading(waitingForBlockchain)
             .then(() => this.setSubscriptionDetails(
                 this.props.web3,
                 this.props.metamaskAccount,
                 messageState
             ))
-            .then(() => setMessageState({
-                isLoading: false,
-                success: ['The contract has been edited successfully']
-            }))
+            .then(transaction => setClearedMessageState(
+                getTransactionMessage(transaction, this.props.etherScanUrl)
+            ))
             .then(() => this.props.onComplete(this))
             .catch(err => {
                 console.error(err);
 
-                return setMessageState({
-                    isLoading: false,
+                return setClearedMessageState({
                     errors: [err.toString()]
                 });
             });
@@ -119,4 +123,4 @@ class EditContractForm extends Component {
     }
 }
 
-export default EditContractForm;
+export default connect(EditContractForm.mapStateToProps)(EditContractForm);

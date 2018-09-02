@@ -42,7 +42,7 @@ export default ({editContract, user, web3}) => {
 
     return (
         <Segment padded>
-            <div className="container-4">
+            <div className="container-5">
                 <EditSubscriptionForm
                     title="Edit Subscription Trial"
                     onSubmit={handleTrialEdited}

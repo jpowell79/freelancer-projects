@@ -12,12 +12,14 @@ const defaultInitialState = {
     fieldsWithErrors: [],
     success: [],
     info: [],
+    isLoading: false,
+    complete: false,
     showInfo: false,
     showSuccess: false,
     showError: false
 };
 
-export default (Module, initialState) => {
+export default (Module, initialState = defaultInitialState) => {
     class MessageProvider extends Component {
         static async getInitialProps (appContext){
             const moduleProps = await getChildProps(Module, appContext);
@@ -31,11 +33,15 @@ export default (Module, initialState) => {
         }
 
         promiseSetState = async (stateOrUpdater) => {
-            return new Promise(resolve => this.setState(stateOrUpdater, () => resolve()));
+            return new Promise(resolve => this.setState(stateOrUpdater, () => resolve(stateOrUpdater)));
         };
 
-        setMessageState = async (state, callback = () => {}) => {
-            return this.promiseSetState((prevState) => Object.assign({}, prevState, state), callback);
+        setClearedMessageState = async (state = {}) => {
+            return this.promiseSetState(Object.assign({}, defaultInitialState, state));
+        };
+
+        setMessageState = async (state = {}) => {
+            return this.promiseSetState((prevState) => Object.assign({}, prevState, state));
         };
 
         hasFieldErrors = (additionalFields = {}) => {
@@ -113,6 +119,7 @@ export default (Module, initialState) => {
                     ref={module => {this.child = module}}
                     renderMessages={this.renderMessages}
                     setMessageState={this.setMessageState}
+                    setClearedMessageState={this.setClearedMessageState}
                     messageState={this.state}
                     hasFieldErrors={this.hasFieldErrors}
                     setIsLoading={this.setIsLoading}

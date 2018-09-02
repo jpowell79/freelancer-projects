@@ -263,6 +263,7 @@ class SubscriptionForm extends Component {
                     <hr className="ui divider"/>
                     <button
                         className="ui primary button"
+                        disabled={isLoading || complete}
                         onClick={this.handleSubmit}>
                         {(isLoading)
                             ? <LoaderTiny/>

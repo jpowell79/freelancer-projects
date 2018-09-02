@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import email from '../../../services/api/email';
 import subscriptions from '../../../services/api/subscriptions';
 import withMessage from '../../hocs/withMessage';
+import {waitingForBlockchain} from "../../services/messages";
 
 class AddSubscriptionForm extends Component {
     static propTypes = {
@@ -20,34 +21,25 @@ class AddSubscriptionForm extends Component {
             web3: this.props.web3,
             address: contract.address
         });
-        const supplier = this.props.users.filter(user =>
+        const supplier = this.props.users.find(user =>
             user.username === contract.ownerUsername
-        )[0];
+        );
         let transaction = {};
 
-        this.props.setIsLoading({
-            infoTitle: 'Waiting for transaction confirmation',
-            info: [
-                'Please allow up to 30 seconds for the transaction to ' +
-                'be processed and written to the Ethereum blockchain.'
-            ]
-        });
-
-        console.log(contract);
-
-        //TODO: Figure out which method to call.
-        return subscriptionContract.depositSubscription({
-            subscriberAddress: this.props.metamaskAccount.address
-        }).then(transactionRes => {
-            transaction = (transactionRes) ? transactionRes : {};
-        }).then(() => subscriptions.addSubscription({
-            subscriberAddress: this.props.metamaskAccount.address,
-            contractAddress: contract.address
-        })).then(() => email.sendRequestSubscriptionMails({
-            subscriberEmail: this.props.messageState.email,
-            supplierEmail: supplier.email,
-            subscriptionName: contract.subscriptionName
-        })).then(() => transaction);
+        //TODO: Call depositTrialFee instead if subscriptionContract has trial
+        this.props.setIsLoading(waitingForBlockchain)
+            .then(() => subscriptionContract.depositSubscription({
+                subscriberAddress: this.props.metamaskAccount.address
+            })).then(transactionRes => {
+                transaction = (transactionRes) ? transactionRes : {};
+            }).then(() => subscriptions.addSubscription({
+                subscriberAddress: this.props.metamaskAccount.address,
+                contractAddress: contract.address
+            })).then(() => email.sendRequestSubscriptionMails({
+                subscriberEmail: this.props.messageState.email,
+                supplierEmail: supplier.email,
+                subscriptionName: contract.subscriptionName
+            })).then(() => transaction);
     };
 
     render(){

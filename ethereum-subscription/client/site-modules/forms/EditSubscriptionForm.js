@@ -4,8 +4,15 @@ import PropTypes from 'prop-types';
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
 import {getErrorString} from "../../services/utils";
+import {getTransactionMessage, waitingForBlockchain} from "../../services/messages";
+import {connect} from 'react-redux';
+import {compose} from 'redux';
 
 class EditSubscriptionForm extends Component {
+    static mapStateToProps = ({settings}) => ({
+        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ''
+    });
+
     static defaultLabels = {
         username: 'Username:',
         password: 'Password:',
@@ -62,7 +69,7 @@ class EditSubscriptionForm extends Component {
         const {
             messageState,
             renderMessages,
-            setMessageState,
+            setClearedMessageState,
             setIsLoading
         } = this.props;
 
@@ -72,25 +79,20 @@ class EditSubscriptionForm extends Component {
                 {renderMessages()}
                 <FormList
                     onSubmit={(state) => {
-                        setIsLoading()
+                        setIsLoading(waitingForBlockchain)
                             .then(() => this.props.onSubmit(Object.assign({}, state, this.props)))
-                            .then(() => setMessageState({
-                                isLoading: false,
-                                success: ['The subscription was edited successfully!']
+                            .then(transaction => setClearedMessageState({
+                                ...getTransactionMessage(transaction, this.props.etherScanUrl)
                             }))
                             .catch(err => {
                                 console.error(err);
 
-                                return this.props.setMessageState({
-                                    isLoading: false,
+                                return this.props.setClearedMessageState({
                                     errors: [err.toString()]
                                 });
                             });
                     }}
-                    onError={() => setMessageState({
-                        errors: [],
-                        success: []
-                    })}
+                    onError={() => setClearedMessageState()}
                     disabled={messageState.isLoading || messageState.complete}
                     fields={this.state.fields}
                     submitButtonHtml={
@@ -109,15 +111,13 @@ class EditSubscriptionForm extends Component {
 
                                     setIsLoading()
                                         .then(() => this.props.onActivate(this.props))
-                                        .then(() => setMessageState({
-                                            isLoading: false,
-                                            success: ['The subscription was activated successfully!']
+                                        .then(() => setClearedMessageState({
+                                            success: ['The subscription was activated successfully!'],
                                         }))
                                         .catch(err => {
                                             console.error(err);
 
-                                            return setMessageState({
-                                                isLoading: false,
+                                            return setClearedMessageState({
                                                 errors: [getErrorString(err)]
                                             });
                                         });
@@ -134,4 +134,7 @@ class EditSubscriptionForm extends Component {
     }
 }
 
-export default withMessage(EditSubscriptionForm);
+export default compose(
+    withMessage,
+    connect(EditSubscriptionForm.mapStateToProps)
+)(EditSubscriptionForm);
