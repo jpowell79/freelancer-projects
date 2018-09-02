@@ -21,21 +21,28 @@ import {Notice} from '../modules/Notice';
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
 
-    state = {
-        filters: {},
-        noticeOpen: true
-    };
+    constructor(props){
+        super(props);
+
+        this.hasLoadedAllContracts = props.liveSubscriptionContracts.length ===
+            props.subscriptionContracts.filter(contract => contract.isActive).length;
+
+        this.state = {
+            filters: {},
+            noticeOpen: !this.hasLoadedAllContracts
+        };
+    }
 
     handleSubscriptionFormChange = (filterFormState) => {
         this.setState({filters: filterFormState});
     };
 
     componentDidMount(){
-        this.props.loadAllContracts({
-            amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
-        }).then(() => {
-            this.setState({noticeOpen: false})
-        });
+        if(!this.hasLoadedAllContracts){
+            this.props.subscriptionContractLoader
+                .loadAllContracts()
+                .then(() => this.setState({noticeOpen: false}));
+        }
     }
 
     render () {
@@ -103,7 +110,7 @@ class Index extends Component {
                         maxRows={parseInt(settings.homepageTableMaxRows.value, 10)}
                         subscriptionContracts={
                             filterSubscriptionContracts(
-                                this.props.contracts,
+                                this.props.liveSubscriptionContracts,
                                 this.state.filters
                             ).filter(contract => contract.isActive)
                         }
@@ -125,7 +132,8 @@ class Index extends Component {
 export default compose(
     withSubscriptionContracts({
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
-        amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE
+        amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
+        amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
     }),
     connect(Index.mapStateToProps)
 )(Index);

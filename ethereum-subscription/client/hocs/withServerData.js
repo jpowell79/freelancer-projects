@@ -6,10 +6,6 @@ export default (PageComponent) => {
         static async getInitialProps (appContext) {
             let pageProps = {};
 
-            if (PageComponent.getInitialProps) {
-                pageProps = await PageComponent.getInitialProps(appContext);
-            }
-
             const {reduxStore, req} = appContext.ctx;
 
             await loadServerDataIntoStore(reduxStore, req, {
@@ -21,6 +17,10 @@ export default (PageComponent) => {
                 subscriptionContracts: true,
                 subscriptions: true,
             });
+
+            if (PageComponent.getInitialProps) {
+                pageProps = await PageComponent.getInitialProps(appContext);
+            }
 
             return {...pageProps};
         }

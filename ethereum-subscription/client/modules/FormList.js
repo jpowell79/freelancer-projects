@@ -38,7 +38,8 @@ class FormList extends Component {
                 PropTypes.string,
                 PropTypes.bool
             ]),
-            label: PropTypes.string
+            label: PropTypes.string,
+            excludeFromValidation: PropTypes.bool,
         }))
     };
 
@@ -47,12 +48,9 @@ class FormList extends Component {
 
         this.state = props.fields
             .map(field => ({[field.type]: (field.defaultValue) ? field.defaultValue : ''}))
-            .reduce((accumulator, currentValue) =>
-                Object.assign({}, accumulator, currentValue)
-            );
+            .reduce((accumulator, currentValue) => Object.assign({}, accumulator, currentValue));
 
         this.fieldErrors = {};
-
     }
 
     handleSubmit = (event) => {
@@ -60,6 +58,9 @@ class FormList extends Component {
 
         this.fieldErrors = {};
         const fieldErrorsArray = Object.keys(this.state)
+            .filter(fieldKey => !this.props.fields
+                .find(field => field.type === fieldKey)
+                .excludeFromValidation)
             .filter(fieldKey => isDefined(validation.getFieldError(fieldKey, this.state[fieldKey])))
             .map(fieldKey => ({[fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])}));
 
@@ -78,6 +79,19 @@ class FormList extends Component {
         }
     };
 
+    getAutoComplete = (type) => {
+        switch(type){
+        case "username":
+            return {autoComplete: "username"};
+        case "password":
+            return {autoComplete: "new-password"};
+        case "email":
+            return {autoComplete: "email"};
+        default:
+            return {};
+        }
+    };
+
     renderFields = () => {
         return this.props.fields.map((field, i) => {
             if(field.hidden) return null;
@@ -91,12 +105,14 @@ class FormList extends Component {
 
             const specialType = specialInputTypes.filter(type => type === field.type)[0];
             const type = (specialType) ? specialType : "text";
+            const autoComplete = this.getAutoComplete(field.type);
 
             return (
                 <div className={fieldClass} key={i}>
                     <label>{(field.label) ? field.label : field.type}</label>
                     <input
                         type={type}
+                        {...autoComplete}
                         disabled={this.props.disabled}
                         value={this.state[field.type]}
                         onKeyDown={event => {

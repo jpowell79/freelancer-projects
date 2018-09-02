@@ -1,5 +1,30 @@
 import {constants} from './constants';
 
+export const selectEditContract = (contract) => ({
+    type: constants.EDIT_CONTRACT,
+    payload: contract
+});
+
+export const deselectEditContract = () => ({
+    type: constants.EDIT_CONTRACT,
+    payload: {}
+});
+
+export const addLiveSubscriptionContracts = (liveSubscriptionContracts) => ({
+    type: constants.ADD_LIVE_SUBSCRIPTION_CONTRACTS,
+    payload: liveSubscriptionContracts
+});
+
+export const updateLiveSubscriptionContracts = (liveSubscriptionContracts) => ({
+    type: constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACTS,
+    payload: liveSubscriptionContracts
+});
+
+export const updateEthereumConversionRates = (ethereumConversionRates) => ({
+    type: constants.UPDATE_ETHEREUM_CONVERSION_RATES,
+    payload: ethereumConversionRates
+});
+
 export const loadSettings = (settings) => ({
     type: constants.LOAD_SETTINGS,
     payload: settings

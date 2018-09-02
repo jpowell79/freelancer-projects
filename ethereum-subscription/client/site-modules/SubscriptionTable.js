@@ -8,6 +8,7 @@ import {paths} from '../../services/constants';
 import Link from 'next/link';
 import {ProviderRating} from "./ProviderRating";
 import {hideOnMobile, hideOnTablet, showOnMobile} from "../services/css";
+import {weiToEth} from "../../services/utils";
 
 class SubscriptionTable extends Component {
     static defaultProps = {maxRows: -1, isLoading: false};
@@ -65,10 +66,12 @@ class SubscriptionTable extends Component {
                             }</td>
                             <td className={hideOnTablet()}>{contract.walletAge}</td>
                             <td>{contract.hasFreeTrials ? "Yes" : "No"}</td>
-                            <td className={hideOnTablet()}>{contract.joiningFee} Eth</td>
-                            <td className={hideOnTablet()}>{contract.exitFee} Eth</td>
+                            <td className={hideOnTablet()}>{weiToEth(contract.joiningFee)} Eth</td>
+                            <td className={hideOnTablet()}>{weiToEth(contract.exitFee)} Eth</td>
                             <td className={hideOnTablet()}>{contract.subscriptionLengthInWeeks} Weeks</td>
-                            <td>{contract.subscriptionAmountToPay} Eth</td>
+                            <td>
+                                {weiToEth(contract.totalSubscriptionPrice / contract.subscriptionLengthInWeeks)} Eth
+                            </td>
                             <td>
                                 {(this.props.buttonRenderer)
                                     ? this.props.buttonRenderer({
@@ -116,7 +119,11 @@ class SubscriptionTable extends Component {
                             <th className={hideOnTablet()}>Join Fee</th>
                             <th className={hideOnTablet()}>Exit Fee</th>
                             <th className={hideOnTablet()}>Contract Length</th>
-                            <th><span className={hideOnMobile()}>Monthly </span>Price</th>
+                            <th>
+                                <span className={hideOnMobile()}>4 Week </span>
+                                <span className={showOnMobile()}>4-wk </span>
+                                Price
+                            </th>
                             <th className="no-sort"/>
                         </tr>
                     </thead>

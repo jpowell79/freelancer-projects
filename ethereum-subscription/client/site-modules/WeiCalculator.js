@@ -1,27 +1,40 @@
 import React, {Component, Fragment} from 'react';
-import axios from 'axios';
 import CoinMarketCapApi from '../../services/CoinMarketCapApi';
 import {Form, Dropdown} from 'semantic-ui-react';
 import {isDefined} from '../../services/strings';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import {connect} from 'react-redux';
 
 class WeiCalculator extends Component {
-    static convertCurrencies = [
-        CoinMarketCapApi.fiatCurrencies.USD,
-        CoinMarketCapApi.fiatCurrencies.GBP,
-        CoinMarketCapApi.fiatCurrencies.EUR,
-        CoinMarketCapApi.fiatCurrencies.JPY
-    ];
+    static mapStateToProps = ({ethereumConversionRates}) => {
+        const conversionRates = (ethereumConversionRates.length > 0)
+            ? ethereumConversionRates
+                .reduce((accumulator, currentValue) =>
+                    Object.assign({}, accumulator, currentValue)
+                )
+            : {};
+
+        return {
+            ethereumConversionRates: conversionRates,
+        };
+    };
 
     constructor(props){
         super(props);
 
+        const dropdownOptions = Object.keys(props.ethereumConversionRates)
+            .map(rateKey => ({
+                text: this.getCurrencyName(rateKey),
+                value: rateKey
+            }));
+
+        const selectedCurrency = (dropdownOptions.length > 0) ? dropdownOptions[0].value : "";
+
         this.state = {
             ethereumConversionRates: {},
-            dropdownOptions: [],
-            selectedCurrency: '',
+            dropdownOptions: dropdownOptions,
+            selectedCurrency: selectedCurrency,
             conversionValue: '',
-            isLoading: true,
             copied: false
         }
     }
@@ -60,48 +73,9 @@ class WeiCalculator extends Component {
         }
     };
 
-    componentDidMount(){
-        Promise.all(WeiCalculator.convertCurrencies.map(currency => {
-            return axios.get(CoinMarketCapApi.ticker({
-                id: 1027,
-                convert: currency
-            })).then(res => ({[currency]: res.data.data.quotes[currency]}));
-        })).then(conversionArray => {
-            if(conversionArray.length > 0){
-                return conversionArray.reduce((accumulator, currentValue) =>
-                    Object.assign({}, accumulator, currentValue)
-                );
-            }
-
-            return {};
-        }).then(ethereumConversionRates => {
-            const dropdownOptions = Object.keys(ethereumConversionRates)
-                .map(rateKey => ({
-                    text: this.getCurrencyName(rateKey),
-                    value: rateKey
-                }));
-
-            if(dropdownOptions.length > 0){
-                this.setState({
-                    ethereumConversionRates,
-                    dropdownOptions,
-                    selectedCurrency: dropdownOptions[0].value,
-                    isLoading: false
-                });
-            } else {
-                this.setState({isLoading: false});
-            }
-        }).catch(err => {
-            console.error(err);
-            this.setState({isLoading: false});
-        });
-    }
-
     getConversionRate = () => {
-        const {
-            ethereumConversionRates,
-            selectedCurrency
-        } = this.state;
+        const {ethereumConversionRates} = this.props;
+        const {selectedCurrency} = this.state;
 
         const price = ethereumConversionRates[selectedCurrency].price;
 
@@ -109,10 +83,8 @@ class WeiCalculator extends Component {
     };
 
     getMinimumAmount = () => {
-        const {
-            ethereumConversionRates,
-            selectedCurrency
-        } = this.state;
+        const {ethereumConversionRates} = this.props;
+        const {selectedCurrency} = this.state;
 
         const minimumEth = 1/ethereumConversionRates["USD"].price;
         const minimumAmount = minimumEth * ethereumConversionRates[selectedCurrency].price;
@@ -132,13 +104,8 @@ class WeiCalculator extends Component {
         const {
             dropdownOptions,
             selectedCurrency,
-            conversionValue,
-            isLoading
+            conversionValue
         } = this.state;
-
-        if(isLoading){
-            return <p className="text">Loading currency rates...</p>;
-        }
 
         return (
             (dropdownOptions.length > 0) && (
@@ -213,4 +180,4 @@ class WeiCalculator extends Component {
     }
 }
 
-export default WeiCalculator;
+export default connect(WeiCalculator.mapStateToProps)(WeiCalculator);

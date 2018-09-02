@@ -1,11 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import SubscriptionForm from "./SubscriptionForm";
 import PropTypes from 'prop-types';
-import withMetamaskAccount from '../../hocs/withMetamaskAccount';
-import {Loader} from "../../modules/icons";
-import objects from "../../../services/objects";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
-import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 
 class EditContractForm extends Component {
     static defaultProps = {
@@ -30,7 +26,7 @@ class EditContractForm extends Component {
     }) => {
         const contract = new SubscriptionContract({
             web3,
-            address: metamaskAccount.address
+            address: this.props.contract.address
         });
 
         return contract.setSubscriptionDetailsAsSupplier({
@@ -55,24 +51,25 @@ class EditContractForm extends Component {
             setIsLoading
         } = subscriptionForm.props;
 
-        setIsLoading();
-
-        return this.setSubscriptionDetails(
-            this.props.web3,
-            this.props.metamaskAccount,
-            messageState
-        ).then(() => {
-            AlertOptionPane.showSuccessAlert({
-                message: 'The contract has been edited successfully'
-            });
-
-            this.props.onComplete(this);
-        }).catch(err => {
-            setMessageState({
+        return setIsLoading()
+            .then(() => this.setSubscriptionDetails(
+                this.props.web3,
+                this.props.metamaskAccount,
+                messageState
+            ))
+            .then(() => setMessageState({
                 isLoading: false,
-                errors: [err.toString()]
+                success: ['The contract has been edited successfully']
+            }))
+            .then(() => this.props.onComplete(this))
+            .catch(err => {
+                console.error(err);
+
+                return setMessageState({
+                    isLoading: false,
+                    errors: [err.toString()]
+                });
             });
-        });
     };
 
     render(){
@@ -86,23 +83,6 @@ class EditContractForm extends Component {
             exitFee,
             details
         } = this.props.contract;
-
-        if(this.props.metamaskAccount.isLoading){
-            return (
-                <div className="text-center">
-                    <Loader/>
-                    <h3>Listening for account changes...</h3>
-                </div>
-            );
-        }
-
-        if(objects.isEmpty(this.props.metamaskAccount)){
-            return (
-                <p className="text">
-                    Please login to metamask in order to edit this contract.
-                </p>
-            );
-        }
 
         return (
             <Fragment>
@@ -133,24 +113,10 @@ class EditContractForm extends Component {
                         exitFee,
                         subscriptionDetails: details
                     }}
-                    renderExtraButtons={() => {
-                        return (
-                            <button
-                                className="ui button"
-                                style={{marginLeft: "15px"}}
-                                onClick={(event) => {
-                                    event.preventDefault();
-                                    this.props.onCancel(this);
-                                }}
-                            >
-                                Cancel
-                            </button>
-                        );
-                    }}
                 />
             </Fragment>
         );
     }
 }
 
-export default withMetamaskAccount(EditContractForm);
+export default EditContractForm;

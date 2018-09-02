@@ -4,6 +4,7 @@ import {Grid} from "semantic-ui-react";
 
 export const SubscriptionDetails = ({
     subscriptionName,
+    isOwner,
     supplierName,
     reputation,
     joiningFee,
@@ -40,11 +41,12 @@ export const SubscriptionDetails = ({
             <h2>Details:</h2>
             <p className="text">{details}</p>
             <div className="text-center divider-2">
-                {(!isSubscriber) ? (
+                {(!isSubscriber && !isOwner) && (
                     <button className="ui huge primary button" onClick={onSubscribe}>
                         Subscribe
                     </button>
-                ) : (
+                )}
+                {isSubscriber && (
                     <button
                         className="ui huge bg-color-uiRed color-white button"
                         onClick={onCancelSubscription}

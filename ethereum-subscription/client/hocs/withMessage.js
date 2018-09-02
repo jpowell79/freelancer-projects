@@ -30,8 +30,12 @@ export default (Module, initialState) => {
             this.state = Object.assign({}, defaultInitialState, initialState);
         }
 
-        setMessageState = (state) => {
-            this.setState((prevState) => Object.assign({}, prevState, state));
+        promiseSetState = async (stateOrUpdater) => {
+            return new Promise(resolve => this.setState(stateOrUpdater, () => resolve()));
+        };
+
+        setMessageState = async (state, callback = () => {}) => {
+            return this.promiseSetState((prevState) => Object.assign({}, prevState, state), callback);
         };
 
         hasFieldErrors = (additionalFields = {}) => {
@@ -53,17 +57,18 @@ export default (Module, initialState) => {
             return false;
         };
 
-        setIsLoading = (state = {}) => {
-            this.setState({
+        setIsLoading = async (state = {}) => {
+            return this.promiseSetState({
                 isLoading: true,
                 errors: [],
+                success: [],
                 fieldsWithErrors: [],
                 ...state
             });
         };
 
-        setComplete = (state = {}) => {
-            this.setState({
+        setComplete = async (state = {}) => {
+            return this.promiseSetState({
                 isLoading: false,
                 complete: true,
                 showSuccess: true,

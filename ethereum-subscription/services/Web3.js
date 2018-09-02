@@ -1,34 +1,55 @@
 const web3 = require('web3');
 
-function CustomWeb3(provider){
-    web3.call(this, provider);
+let instance = null;
 
-    this.hasMetaMask = () => {
+class CustomWeb3 extends web3 {
+    static getInstance(provider){
+        if(!instance){
+            instance = new CustomWeb3(provider);
+        }
+
+        return instance;
+    }
+
+    constructor(provider){
+        super(provider);
+
+        this.hasMetaMask = this.hasMetaMask.bind(this);
+        this.onMetamaskUpdate = this.onMetamaskUpdate.bind(this);
+        this.unsubscribeToMetmaskUpdate = this.unsubscribeToMetmaskUpdate.bind(this);
+        this.fetchAccountAddress = this.fetchAccountAddress.bind(this);
+        this.fetchEthBalance = this.fetchEthBalance.bind(this);
+        this.fetchAccount = this.fetchAccount.bind(this);
+        this.fetchNetworkId = this.fetchNetworkId.bind(this);
+        this.getNetworkName = this.getNetworkName.bind(this);
+    }
+
+    hasMetaMask(){
         return this.currentProvider.isMetaMask !== undefined;
     };
 
-    this.onMetamaskUpdate = (callback) => {
+    onMetamaskUpdate(callback){
         this.currentProvider.publicConfigStore.on('update', callback);
     };
 
-    this.unsubscribeToMetmaskUpdate = (callback) => {
+    unsubscribeToMetmaskUpdate(callback){
         this.currentProvider.publicConfigStore.unsubscribe(callback);
     };
 
-    this.fetchAccountAddress = () => {
+    fetchAccountAddress(){
         return this.eth.getAccounts().then(accounts => {
             return accounts[0];
         });
     };
 
-    this.fetchEthBalance = (accountAddress) => {
+    fetchEthBalance(accountAddress){
         return this.eth.getBalance(accountAddress)
             .then(balance => {
                 return balance/1000000000000000000;
             })
     };
 
-    this.fetchAccount = () => {
+    fetchAccount(){
         let account = {
             address: null,
             balance: null,
@@ -47,11 +68,11 @@ function CustomWeb3(provider){
         });
     };
 
-    this.fetchNetworkId = () => {
+    fetchNetworkId(){
         return this.eth.net.getId();
     };
 
-    this.getNetworkName = (networkId) => {
+    getNetworkName(networkId){
         switch(networkId){
         case 1:
             return 'Mainnet';
@@ -78,8 +99,5 @@ function CustomWeb3(provider){
         }
     };
 }
-
-CustomWeb3.prototype = Object.create(web3.prototype);
-CustomWeb3.prototype.contructor = CustomWeb3;
 
 module.exports = CustomWeb3;

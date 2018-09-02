@@ -38,7 +38,7 @@ export default (Module) => {
 
         componentDidMount(){
             if(window.web3){
-                this.web3 = new Web3(window.web3.currentProvider);
+                this.web3 = Web3.getInstance(window.web3.currentProvider);
                 this.dispatcher = new Dispatcher(this.props.dispatch);
                 this.dispatcher.dispatchUpdateAccount(this.web3);
                 this.subscribeToAccountUpdate();

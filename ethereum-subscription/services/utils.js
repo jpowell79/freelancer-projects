@@ -1,3 +1,5 @@
+const {round} = require("lodash/math");
+
 const axios = require('axios');
 
 module.exports.isClient = () => {
@@ -24,8 +26,8 @@ module.exports.ethToWei = (eth) => {
     return eth * 1000000000000000000;
 };
 
-module.exports.weiToEth = (wei) => {
-    return wei/1000000000000000000;
+module.exports.weiToEth = (wei, decimals = 3) => {
+    return round(wei/1000000000000000000, decimals);
 };
 
 module.exports.sleep = async (length) => {
@@ -34,6 +36,11 @@ module.exports.sleep = async (length) => {
             resolve();
         }, length);
     });
+};
+
+module.exports.round = (numberOrString, decimals = 2) => {
+    const number = parseFloat(numberOrString);
+    return parseFloat(number.toFixed(decimals));
 };
 
 module.exports.random = (lowest, highest) => {

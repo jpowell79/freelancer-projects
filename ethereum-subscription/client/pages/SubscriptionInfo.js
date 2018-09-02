@@ -20,8 +20,8 @@ import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoS
 import SubscriptionContract from "../../services/smart-contracts/SubscriptionContract";
 
 class SubscriptionInfo extends Component {
-    static mapStateToProps = ({settings, subscribers, subscriptions}) => ({
-        settings, subscribers, subscriptions
+    static mapStateToProps = ({settings, subscribers, subscriptions, users}) => ({
+        settings, subscribers, subscriptions, users
     });
 
     static async getInitialProps({res, query}) {
@@ -40,17 +40,25 @@ class SubscriptionInfo extends Component {
 
         this.state = {
             isLoading: true,
-            showSubscriptionAlert: false
+            showSubscriptionAlert: false,
+            ownerUser: {}
         };
     }
 
     componentDidMount(){
-        this.props.loadContracts(contract =>
+        this.props.subscriptionContractLoader.loadContracts(contract => (
             contract.address.toLowerCase() === this.props.address.toLowerCase() &&
             contract.isActive
-        ).then(() => {
-            this.setState({isLoading: false});
-        });
+        )).then(contracts => {
+            const contract = (contracts && contracts.length > 0) ? contracts[0] : {};
+
+            this.setState({
+                isLoading: false,
+                ownerUser: this.props.users.filter(user =>
+                    user.username === contract.ownerUsername
+                )[0]
+            })
+        }).catch(console.error);
     }
 
     handleAddSubscriptionFormSubmit = (event, removeAlert, disableAlert) => {
@@ -69,12 +77,17 @@ class SubscriptionInfo extends Component {
                             header="Your subscription request has been sent successfully!"
                             list={[
                                 <li key={transaction.transactionHash}>
-                                    Transaction Hash: <strong><a target="_blank" href={
+                                    Transaction Hash: <p className="bold"><a
+                                    target="_blank"
+                                    style={{
+                                        wordBreak: "break-all"
+                                    }}
+                                    href={
                                         etherscan.getTransactionUrl(
                                             this.props.settings.etherScanUrl.value,
                                             transaction.transactionHash
                                         )
-                                    }>{transaction.transactionHash}</a></strong>
+                                    }>{transaction.transactionHash}</a></p>
                                 </li>,
                                 'The supplier has been notified of your request. You will ' +
                                 'receive an email within 24 hours.'
@@ -148,7 +161,7 @@ class SubscriptionInfo extends Component {
     };
 
     isSubscriberOfContract = () => {
-        const contract = this.props.contracts[0];
+        const contract = this.props.liveSubscriptionContracts[0];
         const subscribers = this.props.subscribers.filter(subscriber =>
             subscriber.walletAddress === this.props.metamaskAccount.address
         );
@@ -164,10 +177,18 @@ class SubscriptionInfo extends Component {
 
     render(){
         if(this.state.isLoading || this.props.metamaskAccount.isLoading) {
-            return <Loader/>;
+            return (
+                <Page>
+                    <FullWidthSegment className="gray" wrapper={1}>
+                        <Segment padded>
+                            <Loader/>
+                        </Segment>
+                    </FullWidthSegment>
+                </Page>
+            );
         }
 
-        const contract = this.props.contracts[0];
+        const contract = this.props.liveSubscriptionContracts[0];
 
         return (
             <Page>
@@ -181,6 +202,10 @@ class SubscriptionInfo extends Component {
                             ) : (
                                 <SubscriptionDetails
                                     {...contract}
+                                    isOwner={
+                                        this.state.ownerUser.walletAddress ===
+                                        this.props.metamaskAccount.address
+                                    }
                                     isSubscriber={this.isSubscriberOfContract()}
                                     onSubscribe={() => this.handleSubscribe(contract)}
                                     onCancelSubscription={() => this.handleCancelSubscription(contract)}

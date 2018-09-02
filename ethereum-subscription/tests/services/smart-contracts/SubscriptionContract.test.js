@@ -4,7 +4,7 @@ const web3 = require('web3');
 describe('SubscriptionContract', () => {
     const ethereumSubscription = new SubscriptionContract({
         web3: new web3('https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv'),
-        address: '0x3cbc16e2c379a1584ec821ac5720511ddbf355e0'
+        address: '0x86842a129bd5fd249fb665c23d7ead88e7057153'
     });
 
     it('Should fetch data', () => {

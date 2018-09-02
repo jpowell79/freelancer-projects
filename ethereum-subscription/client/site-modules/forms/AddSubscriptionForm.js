@@ -37,7 +37,6 @@ class AddSubscriptionForm extends Component {
 
         //TODO: Figure out which method to call.
         return subscriptionContract.depositSubscription({
-            subscriptionAmountToPay: contract.subscriptionAmountToPay,
             subscriberAddress: this.props.metamaskAccount.address
         }).then(transactionRes => {
             transaction = (transactionRes) ? transactionRes : {};

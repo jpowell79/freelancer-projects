@@ -1,23 +1,22 @@
 import React, {Component, Fragment} from 'react';
 import FormList from '../../modules/FormList';
-import withMetamaskAccount from '../../hocs/withMetamaskAccount';
 import PropTypes from 'prop-types';
 import {LoaderTiny} from "../../modules/icons";
-import AlertOptionPane from "../../services/Alert/AlertOptionPane";
+import withMessage from "../../hocs/withMessage";
+import {getErrorString} from "../../services/utils";
 
 class EditSubscriptionForm extends Component {
     static defaultLabels = {
-        email: 'Supplier Email:',
         username: 'Username:',
         password: 'Password:',
-        duration: 'Duration (in days):',
+        duration: null,
         other: 'Other info:'
     };
 
     static defaultProps = {
         title: 'Edit Subscription',
         labels: EditSubscriptionForm.defaultLabels,
-        activateButtonText: "Activate"
+        activateButtonText: "Start the Subscription"
     };
 
     static propTypes = {
@@ -34,10 +33,6 @@ class EditSubscriptionForm extends Component {
         return {
             fields: [
                 {
-                    type: 'email',
-                    label: parsedLabels.email
-                },
-                {
                     type: 'username',
                     label: parsedLabels.username
                 },
@@ -47,7 +42,9 @@ class EditSubscriptionForm extends Component {
                 },
                 {
                     type: 'duration',
-                    label: parsedLabels.duration
+                    label: parsedLabels.duration,
+                    hidden: parsedLabels.duration === null,
+                    excludeFromValidation: parsedLabels.duration === null
                 },
                 {
                     type: 'other',
@@ -58,74 +55,72 @@ class EditSubscriptionForm extends Component {
     }
 
     state = {
-        fields: [],
-        isLoading: false
+        fields: []
     };
 
     render(){
+        const {
+            messageState,
+            renderMessages,
+            setMessageState,
+            setIsLoading
+        } = this.props;
+
         return (
             <Fragment>
                 <h2>{this.props.title}</h2>
+                {renderMessages()}
                 <FormList
                     onSubmit={(state) => {
-                        this.setState({isLoading: true}, () => {
-                            this.props.onSubmit(
-                                Object.assign({}, state, this.props)
-                            ).then(res => {
-                                console.log(res);
-
-                                this.setState({isLoading: false});
-
-                                AlertOptionPane.showSuccessAlert({
-                                    message: 'The subscription was edited successfully!'
-                                });
-                            }).catch(err => {
+                        setIsLoading()
+                            .then(() => this.props.onSubmit(Object.assign({}, state, this.props)))
+                            .then(() => setMessageState({
+                                isLoading: false,
+                                success: ['The subscription was edited successfully!']
+                            }))
+                            .catch(err => {
                                 console.error(err);
-                                this.setState({isLoading: false});
 
-                                AlertOptionPane.showErrorAlert({
-                                    message: err.toString()
+                                return this.props.setMessageState({
+                                    isLoading: false,
+                                    errors: [err.toString()]
                                 });
                             });
-                        });
                     }}
-                    disabled={this.state.isLoading}
+                    onError={() => setMessageState({
+                        errors: [],
+                        success: []
+                    })}
+                    disabled={messageState.isLoading || messageState.complete}
                     fields={this.state.fields}
                     submitButtonHtml={
-                        (this.state.isLoading)
+                        (messageState.isLoading)
                             ? <LoaderTiny/>
                             : "Submit"
                     }
                     buttonChildren={
-                        (this.props.showActivate && !this.state.isLoading) ? (
+                        (this.props.showActivate && !messageState.isLoading) ? (
                             <button
                                 className="ui bg-color-uiBlue color-white button"
-                                style={{
-                                    marginLeft: "15px"
-                                }}
+                                style={{marginLeft: "15px"}}
+                                disabled={messageState.isLoading}
                                 onClick={(event) => {
                                     event.preventDefault();
-                                    this.setState({isLoading: true}, () => {
-                                        this.props.onActivate(this.props)
-                                            .then(res => {
-                                                console.log(res);
 
-                                                this.setState({isLoading: false});
+                                    setIsLoading()
+                                        .then(() => this.props.onActivate(this.props))
+                                        .then(() => setMessageState({
+                                            isLoading: false,
+                                            success: ['The subscription was activated successfully!']
+                                        }))
+                                        .catch(err => {
+                                            console.error(err);
 
-                                                AlertOptionPane.showSuccessAlert({
-                                                    message: 'The subscription was activated successfully!'
-                                                });
-                                            }).catch(err => {
-                                                console.error(err);
-
-                                                this.setState({isLoading: false});
-
-                                                AlertOptionPane.showErrorAlert({
-                                                    message: err.toString()
-                                                });
+                                            return setMessageState({
+                                                isLoading: false,
+                                                errors: [getErrorString(err)]
                                             });
-                                    });
-
+                                        });
                                 }}
                             >
                                 {this.props.activateButtonText}
@@ -139,4 +134,4 @@ class EditSubscriptionForm extends Component {
     }
 }
 
-export default withMetamaskAccount(EditSubscriptionForm);
+export default withMessage(EditSubscriptionForm);

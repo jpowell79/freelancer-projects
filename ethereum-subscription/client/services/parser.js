@@ -1,5 +1,3 @@
-import escape from 'html-escape';
-
 export const parseSettings = (settings) => {
     return settings;
 };

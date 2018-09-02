@@ -4,12 +4,44 @@ import {combineReducers} from 'redux';
 export const initialState = {
     settings: {},
     metamaskAccount: {},
+    liveSubscriptionContracts: [],
+    ethereumConversionRates: [],
     subscriptionContracts: [],
+    editContract: {},
     subscriptionTypes: [],
     subscribers: [],
     subscriptions: [],
     user: {},
     users: []
+};
+
+export const editContract = (editContract = {}, action) => {
+    switch(action.type){
+    case constants.EDIT_CONTRACT:
+        return action.payload;
+    default:
+        return editContract;
+    }
+};
+
+export const ethereumConversionRates = (ethereumConversionRates = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_ETHEREUM_CONVERSION_RATES:
+        return action.payload;
+    default:
+        return ethereumConversionRates;
+    }
+};
+
+export const liveSubscriptionContracts = (liveSubscriptionContracts = [], action) => {
+    switch(action.type){
+    case constants.ADD_LIVE_SUBSCRIPTION_CONTRACTS:
+        return [...liveSubscriptionContracts, ...action.payload];
+    case constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACTS:
+        return action.payload;
+    default:
+        return liveSubscriptionContracts;
+    }
 };
 
 export const subscriptions = (subscriptions = [], action) => {
@@ -89,7 +121,10 @@ export default combineReducers({
     metamaskAccount,
     user,
     users,
+    editContract,
     subscriptionContracts,
+    liveSubscriptionContracts,
+    ethereumConversionRates,
     subscriptionTypes,
     subscribers,
     subscriptions,

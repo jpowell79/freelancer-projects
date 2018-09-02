@@ -1,15 +1,22 @@
 import React, {Component} from 'react';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateSupplier from '../hocs/withAuthenticateSupplier';
+import withEthereumConversionRates from "../hocs/withEthereumConversionRates";
+import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import {Menu, Segment} from 'semantic-ui-react';
 import objects from '../../services/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
+import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
 
 class Supplier extends Component {
+    static mapStateToProps = ({user}) => ({user});
+
     static sections = {
         subscriptions: 'Your Subscriptions',
         requestContract: 'Request New Contract',
@@ -19,8 +26,20 @@ class Supplier extends Component {
     constructor(props){
         super(props);
 
+        this.hasLoadedAllContracts = props.liveSubscriptionContracts.length ===
+            props.subscriptionContracts.filter(contract => contract.isActive).length;
+
         this.state = {
-            active: 0
+            active: 0,
+            isLoadingContracts: true
+        }
+    }
+
+    componentDidMount(){
+        if(!this.hasLoadedAllContracts){
+            this.props.subscriptionContractLoader.loadContracts(contract =>
+                contract.ownerUsername === this.props.user.username
+            ).then(() => this.setState({isLoadingContracts: false}));
         }
     }
 
@@ -33,7 +52,13 @@ class Supplier extends Component {
 
         switch(activeSection){
         case subscriptions:
-            return <Subscriptions/>;
+            return (
+                <Subscriptions
+                    user={this.props.user}
+                    liveSubscriptionContracts={this.props.liveSubscriptionContracts}
+                    isLoadingContracts={this.state.isLoadingContracts}
+                />
+            );
         case requestContract:
             return <RequestContract/>;
         case manageProfile:
@@ -78,4 +103,9 @@ class Supplier extends Component {
     }
 }
 
-export default withAuthenticateSupplier(Supplier);
+export default compose(
+    withAuthenticateSupplier,
+    withEthereumConversionRates,
+    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),
+    connect(Supplier.mapStateToProps)
+)(Supplier);

@@ -92,7 +92,7 @@ class SubscriptionsRequest extends Request {
         }
     };
 
-    handleSubscribersRequest(){
+    async handleSubscribersRequest(){
         const subscribers = new Subscribers(this.params);
 
         switch (this.req.method){

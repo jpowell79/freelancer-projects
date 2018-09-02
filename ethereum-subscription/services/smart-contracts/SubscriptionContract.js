@@ -2,10 +2,8 @@ const abi = require('./subscriptionContractAbi');
 const {
     toMilliseconds,
     parseNumberStringsToNumbers,
-    parseContractArrayToObject,
-    weiToEth
+    parseContractArrayToObject
 } = require('./contractParser');
-const utils = require('../utils');
 
 const callGetters = (methods) => {
     return Promise.all([
@@ -26,7 +24,7 @@ const callGetters = (methods) => {
         methods.amountClaimedSoFar().call()
             .then(amountClaimedSoFar => ({amountClaimedSoFar})),
         methods.trialPrice().call()
-            .then(trialPrice => ({trialPrice: weiToEth(trialPrice)})),
+            .then(trialPrice => ({trialPrice})),
         methods.trialDurationInDays().call()
             .then(trialDurationInDays => ({trialDurationInDays})),
         methods.trialInfoShared().call()
@@ -42,21 +40,13 @@ const callGetters = (methods) => {
         methods.subscriptionLengthInWeeks().call()
             .then(subscriptionLengthInWeeks => ({subscriptionLengthInWeeks})),
         methods.totalSubscriptionPrice().call()
-            .then(totalSubscriptionPrice => ({
-                totalSubscriptionPrice: weiToEth(totalSubscriptionPrice)
-            })),
-        methods.subscriptionAmountToPay().call()
-            .then(subscriptionAmountToPay => ({
-                subscriptionAmountToPay: weiToEth(subscriptionAmountToPay)
-            })),
+            .then(totalSubscriptionPrice => ({totalSubscriptionPrice})),
+        methods.amountToDeposit().call()
+            .then(amountToDeposit => ({amountToDeposit: amountToDeposit})),
         methods.joiningFee().call()
-            .then(joiningFee => ({
-                joiningFee: weiToEth(joiningFee)
-            })),
+            .then(joiningFee => ({joiningFee})),
         methods.exitFee().call()
-            .then(exitFee => ({
-                exitFee: weiToEth(exitFee)
-            })),
+            .then(exitFee => ({exitFee})),
         methods.details().call()
             .then(smallDetails => ({smallDetails})),
         methods.subscriptionStartTime().call()
@@ -141,7 +131,6 @@ function SubscriptionContract({web3, address}){
      */
     this.setSubscriptionDetailsAsSupplier = ({
         subscriptionName,
-        supplierWalletAddress,
         subscriptionLengthInWeeks,
         subscriptionPrice,
         joinFee,
@@ -152,7 +141,6 @@ function SubscriptionContract({web3, address}){
     }) => {
         return methods._amendDetails(
             subscriptionName,
-            supplierWalletAddress,
             subscriptionLengthInWeeks,
             subscriptionPrice,
             joinFee,
@@ -251,17 +239,19 @@ function SubscriptionContract({web3, address}){
 
     //region Subsciber only methods
     this.depositTrialFee = ({trialPrice, subscriberAddress}) => {
-        return methods.depositTrialFee().send({
-            from: subscriberAddress,
-            value: utils.ethToWei(trialPrice)
-        });
+        return methods.trialPrice().call()
+            .then(trialPrice => methods.depositTrialFee().send({
+                from: subscriberAddress,
+                value: trialPrice
+            }));
     };
 
-    this.depositSubscription = ({subscriptionAmountToPay, subscriberAddress}) => {
-        return methods.depositTrialFee().send({
-            from: subscriberAddress,
-            value: utils.ethToWei(subscriptionAmountToPay)
-        });
+    this.depositSubscription = ({subscriberAddress}) => {
+        return methods.amountToDeposit().call()
+            .then(amountToDeposit => methods.depositSubscription().send({
+                from: subscriberAddress,
+                value: amountToDeposit
+            }));
     };
 
     //endregion

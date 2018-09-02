@@ -29,7 +29,7 @@ module.exports.subscriptionTypes = [
 
 module.exports.subscriptionContracts = [
     {
-        address: '0x4d3566afa9e15b158fb1d89aa921c1c73a22c552',
+        address: '0x86842a129bd5fd249fb665c23d7ead88e7057153',
         ownerUsername: 'smnrkssn',
         typeName: 'Gym Membership',
         details: 'Random details',
@@ -49,7 +49,7 @@ module.exports.subscribers = [
 module.exports.subscriptions = [
     {
         subscriberAddress: '0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F',
-        contractAddress: '0x4d3566afa9e15b158fb1d89aa921c1c73a22c552'
+        contractAddress: '0x86842a129bd5fd249fb665c23d7ead88e7057153'
     }
 ];
 
