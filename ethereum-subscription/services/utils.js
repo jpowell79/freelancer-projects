@@ -1,5 +1,4 @@
 const {round} = require("lodash/math");
-
 const axios = require('axios');
 
 module.exports.isClient = () => {
@@ -20,6 +19,16 @@ module.exports.serverRequest = (req, url) => {
         credentials: 'same-origin',
         data: {'session': session}
     });
+};
+
+module.exports.bindAllMethods = (instance, classInstance) => {
+    const methods = Object.getOwnPropertyNames(Object.getPrototypeOf(instance))
+        .filter(name => {
+            const method = instance[name];
+            return !(!(method instanceof Function) || method === classInstance);
+        });
+
+    methods.forEach(method => instance[method] = instance[method].bind(instance));
 };
 
 module.exports.ethToWei = (eth) => {

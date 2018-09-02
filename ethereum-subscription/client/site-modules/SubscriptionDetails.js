@@ -1,6 +1,7 @@
 import React from 'react';
 import {ProviderRating} from "./ProviderRating";
 import {Grid} from "semantic-ui-react";
+import {weiToEth} from "../../services/utils";
 
 export const SubscriptionDetails = ({
     subscriptionName,
@@ -27,10 +28,10 @@ export const SubscriptionDetails = ({
                 <div className="wrapper-3 bold">
                     <Grid stackable columns={3}>
                         <Grid.Column>
-                            <p className="text">Join Fee: {joiningFee} Eth</p>
+                            <p className="text">Join Fee: {weiToEth(joiningFee)} Eth</p>
                         </Grid.Column>
                         <Grid.Column>
-                            <p className="text">Exit Fee: {exitFee} Eth</p>
+                            <p className="text">Exit Fee: {weiToEth(exitFee)} Eth</p>
                         </Grid.Column>
                         <Grid.Column>
                             <p className="text">Free Trial: {hasFreeTrials ? "Yes" : "No"}</p>

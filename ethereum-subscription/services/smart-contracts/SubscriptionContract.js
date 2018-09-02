@@ -4,70 +4,19 @@ const {
     parseNumberStringsToNumbers,
     parseContractArrayToObject
 } = require('./contractParser');
+const {bindAllMethods} = require("../utils");
 
-const callGetters = (methods) => {
-    return Promise.all([
-        methods.admin().call()
-            .then(admin => ({admin})),
-        methods.thisContractAddress().call()
-            .then(contractAddress => ({contractAddress})),
-        methods.contractCreation().call()
-            .then(contractCreation => ({
-                contractCreation: toMilliseconds(contractCreation)
-            })),
-        methods.supplierAddress().call()
-            .then(supplierAddress => ({supplierAddress})),
-        methods.reputation().call()
-            .then(reputation => ({reputation})),
-        methods.amountToClaim().call()
-            .then(amountToClaim => ({amountToClaim})),
-        methods.amountClaimedSoFar().call()
-            .then(amountClaimedSoFar => ({amountClaimedSoFar})),
-        methods.trialPrice().call()
-            .then(trialPrice => ({trialPrice})),
-        methods.trialDurationInDays().call()
-            .then(trialDurationInDays => ({trialDurationInDays})),
-        methods.trialInfoShared().call()
-            .then(trialInfoShared => ({trialInfoShared})),
-        methods.trialActive().call()
-            .then(trialActive => ({trialActive})),
-        methods.trialStartTime().call()
-            .then(trialStartTime => ({trialStartTime})),
-        methods.trialFinishTime().call()
-            .then(trialFinishTime => ({trialFinishTime})),
-        methods.subscriptionName().call()
-            .then(subscriptionName => ({subscriptionName})),
-        methods.subscriptionLengthInWeeks().call()
-            .then(subscriptionLengthInWeeks => ({subscriptionLengthInWeeks})),
-        methods.totalSubscriptionPrice().call()
-            .then(totalSubscriptionPrice => ({totalSubscriptionPrice})),
-        methods.amountToDeposit().call()
-            .then(amountToDeposit => ({amountToDeposit: amountToDeposit})),
-        methods.joiningFee().call()
-            .then(joiningFee => ({joiningFee})),
-        methods.exitFee().call()
-            .then(exitFee => ({exitFee})),
-        methods.details().call()
-            .then(smallDetails => ({smallDetails})),
-        methods.subscriptionStartTime().call()
-            .then(subscriptionStartTime => ({subscriptionStartTime})),
-        methods.subscriptionFinishTime().call()
-            .then(subscriptionFinishTime => ({subscriptionFinishTime})),
-        methods.subscriptionActive().call()
-            .then(subscriptionActive => ({subscriptionActive})),
-        methods.subscriptionCancelled().call()
-            .then(subscriptionCancelled => ({subscriptionCancelled})),
-        //methods.subscriberAddress().call(), not a function
-    ]);
-};
+class SubscriptionContract {
+    constructor({web3, address}){
+        this.contract = new web3.eth.Contract(abi, address);
+        this.methods = this.contract.methods;
 
-function SubscriptionContract({web3, address}){
-    const contract = new web3.eth.Contract(abi, address);
-    const methods = contract.methods;
+        bindAllMethods(this, SubscriptionContract);
+    }
 
-    this.fetchSubscriptionData = () => {
+    async fetchSubscriptionData(){
         return (
-            callGetters(methods)
+            this.callGetters(this.methods)
                 .then(parseNumberStringsToNumbers)
                 .then(parseContractArrayToObject)
         );
@@ -85,7 +34,7 @@ function SubscriptionContract({web3, address}){
      * @param details A string of other information about the subscription.
      * @returns {PromiEvent<any>}
      */
-    this.setSubscriptionDetails = ({
+    async setSubscriptionDetails({
         subscriptionName,
         supplierWalletAddress,
         subscriptionLengthInWeeks,
@@ -95,8 +44,8 @@ function SubscriptionContract({web3, address}){
         supplierEmail,
         subscriptionDetails,
         admin
-    }) => {
-        return methods._amendDetails(
+    }){
+        return this.methods._amendDetails(
             subscriptionName,
             supplierWalletAddress,
             subscriptionLengthInWeeks,
@@ -111,8 +60,8 @@ function SubscriptionContract({web3, address}){
     /**
      * Updates the wallet address for ALL smart contracts associated with the supplier.
      */
-    this.setSupplierWalletAddress = ({walletAddress, admin}) => {
-        return methods._setSupplierWalletAddress(walletAddress)
+    async setSupplierWalletAddress({walletAddress, admin}){
+        return this.methods._setSupplierWalletAddress(walletAddress)
             .send({from: admin});
     };
     //endregion
@@ -126,10 +75,10 @@ function SubscriptionContract({web3, address}){
      * @param joinFee The amount of Wei required to join the subscription.
      * @param exitFee The amount of Wei required to exit the subscription.
      * @param supplierEmail
-     * @param details A string of other information about the subscription.
+     * @param subscriptionDetails A string of other information about the subscription.
      * @returns {PromiEvent<any>}
      */
-    this.setSubscriptionDetailsAsSupplier = ({
+    async setSubscriptionDetailsAsSupplier({
         subscriptionName,
         subscriptionLengthInWeeks,
         subscriptionPrice,
@@ -138,8 +87,8 @@ function SubscriptionContract({web3, address}){
         supplierEmail,
         subscriptionDetails,
         supplier
-    }) => {
-        return methods._amendDetails(
+    }){
+        return this.methods._amendDetails(
             subscriptionName,
             subscriptionLengthInWeeks,
             subscriptionPrice,
@@ -160,15 +109,15 @@ function SubscriptionContract({web3, address}){
      * @param trialDurationInDays How long the trial duration is.
      * @returns {PromiEvent<any>}
      */
-    this.setTrialSubscriptionDetails = ({
+    async setTrialSubscriptionDetails({
         supplierAddress,
         supplierEmail,
         username,
         password,
         other,
         trialDurationInDays
-    }) => {
-        return methods.setTrialSubscriptionDetails(
+    }){
+        return this.methods.setTrialSubscriptionDetails(
             supplierEmail,
             username,
             password,
@@ -182,8 +131,8 @@ function SubscriptionContract({web3, address}){
     /**
      * Can only be called after the subscription details have been set.
      */
-    this.startTheTrial = ({supplierAddress}) => {
-        return methods.startTheTrial().call({
+    async startTheTrial({supplierAddress}){
+        return this.methods.startTheTrial().call({
             from: supplierAddress
         });
     };
@@ -191,18 +140,18 @@ function SubscriptionContract({web3, address}){
     /**
      * Can only be called after the trial is active.
      */
-    this.claimTrialPayment = () => {
-        return methods.claimTrialPayment().call();
+    async claimTrialPayment(){
+        return this.methods.claimTrialPayment().call();
     };
 
-    this.setFullSubscriptionDetails = ({
+    async setFullSubscriptionDetails({
         supplierEmail,
         username,
         password,
         other,
         supplierAddress
-    }) => {
-        return methods.setFullSubcriptionDetails(
+    }){
+        return this.methods.setFullSubcriptionDetails(
             supplierEmail,
             username,
             password,
@@ -212,43 +161,43 @@ function SubscriptionContract({web3, address}){
         });
     };
 
-    this.startTheSubscription = ({supplierAddress}) => {
-        return methods.startTheSubscription().call({
+    async startTheSubscription({supplierAddress}){
+        return this.methods.startTheSubscription().call({
             from: supplierAddress
         });
     };
 
-    this.claimSubscriptionEth = ({supplierAddress}) => {
-        return methods.claimSubscriptionEth().call({
+    async claimSubscriptionEth({supplierAddress}){
+        return this.methods.claimSubscriptionEth().call({
             from: supplierAddress
         });
     };
 
-    this.viewTrialSubscriptionDetails = ({supplierAddress}) => {
-        return methods.viewTrialSubscriptionDetails().call({
+    async viewTrialSubscriptionDetails({supplierAddress}){
+        return this.methods.viewTrialSubscriptionDetails().call({
             from: supplierAddress
         });
     };
 
-    this.viewFullSubscriptionDetails = ({supplierAddress}) => {
-        return methods.viewFullSubscriptionDetails().call({
+    async viewFullSubscriptionDetails({supplierAddress}){
+        return this.methods.viewFullSubscriptionDetails().call({
             from: supplierAddress
         });
     };
     //endregion
 
     //region Subsciber only methods
-    this.depositTrialFee = ({trialPrice, subscriberAddress}) => {
-        return methods.trialPrice().call()
-            .then(trialPrice => methods.depositTrialFee().send({
+    async depositTrialFee({trialPrice, subscriberAddress}){
+        return this.methods.trialPrice().call()
+            .then(trialPrice => this.methods.depositTrialFee().send({
                 from: subscriberAddress,
                 value: trialPrice
             }));
     };
 
-    this.depositSubscription = ({subscriberAddress}) => {
-        return methods.amountToDeposit().call()
-            .then(amountToDeposit => methods.depositSubscription().send({
+    async depositSubscription({subscriberAddress}){
+        return this.methods.amountToDeposit().call()
+            .then(amountToDeposit => this.methods.depositSubscription().send({
                 from: subscriberAddress,
                 value: amountToDeposit
             }));
@@ -256,10 +205,66 @@ function SubscriptionContract({web3, address}){
 
     //endregion
 
-    this.cancelSubscription = ({subscriberOrSupplier}) => {
-        return methods.cancelSubscription().send({
+    async cancelSubscription({subscriberOrSupplier}){
+        return this.methods.cancelSubscription().send({
             from: subscriberOrSupplier
         });
+    };
+
+    async callGetters(methods){
+        return Promise.all([
+            methods.admin().call()
+                .then(admin => ({admin})),
+            methods.thisContractAddress().call()
+                .then(contractAddress => ({contractAddress})),
+            methods.contractCreation().call()
+                .then(contractCreation => ({
+                    contractCreation: toMilliseconds(contractCreation)
+                })),
+            methods.supplierAddress().call()
+                .then(supplierAddress => ({supplierAddress})),
+            methods.reputation().call()
+                .then(reputation => ({reputation})),
+            methods.amountToClaim().call()
+                .then(amountToClaim => ({amountToClaim})),
+            methods.amountClaimedSoFar().call()
+                .then(amountClaimedSoFar => ({amountClaimedSoFar})),
+            methods.trialPrice().call()
+                .then(trialPrice => ({trialPrice})),
+            methods.trialDurationInDays().call()
+                .then(trialDurationInDays => ({trialDurationInDays})),
+            methods.trialInfoShared().call()
+                .then(trialInfoShared => ({trialInfoShared})),
+            methods.trialActive().call()
+                .then(trialActive => ({trialActive})),
+            methods.trialStartTime().call()
+                .then(trialStartTime => ({trialStartTime})),
+            methods.trialFinishTime().call()
+                .then(trialFinishTime => ({trialFinishTime})),
+            methods.subscriptionName().call()
+                .then(subscriptionName => ({subscriptionName})),
+            methods.subscriptionLengthInWeeks().call()
+                .then(subscriptionLengthInWeeks => ({subscriptionLengthInWeeks})),
+            methods.totalSubscriptionPrice().call()
+                .then(totalSubscriptionPrice => ({totalSubscriptionPrice})),
+            methods.amountToDeposit().call()
+                .then(amountToDeposit => ({amountToDeposit: amountToDeposit})),
+            methods.joiningFee().call()
+                .then(joiningFee => ({joiningFee})),
+            methods.exitFee().call()
+                .then(exitFee => ({exitFee})),
+            methods.details().call()
+                .then(smallDetails => ({smallDetails})),
+            methods.subscriptionStartTime().call()
+                .then(subscriptionStartTime => ({subscriptionStartTime})),
+            methods.subscriptionFinishTime().call()
+                .then(subscriptionFinishTime => ({subscriptionFinishTime})),
+            methods.subscriptionActive().call()
+                .then(subscriptionActive => ({subscriptionActive})),
+            methods.subscriptionCancelled().call()
+                .then(subscriptionCancelled => ({subscriptionCancelled})),
+            //methods.subscriberAddress().call(), not a function
+        ]);
     };
 }
 
