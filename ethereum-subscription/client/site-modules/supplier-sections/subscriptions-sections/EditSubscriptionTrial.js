@@ -5,6 +5,10 @@ import SubscriptionContract from "../../../../services/smart-contracts/Subscript
 
 export default ({editContract, user, web3}) => {
     //TODO: Fill with viewTrialSubscriptionDetails as defaults
+    const subscriptionContract = new SubscriptionContract({
+        address: editContract.address,
+        web3
+    });
 
     const handleTrialEdited = (state) => {
         const {
@@ -13,11 +17,6 @@ export default ({editContract, user, web3}) => {
             other,
             duration
         } = state;
-
-        const subscriptionContract = new SubscriptionContract({
-            address: editContract.address,
-            web3
-        });
 
         return subscriptionContract.setTrialSubscriptionDetails({
             supplierAddress: user.walletAddress,
@@ -30,11 +29,6 @@ export default ({editContract, user, web3}) => {
     };
 
     const handleTrialActivated = () => {
-        const subscriptionContract = new SubscriptionContract({
-            address: editContract.address,
-            web3
-        });
-
         return subscriptionContract.startTheTrial({
             supplierAddress: user.walletAddress
         });
