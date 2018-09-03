@@ -18,6 +18,7 @@ import {connect} from 'react-redux';
 import etherscan from '../../services/etherscan';
 import {loadServerDataIntoStoreFromClient} from "../services/loadServerDataIntoStore";
 import SubscriptionContract from "../../services/smart-contracts/SubscriptionContract";
+import withMountObserver from "../hocs/withMountObserver";
 
 class SubscriptionInfo extends Component {
     static mapStateToProps = ({settings, subscribers, subscriptions, users}) => ({
@@ -52,12 +53,14 @@ class SubscriptionInfo extends Component {
         )).then(contracts => {
             const contract = (contracts && contracts.length > 0) ? contracts[0] : {};
 
-            this.setState({
-                isLoading: false,
-                ownerUser: this.props.users.filter(user =>
-                    user.username === contract.ownerUsername
-                )[0]
-            })
+            if(this.props.isMounted){
+                this.setState({
+                    isLoading: false,
+                    ownerUser: this.props.users.filter(user =>
+                        user.username === contract.ownerUsername
+                    )[0]
+                });
+            }
         }).catch(console.error);
     }
 
@@ -220,6 +223,7 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
+    withMountObserver,
     withSubscriptionContracts({
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA
     }),

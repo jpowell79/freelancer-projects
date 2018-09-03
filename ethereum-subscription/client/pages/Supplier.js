@@ -13,6 +13,7 @@ import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
+import withMountObserver from "../hocs/withMountObserver";
 
 class Supplier extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -39,7 +40,11 @@ class Supplier extends Component {
         if(!this.hasLoadedAllContracts){
             this.props.subscriptionContractLoader.loadContracts(contract =>
                 contract.ownerUsername === this.props.user.username
-            ).then(() => this.setState({isLoadingContracts: false}));
+            ).then(() => {
+                if(this.props.isMounted){
+                    this.setState({isLoadingContracts: false});
+                }
+            });
         }
     }
 
@@ -54,15 +59,16 @@ class Supplier extends Component {
         case subscriptions:
             return (
                 <Subscriptions
+                    {...this.props}
                     user={this.props.user}
                     liveSubscriptionContracts={this.props.liveSubscriptionContracts}
                     isLoadingContracts={this.state.isLoadingContracts}
                 />
             );
         case requestContract:
-            return <RequestContract/>;
+            return <RequestContract {...this.props}/>;
         case manageProfile:
-            return <ManageProfile/>;
+            return <ManageProfile {...this.props}/>;
         default:
             return null;
         }
@@ -104,6 +110,7 @@ class Supplier extends Component {
 }
 
 export default compose(
+    withMountObserver,
     withAuthenticateSupplier,
     withEthereumConversionRates,
     withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),

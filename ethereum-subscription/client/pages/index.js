@@ -17,6 +17,7 @@ import {
 import Slideshow from '../containers/Slideshow';
 import {LoaderTiny} from "../modules/icons";
 import {Notice} from '../modules/Notice';
+import withMountObserver from "../hocs/withMountObserver";
 
 class Index extends Component {
     static mapStateToProps = ({settings}) => ({settings});
@@ -41,7 +42,11 @@ class Index extends Component {
         if(!this.hasLoadedAllContracts){
             this.props.subscriptionContractLoader
                 .loadAllContracts()
-                .then(() => this.setState({noticeOpen: false}));
+                .then(() => {
+                    if(this.props.isMounted){
+                        this.setState({noticeOpen: false});
+                    }
+                });
         }
     }
 
@@ -130,6 +135,7 @@ class Index extends Component {
 }
 
 export default compose(
+    withMountObserver,
     withSubscriptionContracts({
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
         amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
