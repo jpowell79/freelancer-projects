@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {getChildProps} from "../services/utils";
-import CoinMarketCapApi from "../../services/CoinMarketCapApi";
+import CoinMarketCapApi from "../../services/api/CoinMarketCapApi";
 import axios from "axios/index";
 import {updateEthereumConversionRates} from "../redux/actions";
 

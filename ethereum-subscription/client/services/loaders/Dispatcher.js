@@ -1,5 +1,5 @@
 import axios from 'axios';
-import urls from '../../services/constants/urls';
+import urls from '../../../services/constants/urls';
 import {
     loadSettings,
     updateMetamaskAccount,
@@ -8,10 +8,13 @@ import {
     updateSubscribers,
     updateSubscriptions,
     isLoadingAccount,
-    updateUser, updateUsers
-} from "../redux/actions";
-import {isServer, serverRequest} from '../../services/utils';
-import parser from './parser';
+    updateUser,
+    updateUsers,
+    updateTrialSubscriptionDetails,
+    updateSubscriptionDetails
+} from "../../redux/actions";
+import {isServer, serverRequest} from '../../../services/utils';
+import parser from '../parser';
 
 class Dispatcher {
     constructor(dispatch){
@@ -32,6 +35,16 @@ class Dispatcher {
             .catch(err => {
                 console.error(err);
             });
+    };
+
+    dispatchUpdateSubscriptionDetails = async ({subscriptionContract, supplierAddress}) => {
+        return subscriptionContract.viewFullSubscriptionDetails({supplierAddress})
+            .then(subscriptionDetails => this.dispatch(
+                updateSubscriptionDetails(subscriptionDetails)
+            )).then(() => subscriptionContract.viewTrialSubscriptionDetails({supplierAddress}))
+            .then(trialSubscriptionDetails => this.dispatch(
+                updateTrialSubscriptionDetails(trialSubscriptionDetails)
+            )).catch(console.error);
     };
 
     dispatchUpdateSubscriptions = async ({req}) => {

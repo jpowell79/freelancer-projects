@@ -1,14 +1,14 @@
 import React, {Component, Fragment} from 'react';
-import SortableTable from "../modules/SortableTable";
+import SortableTable from "../../containers/SortableTable/index";
 import PropTypes from 'prop-types';
-import strings from '../../services/strings';
-import {classNames} from "../services/className";
+import strings from '../../../services/datatypes/strings';
+import {classNames} from "../../services/className";
 import {Pagination} from 'semantic-ui-react';
-import {paths} from '../../services/constants';
+import {paths} from '../../../services/constants/index';
 import Link from 'next/link';
-import {ProviderRating} from "./ProviderRating";
-import {hideOnMobile, hideOnTablet, showOnMobile} from "../services/css";
-import {weiToEth} from "../../services/utils";
+import {ProviderRating} from "../ProviderRating";
+import {hideOnMobile, hideOnTablet, showOnMobile} from "../../services/constants/css";
+import {weiToEth} from "../../../services/utils";
 
 class SubscriptionTable extends Component {
     static defaultProps = {maxRows: -1, isLoading: false};

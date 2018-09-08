@@ -1,4 +1,4 @@
-const {random} = require('./utils');
+const {random} = require('../utils');
 
 module.exports.isDefined = (stringsOrString) => {
     const stringIsDefined = (string) => (

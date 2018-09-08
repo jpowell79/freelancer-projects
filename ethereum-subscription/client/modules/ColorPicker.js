@@ -1,6 +1,6 @@
 import React, {Component, Fragment} from 'react';
-import {colors} from "../services/css";
-import objects from "../../services/objects";
+import {colors} from "../services/constants/css";
+import objects from "../../services/datatypes/objects";
 import {SketchPicker} from 'react-color';
 import PropTypes from 'prop-types';
 

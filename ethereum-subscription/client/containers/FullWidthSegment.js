@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {fullWidthSegment} from "../services/css";
+import {fullWidthSegment} from "../services/constants/css";
 import {joinClassNames, classNames} from "../services/className";
 
 class FullWidthSegment extends Component {

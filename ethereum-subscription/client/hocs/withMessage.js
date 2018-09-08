@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {Message} from 'semantic-ui-react';
 import validation from "../../services/validation";
-import {isDefined} from "../../services/strings";
+import {isDefined} from "../../services/datatypes/strings";
 import {getChildProps} from "../services/utils";
 
 const defaultInitialState = {
@@ -22,8 +22,7 @@ const defaultInitialState = {
 export default (Module, initialState = defaultInitialState) => {
     class MessageProvider extends Component {
         static async getInitialProps (appContext){
-            const moduleProps = await getChildProps(Module, appContext);
-            return {...moduleProps};
+            return await getChildProps(Module, appContext);
         }
 
         constructor(props){

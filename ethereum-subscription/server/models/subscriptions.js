@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => (
         contractId: {
             type: DataTypes.INTEGER,
             allowNull: false,
+            unique: true,
             references: {
                 model: 'subscriptionContracts',
                 key: 'id'
@@ -21,5 +22,13 @@ module.exports = (sequelize, DataTypes) => (
                 key: 'id'
             }
         },
+        transactionHash: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: true,
+            validate: {
+                is: /0x[a-zA-Z0-9]+/g
+            }
+        }
     })
 );

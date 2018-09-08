@@ -1,4 +1,4 @@
-const web3 = require('web3');
+const web3 = require("web3");
 
 let instance = null;
 
@@ -37,9 +37,7 @@ class CustomWeb3 extends web3 {
     };
 
     fetchAccountAddress(){
-        return this.eth.getAccounts().then(accounts => {
-            return accounts[0];
-        });
+        return this.eth.getAccounts().then(accounts => accounts[0]);
     };
 
     fetchEthBalance(accountAddress){

@@ -8,11 +8,43 @@ export const initialState = {
     ethereumConversionRates: [],
     subscriptionContracts: [],
     editContract: {},
+    subscriptionDetails: {
+        username: "",
+        password: "",
+        subscriptionLengthInWeeks: "",
+        supplierEmail: "",
+        other: ""
+    },
+    trialSubscriptionDetails: {
+        trialUsername: "",
+        trialPassword: "",
+        trialDurationInDays: "",
+        supplierEmail: "",
+        trialOther: ""
+    },
     subscriptionTypes: [],
     subscribers: [],
     subscriptions: [],
     user: {},
     users: []
+};
+
+export const subscriptionDetails = (subscriptionDetails = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_SUBSCRIPTION_DETAILS:
+        return action.payload;
+    default:
+        return subscriptionDetails;
+    }
+};
+
+export const trialSubscriptionDetails = (trialSubscriptionDetails = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_TRIAL_SUBSCRIPTION_DETAILS:
+        return action.payload;
+    default:
+        return trialSubscriptionDetails;
+    }
 };
 
 export const editContract = (editContract = {}, action) => {
@@ -125,6 +157,8 @@ export default combineReducers({
     subscriptionContracts,
     liveSubscriptionContracts,
     ethereumConversionRates,
+    subscriptionDetails,
+    trialSubscriptionDetails,
     subscriptionTypes,
     subscribers,
     subscriptions,

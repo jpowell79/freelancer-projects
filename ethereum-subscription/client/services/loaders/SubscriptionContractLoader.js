@@ -1,17 +1,25 @@
-import PromiseQueue from "../../services/PromiseQueue";
-import Web3 from "../../services/Web3";
-import etherscan from "../../services/etherscan";
-import SubscriptionContract from "../../services/smart-contracts/SubscriptionContract";
-import strings from "../../services/strings";
-import {addLiveSubscriptionContracts, updateLiveSubscriptionContracts} from "../redux/actions";
-import {isServer} from "../../services/utils";
+import PromiseQueue from "../../../services/PromiseQueue";
+import Web3 from "../../../services/smart-contracts/Web3";
+import etherscan from "../../../services/api/etherscan";
+import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
+import strings from "../../../services/datatypes/strings";
+import {updateLiveSubscriptionContracts, addLiveSubscriptionContracts} from "../../redux/actions";
+import {isServer} from "../../../services/utils";
 
 class SubscriptionContractLoader {
-    constructor({dispatch, users, subscriptionTypes, dbSubscriptionContracts, amountToLoadPerBatch = 100}){
+    constructor({
+        dispatch,
+        users,
+        subscriptionTypes,
+        dbSubscriptionContracts,
+        subscriptions,
+        amountToLoadPerBatch = 100
+    }){
         this.dispatch = dispatch;
         this.subscriptionContracts = dbSubscriptionContracts;
         this.users = users;
         this.subscriptionTypes = subscriptionTypes;
+        this.subscriptions = subscriptions;
         this.setWeb3IfClient();
         this.amountToLoadPerBatch = amountToLoadPerBatch;
     }
@@ -38,15 +46,19 @@ class SubscriptionContractLoader {
 
             return subscriptionContract.fetchSubscriptionData()
                 .then(data => {
+                    //TODO: Optimize so subscription and user can be pulled less expensively
                     const subscriptionType = this.subscriptionTypes
                         .find(type => type.id === contract.typeId);
                     const user = this.users
                         .find(user => user.username === contract.ownerUsername);
+                    const subscription = this.subscriptions
+                        .find(subscription => subscription.contractId === contract.id);
 
                     subscriptionData = Object.assign({}, data, {
                         ...contract,
                         supplierName: contract.ownerUsername,
-                        type: subscriptionType.name
+                        type: subscriptionType.name,
+                        transactionHash: subscription.transactionHash
                     });
 
                     return etherscan.getWalletAddressTransactions({

@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 import email from '../../../services/api/email';
 import subscriptions from '../../../services/api/subscriptions';
 import withMessage from '../../hocs/withMessage';
-import {waitingForBlockchain} from "../../services/messages";
+import {waitingForBlockchain} from "../../services/views/messages";
+import {weiToEth} from "../../../services/utils";
 
 class AddSubscriptionForm extends Component {
     static propTypes = {
@@ -26,15 +27,20 @@ class AddSubscriptionForm extends Component {
         );
         let transaction = {};
 
-        //TODO: Call depositTrialFee instead if subscriptionContract has trial
-        this.props.setIsLoading(waitingForBlockchain)
-            .then(() => subscriptionContract.depositSubscription({
+        const depositFunction = (contract.trialInfoShared)
+            ? subscriptionContract.depositTrialFee
+            : subscriptionContract.depositSubscription;
+
+        return this.props.setIsLoading(waitingForBlockchain)
+            .then(() => depositFunction({
                 subscriberAddress: this.props.metamaskAccount.address
             })).then(transactionRes => {
+                console.log(transactionRes);
                 transaction = (transactionRes) ? transactionRes : {};
             }).then(() => subscriptions.addSubscription({
                 subscriberAddress: this.props.metamaskAccount.address,
-                contractAddress: contract.address
+                contractAddress: contract.address,
+                transactionHash: transaction.transactionHash
             })).then(() => email.sendRequestSubscriptionMails({
                 subscriberEmail: this.props.messageState.email,
                 supplierEmail: supplier.email,
@@ -85,7 +91,7 @@ class AddSubscriptionForm extends Component {
                         </label>
                         <input
                             type="text"
-                            defaultValue={this.props.contract.joiningFee}
+                            defaultValue={weiToEth(this.props.contract.amountToDeposit)}
                             disabled
                         />
                     </Form.Field>

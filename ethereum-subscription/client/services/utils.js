@@ -1,5 +1,5 @@
-import strings from '../../services/strings';
-import objects from '../../services/objects';
+import strings from '../../services/datatypes/strings';
+import objects from '../../services/datatypes/objects';
 
 export const getChildProps = async (ChildClass, appContext) => {
     let childProps = {};

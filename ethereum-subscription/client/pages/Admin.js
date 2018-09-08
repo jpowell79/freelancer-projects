@@ -3,7 +3,7 @@ import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
 import withAuthenticateAdmin from '../hocs/withAuthenticateAdmin';
 import {Menu, Segment, Grid} from 'semantic-ui-react';
-import objects from '../../services/objects';
+import objects from '../../services/datatypes/objects';
 import Homepage from "../site-modules/admin-sections/Homepage";
 import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
 import MassEmail from "../site-modules/admin-sections/MassEmail";

@@ -1,14 +1,13 @@
 import React, {Component} from 'react';
-import Dispatcher from '../services/Dispatcher';
+import Dispatcher from '../services/loaders/Dispatcher';
 import {connect} from 'react-redux';
-import Web3 from "../../services/Web3";
+import Web3 from "../../services/smart-contracts/Web3";
 import {getChildProps} from "../services/utils";
 
 export default (Module) => {
     class MetamaskAccount extends Component {
         static async getInitialProps (appContext){
-            const moduleProps = await getChildProps(Module, appContext);
-            return {...moduleProps};
+            return await getChildProps(Module, appContext);
         }
 
         static mapStateToProps = ({metamaskAccount}) => ({metamaskAccount});

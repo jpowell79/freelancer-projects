@@ -1,7 +1,7 @@
-import strings from "../../services/strings";
-import {FILTERABLE_SUBSCRIPTION_TYPES} from "../clientSettings";
-import {random} from "../../services/utils";
-import {updateLiveSubscriptionContracts} from "../redux/actions";
+import strings from "../../../services/datatypes/strings";
+import {FILTERABLE_SUBSCRIPTION_TYPES} from "../../clientSettings";
+import {random} from "../../../services/utils";
+import {updateLiveSubscriptionContracts} from "../../redux/actions";
 
 class DummyContractLoader {
     constructor({dispatch, amountToGenerate}){
@@ -21,7 +21,7 @@ class DummyContractLoader {
 
     loadContracts = async (comparator) => {
         return Promise.resolve(
-            this.getDummyData().filter(comparator)
+            this.generateDummySubscriptionContracts(this.amountToGenerate).filter(comparator)
         ).then(this.dispatchUpdateContracts);
     };
 
@@ -46,7 +46,7 @@ class DummyContractLoader {
                 index: i,
                 isActive: true,
                 type: subsriptionTypes[random(0, subsriptionTypes.length)],
-                txHash: `0x${strings.generateRandom(40)}`,
+                transactionHash: `0x${strings.generateRandom(40)}`,
                 supplierName: username,
                 ownerUsername: username,
                 hasFreeTrials: (random(0, 2) === 1),

@@ -1,5 +1,5 @@
 import axios from "axios/index";
-import {urls, settings} from "../../services/constants/";
+import {urls, settings} from "../../../services/constants/index";
 
 class SettingsUpdater {
     constructor(settingsState){

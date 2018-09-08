@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {loadServerDataIntoStoreFromClient} from "../../services/loadServerDataIntoStore";
-import FormList from "../../modules/FormList";
+import {loadServerDataIntoStoreFromClient} from "../../services/loaders/loadServerDataIntoStore";
+import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
 import {getErrorString} from "../../services/utils";

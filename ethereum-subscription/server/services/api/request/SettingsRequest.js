@@ -1,7 +1,7 @@
 "use strict";
 
 const Request = require('./Request');
-const strings = require('../../../../services/strings');
+const strings = require('../../../../services/datatypes/strings');
 
 class SettingsRequest extends Request {
     constructor(params){

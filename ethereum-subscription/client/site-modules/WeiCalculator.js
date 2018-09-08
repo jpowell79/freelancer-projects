@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
-import CoinMarketCapApi from '../../services/CoinMarketCapApi';
+import CoinMarketCapApi from '../../services/api/CoinMarketCapApi';
 import {Form, Dropdown} from 'semantic-ui-react';
-import {isDefined} from '../../services/strings';
+import {isDefined} from '../../services/datatypes/strings';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import {connect} from 'react-redux';
 

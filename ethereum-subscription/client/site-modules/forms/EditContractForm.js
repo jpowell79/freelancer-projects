@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import SubscriptionForm from "./SubscriptionForm";
 import PropTypes from 'prop-types';
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
-import {getTransactionMessage, waitingForBlockchain} from "../../services/messages";
+import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
 
 class EditContractForm extends Component {
     static mapStateToProps = ({settings}) => ({

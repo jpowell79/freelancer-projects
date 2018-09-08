@@ -4,7 +4,7 @@ import {Form} from 'semantic-ui-react';
 import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
 import withMetamaskAccount from '../../hocs/withMetamaskAccount';
 import {LoaderSmall} from "../../modules/icons";
-import objects from "../../../services/objects";
+import objects from "../../../services/datatypes/objects";
 import {getErrorString} from "../../services/utils";
 
 class SmartContractData extends Component {

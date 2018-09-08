@@ -1,4 +1,4 @@
-const strings = require('./strings');
+const strings = require('./datatypes/strings');
 
 module.exports.getFieldError = (fieldName, field) => {
     switch(fieldName){

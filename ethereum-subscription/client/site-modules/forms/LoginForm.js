@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import FormList from '../../modules/FormList';
+import FormList from '../../containers/FormList';
 import paths, {redirect} from '../../../services/constants/paths';
 import {connect} from 'react-redux';
 import {LoaderTiny} from "../../modules/icons";

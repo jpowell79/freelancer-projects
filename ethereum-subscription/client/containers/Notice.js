@@ -1,5 +1,5 @@
 import React from 'react';
-import Animation from '../containers/Animation';
+import Animation from './Animation';
 import {Segment} from 'semantic-ui-react';
 
 export const Notice = ({open = true, children, style = {}, ...props}) => {

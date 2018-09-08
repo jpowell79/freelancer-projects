@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from 'react';
-import SortableTable from "../../modules/SortableTable";
+import SortableTable from "../../containers/SortableTable";
 import {connect} from 'react-redux';
 import AddContractTypeForm from "../forms/AddContractTypeForm";
-import strings from '../../../services/strings';
-import Dispatcher from '../../services/Dispatcher';
+import strings from '../../../services/datatypes/strings';
+import Dispatcher from '../../services/loaders/Dispatcher';
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import {Form} from 'semantic-ui-react';
 import {getErrorString} from "../../services/utils";

@@ -1,10 +1,18 @@
 const axios = require('axios');
 const {urls} = require('../constants');
 
-const addSubscription = async ({subscriberAddress, contractAddress}) => {
+const addSubscription = async ({subscriberAddress, contractAddress, transactionHash}) => {
     return axios.post(urls.subscriptions, {
         subscriberAddress,
-        contractAddress
+        contractAddress,
+        transactionHash
+    });
+};
+
+const deleteSubscription = async ({subscriptionId}) => {
+    return axios.post(urls.subscriptions, {
+        delete: true,
+        subscriptionId
     });
 };
 
@@ -40,5 +48,6 @@ module.exports = {
     addSubscriptionContract,
     activateSubscriptionContract,
     addContractType,
-    editContractType
+    editContractType,
+    deleteSubscription
 };

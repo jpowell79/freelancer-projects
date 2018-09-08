@@ -2,7 +2,7 @@ import React, {Fragment} from 'react';
 import {Grid, Segment} from "semantic-ui-react";
 import WeiCalculator from "../../WeiCalculator";
 import EditContractForm from "../../forms/EditContractForm";
-import {loadServerDataIntoStoreFromClient} from "../../../services/loadServerDataIntoStore";
+import {loadServerDataIntoStoreFromClient} from "../../../services/loaders/loadServerDataIntoStore";
 import subscriptions from "../../../../services/api/subscriptions";
 import AlertOptionPane from "../../../services/Alert/AlertOptionPane";
 import {getErrorString} from "../../../services/utils";

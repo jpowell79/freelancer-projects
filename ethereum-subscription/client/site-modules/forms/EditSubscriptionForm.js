@@ -1,10 +1,9 @@
 import React, {Component, Fragment} from 'react';
-import FormList from '../../modules/FormList';
+import FormList from '../../containers/FormList';
 import PropTypes from 'prop-types';
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
-import {getErrorString} from "../../services/utils";
-import {getTransactionMessage, waitingForBlockchain} from "../../services/messages";
+import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 
@@ -17,7 +16,8 @@ class EditSubscriptionForm extends Component {
         username: 'Username:',
         password: 'Password:',
         duration: null,
-        other: 'Other info:'
+        other: 'Other info:',
+        disabled: false
     };
 
     static defaultProps = {
@@ -29,9 +29,13 @@ class EditSubscriptionForm extends Component {
     static propTypes = {
         title: PropTypes.string,
         onSubmit: PropTypes.func.isRequired,
+        onEdited: PropTypes.func.isRequired,
         onActivate: PropTypes.func.isRequired,
+        onActivated: PropTypes.func.isRequired,
         showActivate: PropTypes.bool,
-        labels: PropTypes.object
+        labels: PropTypes.object,
+        disabled: PropTypes.bool,
+        defaults: PropTypes.object.isRequired
     };
 
     static getDerivedStateFromProps(props){
@@ -41,21 +45,25 @@ class EditSubscriptionForm extends Component {
             fields: [
                 {
                     type: 'username',
-                    label: parsedLabels.username
+                    label: parsedLabels.username,
+                    defaultValue: props.defaults.username
                 },
                 {
                     type: 'password',
-                    label: parsedLabels.password
+                    label: parsedLabels.password,
+                    defaultValue: props.defaults.password
                 },
                 {
                     type: 'duration',
                     label: parsedLabels.duration,
                     hidden: parsedLabels.duration === null,
-                    excludeFromValidation: parsedLabels.duration === null
+                    excludeFromValidation: parsedLabels.duration === null,
+                    defaultValue: props.defaults.duration
                 },
                 {
                     type: 'other',
-                    label: parsedLabels.other
+                    label: parsedLabels.other,
+                    defaultValue: props.defaults.other
                 }
             ]
         };
@@ -65,12 +73,63 @@ class EditSubscriptionForm extends Component {
         fields: []
     };
 
+    handleEditSubscription = (state) => {
+        const {
+            setIsLoading,
+            setClearedMessageState
+        } = this.props;
+
+        return setIsLoading(waitingForBlockchain)
+            .then(() => this.props.onSubmit(Object.assign({}, state, this.props)))
+            .then(transaction => setClearedMessageState(
+                getTransactionMessage(
+                    transaction,
+                    this.props.etherScanUrl,
+                    "The subscription was edited successfully!"
+                )
+            ))
+            .then(() => this.props.onEdited(this.props))
+            .catch(err => {
+                console.error(err);
+
+                return this.props.setClearedMessageState({
+                    errors: [err.toString()]
+                });
+            });
+    };
+
+    handleActivate = (event) => {
+        event.preventDefault();
+
+        const {
+            setIsLoading,
+            setClearedMessageState
+        } = this.props;
+
+        return setIsLoading(waitingForBlockchain)
+            .then(() => this.props.onActivate(this.props))
+            .then(transaction => setClearedMessageState(
+                getTransactionMessage(
+                    transaction,
+                    this.props.etherScanUrl,
+                    "The subscription was activated successfully!"
+                )
+            ))
+            .then(() => this.props.onActivated(this.props))
+            .catch(err => {
+                console.error(err);
+
+                return setClearedMessageState({
+                    errors: [err.toString()]
+                });
+            });
+    };
+
     render(){
         const {
             messageState,
             renderMessages,
-            setClearedMessageState,
-            setIsLoading
+            setClearedMessageState
         } = this.props;
 
         return (
@@ -78,22 +137,9 @@ class EditSubscriptionForm extends Component {
                 <h2>{this.props.title}</h2>
                 {renderMessages()}
                 <FormList
-                    onSubmit={(state) => {
-                        setIsLoading(waitingForBlockchain)
-                            .then(() => this.props.onSubmit(Object.assign({}, state, this.props)))
-                            .then(transaction => setClearedMessageState({
-                                ...getTransactionMessage(transaction, this.props.etherScanUrl)
-                            }))
-                            .catch(err => {
-                                console.error(err);
-
-                                return this.props.setClearedMessageState({
-                                    errors: [err.toString()]
-                                });
-                            });
-                    }}
+                    onSubmit={this.handleEditSubscription}
                     onError={() => setClearedMessageState()}
-                    disabled={messageState.isLoading || messageState.complete}
+                    disabled={messageState.isLoading || messageState.complete || this.props.disabled}
                     fields={this.state.fields}
                     submitButtonHtml={
                         (messageState.isLoading)
@@ -106,22 +152,7 @@ class EditSubscriptionForm extends Component {
                                 className="ui bg-color-uiBlue color-white button"
                                 style={{marginLeft: "15px"}}
                                 disabled={messageState.isLoading}
-                                onClick={(event) => {
-                                    event.preventDefault();
-
-                                    setIsLoading()
-                                        .then(() => this.props.onActivate(this.props))
-                                        .then(() => setClearedMessageState({
-                                            success: ['The subscription was activated successfully!'],
-                                        }))
-                                        .catch(err => {
-                                            console.error(err);
-
-                                            return setClearedMessageState({
-                                                errors: [getErrorString(err)]
-                                            });
-                                        });
-                                }}
+                                onClick={this.handleActivate}
                             >
                                 {this.props.activateButtonText}
                             </button>

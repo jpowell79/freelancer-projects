@@ -1,17 +1,24 @@
 import React, {Component} from 'react';
-import EditContractSection from "./EditContract";
-import EditSubscriptionSection from "./EditSubscription";
-import EditSubscriptionTrialSection from "./EditSubscriptionTrial";
-import objects from "../../../../services/objects";
+import EditContract from "./EditContract";
+import EditSubscription from "./EditSubscription";
+import EditSubscriptionTrial from "./EditSubscriptionTrial";
+import objects from "../../../../services/datatypes/objects";
 import {Menu} from "semantic-ui-react";
 import PropTypes from 'prop-types';
-import withMetamaskAccount from "../../../hocs/withMetamaskAccount";
 import {LoaderSmall} from "../../../modules/icons";
-import {deselectEditContract} from "../../../redux/actions";
+import {
+    deselectEditContract,
+    updateSubscriptionDetails,
+    updateTrialSubscriptionDetails
+} from "../../../redux/actions";
+import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";
+import Dispatcher from "../../../services/loaders/Dispatcher";
 
-export const EditContract = EditContractSection;
-export const EditSubscription = EditSubscriptionSection;
-export const EditSubscriptionTrial = EditSubscriptionTrialSection;
+export {
+    EditContract,
+    EditSubscription,
+    EditSubscriptionTrial
+};
 
 const sections = {
     editContract: 'Edit Contract',
@@ -29,6 +36,19 @@ class SubscriptionSections extends Component {
     state = {
         active: 0
     };
+
+    componentDidMount(){
+        const subscriptionContract = new SubscriptionContract({
+            web3: this.props.web3,
+            address: this.props.editContract.address
+        });
+
+        return new Dispatcher(this.props.dispatch)
+            .dispatchUpdateSubscriptionDetails({
+                subscriptionContract,
+                supplierAddress: this.props.user.walletAddress
+            });
+    }
 
     renderSection = () => {
         const {
@@ -93,4 +113,4 @@ class SubscriptionSections extends Component {
     }
 }
 
-export default withMetamaskAccount(SubscriptionSections);
+export default SubscriptionSections;

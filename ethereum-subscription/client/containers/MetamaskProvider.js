@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Loader} from "../modules/icons";
 import PropTypes from 'prop-types';
-import objects from '../../services/objects';
+import objects from '../../services/datatypes/objects';
 import HideFragment from './HideFragment';
 import withMetamaskAccount from '../hocs/withMetamaskAccount';
 

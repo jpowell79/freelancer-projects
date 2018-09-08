@@ -48,6 +48,10 @@ class SubscriptionsRequest extends Request {
         case "GET":
             return subscriptions.sendGetAll();
         case "POST":
+            if(this.req.body.delete){
+                return subscriptions.sendDelete();
+            }
+
             return subscribers.createIfNotExists()
                 .then(() => subscriptions.sendCreate());
         default:

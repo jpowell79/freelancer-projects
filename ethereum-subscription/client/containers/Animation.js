@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {classNames} from "../services/className";
 import PropTypes from 'prop-types';
-import objects from '../../services/objects';
+import objects from '../../services/datatypes/objects';
 import {animationTypes} from "../services/constants/animationTypes";
 
 class Animation extends Component {

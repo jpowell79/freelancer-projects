@@ -132,7 +132,7 @@ class SubscriptionContract {
      * Can only be called after the subscription details have been set.
      */
     async startTheTrial({supplierAddress}){
-        return this.methods.startTheTrial().call({
+        return this.methods.startTheTrial().send({
             from: supplierAddress
         });
     };
@@ -162,7 +162,7 @@ class SubscriptionContract {
     };
 
     async startTheSubscription({supplierAddress}){
-        return this.methods.startTheSubscription().call({
+        return this.methods.startTheSubscription().send({
             from: supplierAddress
         });
     };
@@ -176,18 +176,30 @@ class SubscriptionContract {
     async viewTrialSubscriptionDetails({supplierAddress}){
         return this.methods.viewTrialSubscriptionDetails().call({
             from: supplierAddress
-        });
+        }).then(trialDetails => ({
+            supplierEmail: trialDetails[0],
+            trialUsername: trialDetails[1],
+            trialPassword: trialDetails[2],
+            trialOther: trialDetails[3],
+            trialDurationInDays: parseInt(trialDetails[4], 10)
+        }));
     };
 
     async viewFullSubscriptionDetails({supplierAddress}){
         return this.methods.viewFullSubscriptionDetails().call({
             from: supplierAddress
-        });
+        }).then(details => ({
+            supplierEmail: details[0],
+            username: details[1],
+            password: details[2],
+            other: details[3],
+            subscriptionLengthInWeeks: parseInt(details[4], 10)
+        }));
     };
     //endregion
 
     //region Subsciber only methods
-    async depositTrialFee({trialPrice, subscriberAddress}){
+    async depositTrialFee({subscriberAddress}){
         return this.methods.trialPrice().call()
             .then(trialPrice => this.methods.depositTrialFee().send({
                 from: subscriberAddress,

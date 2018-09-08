@@ -3,17 +3,18 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
+import withMountObserver from "../hocs/withMountObserver";
+import withMetamaskAccount from "../hocs/withMetamaskAccount";
 import withAuthenticateSupplier from '../hocs/withAuthenticateSupplier';
 import withEthereumConversionRates from "../hocs/withEthereumConversionRates";
 import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import {Menu, Segment} from 'semantic-ui-react';
-import objects from '../../services/objects';
+import objects from '../../services/datatypes/objects';
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
-import withMountObserver from "../hocs/withMountObserver";
 
 class Supplier extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -27,9 +28,6 @@ class Supplier extends Component {
     constructor(props){
         super(props);
 
-        this.hasLoadedAllContracts = props.liveSubscriptionContracts.length ===
-            props.subscriptionContracts.filter(contract => contract.isActive).length;
-
         this.state = {
             active: 0,
             isLoadingContracts: true
@@ -37,7 +35,12 @@ class Supplier extends Component {
     }
 
     componentDidMount(){
-        if(!this.hasLoadedAllContracts){
+        const hasLoadedAllContracts = this.props.liveSubscriptionContracts.length ===
+            this.props.subscriptionContracts
+                .filter(contract => contract.ownerUsername === this.props.user.username)
+                .length;
+
+        if(!hasLoadedAllContracts){
             this.props.subscriptionContractLoader.loadContracts(contract =>
                 contract.ownerUsername === this.props.user.username
             ).then(() => {
@@ -45,6 +48,8 @@ class Supplier extends Component {
                     this.setState({isLoadingContracts: false});
                 }
             });
+        } else {
+            this.setState({isLoadingContracts: false});
         }
     }
 
@@ -111,6 +116,7 @@ class Supplier extends Component {
 
 export default compose(
     withMountObserver,
+    withMetamaskAccount,
     withAuthenticateSupplier,
     withEthereumConversionRates,
     withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),

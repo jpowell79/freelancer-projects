@@ -1,4 +1,4 @@
-const objects = require('../../services/objects');
+const objects = require('../../services/datatypes/objects');
 const roles = require('../../services/constants/roles');
 const passwordHash = require('password-hash');
 

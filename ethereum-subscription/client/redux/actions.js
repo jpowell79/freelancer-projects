@@ -1,5 +1,15 @@
 import {constants} from './constants';
 
+export const updateTrialSubscriptionDetails = (trialSubscriptionDetails) => ({
+    type: constants.UPDATE_TRIAL_SUBSCRIPTION_DETAILS,
+    payload: trialSubscriptionDetails
+});
+
+export const updateSubscriptionDetails = (subscriptionDetails) => ({
+    type: constants.UPDATE_SUBSCRIPTION_DETAILS,
+    payload: subscriptionDetails
+});
+
 export const selectEditContract = (contract) => ({
     type: constants.EDIT_CONTRACT,
     payload: contract

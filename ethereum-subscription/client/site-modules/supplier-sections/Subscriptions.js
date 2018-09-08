@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
-import SubscriptionTable from "../SubscriptionTable";
-import objects from '../../../services/objects';
+import SubscriptionTable from "../subscription/SubscriptionTable";
+import objects from '../../../services/datatypes/objects';
 import {LoaderSmall} from "../../modules/icons";
 import SubscriptionSections from './subscriptions-sections';
 import {connect} from 'react-redux';
 import {selectEditContract} from "../../redux/actions";
 
 class Subscriptions extends Component {
-    static mapStateToProps = ({editContract}) => ({editContract});
+    static mapStateToProps = ({editContract, subscriptionDetails, trialSubscriptionDetails}) => ({
+        editContract,
+        subscriptionDetails,
+        trialSubscriptionDetails
+    });
 
     render(){
         if(this.props.isLoadingContracts)
@@ -24,12 +28,20 @@ class Subscriptions extends Component {
                 subscriptionContracts={this.props.liveSubscriptionContracts}
                 buttonRenderer={({buttonClass, contract}) => {
                     return (
-                        <button
-                            className="ui bg-color-uiBlue color-white button"
-                            onClick={() => this.props.dispatch(selectEditContract(contract))}
-                        >
-                            {!contract.isActive ? "Activate" : "Edit"}
-                        </button>
+                        (contract.subscriptionCancelled)
+                            ? (
+                                <button
+                                    className="ui button"
+                                    disabled
+                                >Cancelled</button>
+                            ) : (
+                                <button
+                                    className="ui bg-color-uiBlue color-white button"
+                                    onClick={() => this.props.dispatch(selectEditContract(contract))}
+                                >
+                                    {!contract.isActive ? "Activate" : "Edit"}
+                                </button>
+                            )
                     );
                 }}
             />

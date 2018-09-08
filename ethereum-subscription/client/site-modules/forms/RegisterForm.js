@@ -1,11 +1,11 @@
 import React, {Component, Fragment} from 'react';
-import FormList from '../../modules/FormList';
+import FormList from '../../containers/FormList';
 import {RECAPTCHA_SITE_KEY} from "../../clientSettings";
 import RecaptchaWidget from '../../modules/RecaptchaWidget';
 import {Loader, LoaderTiny} from "../../modules/icons";
 import withMessage from '../../hocs/withMessage';
 import withMetamaskAccount from '../../hocs/withMetamaskAccount';
-import objects from "../../../services/objects";
+import objects from "../../../services/datatypes/objects";
 import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
 import {getErrorString} from "../../services/utils";

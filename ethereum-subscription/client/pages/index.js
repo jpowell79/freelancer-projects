@@ -2,12 +2,12 @@ import React, {Component} from 'react';
 import {compose} from 'redux';
 import Page from '../containers/Page';
 import FullWidthSegment from '../containers/FullWidthSegment';
-import SubscriptionTable from "../site-modules/SubscriptionTable";
+import SubscriptionTable from "../site-modules/subscription/SubscriptionTable";
 import BackgroundSegment from "../containers/BackgroundSegment";
 import paths from '../../services/constants/paths';
 import {connect} from 'react-redux';
 import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
-import SubscriptionFilters from "../site-modules/SubscriptionFilters";
+import SubscriptionFilters from "../site-modules/subscription/SubscriptionFilters";
 import {filterSubscriptionContracts} from "../services/filters";
 import {
     USE_DUMMY_SUBSCRIPTION_DATA,
@@ -16,7 +16,7 @@ import {
 } from "../clientSettings";
 import Slideshow from '../containers/Slideshow';
 import {LoaderTiny} from "../modules/icons";
-import {Notice} from '../modules/Notice';
+import {Notice} from '../containers/Notice';
 import withMountObserver from "../hocs/withMountObserver";
 
 class Index extends Component {
@@ -117,7 +117,7 @@ class Index extends Component {
                             filterSubscriptionContracts(
                                 this.props.liveSubscriptionContracts,
                                 this.state.filters
-                            ).filter(contract => contract.isActive)
+                            ).filter(contract => contract.isActive && !contract.subscriptionCancelled)
                         }
                     />
                 </FullWidthSegment>

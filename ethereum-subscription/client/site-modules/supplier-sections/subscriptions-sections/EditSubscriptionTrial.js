@@ -1,10 +1,11 @@
 import React from 'react';
-import {Segment} from "semantic-ui-react";
+import {Message, Segment} from "semantic-ui-react";
 import EditSubscriptionForm from "../../forms/EditSubscriptionForm";
 import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";
+import Dispatcher from "../../../services/loaders/Dispatcher";
+import {selectEditContract} from "../../../redux/actions";
 
-export default ({editContract, user, web3}) => {
-    //TODO: Fill with viewTrialSubscriptionDetails as defaults
+export default ({editContract, trialSubscriptionDetails, dispatch, user, web3}) => {
     const subscriptionContract = new SubscriptionContract({
         address: editContract.address,
         web3
@@ -37,16 +38,39 @@ export default ({editContract, user, web3}) => {
     return (
         <Segment padded>
             <div className="container-5">
+                {(editContract.trialActive) && (
+                    <Message
+                        info
+                        header="This trial is currently active"
+                    />
+                )}
                 <EditSubscriptionForm
                     title="Edit Subscription Trial"
+                    disabled={editContract.trialActive}
                     onSubmit={handleTrialEdited}
-                    showActivate={editContract.trialInfoShared}
+                    showActivate={!editContract.trialActive}
                     onActivate={handleTrialActivated}
+                    onActivated={() => dispatch(selectEditContract({
+                        ...editContract,
+                        trialActive: true
+                    }))}
+                    onEdited={() => new Dispatcher(dispatch)
+                        .dispatchUpdateSubscriptionDetails({
+                            subscriptionContract,
+                            supplierAddress: user.walletAddress
+                        })
+                    }
                     activateButtonText="Start the Trial"
                     labels={{
                         username: 'Trial username:',
                         password: 'Trial password:',
                         duration: 'Trial duration (in days):',
+                    }}
+                    defaults={{
+                        username: trialSubscriptionDetails.trialUsername,
+                        password: trialSubscriptionDetails.trialPassword,
+                        other: trialSubscriptionDetails.trialOther,
+                        duration: trialSubscriptionDetails.trialDurationInDays
                     }}
                 />
             </div>

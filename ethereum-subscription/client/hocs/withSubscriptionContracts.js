@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {getChildProps} from "../services/utils";
-import DummyContractLoader from "../site-modules/DummyContractLoader";
-import SubscriptionContractLoader from "../services/SubscriptionContractLoader";
+import DummyContractLoader from "../services/loaders/DummyContractLoader";
+import SubscriptionContractLoader from "../services/loaders/SubscriptionContractLoader";
 import {connect} from 'react-redux';
 
 const defaultOptions = {
@@ -22,12 +22,14 @@ export default (options = {}) => (PageComponent) => {
             liveSubscriptionContracts,
             users,
             subscriptionContracts,
-            subscriptionTypes
+            subscriptionTypes,
+            subscriptions
         }) => ({
             liveSubscriptionContracts,
             users,
             subscriptionContracts,
-            subscriptionTypes
+            subscriptionTypes,
+            subscriptions
         });
 
         constructor(props){
@@ -37,7 +39,8 @@ export default (options = {}) => (PageComponent) => {
                 users,
                 dispatch,
                 subscriptionContracts,
-                subscriptionTypes
+                subscriptionTypes,
+                subscriptions
             } = props;
 
             this.subscriptionContractLoader = (mergedOptions.useDummyData)
@@ -49,6 +52,7 @@ export default (options = {}) => (PageComponent) => {
                     users,
                     dbSubscriptionContracts: subscriptionContracts,
                     subscriptionTypes,
+                    subscriptions,
                     amountToLoadPerBatch: mergedOptions.amountToLoadPerBatch
                 });
         }

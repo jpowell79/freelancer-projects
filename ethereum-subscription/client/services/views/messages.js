@@ -1,4 +1,4 @@
-import etherscan from "../../services/etherscan";
+import etherscan from "../../../services/api/etherscan";
 
 export const waitingForBlockchain = {
     infoTitle: 'Waiting for transaction confirmation',
@@ -8,11 +8,15 @@ export const waitingForBlockchain = {
     ]
 };
 
-export const getTransactionMessage = (transaction, etherScanUrl) => {
+export const getTransactionMessage = (
+    transaction,
+    etherScanUrl,
+    title = "The transaction completed successfully!"
+) => {
     console.log(transaction);
 
     return {
-        successTitle: "The transaction completed successfully!",
+        successTitle: title,
         success: [
             <li key={transaction.transactionHash}>
                 Transaction Hash: <p className="bold"><a

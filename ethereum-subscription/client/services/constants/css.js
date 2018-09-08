@@ -1,4 +1,4 @@
-import {joinClassNames} from './className';
+import {joinClassNames} from '../className';
 
 export const hideOnTablet = (className = '') =>{
     return joinClassNames("remove-lg", className);

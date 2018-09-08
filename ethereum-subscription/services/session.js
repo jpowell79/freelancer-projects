@@ -1,7 +1,7 @@
 const roles = require('./constants/roles');
 const axios = require('axios');
 const urls = require('./constants/urls');
-const isEmpty = require('./objects').isEmpty;
+const isEmpty = require('./datatypes/objects').isEmpty;
 const {isClient} = require('./utils');
 
 module.exports.saveUser = (req, user) => {

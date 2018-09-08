@@ -4,8 +4,7 @@ import {getChildProps} from "../services/utils";
 export default (PageComponent) => {
     return class MountObserver extends Component {
         static async getInitialProps (appContext){
-            const moduleProps = await getChildProps(PageComponent, appContext);
-            return {...moduleProps};
+            return await getChildProps(PageComponent, appContext);
         }
 
         isMounted = true;

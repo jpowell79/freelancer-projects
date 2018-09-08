@@ -1,10 +1,10 @@
 import React, {Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
-import {isDefined} from '../../services/strings';
+import {isDefined} from '../../services/datatypes/strings';
 import {classNames} from "../services/className";
 import {Message} from 'semantic-ui-react';
 import validation from '../../services/validation';
-import objects from '../../services/objects';
+import objects from '../../services/datatypes/objects';
 
 const specialInputTypes = [
     'date', 'datetime-local', 'email', 'hidden', 'month',
@@ -33,7 +33,10 @@ class FormList extends Component {
         disabled: PropTypes.bool,
         fields: PropTypes.arrayOf(PropTypes.shape({
             type: PropTypes.string.isRequired,
-            defaultValue: PropTypes.string,
+            defaultValue: PropTypes.oneOfType([
+                PropTypes.string,
+                PropTypes.number
+            ]),
             error: PropTypes.oneOfType([
                 PropTypes.string,
                 PropTypes.bool
@@ -79,19 +82,6 @@ class FormList extends Component {
         }
     };
 
-    getAutoComplete = (type) => {
-        switch(type){
-        case "username":
-            return {autoComplete: "username"};
-        case "password":
-            return {autoComplete: "new-password"};
-        case "email":
-            return {autoComplete: "email"};
-        default:
-            return {};
-        }
-    };
-
     renderFields = () => {
         return this.props.fields.map((field, i) => {
             if(field.hidden) return null;
@@ -105,14 +95,12 @@ class FormList extends Component {
 
             const specialType = specialInputTypes.filter(type => type === field.type)[0];
             const type = (specialType) ? specialType : "text";
-            const autoComplete = this.getAutoComplete(field.type);
 
             return (
                 <div className={fieldClass} key={i}>
                     <label>{(field.label) ? field.label : field.type}</label>
                     <input
                         type={type}
-                        {...autoComplete}
                         disabled={this.props.disabled}
                         value={this.state[field.type]}
                         onKeyDown={event => {

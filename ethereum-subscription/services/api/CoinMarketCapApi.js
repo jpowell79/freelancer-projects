@@ -1,4 +1,4 @@
-function CoinMarketCapApi(){}
+class CoinMarketCapApi {}
 
 CoinMarketCapApi.baseUrl = 'https://api.coinmarketcap.com/v2';
 

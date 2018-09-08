@@ -5,7 +5,7 @@ import {MobileMenuIcon} from "../modules/icons";
 import $ from 'jquery';
 import {paths, roles} from '../../services/constants';
 import {connect} from 'react-redux';
-import {hideOnMobile} from "../services/css";
+import {hideOnMobile} from "../services/constants/css";
 import sessions from '../../services/api/sessions';
 
 class MainMenu extends Component {

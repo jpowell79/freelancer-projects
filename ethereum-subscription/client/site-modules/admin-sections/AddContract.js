@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from 'react';
 import AddContractForm from "../forms/AddContractForm";
 import {connect} from 'react-redux';
-import Dispatcher from '../../services/Dispatcher';
+import Dispatcher from '../../services/loaders/Dispatcher';
 import {getErrorString} from "../../services/utils";
 import email from '../../../services/api/email';
 import subscriptions from '../../../services/api/subscriptions';

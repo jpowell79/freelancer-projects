@@ -1,5 +1,5 @@
 const expect = require('chai').expect;
-const strings = require('../../services/strings');
+const strings = require('../../services/datatypes/strings');
 
 describe('strings', () => {
     describe('isDefined', () => {

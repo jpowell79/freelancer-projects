@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {loadServerDataIntoStore} from "../services/loadServerDataIntoStore";
+import {loadServerDataIntoStore} from "../services/loaders/loadServerDataIntoStore";
 
 export default (PageComponent) => {
     return class ServerData extends Component {

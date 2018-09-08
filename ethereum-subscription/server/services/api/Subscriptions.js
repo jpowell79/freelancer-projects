@@ -1,14 +1,22 @@
 const {getAllModelEntries} = require('./apiUtils');
+const {isLoggedIn} = require('../../../services/session');
 
-function SubscriptionContracts({req, sequelize, responseHandler}){
-    this.model = sequelize.models.subscriptions;
-    this.subscriptionContractsModel = sequelize.models.subscriptionContracts;
-    this.subscribersModel = sequelize.models.subscribers;
-    this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
+class Subscriptions {
+    constructor({req, sequelize, responseHandler}){
+        this.req = req;
+        this.responseHandler = responseHandler;
+        this.model = sequelize.models.subscriptions;
+        this.subscriptionContractsModel = sequelize.models.subscriptionContracts;
+        this.subscribersModel = sequelize.models.subscribers;
+        this.subscriptionTypesModel = sequelize.models.subscriptionTypes;
+        this.subscriptionsModel = sequelize.models.subscriptions;
+    }
 
-    this.sendGetAll = async () => getAllModelEntries(responseHandler, this.model);
+    async sendGetAll(){
+        return getAllModelEntries(this.responseHandler, this.model);
+    }
 
-    this.sendJoinedGetAll = () => {
+    async sendJoinedGetAll(){
         return this.subscribersModel
             .findAll({
                 include: [
@@ -24,19 +32,46 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
                 ]
             })
             .then(entries => entries.map(entry => entry.dataValues))
-            .then(entries => { responseHandler.sendSuccess(entries); })
-            .catch(err => {
-                responseHandler.sendSomethingWentWrong(err);
-            });
+            .then(entries => this.responseHandler.sendSuccess(entries))
+            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
     };
 
-    this.sendCreate = () => {
-        return this.create(req.body)
-            .then(data => responseHandler.sendSuccess(data))
-            .catch(err => responseHandler.sendSomethingWentWrong(err));
+    async sendDelete(){
+        const {subscriptionId} = this.req.body;
+
+        const loggedIn = await isLoggedIn(this.req);
+
+        if(!loggedIn) return this.responseHandler.sendUnauthorized();
+
+        return this.subscriptionsModel
+            .findOne({where: {id: subscriptionId}})
+            .then(subscriptionsEntry => subscriptionsEntry.dataValues)
+            .then(subscription => this.subscriptionContractsModel.findOne({
+                where: {
+                    id: subscription.contractId
+                }
+            }))
+            .then(subscriptionContractEntry => subscriptionContractEntry.dataValues)
+            .then(subscriptionContract => {
+                if(subscriptionContract.ownerUsername !== this.req.session.user.username){
+                    return this.responseHandler.sendUnauthorized();
+                }
+
+                return this.subscriptionsModel
+                    .destroy({where: {id: subscriptionId}})
+                    .then(() => this.responseHandler.sendSuccess())
+                    .catch(err => this.responseHandler.sendSomethingWentWrong(err))
+            })
+            .catch(err => this.responseHandler.sendBadRequest(err));
     };
 
-    this.create = ({contractAddress, subscriberAddress}) => {
+    async sendCreate(){
+        return this.create(this.req.body)
+            .then(data => this.responseHandler.sendSuccess(data))
+            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    };
+
+    async create({contractAddress, subscriberAddress, transactionHash}){
         let subscriptionContract;
 
         return this.subscriptionContractsModel
@@ -58,10 +93,11 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
             .then(subscriber => this.model
                 .create({
                     subscriberId: subscriber.id,
-                    contractId: subscriptionContract.id
+                    contractId: subscriptionContract.id,
+                    transactionHash
                 })
             );
     }
 }
 
-module.exports = SubscriptionContracts;
+module.exports = Subscriptions;

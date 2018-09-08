@@ -1,5 +1,5 @@
-import objects from '../../services/objects';
-import strings from '../../services/strings';
+import objects from '../../services/datatypes/objects';
+import strings from '../../services/datatypes/strings';
 import {FILTERABLE_SUBSCRIPTION_TYPES} from "../clientSettings";
 
 export const filterSubscriptionContracts = (subscriptionContracts, filterState) => {
@@ -45,7 +45,7 @@ export const filterSubscriptionContracts = (subscriptionContracts, filterState) 
 
     const hasTxHashToHide = (contract) => {
         return (strings.isDefined(txHashSearch))
-            ? !contract.txHash.startsWith(txHashSearch)
+            ? !contract.transactionHash.startsWith(txHashSearch)
             : false;
     };
 
