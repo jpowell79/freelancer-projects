@@ -4,6 +4,49 @@ const {roles, paths} = require('../../../services/constants/index');
 const escapeHtml = require('html-escape');
 const serverSettings = require('../../serverSettings');
 
+const emailStyle = `
+    <style type="text/css">
+        .body {
+            background-color: #eeeeee;
+            padding: 40px 0;
+            font-size: 18px;
+        }
+        .wrapper {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+        .segment {
+            box-shadow: rgba(34, 36, 38, 0.15) 0 1px 2px 0;
+            background: rgb(255, 255, 255);
+            margin: 1rem 0;
+            padding: 1em;
+            border-radius: 0.285714rem;
+            border: 1px solid rgba(34, 36, 38, 0.15);
+        }
+        .fine-print {
+            font-size: 14px;
+        }
+        hr {
+            border-top: 1px solid rgba(34,36,38,.15);
+            border-bottom: 1px solid rgba(255,255,255,.1);
+        }
+    </style>
+`;
+
+const emailContentStart = `
+    <div>
+        ${emailStyle}
+        <div class="body">
+            <div class="wrapper">
+                <div class="segment">
+`;
+const emailContentEnd = `
+                </div>
+            </div>
+        </div>
+    </div>
+`;
+
 class Mailer {
     constructor(req){
         this.req = req;
@@ -26,13 +69,13 @@ class Mailer {
             from: supplierEmail,
             subject: `[Ethereum Subscription] You have purchased ${subscriptionName}`,
             html: (
-                `<div>
-                <p>The supplier has been notified of your payment.</p>
-                <p>
-                    You can expect an email with details of how to start the subscription 
-                    within 24 hours.
-                </p>
-             </div>`
+                `${emailContentStart}
+                    <p>The supplier has been notified of your payment.</p>
+                    <p>
+                        You can expect an email with details of how to start the subscription 
+                        within 24 hours.
+                    </p>
+                 ${emailContentEnd}`
             )
         });
     }
@@ -55,14 +98,14 @@ class Mailer {
             from: subscriberEmail,
             subject: `[Ethereum Subscription] ${subscriberEmail} has just purchased ${subscriptionName}!`,
             html: (
-                `<div>
+                `${emailContentStart}
                 <p>
                     Please re-visit the contract in your control panel to add any necessary 
                     username/password details and activate the subscription. Failure to 
                     activate the subsription within 24 hours will result in an automatic 
                     refund of all Eth to the subscriber.
                 </p>
-             </div>`
+                ${emailContentEnd}`
             )
         }).then(() => this.sendSubscriberNotificationMail());
     }
@@ -93,7 +136,7 @@ class Mailer {
             from: this.req.session.user.email,
             subject: `[Ethereum Subscription] Contract request from ${this.req.session.user.username}`,
             html: (
-                `<div>
+                `${emailContentStart}
                     <p><strong>Contact Details:</strong></p>
                     <p>${escapeHtml(contactDetails ? contactDetails : '')}</p>
                     <hr>
@@ -120,7 +163,7 @@ class Mailer {
                     <hr>
                     <p><strong>Subscription Details:</strong></p>
                     <p>${escapeHtml(subscriptionDetails ? subscriptionDetails : '')}</p>
-                </div>`
+                ${emailContentEnd}`
             )
         });
     }
@@ -146,10 +189,10 @@ class Mailer {
                         to: user.email,
                         subject,
                         html: (
-                            `<div>
-                                 <p>Hi <strong>${user.username}!</strong></p>
-                                 <p>${escapeHtml(body)}</p>
-                            </div>`
+                            `${emailContentStart}
+                                <p>Hi <strong>${user.username}!</strong></p>
+                                <p>${escapeHtml(body)}</p>
+                            ${emailContentEnd}`
                         )
                     });
                 }));
@@ -178,13 +221,13 @@ class Mailer {
             to: email,
             subject: `[Ethereum Subscription] Your ${subscriptionName} contract is ready!`,
             html: (
-                `<div>
+                `${emailContentStart}
                     <p>Hi <strong>${email}!</strong></p>
                     <p>Please visit your control panel to add or amend information to the ` +
                     `subscription.` +
                     `<p>You can click on <a href="${fullUrl}">this link</a> to take you ` +
                     `directly to the smart contract</p>
-                </div>`
+                ${emailContentEnd}`
             )
         });
     }
@@ -202,15 +245,17 @@ class Mailer {
             to: user.email,
             subject: "[Ethereum Subscription] Please verify your email address.",
             html: (
-                `<div>
+                `${emailContentStart}
                     <p>Hi <strong>${this.req.session.tempUser.username}!</strong></p>
                     <p>To activate your Ethereum Subscription account please press the link below.</p>
                     <a href="${verifyLink}">Verify email address</a>
                     <p>The above link will expire 1 hour after this message was sent.</p>
                     <hr>
-                    <p>You’re receiving this email because you recently created a new Ethereum ` +
-                `Subscription account. If this wasn’t you, please ignore this email.</p>
-                </div>`
+                    <p class="fine-print">
+                        You’re receiving this email because you recently created a new Ethereum ` +
+                        `Subscription account. If this wasn’t you, please ignore this email.
+                    </p>
+                ${emailContentEnd}`
             )
         });
     }
