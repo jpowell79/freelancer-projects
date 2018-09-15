@@ -65,7 +65,7 @@ class SubscriptionInfo extends Component {
                                 address: this.props.liveSubscriptionContracts[0].address
                             }),
                             supplierAddress: this.state.ownerUser.walletAddress
-                        })
+                        });
                 }
             });
     }

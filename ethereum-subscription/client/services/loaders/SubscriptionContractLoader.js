@@ -58,7 +58,7 @@ class SubscriptionContractLoader {
                         ...contract,
                         supplierName: contract.ownerUsername,
                         type: subscriptionType.name,
-                        transactionHash: subscription.transactionHash
+                        transactionHash: (subscription) ? subscription.transactionHash : ""
                     });
 
                     return etherscan.getWalletAddressTransactions({
