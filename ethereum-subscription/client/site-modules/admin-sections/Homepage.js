@@ -14,7 +14,8 @@ class Homepage extends Component {
             homepageBannerOverlayColor: null,
             homepageBannerTextColor: null,
             homepageTableMaxRows: null,
-            homepageSlideshowAnimation: null
+            homepageSlideshowAnimation: null,
+            homepageSlideshowAutoplaySpeed: null
         };
     }
 
@@ -24,7 +25,8 @@ class Homepage extends Component {
             homepageBannerOverlayColor,
             homepageBannerTextColor,
             homepageTableMaxRows,
-            homepageSlideshowAnimation
+            homepageSlideshowAnimation,
+            homepageSlideshowAutoplaySpeed
         } = this.props.getDefaultsOrState(this.state);
 
         return (
@@ -80,6 +82,20 @@ class Homepage extends Component {
                             onChange={(event, {value}) => {
                                 this.setState({
                                     homepageSlideshowAnimation: {value}
+                                });
+                            }}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Slideshow Autoplay Speed in ms (set to 0 to disable):</label>
+                        <input
+                            type="number"
+                            value={homepageSlideshowAutoplaySpeed.value}
+                            onChange={(event) => {
+                                this.setState({
+                                    homepageSlideshowAutoplaySpeed: {
+                                        value: event.target.value
+                                    }
                                 });
                             }}
                         />

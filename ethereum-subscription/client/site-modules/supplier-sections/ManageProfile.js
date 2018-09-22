@@ -43,9 +43,10 @@ class ManageProfile extends Component {
             username,
             email,
             password,
-        })).then(() => {
+        })).then(userResponse => {
             return new DatabaseDataLoader(this.props.dispatch, {
-                user: true
+                user: true,
+                userData: userResponse.data
             }).loadFromClientSide();
         }).then(() => this.props.setMessageState({
             errors: [],

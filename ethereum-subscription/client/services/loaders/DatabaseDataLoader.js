@@ -7,10 +7,12 @@ class DatabaseDataLoader {
     static defaultOptions = {
         settings: false,
         user: false,
-        subscriptionContracts: false,
+        users: false,
         subscriptionTypes: false,
         subscribers: false,
-        subscriptions: false
+        subscriptionContracts: false,
+        subscriptions: false,
+        userData: {}
     };
 
     constructor(dispatch, options, req = null){
@@ -22,9 +24,13 @@ class DatabaseDataLoader {
         let promises = [];
 
         if(this.options.user && objects.isEmpty(storeState.user)){
-            promises.push(this.dispatcher.dispatchUpdateUser(
-                (this.req.session.user) ? this.req.session.user : {}
-            ));
+            if(this.req){
+                promises.push(this.dispatcher.dispatchUpdateUser(
+                    (this.req.session.user) ? this.req.session.user : {}
+                ));
+            } else {
+                promises.push(this.dispatcher.dispatchUpdateUser(this.options.userData));
+            }
         }
 
         if(this.options.settings && objects.isEmpty(storeState.settings)){

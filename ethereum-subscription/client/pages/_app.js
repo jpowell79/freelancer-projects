@@ -25,5 +25,5 @@ class MyApp extends App {
 
 export default compose(
     withReduxStore,
-    withDatabaseData
+    withDatabaseData()
 )(MyApp);

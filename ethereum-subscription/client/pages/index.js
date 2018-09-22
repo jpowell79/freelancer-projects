@@ -70,6 +70,7 @@ class Index extends Component {
                     <Slideshow
                         className="wrapper-3"
                         animation={settings.homepageSlideshowAnimation.value}
+                        autoplaySpeed={parseInt(settings.homepageSlideshowAutoplaySpeed.value, 10)}
                     >
                         <div className="wrapper-4">
                             <h1 className="title">Ethereum Subscriptions</h1>

@@ -13,6 +13,7 @@ class Slideshow extends Component {
         rightIcon: <i className="angle right icon"/>,
         animation: "fade",
         duration: 400,
+        autoplaySpeed: 0,
         onStateChange: () => {},
         stateReducer: (state, changes) => changes
     };
@@ -34,6 +35,28 @@ class Slideshow extends Component {
             animationStatus: Animation.status.IDLE
         }
     }
+
+    componentDidMount(){
+        const childrenArray = childrenToArray(this.props.children);
+
+        if(this.autoplayIsEnabled()){
+            this.timer = setInterval(() => {
+                this.setActiveState((prevActive) =>
+                    (prevActive+1 < childrenArray.length)
+                        ? prevActive+1
+                        : 0,
+                );
+            }, this.props.autoplaySpeed);
+        }
+    }
+
+    componentWillUnmount(){
+        if(this.autoplayIsEnabled()){
+            clearInterval(this.timer);
+        }
+    }
+
+    autoplayIsEnabled = () => (this.props.autoplaySpeed > 0);
 
     awaitAnimation = () => sleep(this.props.duration);
 
@@ -80,6 +103,7 @@ class Slideshow extends Component {
             animation,
             duration,
             className,
+            autoplaySpeed,
             onStateChange,
             stateReducer,
             ...props

@@ -8,6 +8,7 @@ module.exports = {
     homepageBannerTitle: "homepageBannerTitle",
     homepageTableMaxRows: "homepageTableMaxRows",
     homepageSlideshowAnimation: "homepageSlideshowAnimation",
+    homepageSlideshowAutoplaySpeed: "homepageSlideshowAutoplaySpeed",
     logo: "logo",
     siteTitle: "siteTitle"
 };
