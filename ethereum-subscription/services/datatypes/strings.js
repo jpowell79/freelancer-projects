@@ -28,7 +28,7 @@ module.exports.hasUpperCase = (string) => (
 );
 
 module.exports.hasSpecialCharacters = (string) => (
-    regex.specialCharacters.test(string)
+    /[^a-zA-Z0-9]+/g.test(string)
 );
 
 module.exports.isUpperCase = (string) => {

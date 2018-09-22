@@ -4,6 +4,7 @@ import SubscriptionForm from "./SubscriptionForm";
 import PropTypes from "prop-types";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
 import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
+import {getErrorString} from "../../services/utils";
 
 class EditContractForm extends Component {
     static mapStateToProps = ({settings}) => ({
@@ -71,7 +72,7 @@ class EditContractForm extends Component {
                 console.error(err);
 
                 return setClearedMessageState({
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };

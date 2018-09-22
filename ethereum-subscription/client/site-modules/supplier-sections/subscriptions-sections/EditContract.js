@@ -5,7 +5,7 @@ import EditContractForm from "../../forms/EditContractForm";
 import subscriptions from "../../../../services/api/subscriptions";
 import AlertOptionPane from "../../../services/Alert/AlertOptionPane";
 import {getErrorString} from "../../../services/utils";
-import {selectEditContract} from "../../../redux/actions";
+import {selectEditContract, updateLiveSubscriptionContract} from "../../../redux/actions";
 import DatabaseDataLoader from "../../../services/loaders/DatabaseDataLoader";
 
 export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
@@ -16,6 +16,10 @@ export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
             subscriptionContracts: true
         }).loadFromClientSide())
             .then(() => {
+                dispatch(updateLiveSubscriptionContract({
+                    ...editContract,
+                    isActive: true
+                }));
                 dispatch(selectEditContract({
                     ...editContract,
                     isActive: true

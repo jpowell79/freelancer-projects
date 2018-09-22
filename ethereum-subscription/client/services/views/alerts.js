@@ -50,6 +50,7 @@ export const showAddSubscriptionFormAlert = (options = defaultOptions) => {
 
     AlertOptionPane.showSuccessAlert({
         ...mergedOptions,
+        titleIcon: (mergedOptions.titleIcon) ? mergedOptions.titleIcon : null,
         title: (mergedOptions.title)
             ? mergedOptions.title
             : `Subscribe to ${mergedOptions.contract.subscriptionName}`,

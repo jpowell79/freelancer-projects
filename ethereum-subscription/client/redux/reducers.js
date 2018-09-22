@@ -69,6 +69,13 @@ export const liveSubscriptionContracts = (liveSubscriptionContracts = [], action
     switch(action.type){
     case constants.ADD_LIVE_SUBSCRIPTION_CONTRACTS:
         return [...liveSubscriptionContracts, ...action.payload];
+    case constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACT:
+        const liveContract = action.payload;
+
+        return [
+            ...liveSubscriptionContracts.filter(contract => contract.id !== liveContract.id),
+            liveContract
+        ];
     case constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACTS:
         return action.payload;
     default:

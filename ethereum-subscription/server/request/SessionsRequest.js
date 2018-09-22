@@ -4,6 +4,10 @@ const passwordHash = require("password-hash");
 const serverSettings = require("../serverSettings");
 
 class SessionsRequest extends Request {
+    constructor(params){
+        super(params);
+    }
+
     async handleGet(){
         return this.responseHandler.sendSuccess(this.req.session.user);
     };

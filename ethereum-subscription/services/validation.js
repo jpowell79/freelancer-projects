@@ -74,7 +74,7 @@ module.exports.getNameError = (name, fieldName) => {
         return `${fieldName} must be a string`;
     } else if(!strings.isDefined(name)){
         return `${fieldName} is required.`;
-    } else if(!name.match(regex.username)){
+    } else if(!name.match(regex.name)){
         return `${fieldName} cannot contain any special characters besides dashes, ` +
             `underscores and spaces.`;
     } else if(name.length < 2 || name.length > 64){

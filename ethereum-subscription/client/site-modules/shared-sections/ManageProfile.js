@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
+import {roles} from "../../../services/constants";
 import DatabaseDataLoader from "../../services/loaders/DatabaseDataLoader";
 import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
@@ -68,14 +69,16 @@ class ManageProfile extends Component {
     render(){
         return (
             <div className="container-3">
-                <Message
-                    info
-                    header={`Your wallet address is: ${this.props.user.walletAddress}`}
-                    list={[
-                        "You will need to contact our support team if you ever need to change this address",
-                        "You will lose all feedback if you do this."
-                    ]}
-                />
+                {this.props.user.role === roles.supplier && (
+                    <Message
+                        info
+                        header={`Your wallet address is: ${this.props.user.walletAddress}`}
+                        list={[
+                            "You will need to contact our support team if you ever need to change this address",
+                            "You will lose all feedback if you do this."
+                        ]}
+                    />
+                )}
                 <h2>Manage Your Profile</h2>
                 {this.props.renderMessages()}
                 <FormList

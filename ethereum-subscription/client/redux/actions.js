@@ -25,6 +25,11 @@ export const addLiveSubscriptionContracts = (liveSubscriptionContracts) => ({
     payload: liveSubscriptionContracts
 });
 
+export const updateLiveSubscriptionContract = (liveSubscriptionContract) => ({
+    type: constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACT,
+    payload: liveSubscriptionContract
+});
+
 export const updateLiveSubscriptionContracts = (liveSubscriptionContracts) => ({
     type: constants.UPDATE_LIVE_SUBSCRIPTION_CONTRACTS,
     payload: liveSubscriptionContracts

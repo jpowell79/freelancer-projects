@@ -24,7 +24,14 @@ export const getErrorString = (err) => {
         error = error[0];
     }
 
-    return (error.startsWith("Error: ")) ? error.split("Error: ")[1] : error;
+    error = error.replace(/Error: /g, "");
+    error = error.replace(/Returned error: /g, "");
+
+    if(error.includes("Invalid \"from\"")){
+        error = "Unauthorized ethereum account";
+    }
+
+    return error;
 };
 
 export const childrenToArray = (children) => {

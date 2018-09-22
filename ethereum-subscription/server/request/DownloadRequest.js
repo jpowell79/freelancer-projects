@@ -3,6 +3,10 @@ const mysqlDump = require("mysqldump");
 const serverSettings = require("../serverSettings");
 
 class DownloadRequest extends Request {
+    constructor(params){
+        super(params);
+    }
+
     async handleGet(){
         if(!this.isLoggedInAdmin())
             return this.responseHandler.sendUnauthorized();
@@ -28,7 +32,7 @@ class DownloadRequest extends Request {
                 dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
             });
 
-            const rootPath = require("path").normalize(__dirname + "/../../../..");
+            const rootPath = require("path").normalize(__dirname + "/../../");
             const dumpFile = `${rootPath}/${serverSettings.DATABASE_DUMP_FILE}`;
             this.responseHandler.res.download(dumpFile, serverSettings.DATABASE_DUMP_FILE);
         } catch(err){

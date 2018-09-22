@@ -5,7 +5,7 @@ import SubscriptionContract from "../../../../services/smart-contracts/Subscript
 import Dispatcher from "../../../services/loaders/Dispatcher";
 import {selectEditContract} from "../../../redux/actions";
 
-export default ({editContract, subscriptionDetails, user, web3}) => {
+export default ({editContract, subscriptionDetails, dispatch, user, web3}) => {
     const subscriptionContract = new SubscriptionContract({
         address: editContract.address,
         web3

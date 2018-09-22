@@ -6,6 +6,7 @@ import withMessage from "../../hocs/withMessage";
 import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
 import {connect} from "react-redux";
 import {compose} from "redux";
+import {getErrorString} from "../../services/utils";
 
 class EditSubscriptionForm extends Component {
     static mapStateToProps = ({settings}) => ({
@@ -93,7 +94,7 @@ class EditSubscriptionForm extends Component {
                 console.error(err);
 
                 return this.props.setClearedMessageState({
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };
@@ -120,7 +121,7 @@ class EditSubscriptionForm extends Component {
                 console.error(err);
 
                 return setClearedMessageState({
-                    errors: [err.toString()]
+                    errors: [getErrorString(err)]
                 });
             });
     };

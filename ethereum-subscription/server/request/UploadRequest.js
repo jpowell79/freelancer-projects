@@ -4,6 +4,10 @@ const formidable = require("formidable");
 const fs = require("fs");
 
 class UploadRequest extends Request {
+    constructor(params){
+        super(params);
+    }
+
     async handlePost(){
         if(this.isLoggedInAdmin())
             return this.responseHandler.sendUnauthorized();

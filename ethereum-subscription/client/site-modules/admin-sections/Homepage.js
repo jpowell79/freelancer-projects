@@ -87,7 +87,7 @@ class Homepage extends Component {
                         />
                     </Form.Field>
                     <Form.Field>
-                        <label>Slideshow Autoplay Speed in ms (set to 0 to disable):</label>
+                        <label>Slideshow Autoplay Speed in ms (0 to disable):</label>
                         <input
                             type="number"
                             value={homepageSlideshowAutoplaySpeed.value}

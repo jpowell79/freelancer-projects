@@ -8,7 +8,7 @@ import objects from "../../services/datatypes/objects";
 
 const specialInputTypes = [
     "date", "datetime-local", "email", "hidden", "month",
-    "number", "password", "tel", "time", "url", "week"
+    "number", "password", "contractPassword", "tel", "time", "url", "week"
 ];
 
 class FormList extends Component {
