@@ -64,8 +64,8 @@ class FormList extends Component {
             .filter(fieldKey => !this.props.fields
                 .find(field => field.type === fieldKey)
                 .excludeFromValidation)
-            .filter(fieldKey => isDefined(validation.getFieldError(fieldKey, this.state[fieldKey])))
-            .map(fieldKey => ({[fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])}));
+            .map(fieldKey => ({[fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])}))
+            .filter(fieldObject => isDefined(objects.values(fieldObject)[0]));
 
         if(fieldErrorsArray.length === 0 || !this.props.validate){
             this.props.onSubmit(this.state);

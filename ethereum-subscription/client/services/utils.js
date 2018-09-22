@@ -18,7 +18,11 @@ export const hasResponseData = (err) => {
 };
 
 export const getErrorString = (err) => {
-    const error = hasResponseData(err) ? err.response.data : err.toString();
+    let error = hasResponseData(err) ? err.response.data : err.toString();
+
+    if(Array.isArray(error)){
+        error = error[0];
+    }
 
     return (error.startsWith("Error: ")) ? error.split("Error: ")[1] : error;
 };

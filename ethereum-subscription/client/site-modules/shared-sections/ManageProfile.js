@@ -34,7 +34,9 @@ class ManageProfile extends Component {
     }
 
     handleSubmit = ({username, email, password}) => {
-        this.props.setMessageState({
+        console.log("Submit");
+
+        return this.props.setMessageState({
             errors: [],
             showSuccess: false,
             isLoading: true
@@ -52,10 +54,15 @@ class ManageProfile extends Component {
             errors: [],
             showSuccess: true,
             isLoading: false
-        })).catch(err => this.props.setMessageState({
-            errors: [getErrorString(err)],
-            isLoading: false
-        }));
+        })).catch(err => {
+            const error = getErrorString(err);
+            console.log(error);
+
+            return this.props.setMessageState({
+                errors: [(error.includes("Sequelize") ? "Username already exists" : error)],
+                isLoading: false
+            })
+        });
     };
 
     render(){
