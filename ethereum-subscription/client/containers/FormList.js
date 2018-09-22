@@ -64,7 +64,9 @@ class FormList extends Component {
             .filter(fieldKey => !this.props.fields
                 .find(field => field.type === fieldKey)
                 .excludeFromValidation)
-            .map(fieldKey => ({[fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])}))
+            .map(fieldKey => ({
+                [fieldKey]: validation.getFieldError(fieldKey, this.state[fieldKey])
+            }))
             .filter(fieldObject => isDefined(objects.values(fieldObject)[0]));
 
         if(fieldErrorsArray.length === 0 || !this.props.validate){
@@ -100,7 +102,7 @@ class FormList extends Component {
                 <div className={fieldClass} key={i}>
                     <label>{(field.label) ? field.label : field.type}</label>
                     <input
-                        type={type}
+                        type={(type === "contractPassword") ? "password" : type}
                         disabled={this.props.disabled}
                         value={this.state[field.type]}
                         onKeyDown={event => {

@@ -14,7 +14,7 @@ export default ({editContract, subscriptionDetails, user, web3}) => {
     const handleSubscriptionEdited = (state) => {
         const {
             username,
-            password,
+            contractPassword,
             other
         } = state;
 
@@ -27,7 +27,7 @@ export default ({editContract, subscriptionDetails, user, web3}) => {
             supplierAddress: user.walletAddress,
             supplierEmail: user.email,
             username,
-            password,
+            password: contractPassword,
             other
         });
     };

@@ -1,6 +1,10 @@
 const {random} = require("../utils");
 const {regex} = require("../constants");
 
+module.exports.isString = (string) => (
+    typeof string === 'string'
+);
+
 module.exports.isDefined = (stringsOrString) => {
     const stringIsDefined = (string) => (
         string !== null && string !== undefined && string !== ""

@@ -14,7 +14,7 @@ class EditSubscriptionForm extends Component {
 
     static defaultLabels = {
         username: "Username:",
-        password: "Password:",
+        contractPassword: "Password:",
         duration: null,
         other: "Other info:",
         disabled: false
@@ -49,9 +49,9 @@ class EditSubscriptionForm extends Component {
                     defaultValue: props.defaults.username
                 },
                 {
-                    type: "password",
-                    label: parsedLabels.password,
-                    defaultValue: props.defaults.password
+                    type: "contractPassword",
+                    label: parsedLabels.contractPassword,
+                    defaultValue: props.defaults.contractPassword
                 },
                 {
                     type: "duration",

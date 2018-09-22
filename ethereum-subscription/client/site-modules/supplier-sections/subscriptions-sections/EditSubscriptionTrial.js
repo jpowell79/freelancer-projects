@@ -14,7 +14,7 @@ export default ({editContract, trialSubscriptionDetails, dispatch, user, web3}) 
     const handleTrialEdited = (state) => {
         const {
             username,
-            password,
+            contractPassword,
             other,
             duration
         } = state;
@@ -23,7 +23,7 @@ export default ({editContract, trialSubscriptionDetails, dispatch, user, web3}) 
             supplierAddress: user.walletAddress,
             supplierEmail: user.email,
             username,
-            password,
+            password: contractPassword,
             other,
             trialDurationInDays: duration
         });
@@ -63,12 +63,12 @@ export default ({editContract, trialSubscriptionDetails, dispatch, user, web3}) 
                     activateButtonText="Start the Trial"
                     labels={{
                         username: "Trial username:",
-                        password: "Trial password:",
+                        contractPassword: "Trial password:",
                         duration: "Trial duration (in days):",
                     }}
                     defaults={{
                         username: trialSubscriptionDetails.trialUsername,
-                        password: trialSubscriptionDetails.trialPassword,
+                        contractPassword: trialSubscriptionDetails.trialPassword,
                         other: trialSubscriptionDetails.trialOther,
                         duration: trialSubscriptionDetails.trialDurationInDays
                     }}
