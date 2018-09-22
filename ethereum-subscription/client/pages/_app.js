@@ -1,6 +1,7 @@
 import App, {Container} from "next/app";
 import React from "react";
-import withServerData from "../hocs/withServerData";
+import {compose} from "redux";
+import withDatabaseData from "../hocs/withDatabaseData";
 import withReduxStore from "../hocs/withReduxStore";
 import { Provider } from "react-redux";
 
@@ -22,4 +23,7 @@ class MyApp extends App {
     }
 }
 
-export default withReduxStore(withServerData(MyApp));
+export default compose(
+    withReduxStore,
+    withDatabaseData
+)(MyApp);

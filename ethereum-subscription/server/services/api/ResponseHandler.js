@@ -1,5 +1,3 @@
-"use strict";
-
 const {httpCodes} = require("../../../services/constants/index");
 const {
     SUCCESS,
@@ -30,7 +28,7 @@ class ResponseHandler {
     };
 
     sendNotFound(err = ""){
-        if(global.isDevelopment()) console.error(err);
+        if(isDevelopment()) console.error(err);
         this.res.status(NOT_FOUND).send(err.toString());
     };
 
@@ -43,12 +41,12 @@ class ResponseHandler {
     };
 
     sendSomethingWentWrong(err = ""){
-        if(global.isDevelopment()) console.error(err);
+        if(isDevelopment()) console.error(err);
         this.res.status(SOMETHING_WENT_WRONG).send(err.toString());
     };
 
     sendBadRequest(err = ""){
-        if(global.isDevelopment()) console.error(err);
+        if(isDevelopment()) console.error(err);
         this.res.status(BAD_REQUEST).send(err.toString());
     };
 

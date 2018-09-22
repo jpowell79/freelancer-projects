@@ -29,7 +29,7 @@ module.exports.subscriptionTypes = [
 
 module.exports.subscriptionContracts = [
     {
-        address: "0x86842a129bd5fd249fb665c23d7ead88e7057153",
+        address: "0xd090f94eb78dab1127b675fbd41cd50f5cb1a4fe",
         ownerUsername: "smnrkssn",
         typeName: "Gym Membership",
         details: "Random details",
@@ -46,13 +46,7 @@ module.exports.subscribers = [
     }
 ];
 
-module.exports.subscriptions = [
-    {
-        subscriberAddress: "0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F",
-        contractAddress: "0x86842a129bd5fd249fb665c23d7ead88e7057153",
-        transactionHash: "0x1e8b0942c7dd64e1ad4c6bb598ad5b4de88989c7df21930c4f9edaab6d830d6b"
-    }
-];
+module.exports.subscriptions = [];
 
 module.exports.users = [
     {

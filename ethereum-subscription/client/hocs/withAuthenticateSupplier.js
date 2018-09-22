@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {redirectIfNotLoggedInSupplier} from "../../services/constants/paths";
 import paths from "../../services/constants/paths";
+import {getChildProps} from "../services/utils";
 
 export default (PageComponent) => {
     return class Authenticate extends Component {
@@ -8,13 +9,7 @@ export default (PageComponent) => {
             const {req, res} = appContext;
             await redirectIfNotLoggedInSupplier(paths.pages.login, req, res);
 
-            let pageProps = {};
-
-            if (PageComponent.getInitialProps) {
-                pageProps = await PageComponent.getInitialProps(appContext);
-            }
-
-            return {...pageProps};
+            return await getChildProps(PageComponent, appContext);
         }
 
         render() {

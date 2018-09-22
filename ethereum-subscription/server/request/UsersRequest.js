@@ -6,7 +6,7 @@ const serverSettings = require("../serverSettings");
 const session = require("../../services/session");
 const uuidv4 = require("uuid/v4");
 const passwordHash = require("password-hash");
-const Mailer = require("../services/api/Mailer");
+const Mailer = require("../services/email/Mailer");
 
 class UsersRequest extends Request {
     constructor(params){

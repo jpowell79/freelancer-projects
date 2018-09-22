@@ -5,7 +5,7 @@ import {LoaderTiny} from "../modules/icons";
 import {Message} from "semantic-ui-react";
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
 import objects from "../../services/datatypes/objects";
-import {loadServerDataIntoStoreFromClient} from "../services/loaders/loadServerDataIntoStore";
+import DatabaseDataLoader from "../services/loaders/DatabaseDataLoader";
 import {getChildProps, getErrorString} from "../services/utils";
 
 export default (Module, title) => {
@@ -41,7 +41,9 @@ export default (Module, title) => {
                 )
             )
             .then(() =>
-                loadServerDataIntoStoreFromClient(this.props.dispatch, {settings: true})
+                new DatabaseDataLoader(this.props.dispatch, {
+                    settings: true
+                }).loadFromClientSide()
             )
             .then(() => {
                 this.setState({

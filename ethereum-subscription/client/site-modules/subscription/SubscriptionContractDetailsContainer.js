@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {SubscriptionContractDetails} from "./SubscriptionContractDetails";
 import objects from "../../../services/datatypes/objects";
-import {loadServerDataIntoStoreFromClient} from "../../services/loaders/loadServerDataIntoStore";
+import DatabaseDataLoader from "../../services/loaders/DatabaseDataLoader";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
 import alerts from "../../services/views/alerts";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
@@ -29,10 +29,12 @@ class SubscriptionContractDetailsContainer extends Component {
 
                 removeAlert();
             })
-            .then(() => loadServerDataIntoStoreFromClient(this.props.dispatch, {
-                subscribers: true,
-                subscriptions: true
-            }))
+            .then(() => {
+                return new DatabaseDataLoader(this.props.dispatch, {
+                    subscribers: true,
+                    subscriptions: true
+                }).loadFromClientSide();
+            })
             .catch(err => {
                 console.error(err);
 

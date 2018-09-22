@@ -16,7 +16,6 @@ export default (Module, currencies = defaultCurrencies) => {
     class EthereumConversionRates extends Component {
         static async getInitialProps (appContext){
             const {reduxStore} = appContext;
-            const moduleProps = await getChildProps(Module, appContext);
 
             try {
                 const conversionRates = await Promise.all(currencies.map(currency => (
@@ -31,7 +30,7 @@ export default (Module, currencies = defaultCurrencies) => {
                 console.error(e);
             }
 
-            return {...moduleProps};
+            return await getChildProps(Module, appContext);
         }
 
         static mapStateToProps = ({ethereumConversionRates}) => ({ethereumConversionRates});

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {loadServerDataIntoStoreFromClient} from "../../services/loaders/loadServerDataIntoStore";
+import DatabaseDataLoader from "../../services/loaders/DatabaseDataLoader";
 import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
@@ -38,32 +38,23 @@ class ManageProfile extends Component {
             errors: [],
             showSuccess: false,
             isLoading: true
-        });
-
-        users.updateSupplier({
+        }).then(() => users.updateSupplier({
             originalUsername: this.props.user.username,
             username,
             email,
             password,
-        }).then(userResponse => {
-            return loadServerDataIntoStoreFromClient(this.props.dispatch, {
-                user: true,
-                data: {
-                    user: userResponse.data
-                }
-            });
-        }).then(() => {
-            this.props.setMessageState({
-                errors: [],
-                showSuccess: true,
-                isLoading: false
-            });
-        }).catch(err => {
-            this.props.setMessageState({
-                errors: [getErrorString(err)],
-                isLoading: false
-            });
-        });
+        })).then(() => {
+            return new DatabaseDataLoader(this.props.dispatch, {
+                user: true
+            }).loadFromClientSide();
+        }).then(() => this.props.setMessageState({
+            errors: [],
+            showSuccess: true,
+            isLoading: false
+        })).catch(err => this.props.setMessageState({
+            errors: [getErrorString(err)],
+            isLoading: false
+        }));
     };
 
     render(){

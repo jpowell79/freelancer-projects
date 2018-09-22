@@ -1,6 +1,6 @@
 const Request = require("./Request");
 const {mailTypes} = require("../../services/constants");
-const Mailer = require("../services/api/Mailer");
+const Mailer = require("../services/email/Mailer");
 
 const adminMailTypes = [
     mailTypes.massMailSuppliers

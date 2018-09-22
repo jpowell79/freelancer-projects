@@ -2,33 +2,35 @@ import React, {Fragment} from "react";
 import {Grid, Segment} from "semantic-ui-react";
 import WeiCalculator from "../../WeiCalculator";
 import EditContractForm from "../../forms/EditContractForm";
-import {loadServerDataIntoStoreFromClient} from "../../../services/loaders/loadServerDataIntoStore";
 import subscriptions from "../../../../services/api/subscriptions";
 import AlertOptionPane from "../../../services/Alert/AlertOptionPane";
 import {getErrorString} from "../../../services/utils";
 import {selectEditContract} from "../../../redux/actions";
+import DatabaseDataLoader from "../../../services/loaders/DatabaseDataLoader";
 
 export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
     const handleActivateContract = async () => {
+
+
         return subscriptions.activateSubscriptionContract({
             address: editContract.address
-        }).then(() => loadServerDataIntoStoreFromClient(
-            dispatch,
-            {subscriptionContracts: true}
-        )).then(() => {
-            dispatch(selectEditContract({
-                ...editContract,
-                isActive: true
-            }));
+        }).then(() => new DatabaseDataLoader(dispatch, {
+            subscriptionContracts: true
+        }).loadFromClientSide())
+            .then(() => {
+                dispatch(selectEditContract({
+                    ...editContract,
+                    isActive: true
+                }));
 
-            AlertOptionPane.showSuccessAlert({
-                message: "The contract is now active and visible to subscribers."
+                AlertOptionPane.showSuccessAlert({
+                    message: "The contract is now active and visible to subscribers."
+                });
+            }).catch(err => {
+                AlertOptionPane.showErrorAlert({
+                    message: getErrorString(err)
+                });
             });
-        }).catch(err => {
-            AlertOptionPane.showErrorAlert({
-                message: getErrorString(err)
-            });
-        });
     };
 
     return (

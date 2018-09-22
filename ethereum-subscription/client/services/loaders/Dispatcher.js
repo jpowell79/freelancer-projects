@@ -17,24 +17,21 @@ import {isServer, serverRequest} from "../../../services/utils";
 import parser from "../parser";
 
 class Dispatcher {
-    constructor(dispatch){
+    constructor(dispatch, req = null){
         this.dispatch = dispatch;
+        this.req = req;
     }
 
-    request = async ({req, url, callback}) => {
+    request = async ({url, callback}) => {
         if(isServer()){
-            return serverRequest(req, url)
+            return serverRequest(this.req, url)
                 .then(callback)
-                .catch(err => {
-                    console.error(err);
-                });
+                .catch(console.error);
         }
 
         return axios.get(url)
             .then(callback)
-            .catch(err => {
-                console.error(err);
-            });
+            .catch(console.error);
     };
 
     dispatchUpdateSubscriptionDetails = async ({subscriptionContract, supplierAddress}) => {
@@ -47,9 +44,8 @@ class Dispatcher {
             )).catch(console.error);
     };
 
-    dispatchUpdateSubscriptions = async ({req}) => {
+    dispatchUpdateSubscriptions = async () => {
         return this.request({
-            req,
             url: urls.subscriptions,
             callback: (response) => {
                 this.dispatch(updateSubscriptions(response.data))
@@ -57,9 +53,8 @@ class Dispatcher {
         });
     };
 
-    dispatchUpdateSubscribers = async ({req}) => {
+    dispatchUpdateSubscribers = async () => {
         return this.request({
-            req,
             url: urls.subscriptionSubscribers,
             callback: (response) => {
                 this.dispatch(updateSubscribers(response.data))
@@ -67,9 +62,8 @@ class Dispatcher {
         });
     };
 
-    dispatchUpdateSubcriptionContracts = async ({req}) => {
+    dispatchUpdateSubcriptionContracts = async () => {
         return this.request({
-            req,
             url: urls.subscriptionContracts,
             callback: (response) => {
                 this.dispatch(updateSubscriptionContracts(response.data))
@@ -77,9 +71,8 @@ class Dispatcher {
         });
     };
 
-    dispatchUpdateSubscriptionTypes = async ({req}) => {
+    dispatchUpdateSubscriptionTypes = async () => {
         return this.request({
-            req,
             url: urls.subscriptionTypes,
             callback: (response) => {
                 this.dispatch(updateSubscriptionTypes(response.data));
@@ -87,9 +80,8 @@ class Dispatcher {
         });
     };
 
-    disptachUpdateUsers = async ({req}) => {
+    dispatchUpdateUsers = async () => {
         return this.request({
-            req,
             url: urls.users,
             callback: (response) => {
                 this.dispatch(updateUsers(response.data));
@@ -101,9 +93,8 @@ class Dispatcher {
         this.dispatch(updateUser(user));
     };
 
-    dispatchLoadSettings = async ({req}) => {
+    dispatchLoadSettings = async () => {
         return this.request({
-            req,
             url: urls.settings,
             callback: (response) => {
                 const settings = {};
