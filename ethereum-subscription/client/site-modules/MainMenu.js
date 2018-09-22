@@ -134,11 +134,6 @@ class MainMenu extends Component {
                             Admin
                         </a>
                     </Link>
-                    <Link href={paths.pages.supplier}>
-                        <a className={"item" + this.getActiveClass(paths.pages.supplier)}>
-                            Supplier
-                        </a>
-                    </Link>
                     <div className="item">
                         <button
                             className="ui bg-color-uiBlue color-white button"

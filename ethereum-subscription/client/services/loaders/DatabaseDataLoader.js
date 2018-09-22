@@ -18,6 +18,7 @@ class DatabaseDataLoader {
     constructor(dispatch, options, req = null){
         this.options = Object.assign({}, DatabaseDataLoader.defaultOptions, options);
         this.dispatcher = new Dispatcher(dispatch, req);
+        this.req = req;
     }
 
     loadData = async (storeState = initialState) => {

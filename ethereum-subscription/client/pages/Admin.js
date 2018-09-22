@@ -12,6 +12,7 @@ import AddContract from "../site-modules/admin-sections/AddContract";
 import SmartContractData from "../site-modules/admin-sections/SmartContractData";
 import AddContractType from "../site-modules/admin-sections/AddContractType";
 import DatabaseBackup from "../site-modules/admin-sections/DatabaseBackup";
+import ManageProfile from "../site-modules/shared-sections/ManageProfile";
 
 class Admin extends Component {
     static sections = {
@@ -22,7 +23,8 @@ class Admin extends Component {
         addContractType: "Add new contract type",
         homepage: "Homepage",
         smartContract: "Smart Contract Data",
-        siteIdentity: "Site Identity"
+        siteIdentity: "Site Identity",
+        manageProfile: "Manage Your Profile"
     };
 
     constructor(props){
@@ -42,7 +44,8 @@ class Admin extends Component {
             addContractType,
             homepage,
             smartContract,
-            siteIdentity
+            siteIdentity,
+            manageProfile
         } = Admin.sections;
 
         switch(objects.values(Admin.sections)[active]){
@@ -62,6 +65,8 @@ class Admin extends Component {
             return <SmartContractData/>;
         case siteIdentity:
             return <SiteIdentity/>;
+        case manageProfile:
+            return <ManageProfile/>;
         default:
             return null;
         }

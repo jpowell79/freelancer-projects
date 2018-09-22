@@ -10,7 +10,7 @@ import withEthereumConversionRates from "../hocs/withEthereumConversionRates";
 import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import {Menu, Segment} from "semantic-ui-react";
 import objects from "../../services/datatypes/objects";
-import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
+import ManageProfile from "../site-modules/shared-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
