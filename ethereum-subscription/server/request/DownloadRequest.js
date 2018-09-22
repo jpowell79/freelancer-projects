@@ -3,12 +3,6 @@ const mysqlDump = require("mysqldump");
 const serverSettings = require("../serverSettings");
 
 class DownloadRequest extends Request {
-    constructor(params){
-        super(params);
-
-        this.handleGet = this.handleGet.bind(this);
-    }
-
     async handleGet(){
         if(!this.isLoggedInAdmin())
             return this.responseHandler.sendUnauthorized();

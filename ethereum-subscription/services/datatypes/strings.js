@@ -1,4 +1,5 @@
 const {random} = require("../utils");
+const {regex} = require("../constants");
 
 module.exports.isDefined = (stringsOrString) => {
     const stringIsDefined = (string) => (
@@ -23,7 +24,7 @@ module.exports.hasUpperCase = (string) => (
 );
 
 module.exports.hasSpecialCharacters = (string) => (
-    /[^a-zA-Z0-9]+/g.test(string)
+    regex.specialCharacters.test(string)
 );
 
 module.exports.isUpperCase = (string) => {

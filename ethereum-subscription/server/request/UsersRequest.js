@@ -1,138 +1,13 @@
 const Request = require("./Request");
-const axios = require("axios");
-const validation = require("../../services/validation");
 const {roles, paths} = require("../../services/constants/index");
-const serverSettings = require("../serverSettings");
-const session = require("../../services/session");
+const cookieSession = require("../services/cookieSession");
 const uuidv4 = require("uuid/v4");
 const passwordHash = require("password-hash");
-const Mailer = require("../services/email/Mailer");
+const Emailer = require("../services/email/Emailer");
+const FieldValidator = require("../../services/FieldValidator");
+const grecaptcha = require("../services/grecaptcha");
 
 class UsersRequest extends Request {
-    constructor(params){
-        super(params);
-
-        this.mailer = new Mailer(params.req);
-
-        this.handleGet = this.handleGet.bind(this);
-        this.handlePost = this.handlePost.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
-    }
-
-    async validateGrecaptcha(){
-        const secret = `secret=${serverSettings.RECAPTCHA_SECRET_KEY}`;
-        const response = `response=${this.req.body.grecaptcha}`;
-        const remoteip = `remoteip=${this.req.ip}`;
-        const options = `?${secret}&${response}&${remoteip}`;
-
-        return (
-            axios.post(`https://www.google.com/recaptcha/api/siteverify${options}`)
-                .then(response => response.data)
-        );
-    };
-
-    isValidUser(){
-        const {
-            username,
-            email,
-            role,
-            password,
-            walletAddress
-        } = this.req.body;
-
-        if(!username || !email || !role || !password || !walletAddress){
-            return this.responseHandler.sendBadRequest("Missing required fields.");
-        }
-
-        const usernameErrors = validation.getUsernameError(username);
-        const passwordErrors = validation.getPasswordError(password);
-        const emailErrors = validation.getEmailError(email);
-        const walletAddressErrors = validation.getEthereumAddressError(walletAddress);
-
-        if(usernameErrors !== ""){
-            return this.responseHandler.sendBadRequest(usernameErrors);
-        }
-
-        if(passwordErrors !== ""){
-            return this.responseHandler.sendBadRequest(passwordErrors);
-        }
-
-        if(emailErrors !== ""){
-            return this.responseHandler.sendBadRequest(emailErrors);
-        }
-
-        if(walletAddressErrors !== ""){
-            return this.responseHandler.sendBadRequest(walletAddressErrors);
-        }
-
-        if(role === roles.admin){
-            return this.responseHandler.sendBadRequest("You cannot create admin accounts through this api.");
-        }
-
-        if(!roles[role]){
-            return this.responseHandler.sendBadRequest("Role does not exist");
-        }
-
-        return true;
-    };
-
-    createUser(){
-        session.saveUser(this.req, this.req.session.tempUser);
-        const user = this.req.session.tempUser;
-
-        return this.sequelize.models.users.create({
-            username: user.username,
-            password: user.password,
-            email: user.email,
-            role: user.role,
-            walletAddress: user.walletAddress
-        }).then(() => {
-            this.req.session.tempUser = {};
-            this.req.session.userWasActivated = true;
-            this.responseHandler.redirect(paths.pages.login);
-        }).catch(err => this.responseHandler.sendSomethingWentWrong(err));
-    };
-
-    async registerTempUser(){
-        const {
-            username,
-            email,
-            role,
-            password,
-            walletAddress
-        } = this.req.body;
-
-        if(!this.isValidUser()) return;
-
-        return this.validateGrecaptcha()
-            .then(recaptchaValidation => {
-                if(!recaptchaValidation.success)
-                    throw new Error("The reCAPTCHA could not be verified.");
-
-                return this.sequelize.models.users.findOne({where: {username}});
-            })
-            .then(userRes => {
-                if (userRes !== null || username === this.req.session.tempUser.username)
-                    throw new Error("The username already exists.");
-
-                session.saveTempUser(this.req, {
-                    username,
-                    email,
-                    role,
-                    password,
-                    walletAddress
-                }, uuidv4());
-
-                return this.mailer.sendConfirmEmail();
-            })
-            .then(mailRes => {
-                if(global.isDevelopment()) console.log(mailRes);
-                this.responseHandler.sendSuccess();
-            })
-            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
-    };
-
     static filterUsers(userEntries){
         return userEntries
             .map(entry => entry.dataValues)
@@ -157,6 +32,152 @@ class UsersRequest extends Request {
             }));
     };
 
+    constructor(params){
+        super(params);
+
+        this.emailer = new Emailer(params.req);
+        this.model = this.sequelize.models.users;
+    }
+
+    async handleUpdate(){
+        return this.updateUser();
+    }
+
+    async handlePost(){
+        return this.registerTempUser();
+    };
+
+    async handleGet(){
+        const username = this.req.params.param;
+
+        if(this.isEmailConfirmation()){
+            return this.createUser(this.req, this.res, this.sequelize);
+        } else if(username){
+            return this.getUser(username);
+        }
+
+        return this.getAllUsers();
+    }
+
+    async handleDelete(){
+        if(!this.isLoggedInAdmin())
+            return this.responseHandler.sendUnauthorized();
+
+        const username = this.req.query.username;
+
+        if(!username)
+            return this.responseHandler.sendBadRequest("Username is required.");
+
+        return this.model
+            .destroy({where: {username}})
+            .then(() => this.responseHandler.sendSuccess())
+            .catch(err => this.responseHandler.sendNotFound(err))
+    };
+
+    isEmailConfirmation(){
+        if(!this.req.params.param) return false;
+
+        return this.req.params.param === this.req.session.tempUser.uuid;
+    }
+
+    async getUser(username){
+        return this.model
+            .findOne({where: {username}})
+            .then(userEntry => {
+                if(this.isLoggedInAdmin()){
+                    this.responseHandler.sendSuccess(UsersRequest.filterUsersAsAdmin([userEntry]));
+                } else {
+                    this.responseHandler.sendSuccess(UsersRequest.filterUsers([userEntry]))
+                }
+            })
+            .catch(() => this.responseHandler.sendNotFound());
+    }
+
+    async getAllUsers(){
+        return this.model
+            .findAll()
+            .then(userEntries => {
+                if(this.isLoggedInAdmin()){
+                    this.responseHandler.sendSuccess(UsersRequest.filterUsersAsAdmin(userEntries));
+                } else {
+                    this.responseHandler.sendSuccess(UsersRequest.filterUsers(userEntries));
+                }
+            })
+            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    }
+
+    isValidUser(){
+        const user = this.req.body;
+        const errors = new FieldValidator(user).validateFields().getErrors({strings: true});
+
+        if(user.role === roles.admin){
+            errors.push("You cannot create admin accounts through this API");
+        }
+
+        if(errors.length > 0) {
+            this.responseHandler.sendBadRequest(errors);
+            return false;
+        }
+
+        return true;
+    };
+
+    async createUser(){
+        cookieSession.saveUser(this.req, this.req.session.tempUser);
+        const user = this.req.session.tempUser;
+
+        return this.model.create({
+            username: user.username,
+            password: user.password,
+            email: user.email,
+            role: user.role,
+            walletAddress: user.walletAddress
+        }).then(() => {
+            this.req.session.tempUser = {};
+            this.req.session.userWasActivated = true;
+            this.responseHandler.redirect(paths.pages.login);
+        }).catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    };
+
+    async registerTempUser(){
+        const {
+            username,
+            email,
+            role,
+            password,
+            walletAddress
+        } = this.req.body;
+
+        if(!this.isValidUser()) return;
+
+        return grecaptcha.validate(this.req)
+            .then(recaptchaValidation => {
+                if(!recaptchaValidation.success)
+                    throw new Error("The reCAPTCHA could not be verified.");
+
+                return this.sequelize.models.users.findOne({where: {username}});
+            })
+            .then(userRes => {
+                if (userRes !== null || username === this.req.session.tempUser.username)
+                    throw new Error("The username already exists.");
+
+                cookieSession.saveTempUser(this.req, {
+                    username,
+                    email,
+                    role,
+                    password,
+                    walletAddress
+                }, uuidv4());
+
+                return this.emailer.sendConfirmEmail();
+            })
+            .then(mailRes => {
+                if(global.isDevelopment()) console.log(mailRes);
+                this.responseHandler.sendSuccess();
+            })
+            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    };
+
     async updateUser(){
         const {
             username,
@@ -173,78 +194,17 @@ class UsersRequest extends Request {
 
         const hashedPassword = passwordHash.generate(password);
 
-        return this.sequelize.models.users
+        return this.model
             .update(
                 {username, email, password: hashedPassword},
                 {where: {username: originalUsername}}
             )
-            .then(() => this.sequelize.models.users.findOne({where: {username}}))
+            .then(() => this.model.findOne({where: {username}}))
             .then(userRes => {
-                session.saveUser(this.req, userRes.dataValues);
+                cookieSession.saveUser(this.req, userRes.dataValues);
                 this.res.send(userRes.dataValues);
             })
-            .catch(err => {
-                this.responseHandler.sendBadRequest(err);
-            });
-    };
-
-    async handleUpdate(){
-        return this.updateUser();
-    }
-
-    async handlePost(){
-        return this.registerTempUser();
-    };
-
-    async handleGet(){
-        const username = this.req.params.param;
-
-        if(username && this.mailer.isValidEmailConfirmation(username)) {
-            return this.createUser(this.req, this.res, this.sequelize);
-        }
-
-        if(this.req.params.param){
-            return this.sequelize.models.users
-                .findOne({where: {username}})
-                .then(userEntry => {
-                    if(this.isLoggedInAdmin()){
-                        this.responseHandler.sendSuccess(UsersRequest.filterUsersAsAdmin([userEntry]));
-                    } else {
-                        this.responseHandler.sendSuccess(UsersRequest.filterUsers([userEntry]))
-                    }
-                })
-                .catch(() => {
-                    this.responseHandler.sendNotFound();
-                });
-        }
-
-        return this.sequelize.models.users
-            .findAll()
-            .then(userEntries => {
-                if(this.isLoggedInAdmin()){
-                    this.responseHandler.sendSuccess(UsersRequest.filterUsersAsAdmin(userEntries));
-                } else {
-                    this.responseHandler.sendSuccess(UsersRequest.filterUsers(userEntries));
-                }
-            })
-            .catch(err => {
-                this.responseHandler.sendSomethingWentWrong(err);
-            });
-    }
-
-    async handleDelete(){
-        if(!this.isLoggedInAdmin())
-            return this.responseHandler.sendUnauthorized();
-
-        const username = this.req.query.username;
-
-        if(!username)
-            return this.responseHandler.sendBadRequest("Username is required.");
-
-        return this.sequelize.models.users
-            .destroy({where: {username}})
-            .then(() => this.responseHandler.sendSuccess())
-            .catch(err => this.responseHandler.sendNotFound(err))
+            .catch(err => this.responseHandler.sendBadRequest(err));
     };
 }
 

@@ -1,4 +1,6 @@
 const strings = require("./datatypes/strings");
+const {regex} = require("./constants");
+const {isClient} = require("./utils");
 
 module.exports.getFieldError = (fieldName, field) => {
     switch(fieldName){
@@ -56,13 +58,11 @@ module.exports.getTextError = (text, fieldName) => {
 };
 
 module.exports.getNameError = (name, fieldName) => {
-    const lettersOrNumbersOrDashesOrUnderscoresOrSpaces = /^[a-zA-Z0-9]+([_ -]?[a-zA-Z0-9])*$/g;
-
     if(typeof name !== "string") {
         return `${fieldName} must be a string`;
     } else if(!strings.isDefined(name)){
         return `${fieldName} is required.`;
-    } else if(!name.match(lettersOrNumbersOrDashesOrUnderscoresOrSpaces)){
+    } else if(!name.match(regex.username)){
         return `${fieldName} cannot contain any special characters besides dashes, ` +
             `underscores and spaces.`;
     } else if(name.length < 2 || name.length > 64){
@@ -108,11 +108,9 @@ module.exports.getEthereumAddressError = (walletAddress, fieldName = "The addres
 };
 
 module.exports.getUsernameError = (username) => {
-    const lettersOrNumbersOrDashesOrUnderscores = /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g;
-
     if(typeof username !== "string") {
         return "The username must be a string";
-    } else if(!username.match(lettersOrNumbersOrDashesOrUnderscores)){
+    } else if(!username.match(regex.username)){
         return "The username must start with a letter and cannot contain " +
             "any special characters besides dashes and underscores.";
     } else if(username.length < 2 || username.length > 64){
@@ -135,10 +133,12 @@ module.exports.getEmailError = (email, fieldName = "email") => {
 };
 
 module.exports.getGrecaptchaError = () => {
-    if(grecaptcha === undefined){
-        return "Error loading ReCAPTCHA. Please try again later.";
-    } else if(!strings.isDefined(grecaptcha.getResponse())){
-        return "Please verify that you\"re not a robot.";
+    if(isClient()){
+        if(grecaptcha === undefined){
+            return "Error loading ReCAPTCHA. Please try again later.";
+        } else if(!strings.isDefined(grecaptcha.getResponse())){
+            return "Please verify that you\"re not a robot.";
+        }
     }
 
     return "";

@@ -1,16 +1,20 @@
 const Request = require("./Request");
-const session = require("../../services/session");
+const cookieSession = require("../services/cookieSession");
 const passwordHash = require("password-hash");
 const serverSettings = require("../serverSettings");
 
 class SessionsRequest extends Request {
-    constructor(params){
-        super(params);
+    async handleGet(){
+        return this.responseHandler.sendSuccess(this.req.session.user);
+    };
 
-        this.handleGet = this.handleGet.bind(this);
-        this.handlePost = this.handlePost.bind(this);
-        this.handleDelete = this.handleDelete.bind(this);
-    }
+    async handlePost(){
+        return this.login();
+    };
+
+    async handleDelete(){
+        return this.logout();
+    };
 
     login(){
         const {
@@ -30,7 +34,7 @@ class SessionsRequest extends Request {
                 if(!passwordHash.verify(password, userRes.password))
                     throw new Error("Invalid password.");
 
-                session.saveUser(this.req, userRes.dataValues);
+                cookieSession.saveUser(this.req, userRes.dataValues);
                 this.responseHandler.sendSuccess(this.req.session.user);
             })
             .catch(err => this.responseHandler.sendSomethingWentWrong(err));
@@ -43,18 +47,6 @@ class SessionsRequest extends Request {
         }
 
         return this.responseHandler.sendUnauthorized();
-    };
-
-    async handleGet(){
-        return this.responseHandler.sendSuccess(this.req.session.user);
-    };
-
-    async handlePost(){
-        return this.login();
-    };
-
-    async handleDelete(){
-        return this.logout();
     };
 }
 

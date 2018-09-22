@@ -1,10 +1,8 @@
 const {urls} = require("../../services/constants");
-const RequestFactory = require("../request/RequestFactory");
+const EmailRequest = require("../request/EmailRequest");
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.email}/:type`, server.initSession, (req, res) => {
-        return RequestFactory
-            .newRequest({url: urls.email, req, res, sequelize})
-            .handle();
+        return new EmailRequest({req, res, sequelize}).handle();
     });
 };

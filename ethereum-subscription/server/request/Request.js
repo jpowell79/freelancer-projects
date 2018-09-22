@@ -1,20 +1,13 @@
 const objects = require("../../services/datatypes/objects");
 const {roles} = require("../../services/constants");
+const ResponseHandler = require("../services/api/ResponseHandler");
 
 class Request {
-    constructor({req, res, sequelize, responseHandler}){
+    constructor({req, res, sequelize}){
         this.req = req;
         this.res = res;
         this.sequelize = sequelize;
-        this.responseHandler = responseHandler;
-    }
-
-    isLoggedIn(){
-        return !objects.isEmpty(this.req.session.user);
-    }
-
-    isLoggedInAdmin(){
-        return this.isLoggedIn() && this.req.session.user.role === roles.admin;
+        this.responseHandler = new ResponseHandler(res);
     }
 
     handle(){
@@ -48,6 +41,14 @@ class Request {
 
     async handleUpdate(){
         return this.responseHandler.sendMethodNotAllowed();
+    }
+
+    isLoggedIn(){
+        return !objects.isEmpty(this.req.session.user);
+    }
+
+    isLoggedInAdmin(){
+        return this.isLoggedIn() && this.req.session.user.role === roles.admin;
     }
 }
 

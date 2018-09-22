@@ -4,10 +4,21 @@ const formidable = require("formidable");
 const fs = require("fs");
 
 class UploadRequest extends Request {
-    constructor(params){
-        super(params);
+    async handlePost(){
+        if(this.isLoggedInAdmin())
+            return this.responseHandler.sendUnauthorized();
 
-        this.handlePost = this.handlePost.bind(this);
+        const form = new formidable.IncomingForm();
+
+        form.parse(this.req, (err, fields, files) => {
+            const file = files.file;
+
+            if(err || !file){
+                return this.responseHandler.sendBadRequest(err);
+            }
+
+            this.checkTypeThenUpload(file);
+        });
     }
 
     upload(file, path){
@@ -31,23 +42,6 @@ class UploadRequest extends Request {
             return this.upload(file, paths.static.files);
         }
     };
-
-    async handlePost(){
-        if(this.isLoggedInAdmin())
-            return this.responseHandler.sendUnauthorized();
-
-        const form = new formidable.IncomingForm();
-
-        form.parse(this.req, (err, fields, files) => {
-            const file = files.file;
-
-            if(err || !file){
-                return this.responseHandler.sendBadRequest(err);
-            }
-
-            this.checkTypeThenUpload(file);
-        });
-    }
 }
 
 module.exports = UploadRequest;

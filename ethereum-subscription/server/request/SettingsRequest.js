@@ -5,9 +5,7 @@ class SettingsRequest extends Request {
     constructor(params){
         super(params);
 
-        this.handleGet = this.handleGet.bind(this);
-        this.handlePost = this.handlePost.bind(this);
-        this.handleUpdate = this.handleUpdate.bind(this);
+        this.model = this.sequelize.models.settings;
     }
 
     isValidRequest(){
@@ -30,13 +28,13 @@ class SettingsRequest extends Request {
         const name = this.req.params.name;
 
         if(!strings.isDefined(name)){
-            return this.sequelize.models.settings
+            return this.model
                 .findAll()
                 .then(settings => this.responseHandler.sendSuccess(settings))
                 .catch(err => this.responseHandler.sendSomethingWentWrong(err));
         }
 
-        return this.sequelize.models.settings
+        return this.model
             .findOne({where: {name}})
             .then(setting => {
                 if(!setting) throw new Error("No setting with the given name exists.");
@@ -50,7 +48,7 @@ class SettingsRequest extends Request {
 
         const {name, value} = this.req.body;
 
-        return this.sequelize.models.settings
+        return this.model
             .update({name, value}, {where: {name}})
             .then(affectedRows => {
                 if(affectedRows[0] === "0" || affectedRows[0] === 0)
@@ -66,7 +64,7 @@ class SettingsRequest extends Request {
 
         const {name, value} = this.req.body;
 
-        return this.sequelize.models.settings
+        return this.model
             .create({name, value})
             .then(() => this.responseHandler.sendSuccess())
             .catch(err => this.responseHandler.sendBadRequest(err));

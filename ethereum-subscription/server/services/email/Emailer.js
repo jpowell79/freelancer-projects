@@ -5,7 +5,7 @@ const escapeHtml = require("html-escape");
 const serverSettings = require("../../serverSettings");
 const {emailContentStart, emailContentEnd} = require('./emailStyles');
 
-class Mailer {
+class Emailer {
     constructor(req){
         this.req = req;
         this.smtpTransport = nodemailer.createTransport(serverSettings.NODEMAILER_TRANSPORT);
@@ -217,10 +217,6 @@ class Mailer {
             )
         });
     }
-
-    isValidEmailConfirmation(uuid){
-        return uuid === this.req.session.tempUser.uuid;
-    }
 }
 
-module.exports = Mailer;
+module.exports = Emailer;

@@ -1,5 +1,5 @@
 const objects = require("../../services/datatypes/objects");
-const roles = require("../../services/constants/roles");
+const {roles, regex} = require("../../services/constants");
 const passwordHash = require("password-hash");
 
 module.exports = (sequelize, DataTypes) => (
@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => (
             primaryKey: true,
             allowNull: false,
             validate: {
-                is: /^[a-zA-Z0-9]+([_-]?[a-zA-Z0-9])*$/g,
+                is: regex.username,
                 len: [2, 64]
             }
         },
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => (
             type: DataTypes.STRING,
             allowNull: false,
             validate: {
-                is: /0x[a-zA-Z0-9]+/g,
+                is: regex.walletAddress,
                 len: [42, 42]
             }
         },

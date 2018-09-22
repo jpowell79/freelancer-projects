@@ -4,6 +4,7 @@ const settings = require("./settings");
 const urls = require("./urls");
 const mailTypes = require("./mailTypes");
 const httpCodes = require("./httpCodes");
+const regex = require("./regex");
 
 module.exports = {
     paths,
@@ -11,5 +12,6 @@ module.exports = {
     settings,
     urls,
     mailTypes,
-    httpCodes
+    httpCodes,
+    regex
 };

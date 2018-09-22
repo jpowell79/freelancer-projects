@@ -1,10 +1,8 @@
 const {urls} = require("../../services/constants/");
-const RequestFactory = require("../request/RequestFactory");
+const SessionsRequest = require("../request/SessionsRequest");
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.sessions}`, server.initSession, (req, res) => {
-        return RequestFactory
-            .newRequest({url: urls.sessions, req, res, sequelize})
-            .handle();
+        return new SessionsRequest({req, res, sequelize}).handle();
     });
 };

@@ -1,10 +1,8 @@
-const RequestFactory = require("../request/RequestFactory");
 const {urls} = require("../../services/constants/");
+const UploadRequest = require("../request/UploadRequest");
 
-module.exports = (server) => {
+module.exports = (server, sequelize) => {
     server.use(urls.upload, server.initSession, (req, res) => {
-        return RequestFactory
-            .newRequest({url: urls.upload, req, res, sequelize})
-            .handle();
+        return new UploadRequest({req, res, sequelize}).handle();
     });
 };

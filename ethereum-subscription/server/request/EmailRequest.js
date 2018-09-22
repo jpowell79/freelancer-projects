@@ -1,6 +1,6 @@
 const Request = require("./Request");
 const {mailTypes} = require("../../services/constants");
-const Mailer = require("../services/email/Mailer");
+const Emailer = require("../services/email/Emailer");
 
 const adminMailTypes = [
     mailTypes.massMailSuppliers
@@ -14,8 +14,7 @@ class EmailRequest extends Request {
     constructor(params){
         super(params);
 
-        this.mailer = new Mailer(params.req);
-        this.handlePost = this.handlePost.bind(this);
+        this.emailer = new Emailer(params.req);
     }
 
     async handlePost(){
@@ -39,19 +38,19 @@ class EmailRequest extends Request {
         switch(mailType){
         case mailTypes.confirmationMail:
             return this.responseHandler
-                .handlePromiseResponse(this.mailer.sendConfirmEmail());
+                .handlePromiseResponse(this.emailer.sendConfirmEmail());
         case mailTypes.contractCreated:
             return this.responseHandler
-                .handlePromiseResponse(this.mailer.sendContractCreatedMail());
+                .handlePromiseResponse(this.emailer.sendContractCreatedMail());
         case mailTypes.requestContract:
             return this.responseHandler
-                .handlePromiseResponse(this.mailer.sendContractRequestMail());
+                .handlePromiseResponse(this.emailer.sendContractRequestMail());
         case mailTypes.requestSubscription:
             return this.responseHandler
-                .handlePromiseResponse(this.mailer.sendRequestSubscriptionMails());
+                .handlePromiseResponse(this.emailer.sendRequestSubscriptionMails());
         case mailTypes.massMailSuppliers:
             return this.responseHandler
-                .handlePromiseResponse(this.mailer.sendMassSupplierMail(this.sequelize));
+                .handlePromiseResponse(this.emailer.sendMassSupplierMail(this.sequelize));
         default:
             this.responseHandler.sendBadRequest(`Invalid email type: ${this.req.params.type}`);
             break;

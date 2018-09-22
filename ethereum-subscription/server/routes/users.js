@@ -1,10 +1,8 @@
 const {urls} = require("../../services/constants/");
-const RequestFactory = require("../request/RequestFactory");
+const UsersRequest = require("../request/UsersRequest");
 
 module.exports = (server, sequelize) => {
     server.use(`${urls.users}/:param?`, server.initSession, (req, res) => {
-        return RequestFactory
-            .newRequest({url: urls.users, req, res, sequelize})
-            .handle();
+        return new UsersRequest({req, res, sequelize}).handle();
     });
 };
