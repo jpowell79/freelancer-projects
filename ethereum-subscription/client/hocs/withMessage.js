@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from "react";
-import {Message} from 'semantic-ui-react';
+import {Message} from "semantic-ui-react";
 import validation from "../../services/validation";
 import {isDefined} from "../../services/datatypes/strings";
 import {getChildProps} from "../services/utils";
 
 const defaultInitialState = {
-    successTitle: 'Your changes have been saved successfully!',
-    errorTitle: 'There was some errors with your submission',
-    infoTitle: '',
+    successTitle: "Your changes have been saved successfully!",
+    errorTitle: "There was some errors with your submission",
+    infoTitle: "",
     errors: [],
     fieldsWithErrors: [],
     success: [],

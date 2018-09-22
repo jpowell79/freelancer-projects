@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from 'react';
-import {Form, Dropdown, Radio} from 'semantic-ui-react';
-import withMessage from '../../hocs/withMessage';
-import PropTypes from 'prop-types';
+import React, {Component, Fragment} from "react";
+import {Form, Dropdown, Radio} from "semantic-ui-react";
+import withMessage from "../../hocs/withMessage";
+import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 
 class SubscriptionForm extends Component {
     static mapStateToProps = ({subscriptionTypes}) => ({
@@ -75,9 +75,9 @@ class SubscriptionForm extends Component {
                 {renderMessages()}
                 <Form>
                     {this.props.renderTopChildren(this.props)}
-                    {!hideFields.includes('contactDetails') && (
+                    {!hideFields.includes("contactDetails") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('contactDetails')
+                            messageState.fieldsWithErrors.includes("contactDetails")
                         }>
                             <label>Contact details (optional - max 50 characters)</label>
                             <span className="counter">
@@ -98,9 +98,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('subscriptionType') && (
+                    {!hideFields.includes("subscriptionType") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('subscriptionType')
+                            messageState.fieldsWithErrors.includes("subscriptionType")
                         }>
                             <label>Subscription Type</label>
                             <Dropdown
@@ -117,9 +117,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('subscriptionName') && (
+                    {!hideFields.includes("subscriptionName") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('subscriptionName')
+                            messageState.fieldsWithErrors.includes("subscriptionName")
                         }>
                             <label>Subscription Name</label>
                             <input
@@ -137,9 +137,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('subscriptionLengthInWeeks') && (
+                    {!hideFields.includes("subscriptionLengthInWeeks") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('subscriptionLengthInWeeks')
+                            messageState.fieldsWithErrors.includes("subscriptionLengthInWeeks")
                         }>
                             <label>Subscription Length (in weeks)</label>
                             <input
@@ -155,9 +155,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('subscriptionPrice') && (
+                    {!hideFields.includes("subscriptionPrice") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('subscriptionPrice')
+                            messageState.fieldsWithErrors.includes("subscriptionPrice")
                         }>
                             <label>Monthly Subscription Price (in Wei)</label>
                             <input
@@ -173,9 +173,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('joinFee') && (
+                    {!hideFields.includes("joinFee") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('joinFee')
+                            messageState.fieldsWithErrors.includes("joinFee")
                         }>
                             <label>Joining Fee (in Wei)</label>
                             <input
@@ -189,9 +189,9 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('exitFee') && (
+                    {!hideFields.includes("exitFee") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('exitFee')
+                            messageState.fieldsWithErrors.includes("exitFee")
                         }>
                             <label>Exit Fee (in Wei)</label>
                             <input
@@ -207,13 +207,13 @@ class SubscriptionForm extends Component {
                             />
                         </Form.Field>
                     )}
-                    {!hideFields.includes('hasFreeTrials') && (
+                    {!hideFields.includes("hasFreeTrials") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('hasFreeTrials')
+                            messageState.fieldsWithErrors.includes("hasFreeTrials")
                         }>
                             <label>Free Trials?</label>
                             <Radio
-                                label='Yes'
+                                label="Yes"
                                 checked={messageState.hasFreeTrials}
                                 disabled={isLoading || complete}
                                 onChange={() =>{
@@ -224,7 +224,7 @@ class SubscriptionForm extends Component {
                             />
                             <span className="padder-3">
                             <Radio
-                                label='No'
+                                label="No"
                                 checked={!messageState.hasFreeTrials}
                                 disabled={isLoading || complete}
                                 onChange={() =>{
@@ -236,9 +236,9 @@ class SubscriptionForm extends Component {
                         </span>
                         </Form.Field>
                     )}
-                    {!hideFields.includes('subscriptionDetails') && (
+                    {!hideFields.includes("subscriptionDetails") && (
                         <Form.Field error={
-                            messageState.fieldsWithErrors.includes('subscriptionDetails')
+                            messageState.fieldsWithErrors.includes("subscriptionDetails")
                         }>
                             <label>Subscription Details (optional - max 50 characters)</label>
                             <span className="counter">
@@ -277,15 +277,15 @@ class SubscriptionForm extends Component {
 }
 
 export default withMessage(connect(SubscriptionForm.mapStateToProps)(SubscriptionForm), {
-    contactDetails: '',
-    subscriptionType: '',
-    subscriptionName: '',
-    subscriptionLengthInWeeks: '',
-    subscriptionPrice: '',
-    joinFee: '',
-    exitFee: '',
+    contactDetails: "",
+    subscriptionType: "",
+    subscriptionName: "",
+    subscriptionLengthInWeeks: "",
+    subscriptionPrice: "",
+    joinFee: "",
+    exitFee: "",
     hasFreeTrials: true,
-    subscriptionDetails: '',
+    subscriptionDetails: "",
     isLoading: false,
     complete: false
 });

@@ -1,5 +1,5 @@
-import strings from '../../services/datatypes/strings';
-import objects from '../../services/datatypes/objects';
+import strings from "../../services/datatypes/strings";
+import objects from "../../services/datatypes/objects";
 
 export const getChildProps = async (ChildClass, appContext) => {
     let childProps = {};
@@ -20,7 +20,7 @@ export const hasResponseData = (err) => {
 export const getErrorString = (err) => {
     const error = hasResponseData(err) ? err.response.data : err.toString();
 
-    return (error.startsWith('Error: ')) ? error.split('Error: ')[1] : error;
+    return (error.startsWith("Error: ")) ? error.split("Error: ")[1] : error;
 };
 
 export const childrenToArray = (children) => {

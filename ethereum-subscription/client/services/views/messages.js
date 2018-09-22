@@ -1,10 +1,10 @@
 import etherscan from "../../../services/api/etherscan";
 
 export const waitingForBlockchain = {
-    infoTitle: 'Waiting for transaction confirmation',
+    infoTitle: "Waiting for transaction confirmation",
     info: [
-        'Please allow up to 30 seconds for the transaction to ' +
-        'be processed and written to the Ethereum blockchain.'
+        "Please allow up to 30 seconds for the transaction to " +
+        "be processed and written to the Ethereum blockchain."
     ]
 };
 

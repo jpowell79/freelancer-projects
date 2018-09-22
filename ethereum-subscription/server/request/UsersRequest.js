@@ -1,14 +1,12 @@
-"use strict";
-
-const Request = require('./Request');
-const axios = require('axios');
-const validation = require('../../../../services/validation');
-const {roles, paths} = require('../../../../services/constants/');
-const serverSettings = require('../../../serverSettings');
-const session = require('../../../../services/session');
-const uuidv4 = require('uuid/v4');
-const passwordHash = require('password-hash');
-const Mailer = require('../Mailer');
+const Request = require("./Request");
+const axios = require("axios");
+const validation = require("../../services/validation");
+const {roles, paths} = require("../../services/constants/index");
+const serverSettings = require("../serverSettings");
+const session = require("../../services/session");
+const uuidv4 = require("uuid/v4");
+const passwordHash = require("password-hash");
+const Mailer = require("../services/api/Mailer");
 
 class UsersRequest extends Request {
     constructor(params){
@@ -44,7 +42,7 @@ class UsersRequest extends Request {
         } = this.req.body;
 
         if(!username || !email || !role || !password || !walletAddress){
-            return this.responseHandler.sendBadRequest('Missing required fields.');
+            return this.responseHandler.sendBadRequest("Missing required fields.");
         }
 
         const usernameErrors = validation.getUsernameError(username);
@@ -52,28 +50,28 @@ class UsersRequest extends Request {
         const emailErrors = validation.getEmailError(email);
         const walletAddressErrors = validation.getEthereumAddressError(walletAddress);
 
-        if(usernameErrors !== ''){
+        if(usernameErrors !== ""){
             return this.responseHandler.sendBadRequest(usernameErrors);
         }
 
-        if(passwordErrors !== ''){
+        if(passwordErrors !== ""){
             return this.responseHandler.sendBadRequest(passwordErrors);
         }
 
-        if(emailErrors !== ''){
+        if(emailErrors !== ""){
             return this.responseHandler.sendBadRequest(emailErrors);
         }
 
-        if(walletAddressErrors !== ''){
+        if(walletAddressErrors !== ""){
             return this.responseHandler.sendBadRequest(walletAddressErrors);
         }
 
         if(role === roles.admin){
-            return this.responseHandler.sendBadRequest('You cannot create admin accounts through this api.');
+            return this.responseHandler.sendBadRequest("You cannot create admin accounts through this api.");
         }
 
         if(!roles[role]){
-            return this.responseHandler.sendBadRequest('Role does not exist');
+            return this.responseHandler.sendBadRequest("Role does not exist");
         }
 
         return true;
@@ -110,7 +108,7 @@ class UsersRequest extends Request {
         return this.validateGrecaptcha()
             .then(recaptchaValidation => {
                 if(!recaptchaValidation.success)
-                    throw new Error('The reCAPTCHA could not be verified.');
+                    throw new Error("The reCAPTCHA could not be verified.");
 
                 return this.sequelize.models.users.findOne({where: {username}});
             })
@@ -241,7 +239,7 @@ class UsersRequest extends Request {
         const username = this.req.query.username;
 
         if(!username)
-            return this.responseHandler.sendBadRequest('Username is required.');
+            return this.responseHandler.sendBadRequest("Username is required.");
 
         return this.sequelize.models.users
             .destroy({where: {username}})

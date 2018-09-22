@@ -1,9 +1,9 @@
-const testSettings = require('../serverTestSettings');
-const configServer = require('../../config/configServer');
-const configSequelize = require('../../config/configSequelize');
-const loadTestDatabase = require('./loadTestDatabase');
-const {removeDatabase} = require('../../services/database/databaseUtils');
-require('../../config/addGlobalHelpers')();
+require("../../config/defineGlobals");
+const testSettings = require("../serverTestSettings");
+const configApp = require("../../config/configApp");
+const configSequelize = require("../../config/configSequelize");
+const loadTestDatabase = require("./loadTestDatabase");
+const {removeDatabase} = require("../../services/database/databaseUtils");
 
 module.exports = async () => {
     const mockApp = {
@@ -22,7 +22,7 @@ module.exports = async () => {
                 return loadTestDatabase(sequelize);
             })
             .then(() => {
-                const server = configServer(mockApp, global.sequelize);
+                const server = configApp(mockApp, global.sequelize);
                 return server.listen(testSettings.PORT);
             })
             .then(app => {

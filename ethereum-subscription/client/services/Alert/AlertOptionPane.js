@@ -1,11 +1,11 @@
-import React from 'react';
-import Alert from './Alert';
+import React from "react";
+import Alert from "./Alert";
 import {ExclamationCircle, InfoCircle, CheckCircle} from "../../modules/icons";
 
 class AlertOptionPane {
     static showErrorAlert = ({
         message = Alert.DEFAULT_TEXT.MESSAGE,
-        title = 'Error',
+        title = "Error",
         titleIcon = <ExclamationCircle/>,
         htmlMessage = undefined,
         confirmText = Alert.DEFAULT_TEXT.CONFIRM,
@@ -34,7 +34,7 @@ class AlertOptionPane {
 
     static showWarningAlert = ({
         message = Alert.DEFAULT_TEXT.MESSAGE,
-        title = 'Warning',
+        title = "Warning",
         titleIcon = <ExclamationCircle/>,
         htmlMessage = undefined,
         confirmText = Alert.DEFAULT_TEXT.CONFIRM,
@@ -63,7 +63,7 @@ class AlertOptionPane {
 
     static showInfoAlert = ({
         message = Alert.DEFAULT_TEXT.MESSAGE,
-        title = 'Information',
+        title = "Information",
         titleIcon = <InfoCircle/>,
         htmlMessage = undefined,
         confirmText = Alert.DEFAULT_TEXT.CONFIRM,
@@ -92,7 +92,7 @@ class AlertOptionPane {
 
     static showSuccessAlert = ({
         message = Alert.DEFAULT_TEXT.MESSAGE,
-        title = 'Success',
+        title = "Success",
         titleIcon = <CheckCircle/>,
         htmlMessage = undefined,
         confirmText = Alert.DEFAULT_TEXT.CONFIRM,

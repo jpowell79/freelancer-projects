@@ -1,8 +1,6 @@
-"use strict";
-
-const Request = require('./Request');
-const mysqlDump = require('mysqldump');
-const serverSettings = require('../../../serverSettings');
+const Request = require("./Request");
+const mysqlDump = require("mysqldump");
+const serverSettings = require("../serverSettings");
 
 class DownloadRequest extends Request {
     constructor(params){
@@ -16,15 +14,15 @@ class DownloadRequest extends Request {
             return this.responseHandler.sendUnauthorized();
 
         if(!this.req.params.dump)
-            return this.responseHandler.sendBadRequest('Invalid download type.');
+            return this.responseHandler.sendBadRequest("Invalid download type.");
 
         return this.downloadAndCreateDatabaseDump();
     };
 
     async downloadAndCreateDatabaseDump(){
         try {
-            const host = this.req.headers.host.startsWith('localhost')
-                ? 'localhost' : this.req.headers.host;
+            const host = this.req.headers.host.startsWith("localhost")
+                ? "localhost" : this.req.headers.host;
             await mysqlDump({
                 connection: {
                     host: host,
@@ -36,7 +34,7 @@ class DownloadRequest extends Request {
                 dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
             });
 
-            const rootPath = require('path').normalize(__dirname + '/../../../..');
+            const rootPath = require("path").normalize(__dirname + "/../../../..");
             const dumpFile = `${rootPath}/${serverSettings.DATABASE_DUMP_FILE}`;
             this.responseHandler.res.download(dumpFile, serverSettings.DATABASE_DUMP_FILE);
         } catch(err){

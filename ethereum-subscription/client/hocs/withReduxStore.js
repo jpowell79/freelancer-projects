@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import App from 'next/app';
-import {initStore} from '../redux/store';
+import React, {Component} from "react";
+import App from "next/app";
+import {initStore} from "../redux/store";
 import {isServer} from "../../services/utils";
 
-const __NEXT_REDUX_STORE__ = '__NEXT_REDUX_STORE__';
+const __NEXT_REDUX_STORE__ = "__NEXT_REDUX_STORE__";
 
 function getOrCreateStore(initialState) {
     if (isServer()) {

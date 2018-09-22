@@ -1,6 +1,6 @@
 import Dispatcher from "./Dispatcher";
-import objects from '../../../services/datatypes/objects';
-import {isClient, isServer} from '../../../services/utils';
+import objects from "../../../services/datatypes/objects";
+import {isClient, isServer} from "../../../services/utils";
 
 const defaultOptions = {
     settings: false,

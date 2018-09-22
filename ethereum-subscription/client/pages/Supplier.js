@@ -1,15 +1,15 @@
-import React, {Component} from 'react';
-import {compose} from 'redux';
-import {connect} from 'react-redux';
-import Page from '../containers/Page';
-import FullWidthSegment from '../containers/FullWidthSegment';
+import React, {Component} from "react";
+import {compose} from "redux";
+import {connect} from "react-redux";
+import Page from "../containers/Page";
+import FullWidthSegment from "../containers/FullWidthSegment";
 import withMountObserver from "../hocs/withMountObserver";
 import withMetamaskAccount from "../hocs/withMetamaskAccount";
-import withAuthenticateSupplier from '../hocs/withAuthenticateSupplier';
+import withAuthenticateSupplier from "../hocs/withAuthenticateSupplier";
 import withEthereumConversionRates from "../hocs/withEthereumConversionRates";
 import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
-import {Menu, Segment} from 'semantic-ui-react';
-import objects from '../../services/datatypes/objects';
+import {Menu, Segment} from "semantic-ui-react";
+import objects from "../../services/datatypes/objects";
 import ManageProfile from "../site-modules/supplier-sections/ManageProfile";
 import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
@@ -20,9 +20,9 @@ class Supplier extends Component {
     static mapStateToProps = ({user}) => ({user});
 
     static sections = {
-        subscriptions: 'Your Subscriptions',
-        requestContract: 'Request New Contract',
-        manageProfile: 'Manage Your Profile'
+        subscriptions: "Your Subscriptions",
+        requestContract: "Request New Contract",
+        manageProfile: "Manage Your Profile"
     };
 
     constructor(props){
@@ -83,12 +83,12 @@ class Supplier extends Component {
         const {active} = this.state;
         const activeSection = objects.values(Supplier.sections)[active];
         const segmentClass = classNames({
-            'widthless-mobile': activeSection === Supplier.sections.subscriptions
+            "widthless-mobile": activeSection === Supplier.sections.subscriptions
         });
 
         return (
             <Page>
-                <FullWidthSegment className={joinClassNames('gray', segmentClass)} skinny wrapper={1}>
+                <FullWidthSegment className={joinClassNames("gray", segmentClass)} skinny wrapper={1}>
                     <Menu fluid stackable>
                         {objects.values(Supplier.sections)
                             .map((section, i) => {

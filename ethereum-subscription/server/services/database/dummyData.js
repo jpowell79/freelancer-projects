@@ -1,6 +1,6 @@
-const defaultData = require('./defaultData');
-const strings = require('../../../services/datatypes/strings');
-const {random} = require('../../../services/utils');
+const defaultData = require("./defaultData");
+const strings = require("../../../services/datatypes/strings");
+const {random} = require("../../../services/utils");
 
 const generateSubscribers = (amount) => {
     const subscribers = [];

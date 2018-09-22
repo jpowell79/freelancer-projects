@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import Page from '../containers/Page';
-import FullWidthSegment from '../containers/FullWidthSegment';
-import withAuthenticateAdmin from '../hocs/withAuthenticateAdmin';
-import {Menu, Segment, Grid} from 'semantic-ui-react';
-import objects from '../../services/datatypes/objects';
+import React, {Component} from "react";
+import Page from "../containers/Page";
+import FullWidthSegment from "../containers/FullWidthSegment";
+import withAuthenticateAdmin from "../hocs/withAuthenticateAdmin";
+import {Menu, Segment, Grid} from "semantic-ui-react";
+import objects from "../../services/datatypes/objects";
 import Homepage from "../site-modules/admin-sections/Homepage";
 import SiteIdentity from "../site-modules/admin-sections/SiteIdentity";
 import MassEmail from "../site-modules/admin-sections/MassEmail";
@@ -15,14 +15,14 @@ import DatabaseBackup from "../site-modules/admin-sections/DatabaseBackup";
 
 class Admin extends Component {
     static sections = {
-        addContract: 'Add new contract to site',
-        suspendSuppliers: 'Suspend Suppliers',
-        massEmail: 'Mass Email to Suppliers',
-        backupDatabase: 'Backup Database',
-        addContractType: 'Add new contract type',
-        homepage: 'Homepage',
-        smartContract: 'Smart Contract Data',
-        siteIdentity: 'Site Identity'
+        addContract: "Add new contract to site",
+        suspendSuppliers: "Suspend Suppliers",
+        massEmail: "Mass Email to Suppliers",
+        backupDatabase: "Backup Database",
+        addContractType: "Add new contract type",
+        homepage: "Homepage",
+        smartContract: "Smart Contract Data",
+        siteIdentity: "Site Identity"
     };
 
     constructor(props){

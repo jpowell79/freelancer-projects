@@ -1,4 +1,4 @@
-import $ from 'jquery';
+import $ from "jquery";
 
 /**
  * An edit of tablesort 0.0.11 to work nicer with server rendering
@@ -8,18 +8,18 @@ import $ from 'jquery';
  */
 class TableSorter {
     static defaultClassNames = {
-        sort: 'tablesort',
-        sortable: 'sortable',
-        sortStart: 'start',
-        sortComplete: 'complete',
-        noSort: 'no-sort',
-        ascending: 'sorted ascending',
-        descending: 'sorted descending'
+        sort: "tablesort",
+        sortable: "sortable",
+        sortStart: "start",
+        sortComplete: "complete",
+        noSort: "no-sort",
+        ascending: "sorted ascending",
+        descending: "sorted descending"
     };
 
     static defaultComparator(a, b){
-        let data1 = a.replace(/[%$,/:]*/g, '');
-        let data2 = b.replace(/[%$,/:]*/g, '');
+        let data1 = a.replace(/[%$,/:]*/g, "");
+        let data2 = b.replace(/[%$,/:]*/g, "");
 
         if(!isNaN(data1) && !isNaN(data2)){
             data1 = parseFloat(data1);
@@ -49,7 +49,7 @@ class TableSorter {
         this.classNames = this.settings.classNames;
 
         this.$table = $table;
-        this.$thead = this.$table.find('thead');
+        this.$thead = this.$table.find("thead");
         this.$ths = (this.$thead.length > 0)
             ? this.$thead.find(`th:not(.${this.classNames.noSort})`)
             : this.$table.find(`th:not(.${this.classNames.noSort})`);
@@ -115,15 +115,15 @@ class TableSorter {
 
         let self = this,
             table = this.$table,
-            rowsContainer = table.find('tbody').length > 0 ? table.find('tbody') : table,
-            rows = rowsContainer.find('tr').has('td, th'),
-            cells = rows.find(':nth-child(' + ($th.index() + 1) + ')').filter('td, th'),
+            rowsContainer = table.find("tbody").length > 0 ? table.find("tbody") : table,
+            rows = rowsContainer.find("tr").has("td, th"),
+            cells = rows.find(":nth-child(" + ($th.index() + 1) + ")").filter("td, th"),
             sortBy = $th.data().sortBy,
             sortedMap = [];
 
         let unsortedValues = cells.map(function(idx, cell) {
             if (sortBy)
-                return (typeof sortBy === 'function') ? sortBy($(th), $(cell), self) : sortBy;
+                return (typeof sortBy === "function") ? sortBy($(th), $(cell), self) : sortBy;
             return ($(this).data().sortValue != null ? $(this).data().sortValue : $(this).text());
         });
         if (unsortedValues.length === 0) return;
@@ -142,7 +142,7 @@ class TableSorter {
 
         setTimeout(function() {
             self.$ths.removeClass(
-                self.classNames.ascending + ' ' +
+                self.classNames.ascending + " " +
                 self.classNames.descending
             );
             for (let i = 0, length = unsortedValues.length; i < length; i++) {
@@ -174,7 +174,7 @@ class TableSorter {
     }
 
     turnOffSorting(){
-        this.$ths.off('click.tablesort');
+        this.$ths.off("click.tablesort");
     }
 }
 

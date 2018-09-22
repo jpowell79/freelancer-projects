@@ -1,5 +1,5 @@
-const axios = require('axios');
-const {urls, mailTypes} = require('../constants');
+const axios = require("axios");
+const {urls, mailTypes} = require("../constants");
 
 const sendRequestSubscriptionMails = async ({
     supplierEmail,

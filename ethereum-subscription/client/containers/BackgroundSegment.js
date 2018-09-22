@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import FullWidthSegment from './FullWidthSegment';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import FullWidthSegment from "./FullWidthSegment";
+import PropTypes from "prop-types";
 import {classNames} from "../services/className";
 
 class BackgroundSegment extends Component {
@@ -33,17 +33,17 @@ class BackgroundSegment extends Component {
         } = this.props;
 
         const segmentClass = classNames({
-            'half height': halfHeight,
-            'height': fullHeight,
-            'padded': padded,
-            'skinny': skinny,
-            'bordered': bordered,
-            'attached': attached,
-            'centered': centered,
-            'inverted': inverted,
-            'paddingless': paddingLess,
-            'widthless': noWidthPadding,
-            'heightless': noHeightPadding
+            "half height": halfHeight,
+            "height": fullHeight,
+            "padded": padded,
+            "skinny": skinny,
+            "bordered": bordered,
+            "attached": attached,
+            "centered": centered,
+            "inverted": inverted,
+            "paddingless": paddingLess,
+            "widthless": noWidthPadding,
+            "heightless": noHeightPadding
         }, className);
 
         const wrapperOpt = (wrapper === FullWidthSegment.defaultProps.wrapper) ? {} : {wrapper};
@@ -53,7 +53,7 @@ class BackgroundSegment extends Component {
                 {...props}
                 {...wrapperOpt}
                 className={segmentClass}
-                style={Object.assign({}, {backgroundImage: `url('${imageUrl}')`}, style)}
+                style={Object.assign({}, {backgroundImage: `url("${imageUrl}")`}, style)}
             >
                 {children}
             </FullWidthSegment>

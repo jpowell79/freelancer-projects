@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Grid, Segment, Form} from 'semantic-ui-react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {Grid, Segment, Form} from "semantic-ui-react";
+import PropTypes from "prop-types";
 
 class SubscriptionFilters extends Component {
     static propTypes = {
@@ -22,7 +22,7 @@ class SubscriptionFilters extends Component {
             showExitFeeChecked: true,
             showZeroReputationChecked: true,
             checkAllAdditional: true,
-            txHashSearch: ''
+            txHashSearch: ""
         };
 
         props.onChange(this.state);
@@ -111,21 +111,21 @@ class SubscriptionFilters extends Component {
                                         label="Gym Membership"
                                         checked={gymMembershipChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('gymMembershipChecked');
+                                            this.handleCheckboxClick("gymMembershipChecked");
                                         }}
                                     />
                                     <Form.Checkbox
                                         label="IPTV Subscription"
                                         checked={iptvSubscriptionChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('iptvSubscriptionChecked');
+                                            this.handleCheckboxClick("iptvSubscriptionChecked");
                                         }}
                                     />
                                     <Form.Checkbox
                                         label="Other"
                                         checked={otherChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('otherChecked');
+                                            this.handleCheckboxClick("otherChecked");
                                         }}
                                     />
                                 </Form.Group>
@@ -134,14 +134,14 @@ class SubscriptionFilters extends Component {
                                         label="Magazine Subscription"
                                         checked={magazineSubscriptionChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('magazineSubscriptionChecked');
+                                            this.handleCheckboxClick("magazineSubscriptionChecked");
                                         }}
                                     />
                                     <Form.Checkbox
                                         label="Website Membership"
                                         checked={websiteMembershipChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('websiteMembershipChecked');
+                                            this.handleCheckboxClick("websiteMembershipChecked");
                                         }}
                                     />
                                     <Form.Checkbox
@@ -163,7 +163,7 @@ class SubscriptionFilters extends Component {
                                 label="Show currently active subscriptions"
                                 checked={showActiveSubscriptionsChecked}
                                 onClick={() => {
-                                    this.handleCheckboxClick('showActiveSubscriptionsChecked');
+                                    this.handleCheckboxClick("showActiveSubscriptionsChecked");
                                 }}
                             />
                         </Form>
@@ -177,14 +177,14 @@ class SubscriptionFilters extends Component {
                                         label="Show with Join Fee?"
                                         checked={showJoinFeeChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('showJoinFeeChecked');
+                                            this.handleCheckboxClick("showJoinFeeChecked");
                                         }}
                                     />
                                     <Form.Checkbox
                                         label="Show with Exit Fee?"
                                         checked={showExitFeeChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('showExitFeeChecked');
+                                            this.handleCheckboxClick("showExitFeeChecked");
                                         }}
                                     />
                                 </Form.Group>
@@ -193,7 +193,7 @@ class SubscriptionFilters extends Component {
                                         label="Show with zero Reputation?"
                                         checked={showZeroReputationChecked}
                                         onClick={() => {
-                                            this.handleCheckboxClick('showZeroReputationChecked');
+                                            this.handleCheckboxClick("showZeroReputationChecked");
                                         }}
                                     />
                                     <Form.Checkbox

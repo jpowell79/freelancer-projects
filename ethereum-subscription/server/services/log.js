@@ -1,4 +1,4 @@
-const urls = require('../../services/constants/urls');
+const urls = require("../../services/constants/urls");
 
 function sectionTitle(title){
     console.log("-".repeat(60));
@@ -11,14 +11,14 @@ function endOfSection(){
 }
 
 function apiPoints(){
-    let routesLog = '';
+    let routesLog = "";
 
     Object.keys(urls).forEach((addressKey, i) => {
         if(urls[addressKey] !== urls.base){
             routesLog += `${i}: ${urls[addressKey]}/`;
 
             if(i !== Object.keys(urls).length-1){
-                routesLog += '\n';
+                routesLog += "\n";
             }
         }
     });

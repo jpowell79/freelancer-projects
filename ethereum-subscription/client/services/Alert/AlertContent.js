@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
 
 class AlertContent extends Component {
     static CLASS_NAMES = {
-        BACKDROP: 'ui dimmer modals page transition top aligned',
-        REVEAL: 'visible active',
-        HIDDEN: 'hidden',
-        MAIN_CONTAINER: 'ui standard tiny modal transition',
-        CONTENT_CONTAINER: 'content',
-        HEADER: 'header',
-        TITLE: 'modal-title',
-        BUTTON_CONTAINER: 'actions'
+        BACKDROP: "ui dimmer modals page transition top aligned",
+        REVEAL: "visible active",
+        HIDDEN: "hidden",
+        MAIN_CONTAINER: "ui standard tiny modal transition",
+        CONTENT_CONTAINER: "content",
+        HEADER: "header",
+        TITLE: "modal-title",
+        BUTTON_CONTAINER: "actions"
     };
 
     static ANIMATION_TIME = 300;
@@ -56,7 +56,7 @@ class AlertContent extends Component {
         });
     }
 
-    renderContent(revealClass = ''){
+    renderContent(revealClass = ""){
         let {
             MAIN_CONTAINER,
             BACKDROP,
@@ -163,12 +163,12 @@ AlertContent.propTypes = {
 AlertContent.defaultProps = {
     closeIcon: null,
     titleIcon: null,
-    title: '',
-    cancelText: '',
-    confirmText: '',
-    cancelButtonId: '',
-    confirmButtonId: '',
-    closeButtonId: '',
+    title: "",
+    cancelText: "",
+    confirmText: "",
+    cancelButtonId: "",
+    confirmButtonId: "",
+    closeButtonId: "",
     showCancel: false
 };
 

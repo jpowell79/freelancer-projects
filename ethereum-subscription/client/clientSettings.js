@@ -1,7 +1,7 @@
 /*------------------------------------------------------------
  * ReCAPTCHA
  *------------------------------------------------------------*/
-export const RECAPTCHA_SITE_KEY = '6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z';
+export const RECAPTCHA_SITE_KEY = "6LcVbGIUAAAAABiMl6EkPNsNUBVRC1U2l_VwR10Z";
 
 /*------------------------------------------------------------
  * Subscriptions

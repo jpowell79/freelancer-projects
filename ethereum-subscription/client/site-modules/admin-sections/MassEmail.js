@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
-import {Form} from 'semantic-ui-react';
-import withMessage from '../../hocs/withMessage';
+import React, {Component, Fragment} from "react";
+import {Form} from "semantic-ui-react";
+import withMessage from "../../hocs/withMessage";
 import {LoaderTiny} from "../../modules/icons";
-import email from '../../../services/api/email';
+import email from "../../../services/api/email";
 import {getErrorString} from "../../services/utils";
 
 class MassEmail extends Component {
@@ -16,7 +16,7 @@ class MassEmail extends Component {
             body: this.props.messageState.body
         }).then(() => {
             this.props.setComplete({
-                successTitle: 'The emails was sent successfully!',
+                successTitle: "The emails was sent successfully!",
             });
         }).catch(err => {
             this.props.setMessageState({
@@ -46,7 +46,7 @@ class MassEmail extends Component {
                 {renderMessages()}
                 <h2>Mass Email to Suppliers</h2>
                 <Form>
-                    <Form.Field error={fieldsWithErrors.includes('subject')}>
+                    <Form.Field error={fieldsWithErrors.includes("subject")}>
                         <label>Subject:</label>
                         <input
                             type="text"
@@ -59,7 +59,7 @@ class MassEmail extends Component {
                             }}
                         />
                     </Form.Field>
-                    <Form.Field error={fieldsWithErrors.includes('body')}>
+                    <Form.Field error={fieldsWithErrors.includes("body")}>
                         <label>Body:</label>
                         <textarea
                             value={body}
@@ -85,8 +85,8 @@ class MassEmail extends Component {
 }
 
 export default withMessage(MassEmail, {
-    subject: '',
-    body: '',
+    subject: "",
+    body: "",
     isLoading: false,
     complete: false
 });

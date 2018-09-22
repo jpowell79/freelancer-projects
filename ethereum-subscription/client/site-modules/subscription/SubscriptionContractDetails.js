@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {ProviderRating} from "../ProviderRating";
 import {Grid} from "semantic-ui-react";
 import {weiToEth} from "../../../services/utils";

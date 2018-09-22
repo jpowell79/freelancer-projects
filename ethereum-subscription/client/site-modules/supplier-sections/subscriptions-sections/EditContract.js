@@ -1,4 +1,4 @@
-import React, {Fragment} from 'react';
+import React, {Fragment} from "react";
 import {Grid, Segment} from "semantic-ui-react";
 import WeiCalculator from "../../WeiCalculator";
 import EditContractForm from "../../forms/EditContractForm";
@@ -22,7 +22,7 @@ export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
             }));
 
             AlertOptionPane.showSuccessAlert({
-                message: 'The contract is now active and visible to subscribers.'
+                message: "The contract is now active and visible to subscribers."
             });
         }).catch(err => {
             AlertOptionPane.showErrorAlert({

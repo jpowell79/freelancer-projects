@@ -1,8 +1,8 @@
-import App, {Container} from 'next/app';
-import React from 'react';
-import withServerData from '../hocs/withServerData';
-import withReduxStore from '../hocs/withReduxStore';
-import { Provider } from 'react-redux';
+import App, {Container} from "next/app";
+import React from "react";
+import withServerData from "../hocs/withServerData";
+import withReduxStore from "../hocs/withReduxStore";
+import { Provider } from "react-redux";
 
 class MyApp extends App {
     constructor(props){

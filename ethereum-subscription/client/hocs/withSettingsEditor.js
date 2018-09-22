@@ -1,10 +1,10 @@
 import React, {Component, Fragment} from "react";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import SettingsUpdater from "../services/loaders/SettingsUpdater";
 import {LoaderTiny} from "../modules/icons";
-import {Message} from 'semantic-ui-react';
+import {Message} from "semantic-ui-react";
 import AlertOptionPane from "../services/Alert/AlertOptionPane";
-import objects from '../../services/datatypes/objects';
+import objects from "../../services/datatypes/objects";
 import {loadServerDataIntoStoreFromClient} from "../services/loaders/loadServerDataIntoStore";
 import {getChildProps, getErrorString} from "../services/utils";
 
@@ -69,7 +69,7 @@ export default (Module, title) => {
                     {(this.state.hasSaved) && (
                         <Message
                             success
-                            header='Your changes have been saved successfully!'
+                            header="Your changes have been saved successfully!"
                         />
                     )}
                     <h2>{title}</h2>

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {getChildProps} from "../services/utils";
 import DummyContractLoader from "../services/loaders/DummyContractLoader";
 import SubscriptionContractLoader from "../services/loaders/SubscriptionContractLoader";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 
 const defaultOptions = {
     useDummyData: false,

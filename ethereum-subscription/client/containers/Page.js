@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import Head from './Head';
-import Header from './Header';
-import Footer from './Footer';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import Head from "./Head";
+import Header from "./Header";
+import Footer from "./Footer";
+import PropTypes from "prop-types";
 import {spreadClassName} from "../services/className";
 
 class Page extends Component {
@@ -10,10 +10,10 @@ class Page extends Component {
         head: null,
         header: null,
         footer: null,
-        pageClass: '',
-        headerClass: '',
-        contentClass: '',
-        footerClass: ''
+        pageClass: "",
+        headerClass: "",
+        contentClass: "",
+        footerClass: ""
     };
 
     static propTypes = {

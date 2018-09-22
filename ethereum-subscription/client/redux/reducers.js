@@ -1,5 +1,5 @@
-import {constants} from './constants';
-import {combineReducers} from 'redux';
+import {constants} from "./constants";
+import {combineReducers} from "redux";
 
 export const initialState = {
     settings: {},

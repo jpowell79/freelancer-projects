@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {Star} from "../modules/icons";
 
 export const ProviderRating = ({reputation = 0, name}) =>{

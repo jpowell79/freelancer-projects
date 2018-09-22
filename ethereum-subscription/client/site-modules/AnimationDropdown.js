@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 import {animationTypes} from "../services/constants/animationTypes";
-import {Dropdown} from 'semantic-ui-react';
+import {Dropdown} from "semantic-ui-react";
 
 export const AnimationDropdown = ({...props}) => {
     const options = animationTypes.map(type => ({

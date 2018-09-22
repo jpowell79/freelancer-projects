@@ -1,6 +1,6 @@
-import React, {Component, Fragment} from 'react';
-import TableSorter from './TableSorter';
-import $ from 'jquery';
+import React, {Component, Fragment} from "react";
+import TableSorter from "./TableSorter";
+import $ from "jquery";
 
 class SortableTable extends Component {
     static defaultProps = {
@@ -23,7 +23,7 @@ class SortableTable extends Component {
         return (
             <tr key={i}>
                 {columns.map((column, j) => (
-                    (typeof column === 'string')
+                    (typeof column === "string")
                         ? <td key={j}>{column}</td>
                         : React.cloneElement(column, {key: j})
                 ))}
@@ -32,7 +32,7 @@ class SortableTable extends Component {
     };
 
     renderHeadColumns = (column, i) => {
-        return (typeof column === 'string')
+        return (typeof column === "string")
             ? <th key={i}>{column}</th>
             : React.cloneElement(column, {key: i});
     };

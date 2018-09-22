@@ -1,30 +1,30 @@
-import React from 'react';
-import ReactDom from 'react-dom';
-import ReactDomServer from 'react-dom/server';
+import React from "react";
+import ReactDom from "react-dom";
+import ReactDomServer from "react-dom/server";
 import {Times} from "../../modules/icons";
 import AlertContent from "./AlertContent";
-import $ from 'jquery';
+import $ from "jquery";
 
 class Alert {
     static TYPES = {
-        PLAIN: 'plain',
-        ERROR: 'error',
-        WARNING: 'warning',
-        INFO: 'info',
-        SUCCESS: 'success'
+        PLAIN: "plain",
+        ERROR: "error",
+        WARNING: "warning",
+        INFO: "info",
+        SUCCESS: "success"
     };
 
     static DEFAULT_TEXT = {
-        TITLE: '',
-        CONFIRM: 'Ok',
-        MESSAGE: '',
-        CANCEL: 'Cancel'
+        TITLE: "",
+        CONFIRM: "Ok",
+        MESSAGE: "",
+        CANCEL: "Cancel"
     };
 
     static CLASS_NAMES = {
-        ROOT_CONTAINER: 'coin-market-alert',
-        ALERT_OPEN: 'alert-open',
-        SCROLLBAR_FILLER: 'alert-scrollbar-filler'
+        ROOT_CONTAINER: "coin-market-alert",
+        ALERT_OPEN: "alert-open",
+        SCROLLBAR_FILLER: "alert-scrollbar-filler"
     };
 
     static id = 0;
@@ -88,7 +88,7 @@ class Alert {
         let alertRoot = ReactDomServer.renderToStaticMarkup(
             <div id={id} className={`${ROOT_CONTAINER} ${alertType} ${this.className}`} />
         );
-        let $body = $('body');
+        let $body = $("body");
         $body.append(alertRoot);
         if(!$body.hasClass(ALERT_OPEN)){
             $body.addClass(ALERT_OPEN);
@@ -123,7 +123,7 @@ class Alert {
         $id.remove();
         Alert.id -= 1;
         if(Alert.id === 0){
-            let $body = $('body');
+            let $body = $("body");
             $body.removeClass(Alert.CLASS_NAMES.ALERT_OPEN);
             $body.removeClass(Alert.CLASS_NAMES.SCROLLBAR_FILLER);
         }

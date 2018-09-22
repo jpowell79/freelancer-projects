@@ -1,5 +1,5 @@
-const axios = require('axios');
-const {urls, roles} = require('../constants');
+const axios = require("axios");
+const {urls, roles} = require("../constants");
 
 const getSupplier = async (username) => {
     return axios.get(`${urls.users}/${username}`);

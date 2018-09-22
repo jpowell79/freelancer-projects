@@ -1,6 +1,6 @@
 const configSequelize = require('./server/config/configSequelize');
 const serverSettings = require('./server/serverSettings');
-const addGlobalHelpers = require('./server/config/addGlobalHelpers');
+const addGlobalHelpers = require('./server/config/defineGlobals');
 const {removeDatabase} = require('./server/services/database/databaseUtils');
 const dummyDatabase = require('./server/services/database/dummyDatabase');
 const passwordHash = require('password-hash');

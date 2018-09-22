@@ -1,5 +1,5 @@
-const {getAllModelEntries} = require('./apiUtils');
-const {isLoggedIn} = require('../../../services/session');
+const {getAllModelEntries} = require("./apiUtils");
+const {isLoggedIn} = require("../../../services/session");
 
 class Subscriptions {
     constructor({req, sequelize, responseHandler}){
@@ -23,7 +23,7 @@ class Subscriptions {
                     {
                         model: this.subscriptionContractsModel,
                         through: {
-                            attributes: ['id']
+                            attributes: ["id"]
                         },
                         include: [{
                             model: this.subscriptionTypesModel

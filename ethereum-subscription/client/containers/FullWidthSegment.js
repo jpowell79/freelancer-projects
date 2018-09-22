@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {fullWidthSegment} from "../services/constants/css";
 import {joinClassNames, classNames} from "../services/className";
 
 class FullWidthSegment extends Component {
     static defaultProps = {
-        className: '',
+        className: "",
         wrapper: -1,
         halfHeight: false,
         fullHeight: false,
@@ -38,17 +38,17 @@ class FullWidthSegment extends Component {
         } = this.props;
 
         const segmentClass = classNames({
-            'half height': halfHeight,
-            'height': fullHeight,
-            'padded': padded,
-            'skinny': skinny,
-            'bordered': bordered,
-            'attached': attached,
-            'centered': centered,
-            'inverted': inverted,
-            'paddingless': paddingLess,
-            'widthless': noWidthPadding,
-            'heightless': noHeightPadding
+            "half height": halfHeight,
+            "height": fullHeight,
+            "padded": padded,
+            "skinny": skinny,
+            "bordered": bordered,
+            "attached": attached,
+            "centered": centered,
+            "inverted": inverted,
+            "paddingless": paddingLess,
+            "widthless": noWidthPadding,
+            "heightless": noHeightPadding
         }, className);
 
         return (

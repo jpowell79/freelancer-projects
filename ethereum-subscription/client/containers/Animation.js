@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {classNames} from "../services/className";
-import PropTypes from 'prop-types';
-import objects from '../../services/datatypes/objects';
+import PropTypes from "prop-types";
+import objects from "../../services/datatypes/objects";
 import {animationTypes} from "../services/constants/animationTypes";
 
 class Animation extends Component {
@@ -12,7 +12,7 @@ class Animation extends Component {
     };
 
     static defaultProps = {
-        animation: 'fade',
+        animation: "fade",
         animating: true,
         visible: true,
         status: Animation.status.IDLE,
@@ -43,13 +43,13 @@ class Animation extends Component {
         } = this.props;
 
         const animationClass = classNames({
-            'ui transition': true,
+            "ui transition": true,
             [animation]: animating,
-            'animating': animating,
-            'visible': visible,
-            'hidden': !visible,
-            'in': status === Animation.status.IN,
-            'out': status === Animation.status.OUT
+            "animating": animating,
+            "visible": visible,
+            "hidden": !visible,
+            "in": status === Animation.status.IN,
+            "out": status === Animation.status.OUT
         }, className);
         const animationStyle = Object.assign({}, {animationDuration: `${duration}ms`}, style);
 

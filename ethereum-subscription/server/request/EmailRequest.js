@@ -1,8 +1,6 @@
-"use strict";
-
-const Request = require('./Request');
-const {mailTypes} = require("../../../../services/constants");
-const Mailer = require('../Mailer');
+const Request = require("./Request");
+const {mailTypes} = require("../../services/constants");
+const Mailer = require("../services/api/Mailer");
 
 const adminMailTypes = [
     mailTypes.massMailSuppliers

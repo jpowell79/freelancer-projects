@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import WeiCalculator from "../WeiCalculator";
-import {Form, Segment, Grid} from 'semantic-ui-react';
-import {connect} from 'react-redux';
+import {Form, Segment, Grid} from "semantic-ui-react";
+import {connect} from "react-redux";
 import SubscriptionForm from "../forms/SubscriptionForm";
 import {getErrorString} from "../../services/utils";
-import email from '../../../services/api/email';
+import email from "../../../services/api/email";
 
 class RequestContract extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -27,7 +27,7 @@ class RequestContract extends Component {
                 setMessageState({
                     isLoading: false,
                     complete: true,
-                    successTitle: 'Your request has been sent successfully!',
+                    successTitle: "Your request has been sent successfully!",
                     success: [`You will receive an email when the admins have processed your request`],
                     showSuccess: true
                 });

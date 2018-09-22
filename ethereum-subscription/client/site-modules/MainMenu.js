@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
-import Link from 'next/link';
-import {withRouter} from 'next/router';
+import React, {Component, Fragment} from "react";
+import Link from "next/link";
+import {withRouter} from "next/router";
 import {MobileMenuIcon} from "../modules/icons";
-import $ from 'jquery';
-import {paths, roles} from '../../services/constants';
-import {connect} from 'react-redux';
+import $ from "jquery";
+import {paths, roles} from "../../services/constants";
+import {connect} from "react-redux";
 import {hideOnMobile} from "../services/constants/css";
-import sessions from '../../services/api/sessions';
+import sessions from "../../services/api/sessions";
 
 class MainMenu extends Component {
     static mapStateToProps = ({user, settings}) => ({user, settings});
@@ -14,19 +14,19 @@ class MainMenu extends Component {
     static items = {
         links: [
             {
-                name: 'Register',
+                name: "Register",
                 href: paths.pages.register
             },
             {
-                name: 'Login',
+                name: "Login",
                 href: paths.pages.login
             },
             {
-                name: 'How it works',
+                name: "How it works",
                 href: paths.pages.howItWorks
             },
             {
-                name: 'About',
+                name: "About",
                 href: paths.pages.about
             },
         ]
@@ -39,21 +39,21 @@ class MainMenu extends Component {
     }
 
     componentDidMount(){
-        this.$mainMenuToggler = $('#main-menu-toggler');
-        const $mobileMenuIcon = $('.mobile-menu-icon');
-        const $mainMenu = $('#main-menu');
+        this.$mainMenuToggler = $("#main-menu-toggler");
+        const $mobileMenuIcon = $(".mobile-menu-icon");
+        const $mainMenu = $("#main-menu");
 
-        this.$mainMenuToggler.on('click', () =>{
-            $mainMenu.toggleClass('reveal-items');
-            $mainMenu.addClass('animate');
-            this.$mainMenuToggler.toggleClass('active');
-            $mobileMenuIcon.toggleClass('open');
+        this.$mainMenuToggler.on("click", () =>{
+            $mainMenu.toggleClass("reveal-items");
+            $mainMenu.addClass("animate");
+            this.$mainMenuToggler.toggleClass("active");
+            $mobileMenuIcon.toggleClass("open");
         });
     }
 
     componentWillUnmount(){
-        this.$mainMenuToggler.off('click');
-        $('body').removeClass('mobile-menu-open');
+        this.$mainMenuToggler.off("click");
+        $("body").removeClass("mobile-menu-open");
     }
 
     getActiveClass(page){
@@ -71,7 +71,7 @@ class MainMenu extends Component {
                 <nav>
                     {
                         links.map((link, i) =>{
-                            if(link.href === ''){
+                            if(link.href === ""){
                                 return (
                                     <a key={i}>{link.name}</a>
                                 );
@@ -100,7 +100,7 @@ class MainMenu extends Component {
                     <a><img src={`${paths.static.images}/${this.props.settings.logo.value}`}/></a>
                 </Link>
                 <nav>
-                    <div className={hideOnMobile('item')}>
+                    <div className={hideOnMobile("item")}>
                         <span>Welcome back <strong>{user.username}</strong></span>
                     </div>
                     <div className="item">
@@ -126,7 +126,7 @@ class MainMenu extends Component {
                     <a><img src={`${paths.static.images}/${this.props.settings.logo.value}`}/></a>
                 </Link>
                 <nav>
-                    <div className={hideOnMobile('item')}>
+                    <div className={hideOnMobile("item")}>
                         <span>Welcome back <strong>{user.username}</strong></span>
                     </div>
                     <Link href={paths.pages.admin}>

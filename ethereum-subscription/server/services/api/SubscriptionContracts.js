@@ -1,5 +1,5 @@
-const {getAllModelEntries} = require('./apiUtils');
-const {isLoggedInAdmin} = require('../../../services/session');
+const {getAllModelEntries} = require("./apiUtils");
+const {isLoggedInAdmin} = require("../../../services/session");
 
 function SubscriptionContracts({req, sequelize, responseHandler}){
     this.model = sequelize.models.subscriptionContracts;
@@ -26,14 +26,14 @@ function SubscriptionContracts({req, sequelize, responseHandler}){
         const loggedInAdmin = await isLoggedInAdmin(req);
 
         if(!address){
-            return responseHandler.sendBadRequest('Missing required fields');
+            return responseHandler.sendBadRequest("Missing required fields");
         }
 
         return this.model.findOne({where: {address}})
             .then(contractEntry => {
-                if(!contractEntry) throw new Error('Contract does not exists');
+                if(!contractEntry) throw new Error("Contract does not exists");
                 if(req.session.user.username !== contractEntry.dataValues.ownerUsername
-                    && !loggedInAdmin) throw new Error('Unauthorized');
+                    && !loggedInAdmin) throw new Error("Unauthorized");
 
                 return this.model.update(req.body, {where: {address}});
             }).then(res => {

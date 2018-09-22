@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
-import {compose} from 'redux';
+import React, {Component} from "react";
+import {compose} from "redux";
 import withMountObserver from "../hocs/withMountObserver";
-import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
-import withMetamaskAccount from '../hocs/withMetamaskAccount';
-import {paths} from '../../services/constants';
-import validation from '../../services/validation';
-import strings from '../../services/datatypes/strings';
-import Page from '../containers/Page'
+import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
+import withMetamaskAccount from "../hocs/withMetamaskAccount";
+import {paths} from "../../services/constants";
+import validation from "../../services/validation";
+import strings from "../../services/datatypes/strings";
+import Page from "../containers/Page"
 import FullWidthSegment from "../containers/FullWidthSegment";
 import {Loader} from "../modules/icons";
-import {Segment} from 'semantic-ui-react';
+import {Segment} from "semantic-ui-react";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import SubscriptionContractDetailsContainer from "../site-modules/subscription/SubscriptionContractDetailsContainer";
 import Dispatcher from "../services/loaders/Dispatcher";
 import SubscriptionContract from "../../services/smart-contracts/SubscriptionContract";

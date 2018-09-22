@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import SubscriptionTable from "../subscription/SubscriptionTable";
-import objects from '../../../services/datatypes/objects';
+import objects from "../../../services/datatypes/objects";
 import {LoaderSmall} from "../../modules/icons";
-import SubscriptionSections from './subscriptions-sections';
-import {connect} from 'react-redux';
+import SubscriptionSections from "./subscriptions-sections";
+import {connect} from "react-redux";
 import {selectEditContract} from "../../redux/actions";
 
 class Subscriptions extends Component {

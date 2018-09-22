@@ -1,14 +1,14 @@
-import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
-import {isDefined} from '../../services/datatypes/strings';
+import React, {Component, Fragment} from "react";
+import PropTypes from "prop-types";
+import {isDefined} from "../../services/datatypes/strings";
 import {classNames} from "../services/className";
-import {Message} from 'semantic-ui-react';
-import validation from '../../services/validation';
-import objects from '../../services/datatypes/objects';
+import {Message} from "semantic-ui-react";
+import validation from "../../services/validation";
+import objects from "../../services/datatypes/objects";
 
 const specialInputTypes = [
-    'date', 'datetime-local', 'email', 'hidden', 'month',
-    'number', 'password', 'tel', 'time', 'url', 'week'
+    "date", "datetime-local", "email", "hidden", "month",
+    "number", "password", "tel", "time", "url", "week"
 ];
 
 class FormList extends Component {
@@ -50,7 +50,7 @@ class FormList extends Component {
         super(props);
 
         this.state = props.fields
-            .map(field => ({[field.type]: (field.defaultValue) ? field.defaultValue : ''}))
+            .map(field => ({[field.type]: (field.defaultValue) ? field.defaultValue : ""}))
             .reduce((accumulator, currentValue) => Object.assign({}, accumulator, currentValue));
 
         this.fieldErrors = {};
@@ -87,8 +87,8 @@ class FormList extends Component {
             if(field.hidden) return null;
 
             const fieldClass = classNames({
-                'field': true,
-                'error': ((typeof field.error === 'string')
+                "field": true,
+                "error": ((typeof field.error === "string")
                     ? (isDefined(field.error))
                     : field.error) || isDefined(this.fieldErrors[field.type])
             }, this.props.className);
@@ -120,7 +120,7 @@ class FormList extends Component {
     render(){
         let errors = this.props.fields
             .map(field => field.error)
-            .filter(error => typeof error === 'string')
+            .filter(error => typeof error === "string")
             .filter(error => isDefined(error));
         errors = (objects.isEmpty(this.fieldErrors) || errors.length > 0)
             ? errors : objects.values(this.fieldErrors);

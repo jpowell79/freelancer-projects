@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from 'react';
-import CoinMarketCapApi from '../../services/api/CoinMarketCapApi';
-import {Form, Dropdown} from 'semantic-ui-react';
-import {isDefined} from '../../services/datatypes/strings';
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import CoinMarketCapApi from "../../services/api/CoinMarketCapApi";
+import {Form, Dropdown} from "semantic-ui-react";
+import {isDefined} from "../../services/datatypes/strings";
+import {CopyToClipboard} from "react-copy-to-clipboard";
+import {connect} from "react-redux";
 
 class WeiCalculator extends Component {
     static mapStateToProps = ({ethereumConversionRates}) => {
@@ -34,7 +34,7 @@ class WeiCalculator extends Component {
             ethereumConversionRates: {},
             dropdownOptions: dropdownOptions,
             selectedCurrency: selectedCurrency,
-            conversionValue: '',
+            conversionValue: "",
             copied: false
         }
     }

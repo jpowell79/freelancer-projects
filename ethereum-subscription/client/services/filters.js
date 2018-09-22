@@ -1,5 +1,5 @@
-import objects from '../../services/datatypes/objects';
-import strings from '../../services/datatypes/strings';
+import objects from "../../services/datatypes/objects";
+import strings from "../../services/datatypes/strings";
 import {FILTERABLE_SUBSCRIPTION_TYPES} from "../clientSettings";
 
 export const filterSubscriptionContracts = (subscriptionContracts, filterState) => {

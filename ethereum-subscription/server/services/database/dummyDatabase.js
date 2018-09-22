@@ -1,5 +1,5 @@
-const dummyData = require('./dummyData');
-const Subscriptions = require('../api/Subscriptions');
+const dummyData = require("./dummyData");
+const Subscriptions = require("../api/Subscriptions");
 
 module.exports.loadDummySettings = async (sequelize) => {
     return Promise.all(Object.keys(dummyData.settings)

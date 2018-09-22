@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
-import {Form} from 'semantic-ui-react';
+import React, {Component} from "react";
+import {Form} from "semantic-ui-react";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
-import PropTypes from 'prop-types';
-import email from '../../../services/api/email';
-import subscriptions from '../../../services/api/subscriptions';
-import withMessage from '../../hocs/withMessage';
+import PropTypes from "prop-types";
+import email from "../../../services/api/email";
+import subscriptions from "../../../services/api/subscriptions";
+import withMessage from "../../hocs/withMessage";
 import {waitingForBlockchain} from "../../services/views/messages";
 import {weiToEth} from "../../../services/utils";
 
@@ -101,5 +101,5 @@ class AddSubscriptionForm extends Component {
     }
 }
 
-export default withMessage(AddSubscriptionForm, {email: ''});
+export default withMessage(AddSubscriptionForm, {email: ""});
 

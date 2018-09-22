@@ -1,27 +1,27 @@
-import React, {Component, Fragment} from 'react';
-import FormList from '../../containers/FormList';
-import PropTypes from 'prop-types';
+import React, {Component, Fragment} from "react";
+import FormList from "../../containers/FormList";
+import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
 import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
-import {connect} from 'react-redux';
-import {compose} from 'redux';
+import {connect} from "react-redux";
+import {compose} from "redux";
 
 class EditSubscriptionForm extends Component {
     static mapStateToProps = ({settings}) => ({
-        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ''
+        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ""
     });
 
     static defaultLabels = {
-        username: 'Username:',
-        password: 'Password:',
+        username: "Username:",
+        password: "Password:",
         duration: null,
-        other: 'Other info:',
+        other: "Other info:",
         disabled: false
     };
 
     static defaultProps = {
-        title: 'Edit Subscription',
+        title: "Edit Subscription",
         labels: EditSubscriptionForm.defaultLabels,
         activateButtonText: "Start the Subscription"
     };
@@ -44,24 +44,24 @@ class EditSubscriptionForm extends Component {
         return {
             fields: [
                 {
-                    type: 'username',
+                    type: "username",
                     label: parsedLabels.username,
                     defaultValue: props.defaults.username
                 },
                 {
-                    type: 'password',
+                    type: "password",
                     label: parsedLabels.password,
                     defaultValue: props.defaults.password
                 },
                 {
-                    type: 'duration',
+                    type: "duration",
                     label: parsedLabels.duration,
                     hidden: parsedLabels.duration === null,
                     excludeFromValidation: parsedLabels.duration === null,
                     defaultValue: props.defaults.duration
                 },
                 {
-                    type: 'other',
+                    type: "other",
                     label: parsedLabels.other,
                     defaultValue: props.defaults.other
                 }

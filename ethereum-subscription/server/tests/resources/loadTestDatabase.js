@@ -1,6 +1,6 @@
-const mocks = require('./mocks');
-const SubscriptionContracts = require('../../services/api/SubscriptionContracts');
-const Subscriptions = require('../../services/api/Subscriptions');
+const mocks = require("./mocks");
+const SubscriptionContracts = require("../../services/api/SubscriptionContracts");
+const Subscriptions = require("../../services/api/Subscriptions");
 
 module.exports = (sequelize) => {
     const subscriptionContracts = new SubscriptionContracts({sequelize});

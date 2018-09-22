@@ -1,16 +1,16 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import SubscriptionForm from "../forms/SubscriptionForm";
-import {Form} from 'semantic-ui-react';
-import SubscriptionContract from '../../../services/smart-contracts/SubscriptionContract';
-import withMetamaskAccount from '../../hocs/withMetamaskAccount';
+import {Form} from "semantic-ui-react";
+import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
+import withMetamaskAccount from "../../hocs/withMetamaskAccount";
 import {LoaderSmall} from "../../modules/icons";
 import objects from "../../../services/datatypes/objects";
 import {getErrorString} from "../../services/utils";
 
 class SmartContractData extends Component {
     state = {
-        supplierWalletAddress: '',
-        smartContractAddress: '',
+        supplierWalletAddress: "",
+        smartContractAddress: "",
     };
 
     setSubscriptionDetails = (web3, metamaskAccount, {
@@ -60,7 +60,7 @@ class SmartContractData extends Component {
         return this.setSubscriptionDetails(web3, metamaskAccount, messageState)
             .then(() => {
                 setComplete({
-                    successTitle: 'The contract has been edited successfully',
+                    successTitle: "The contract has been edited successfully",
                 });
             }).catch(err => {
                 setMessageState({
@@ -96,7 +96,7 @@ class SmartContractData extends Component {
                     renderTopChildren={({messageState}) => {
                         return (
                             <Form.Field error={
-                                messageState.fieldsWithErrors.includes('supplierWalletAddress')
+                                messageState.fieldsWithErrors.includes("supplierWalletAddress")
                             }>
                                 <label>Supplier Wallet Address</label>
                                 <input
@@ -117,7 +117,7 @@ class SmartContractData extends Component {
                     renderBottomChildren={({messageState}) => {
                         return (
                             <Form.Field error={
-                                messageState.fieldsWithErrors.includes('smartContractAddress')
+                                messageState.fieldsWithErrors.includes("smartContractAddress")
                             }>
                                 <label>Smart Contract Address</label>
                                 <input

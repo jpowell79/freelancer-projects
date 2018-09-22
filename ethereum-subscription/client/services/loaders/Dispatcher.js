@@ -1,5 +1,5 @@
-import axios from 'axios';
-import urls from '../../../services/constants/urls';
+import axios from "axios";
+import urls from "../../../services/constants/urls";
 import {
     loadSettings,
     updateMetamaskAccount,
@@ -13,8 +13,8 @@ import {
     updateTrialSubscriptionDetails,
     updateSubscriptionDetails
 } from "../../redux/actions";
-import {isServer, serverRequest} from '../../../services/utils';
-import parser from '../parser';
+import {isServer, serverRequest} from "../../../services/utils";
+import parser from "../parser";
 
 class Dispatcher {
     constructor(dispatch){

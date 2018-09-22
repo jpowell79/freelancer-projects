@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {Message, Segment} from "semantic-ui-react";
 import EditSubscriptionForm from "../../forms/EditSubscriptionForm";
 import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";
@@ -62,9 +62,9 @@ export default ({editContract, trialSubscriptionDetails, dispatch, user, web3}) 
                     }
                     activateButtonText="Start the Trial"
                     labels={{
-                        username: 'Trial username:',
-                        password: 'Trial password:',
-                        duration: 'Trial duration (in days):',
+                        username: "Trial username:",
+                        password: "Trial password:",
+                        duration: "Trial duration (in days):",
                     }}
                     defaults={{
                         username: trialSubscriptionDetails.trialUsername,

@@ -1,10 +1,10 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import EditContract from "./EditContract";
 import EditSubscription from "./EditSubscription";
 import EditSubscriptionTrial from "./EditSubscriptionTrial";
 import objects from "../../../../services/datatypes/objects";
 import {Menu} from "semantic-ui-react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import {LoaderSmall} from "../../../modules/icons";
 import {
     deselectEditContract,
@@ -21,9 +21,9 @@ export {
 };
 
 const sections = {
-    editContract: 'Edit Contract',
-    editSubscription: 'Edit Subscription',
-    editSubscriptionTrial: 'Edit Subscription Trial'
+    editContract: "Edit Contract",
+    editSubscription: "Edit Subscription",
+    editSubscriptionTrial: "Edit Subscription Trial"
 };
 
 class SubscriptionSections extends Component {

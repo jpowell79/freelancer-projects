@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import {loadServerDataIntoStoreFromClient} from "../../services/loaders/loadServerDataIntoStore";
 import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
-import withMessage from '../../hocs/withMessage';
+import withMessage from "../../hocs/withMessage";
 import {getErrorString} from "../../services/utils";
-import {Message} from 'semantic-ui-react';
-import users from '../../../services/api/users';
+import {Message} from "semantic-ui-react";
+import users from "../../../services/api/users";
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -16,19 +16,19 @@ class ManageProfile extends Component {
 
         this.fields = [
             {
-                type: 'username',
-                label: 'Username:',
+                type: "username",
+                label: "Username:",
                 defaultValue: props.user.username
             },
             {
-                type: 'email',
-                label: 'Email:',
+                type: "email",
+                label: "Email:",
                 defaultValue: props.user.email
             },
             {
-                type: 'password',
-                label: 'Password:',
-                defaultValue: ''
+                type: "password",
+                label: "Password:",
+                defaultValue: ""
             }
         ];
     }
@@ -73,8 +73,8 @@ class ManageProfile extends Component {
                     info
                     header={`Your wallet address is: ${this.props.user.walletAddress}`}
                     list={[
-                        'You will need to contact our support team if you ever need to change this address',
-                        'You will lose all feedback if you do this.'
+                        "You will need to contact our support team if you ever need to change this address",
+                        "You will lose all feedback if you do this."
                     ]}
                 />
                 <h2>Manage Your Profile</h2>

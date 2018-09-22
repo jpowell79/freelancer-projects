@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import {colors} from "../services/constants/css";
 import objects from "../../services/datatypes/objects";
-import {SketchPicker} from 'react-color';
-import PropTypes from 'prop-types';
+import {SketchPicker} from "react-color";
+import PropTypes from "prop-types";
 
 class ColorPicker extends Component {
     static propTypes = {

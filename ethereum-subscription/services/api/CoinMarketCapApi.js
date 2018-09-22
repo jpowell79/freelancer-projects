@@ -1,6 +1,6 @@
 class CoinMarketCapApi {}
 
-CoinMarketCapApi.baseUrl = 'https://api.coinmarketcap.com/v2';
+CoinMarketCapApi.baseUrl = "https://api.coinmarketcap.com/v2";
 
 CoinMarketCapApi.fiatCurrencies = {
     AUD: "AUD", BRL: "BRL", CAD: "CAD", CHF: "CHF", CLP: "CLP",
@@ -33,15 +33,15 @@ CoinMarketCapApi.defaultOptions = {
 
 CoinMarketCapApi.parseOptions = (rawOptions) => {
     let options = Object.assign({}, CoinMarketCapApi.defaultOptions, rawOptions);
-    let optionString = (options.id >= 0) ? `${options.id}/` : '';
-    let divider = '?';
-    optionString += (options.start >= 0) ? `${divider}start=${options.start}` : '';
-    divider = (options.start >= 0) ? '&' : '?';
-    optionString += (options.limit > 0) ? `${divider}limit=${options.limit}` : '';
-    divider = (options.limit >= 0 || divider === '&') ? '&' : '?';
-    optionString += (options.convert !== '') ? `${divider}convert=${options.convert}` : '';
-    divider = (options.convert !== '' || divider === '&') ? '&' : '?';
-    optionString += (options.sort !== '') ? `${divider}sort=${options.sort}` : '';
+    let optionString = (options.id >= 0) ? `${options.id}/` : "";
+    let divider = "?";
+    optionString += (options.start >= 0) ? `${divider}start=${options.start}` : "";
+    divider = (options.start >= 0) ? "&" : "?";
+    optionString += (options.limit > 0) ? `${divider}limit=${options.limit}` : "";
+    divider = (options.limit >= 0 || divider === "&") ? "&" : "?";
+    optionString += (options.convert !== "") ? `${divider}convert=${options.convert}` : "";
+    divider = (options.convert !== "" || divider === "&") ? "&" : "?";
+    optionString += (options.sort !== "") ? `${divider}sort=${options.sort}` : "";
 
     return optionString;
 };

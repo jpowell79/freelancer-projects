@@ -13,7 +13,7 @@ class SettingsUpdater {
             if(fileSettings.includes(key)){
                 this[key] = async (file) => {
                     const formData = new FormData();
-                    formData.append('file', file, file.name);
+                    formData.append("file", file, file.name);
 
                     return axios.post(urls.upload, formData)
                         .then(() => this.updateSetting({

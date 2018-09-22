@@ -1,5 +1,5 @@
-const axios = require('axios');
-const {urls} = require('../constants');
+const axios = require("axios");
+const {urls} = require("../constants");
 
 const login = async ({username, password}) => {
     return axios.post(urls.sessions, {username, password});

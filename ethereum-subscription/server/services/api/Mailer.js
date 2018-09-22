@@ -1,8 +1,8 @@
-const nodemailer = require('nodemailer');
-const url = require('url');
-const {roles, paths} = require('../../../services/constants/index');
-const escapeHtml = require('html-escape');
-const serverSettings = require('../../serverSettings');
+const nodemailer = require("nodemailer");
+const url = require("url");
+const {roles, paths} = require("../../../services/constants/index");
+const escapeHtml = require("html-escape");
+const serverSettings = require("../../serverSettings");
 
 const emailStyle = `
     <style type="text/css">
@@ -138,7 +138,7 @@ class Mailer {
             html: (
                 `${emailContentStart}
                     <p><strong>Contact Details:</strong></p>
-                    <p>${escapeHtml(contactDetails ? contactDetails : '')}</p>
+                    <p>${escapeHtml(contactDetails ? contactDetails : "")}</p>
                     <hr>
                     <p><strong>Subscription Name:</strong></p>
                     <p>${escapeHtml(subscriptionName)}</p>
@@ -162,7 +162,7 @@ class Mailer {
                     <p>${(hasFreeTrials) ? "Yes" : "No"}</p>
                     <hr>
                     <p><strong>Subscription Details:</strong></p>
-                    <p>${escapeHtml(subscriptionDetails ? subscriptionDetails : '')}</p>
+                    <p>${escapeHtml(subscriptionDetails ? subscriptionDetails : "")}</p>
                 ${emailContentEnd}`
             )
         });
@@ -213,7 +213,7 @@ class Mailer {
 
         const fullUrl = url.format({
             protocol: this.req.protocol,
-            host: this.req.get('host'),
+            host: this.req.get("host"),
             pathname: paths.pages.supplier
         });
 
@@ -236,7 +236,7 @@ class Mailer {
         const user = this.req.session.tempUser;
         const fullUrl = url.format({
             protocol: this.req.protocol,
-            host: this.req.get('host'),
+            host: this.req.get("host"),
             pathname: this.req.originalUrl
         });
         const verifyLink = `${fullUrl}/${user.uuid}`;

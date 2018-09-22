@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {Message, Segment} from "semantic-ui-react";
 import EditSubscriptionForm from "../../forms/EditSubscriptionForm";
 import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";

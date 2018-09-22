@@ -1,5 +1,5 @@
-import React, {Component, Fragment} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component, Fragment} from "react";
+import PropTypes from "prop-types";
 import {joinClassNames} from "../services/className";
 
 class FileInput extends Component {
@@ -22,7 +22,7 @@ class FileInput extends Component {
         super(props);
 
         this.state = {
-            fileName: ''
+            fileName: ""
         }
     }
 
@@ -61,7 +61,7 @@ class FileInput extends Component {
                         type="file"
                         ref={(input) => {this.fileInput = input}}
                         onChange={(event) => {
-                            const file = event.target.files['0'];
+                            const file = event.target.files["0"];
                             this.setState({fileName: file.name});
                             onFileUploaded(file);
                         }}

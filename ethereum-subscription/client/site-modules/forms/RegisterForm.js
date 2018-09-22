@@ -1,33 +1,33 @@
-import React, {Component, Fragment} from 'react';
-import FormList from '../../containers/FormList';
+import React, {Component, Fragment} from "react";
+import FormList from "../../containers/FormList";
 import {RECAPTCHA_SITE_KEY} from "../../clientSettings";
-import RecaptchaWidget from '../../modules/RecaptchaWidget';
+import RecaptchaWidget from "../../modules/RecaptchaWidget";
 import {Loader, LoaderTiny} from "../../modules/icons";
-import withMessage from '../../hocs/withMessage';
-import withMetamaskAccount from '../../hocs/withMetamaskAccount';
+import withMessage from "../../hocs/withMessage";
+import withMetamaskAccount from "../../hocs/withMetamaskAccount";
 import objects from "../../../services/datatypes/objects";
 import {isClient} from "../../../services/utils";
 import HideFragment from "../../containers/HideFragment";
 import {getErrorString} from "../../services/utils";
-import {Message} from 'semantic-ui-react';
-import users from '../../../services/api/users';
+import {Message} from "semantic-ui-react";
+import users from "../../../services/api/users";
 
 class RegisterForm extends Component {
     static fields = [
         {
-            type: 'username',
-            label: 'Username:'
+            type: "username",
+            label: "Username:"
         },
         {
-            type: 'email',
-            label: 'Email:'
+            type: "email",
+            label: "Email:"
         },
         {
-            type: 'password',
-            label: 'Password:'
+            type: "password",
+            label: "Password:"
         },
         {
-            type: 'grecaptcha',
+            type: "grecaptcha",
             hidden: true
         }
     ];
@@ -48,10 +48,10 @@ class RegisterForm extends Component {
             this.props.setMessageState({
                 isLoading: false,
                 showSuccess: true,
-                successTitle: 'Your registration was completed successfully.',
+                successTitle: "Your registration was completed successfully.",
                 success: [
-                    'Check your email to activate the account. ' +
-                    'It will expire after 1 hour.'
+                    "Check your email to activate the account. " +
+                    "It will expire after 1 hour."
                 ]
             });
         })

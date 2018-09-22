@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import AddContractForm from "../forms/AddContractForm";
-import {connect} from 'react-redux';
-import Dispatcher from '../../services/loaders/Dispatcher';
+import {connect} from "react-redux";
+import Dispatcher from "../../services/loaders/Dispatcher";
 import {getErrorString} from "../../services/utils";
-import email from '../../../services/api/email';
-import subscriptions from '../../../services/api/subscriptions';
-import users from '../../../services/api/users';
+import email from "../../../services/api/email";
+import subscriptions from "../../../services/api/subscriptions";
+import users from "../../../services/api/users";
 
 class AddContract extends Component {
     handleSubmit = (addContractForm) => {
@@ -34,8 +34,8 @@ class AddContract extends Component {
             .then(() => this.dispatcher.dispatchUpdateSubcriptionContracts({}))
             .then(() => {
                 setComplete({
-                    successTitle: 'The contract has added successfully',
-                    success: ['An email has been sent to the supplier.']
+                    successTitle: "The contract has added successfully",
+                    success: ["An email has been sent to the supplier."]
                 });
             })
             .catch(err => {

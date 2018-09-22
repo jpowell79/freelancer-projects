@@ -1,5 +1,5 @@
-const axios = require('axios');
-const {urls} = require('../constants');
+const axios = require("axios");
+const {urls} = require("../constants");
 
 const addSubscription = async ({subscriberAddress, contractAddress, transactionHash}) => {
     return axios.post(urls.subscriptions, {

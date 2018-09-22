@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
-import {compose} from 'redux';
-import Page from '../containers/Page';
-import FullWidthSegment from '../containers/FullWidthSegment';
+import React, {Component} from "react";
+import {compose} from "redux";
+import Page from "../containers/Page";
+import FullWidthSegment from "../containers/FullWidthSegment";
 import SubscriptionTable from "../site-modules/subscription/SubscriptionTable";
 import BackgroundSegment from "../containers/BackgroundSegment";
-import paths from '../../services/constants/paths';
-import {connect} from 'react-redux';
-import withSubscriptionContracts from '../hocs/withSubscriptionContracts';
+import paths from "../../services/constants/paths";
+import {connect} from "react-redux";
+import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import SubscriptionFilters from "../site-modules/subscription/SubscriptionFilters";
 import {filterSubscriptionContracts} from "../services/filters";
 import {
@@ -14,9 +14,9 @@ import {
     AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
     AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
 } from "../clientSettings";
-import Slideshow from '../containers/Slideshow';
+import Slideshow from "../containers/Slideshow";
 import {LoaderTiny} from "../modules/icons";
-import {Notice} from '../containers/Notice';
+import {Notice} from "../containers/Notice";
 import withMountObserver from "../hocs/withMountObserver";
 
 class Index extends Component {

@@ -1,9 +1,9 @@
-const abi = require('./subscriptionContractAbi');
+const abi = require("./subscriptionContractAbi");
 const {
     toMilliseconds,
     parseNumberStringsToNumbers,
     parseContractArrayToObject
-} = require('./contractParser');
+} = require("./contractParser");
 const {bindAllMethods} = require("../utils");
 
 class SubscriptionContract {

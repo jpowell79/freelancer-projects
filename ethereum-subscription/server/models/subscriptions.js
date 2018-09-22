@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => (
-    sequelize.define('subscriptions', {
+    sequelize.define("subscriptions", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -10,16 +10,16 @@ module.exports = (sequelize, DataTypes) => (
             allowNull: false,
             unique: true,
             references: {
-                model: 'subscriptionContracts',
-                key: 'id'
+                model: "subscriptionContracts",
+                key: "id"
             }
         },
         subscriberId: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'subscribers',
-                key: 'id'
+                model: "subscribers",
+                key: "id"
             }
         },
         transactionHash: {

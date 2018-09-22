@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import NextHead from 'next/head';
-import '../sass/style.scss';
-import {connect} from 'react-redux';
+import React, {Component} from "react";
+import NextHead from "next/head";
+import "../sass/style.scss";
+import {connect} from "react-redux";
 
 class Head extends Component {
     static mapStateToProps = ({settings}) => ({settings});

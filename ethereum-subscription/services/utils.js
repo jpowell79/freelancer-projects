@@ -1,12 +1,12 @@
 const {round} = require("lodash/math");
-const axios = require('axios');
+const axios = require("axios");
 
 module.exports.isClient = () => {
-    return typeof window !== 'undefined';
+    return typeof window !== "undefined";
 };
 
 module.exports.isServer = () => {
-    return typeof window === 'undefined';
+    return typeof window === "undefined";
 };
 
 module.exports.serverRequest = (req, url) => {
@@ -14,10 +14,10 @@ module.exports.serverRequest = (req, url) => {
     const host = `http://${req.headers.host}`;
 
     return axios({
-        method: 'get',
+        method: "get",
         url: host + url,
-        credentials: 'same-origin',
-        data: {'session': session}
+        credentials: "same-origin",
+        data: {"session": session}
     });
 };
 

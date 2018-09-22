@@ -1,4 +1,4 @@
 module.exports = {
-    supplier: 'supplier',
-    admin: 'admin'
+    supplier: "supplier",
+    admin: "admin"
 };

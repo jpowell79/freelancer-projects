@@ -1,11 +1,9 @@
-"use strict";
-
-const Request = require('./Request');
-const {urls} = require('../../../../services/constants');
-const Subscriptions = require('../Subscriptions');
-const Subscribers = require('../Subscribers');
-const SubscriptionContracts = require('../SubscriptionContracts');
-const SubscriptionTypes = require('../SubscriptionTypes');
+const Request = require("./Request");
+const {urls} = require("../../services/constants/index");
+const Subscriptions = require("../services/api/Subscriptions");
+const Subscribers = require("../services/api/Subscribers");
+const SubscriptionContracts = require("../services/api/SubscriptionContracts");
+const SubscriptionTypes = require("../services/api/SubscriptionTypes");
 
 class SubscriptionsRequest extends Request {
     constructor(params){
@@ -17,10 +15,10 @@ class SubscriptionsRequest extends Request {
 
     static parseUrl(url){
         if(!url.includes(urls.subscriptions)){
-            return url.replace(/\//g, '');
+            return url.replace(/\//g, "");
         }
 
-        return url.split(urls.subscriptions)[1].replace(/\//g, '');
+        return url.split(urls.subscriptions)[1].replace(/\//g, "");
     };
 
     async handle(){

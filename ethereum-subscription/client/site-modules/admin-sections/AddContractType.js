@@ -1,13 +1,13 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import SortableTable from "../../containers/SortableTable";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import AddContractTypeForm from "../forms/AddContractTypeForm";
-import strings from '../../../services/datatypes/strings';
-import Dispatcher from '../../services/loaders/Dispatcher';
+import strings from "../../../services/datatypes/strings";
+import Dispatcher from "../../services/loaders/Dispatcher";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
-import {Form} from 'semantic-ui-react';
+import {Form} from "semantic-ui-react";
 import {getErrorString} from "../../services/utils";
-import subscriptions from '../../../services/api/subscriptions';
+import subscriptions from "../../../services/api/subscriptions";
 
 class AddContractType extends Component {
     static mapStateToProps = ({subscriptionTypes}) => ({subscriptionTypes});
@@ -44,7 +44,7 @@ class AddContractType extends Component {
     handleEdit = (event, removeAlert) => {
         if(!strings.isDefined(this.state.contractType.name)){
             AlertOptionPane.showErrorAlert({
-                message: 'The field cannot be empty'
+                message: "The field cannot be empty"
             });
 
             return;
@@ -86,7 +86,7 @@ class AddContractType extends Component {
                     </Form.Field>
                 </Form>
             ),
-            confirmText: 'Submit',
+            confirmText: "Submit",
             onConfirm: this.handleEdit,
             onCancel: (event, removeAlert) => {removeAlert();}
         });

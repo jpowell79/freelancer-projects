@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 
 /**
  * Hides an element which may change between the initial server and client

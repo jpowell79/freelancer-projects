@@ -29,13 +29,13 @@ class DummyContractLoader {
         const subscriptionContracts = [];
         const subsriptionTypes = [
             ...FILTERABLE_SUBSCRIPTION_TYPES,
-            'Other',
-            'Foobar'
+            "Other",
+            "Foobar"
         ];
         const users = [
-            'admin',
-            'smnrkssn',
-            'supplier'
+            "admin",
+            "smnrkssn",
+            "supplier"
         ];
 
         for(let i = 0; i < amount; i++){

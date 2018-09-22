@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {SubscriptionContractDetails} from "./SubscriptionContractDetails";
 import objects from "../../../services/datatypes/objects";
 import {loadServerDataIntoStoreFromClient} from "../../services/loaders/loadServerDataIntoStore";
@@ -20,11 +20,11 @@ class SubscriptionContractDetailsContainer extends Component {
                     etherScanUrl: this.props.settings.etherScanUrl.value,
                     messageHeader: "Your subscription request has been sent successfully!",
                     messageList: [
-                        'The supplier has been notified of your request. You will ' +
-                        'receive an email within 24 hours.'
+                        "The supplier has been notified of your request. You will " +
+                        "receive an email within 24 hours."
                     ]
                 }, {
-                    title: 'Subscription Request Sent',
+                    title: "Subscription Request Sent",
                 });
 
                 removeAlert();
@@ -37,8 +37,8 @@ class SubscriptionContractDetailsContainer extends Component {
                 console.error(err);
 
                 AlertOptionPane.showErrorAlert({
-                    title: 'Subscription Request Cancelled',
-                    message: 'Something went wrong during the transaction process.'
+                    title: "Subscription Request Cancelled",
+                    message: "Something went wrong during the transaction process."
                 });
 
                 removeAlert();
@@ -71,7 +71,7 @@ class SubscriptionContractDetailsContainer extends Component {
                 return this.props.setClearedMessageState()
                     .then(() => {
                         AlertOptionPane.showErrorAlert({
-                            message: 'Something went wrong when trying to cancel the subscription'
+                            message: "Something went wrong when trying to cancel the subscription"
                         });
                     });
             })

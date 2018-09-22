@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import SortableTable from "../../containers/SortableTable/index";
-import PropTypes from 'prop-types';
-import strings from '../../../services/datatypes/strings';
+import PropTypes from "prop-types";
+import strings from "../../../services/datatypes/strings";
 import {classNames} from "../../services/className";
-import {Pagination} from 'semantic-ui-react';
-import {paths} from '../../../services/constants/index';
-import Link from 'next/link';
+import {Pagination} from "semantic-ui-react";
+import {paths} from "../../../services/constants/index";
+import Link from "next/link";
 import {ProviderRating} from "../ProviderRating";
 import {hideOnMobile, hideOnTablet, showOnMobile} from "../../services/constants/css";
 import {weiToEth} from "../../../services/utils";
@@ -46,9 +46,9 @@ class SubscriptionTable extends Component {
                 })
                 .map((contract, i) => {
                     const buttonClass = classNames({
-                        'ui button': true,
-                        'primary': !contract.subscriptionActive,
-                        'bg-color-uiRed color-white': contract.subscriptionActive
+                        "ui button": true,
+                        "primary": !contract.subscriptionActive,
+                        "bg-color-uiRed color-white": contract.subscriptionActive
                     });
 
                     return (

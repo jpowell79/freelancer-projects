@@ -29,7 +29,7 @@ class CustomWeb3 extends web3 {
     };
 
     onMetamaskUpdate(callback){
-        this.currentProvider.publicConfigStore.on('update', callback);
+        this.currentProvider.publicConfigStore.on("update", callback);
     };
 
     unsubscribeToMetmaskUpdate(callback){
@@ -73,27 +73,27 @@ class CustomWeb3 extends web3 {
     getNetworkName(networkId){
         switch(networkId){
         case 1:
-            return 'Mainnet';
+            return "Mainnet";
         case 2:
-            return 'Morden';
+            return "Morden";
         case 3:
-            return 'Ropsten';
+            return "Ropsten";
         case 4:
-            return 'Rinkeby';
+            return "Rinkeby";
         case 8:
-            return 'Ubiq';
+            return "Ubiq";
         case 42:
-            return 'Kovan';
+            return "Kovan";
         case 77:
-            return 'Sokol';
+            return "Sokol";
         case 99:
-            return 'Core';
+            return "Core";
         case 7762959:
-            return 'Musicoin';
+            return "Musicoin";
         case 61717561:
-            return 'Aquachain';
+            return "Aquachain";
         default:
-            return 'Unknown';
+            return "Unknown";
         }
     };
 }

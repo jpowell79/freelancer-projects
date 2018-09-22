@@ -1,5 +1,5 @@
-import React from 'react';
-import AlertOptionPane from '../Alert/AlertOptionPane';
+import React from "react";
+import AlertOptionPane from "../Alert/AlertOptionPane";
 import AddSubscriptionForm from "../../site-modules/forms/AddSubscriptionForm";
 import etherscan from "../../../services/api/etherscan";
 import {Message} from "semantic-ui-react";

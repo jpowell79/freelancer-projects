@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
-import {roles} from '../../../services/constants';
+import React, {Component, Fragment} from "react";
+import {roles} from "../../../services/constants";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import SortableTable from "../../containers/SortableTable";
 import {LoaderSmall} from "../../modules/icons";
 import {hideOnMobile} from "../../services/constants/css";
 import {getErrorString} from "../../services/utils";
-import {connect} from 'react-redux';
-import users from '../../../services/api/users';
+import {connect} from "react-redux";
+import users from "../../../services/api/users";
 
 class SuspendSuppliers extends Component {
     static mapStateToProps = ({users}) => ({

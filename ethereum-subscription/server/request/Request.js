@@ -1,7 +1,5 @@
-"use strict";
-
-const objects = require('../../../../services/datatypes/objects');
-const {roles} = require('../../../../services/constants');
+const objects = require("../../services/datatypes/objects");
+const {roles} = require("../../services/constants");
 
 class Request {
     constructor({req, res, sequelize, responseHandler}){

@@ -1,4 +1,4 @@
-import {constants} from './constants';
+import {constants} from "./constants";
 
 export const updateTrialSubscriptionDetails = (trialSubscriptionDetails) => ({
     type: constants.UPDATE_TRIAL_SUBSCRIPTION_DETAILS,

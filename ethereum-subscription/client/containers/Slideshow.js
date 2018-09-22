@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {joinClassNames, classNames} from "../services/className";
-import {sleep} from '../../services/utils';
-import PropTypes from 'prop-types';
-import {childrenToArray} from '../services/utils';
-import Animation from './Animation';
+import {sleep} from "../../services/utils";
+import PropTypes from "prop-types";
+import {childrenToArray} from "../services/utils";
+import Animation from "./Animation";
 import {animationTypes} from "../services/constants/animationTypes";
 
 class Slideshow extends Component {
@@ -87,14 +87,14 @@ class Slideshow extends Component {
 
         const childrenArray = childrenToArray(children);
         const rightIconClass = classNames({
-            'unclickable': !this.state.canChangeSlide,
-            'disabled': this.state.active === childrenArray.length-1 || !this.state.canChangeSlide,
-            'hide-xxs': childrenArray.length <= 1
+            "unclickable": !this.state.canChangeSlide,
+            "disabled": this.state.active === childrenArray.length-1 || !this.state.canChangeSlide,
+            "hide-xxs": childrenArray.length <= 1
         }, rightIcon.props.className);
         const leftIconClass = classNames({
-            'unclickable': !this.state.canChangeSlide,
-            'disabled': this.state.active === 0 || !this.state.canChangeSlide,
-            'hide-xxs': childrenArray.length <= 1
+            "unclickable": !this.state.canChangeSlide,
+            "disabled": this.state.active === 0 || !this.state.canChangeSlide,
+            "hide-xxs": childrenArray.length <= 1
         }, leftIcon.props.className);
 
         return (

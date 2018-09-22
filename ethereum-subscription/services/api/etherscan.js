@@ -1,11 +1,11 @@
-const axios = require('axios');
+const axios = require("axios");
 
-const API_ADDRESS = 'https://api.etherscan.io/api';
+const API_ADDRESS = "https://api.etherscan.io/api";
 const ETHER_SCAN_API_TOKEN = "XGZCYQPPEWAPP339S38RS6IWCRJWZJPWR6";
 
 const getWalletAddressTransactions = ({
     walletAddress,
-    sort = 'asc',
+    sort = "asc",
     startblock = 0,
     endblock = 99999999,
     offset = 10,

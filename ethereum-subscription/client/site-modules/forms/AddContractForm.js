@@ -1,9 +1,9 @@
-import React, {Component, Fragment} from 'react';
-import {Form, Dropdown} from 'semantic-ui-react';
-import withMessage from '../../hocs/withMessage';
-import PropTypes from 'prop-types';
+import React, {Component, Fragment} from "react";
+import {Form, Dropdown} from "semantic-ui-react";
+import withMessage from "../../hocs/withMessage";
+import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 
 class AddContractForm extends Component {
     static mapStateToProps = ({subscriptionTypes}) => ({
@@ -49,7 +49,7 @@ class AddContractForm extends Component {
                 <Form>
                     {this.props.renderTopChildren(this.props)}
                     <Form.Field error={
-                        messageState.fieldsWithErrors.includes('supplierUsername')
+                        messageState.fieldsWithErrors.includes("supplierUsername")
                     }>
                         <label>Username of supplier</label>
                         <input
@@ -66,7 +66,7 @@ class AddContractForm extends Component {
                         />
                     </Form.Field>
                     <Form.Field error={
-                        messageState.fieldsWithErrors.includes('contractAddress')
+                        messageState.fieldsWithErrors.includes("contractAddress")
                     }>
                         <label>New Contract Address</label>
                         <input
@@ -83,7 +83,7 @@ class AddContractForm extends Component {
                         />
                     </Form.Field>
                     <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionName')
+                        messageState.fieldsWithErrors.includes("subscriptionName")
                     }>
                         <label>Subscription Name</label>
                         <input
@@ -100,7 +100,7 @@ class AddContractForm extends Component {
                         />
                     </Form.Field>
                     <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionTypeId')
+                        messageState.fieldsWithErrors.includes("subscriptionTypeId")
                     }>
                         <label>Subscription Type</label>
                         <Dropdown
@@ -113,7 +113,7 @@ class AddContractForm extends Component {
                         />
                     </Form.Field>
                     <Form.Field error={
-                        messageState.fieldsWithErrors.includes('subscriptionDetails')
+                        messageState.fieldsWithErrors.includes("subscriptionDetails")
                     }>
                         <label>Subscription Details (max 2048 characters)</label>
                         <span className="counter">
@@ -148,9 +148,9 @@ class AddContractForm extends Component {
 }
 
 export default withMessage(connect(AddContractForm.mapStateToProps)(AddContractForm), {
-    supplierUsername: '',
-    contractAddress: '',
-    subscriptionName: '',
-    subscriptionTypeId: '',
-    subscriptionDetails: ''
+    supplierUsername: "",
+    contractAddress: "",
+    subscriptionName: "",
+    subscriptionTypeId: "",
+    subscriptionDetails: ""
 });

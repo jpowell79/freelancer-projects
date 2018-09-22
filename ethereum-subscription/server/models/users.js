@@ -1,9 +1,9 @@
-const objects = require('../../services/datatypes/objects');
-const roles = require('../../services/constants/roles');
-const passwordHash = require('password-hash');
+const objects = require("../../services/datatypes/objects");
+const roles = require("../../services/constants/roles");
+const passwordHash = require("password-hash");
 
 module.exports = (sequelize, DataTypes) => (
-    sequelize.define('users', {
+    sequelize.define("users", {
         username: {
             type: DataTypes.STRING,
             primaryKey: true,

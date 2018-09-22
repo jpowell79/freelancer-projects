@@ -11,7 +11,7 @@ const parseNumberStringsToNumbers = (responses) => {
         const key = Object.keys(response)[0];
         const value = response[key];
 
-        if(typeof value !== 'string') return response;
+        if(typeof value !== "string") return response;
 
         return (
             isNumber(value)

@@ -1,5 +1,5 @@
-const defaultData = require('./defaultData');
-const Subscriptions = require('../api/Subscriptions');
+const defaultData = require("./defaultData");
+const Subscriptions = require("../api/Subscriptions");
 
 module.exports.loadDefaultSettings = async (sequelize) => {
     return Promise.all(Object.keys(defaultData.settings)

@@ -3,19 +3,19 @@ const IMAGES = `${STATIC}/images`;
 const AUDIO = `${STATIC}/audio`;
 const VIDEO = `${STATIC}/video`;
 const FILES = `${STATIC}/files`;
-const isServer = require('../utils').isServer;
-const session = require('../session');
+const isServer = require("../utils").isServer;
+const session = require("../session");
 
 module.exports = {
     pages: {
-        index: '/',
-        login: '/Login',
-        register: '/Register',
-        howItWorks: '/HowItWorks',
-        about: '/About',
-        admin: '/Admin',
-        supplier: '/Supplier',
-        subscriptionInfo: '/SubscriptionInfo'
+        index: "/",
+        login: "/Login",
+        register: "/Register",
+        howItWorks: "/HowItWorks",
+        about: "/About",
+        admin: "/Admin",
+        supplier: "/Supplier",
+        subscriptionInfo: "/SubscriptionInfo"
     },
     static: {
         images: IMAGES,

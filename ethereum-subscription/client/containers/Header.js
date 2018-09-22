@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import MainMenu from '../site-modules/MainMenu';
+import React, {Component} from "react";
+import MainMenu from "../site-modules/MainMenu";
 import {notLoggedInMenu} from "../clientSettings";
 
 class Header extends Component {

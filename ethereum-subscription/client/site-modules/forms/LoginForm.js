@@ -1,22 +1,22 @@
-import React, {Component, Fragment} from 'react';
-import FormList from '../../containers/FormList';
-import paths, {redirect} from '../../../services/constants/paths';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import FormList from "../../containers/FormList";
+import paths, {redirect} from "../../../services/constants/paths";
+import {connect} from "react-redux";
 import {LoaderTiny} from "../../modules/icons";
-import roles from '../../../services/constants/roles';
-import withMessage from '../../hocs/withMessage';
+import roles from "../../../services/constants/roles";
+import withMessage from "../../hocs/withMessage";
 import {getErrorString} from "../../services/utils";
-import sessions from '../../../services/api/sessions';
+import sessions from "../../../services/api/sessions";
 
 class LoginForm extends Component {
     static fields = [
         {
-            type: 'username',
-            label: 'Username:'
+            type: "username",
+            label: "Username:"
         },
         {
-            type: 'password',
-            label: 'Password:'
+            type: "password",
+            label: "Password:"
         }
     ];
 

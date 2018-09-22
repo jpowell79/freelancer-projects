@@ -1,4 +1,4 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component, Fragment} from "react";
 import {urls} from "../../../services/constants/";
 
 class DatabaseBackup extends Component {

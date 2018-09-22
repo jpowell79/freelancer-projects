@@ -1,9 +1,7 @@
-"use strict";
-
-const Request = require('./Request');
-const {paths} = require('../../../../services/constants/');
-const formidable = require('formidable');
-const fs = require('fs');
+const Request = require("./Request");
+const {paths} = require("../../services/constants/");
+const formidable = require("formidable");
+const fs = require("fs");
 
 class UploadRequest extends Request {
     constructor(params){
@@ -23,11 +21,11 @@ class UploadRequest extends Request {
     };
 
     checkTypeThenUpload(file){
-        if(file.type.startsWith('image')){
+        if(file.type.startsWith("image")){
             return this.upload(file, paths.static.images);
-        } else if(file.type.startsWith('audio')){
+        } else if(file.type.startsWith("audio")){
             return this.upload(file, paths.static.audio);
-        } else if(file.type.startsWith('video')){
+        } else if(file.type.startsWith("video")){
             return this.upload(file, paths.static.video);
         } else {
             return this.upload(file, paths.static.files);

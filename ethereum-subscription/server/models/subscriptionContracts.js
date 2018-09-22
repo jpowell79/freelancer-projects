@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => (
-    sequelize.define('subscriptionContracts', {
+    sequelize.define("subscriptionContracts", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => (
                 len: [2, 64]
             },
             references: {
-                model: 'users',
-                key: 'username'
+                model: "users",
+                key: "username"
             }
         },
         isActive: {
@@ -42,8 +42,8 @@ module.exports = (sequelize, DataTypes) => (
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'subscriptionTypes',
-                key: 'id'
+                model: "subscriptionTypes",
+                key: "id"
             }
         },
     })

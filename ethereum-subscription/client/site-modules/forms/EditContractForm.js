@@ -1,13 +1,13 @@
-import React, {Component, Fragment} from 'react';
-import {connect} from 'react-redux';
+import React, {Component, Fragment} from "react";
+import {connect} from "react-redux";
 import SubscriptionForm from "./SubscriptionForm";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
 import {getTransactionMessage, waitingForBlockchain} from "../../services/views/messages";
 
 class EditContractForm extends Component {
     static mapStateToProps = ({settings}) => ({
-        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ''
+        etherScanUrl: (settings.etherScanUrl) ? settings.etherScanUrl.value : ""
     });
 
     static defaultProps = {
@@ -107,7 +107,7 @@ class EditContractForm extends Component {
                         );
                     }}
                     onSubmit={this.handleSubmit}
-                    hideFields={['contactDetails', 'hasFreeTrials']}
+                    hideFields={["contactDetails", "hasFreeTrials"]}
                     defaultState={{
                         subscriptionName,
                         subscriptionType: type,

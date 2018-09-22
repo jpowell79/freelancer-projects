@@ -1,7 +1,5 @@
-"use strict";
-
-const Request = require('./Request');
-const strings = require('../../../../services/datatypes/strings');
+const Request = require("./Request");
+const strings = require("../../services/datatypes/strings");
 
 class SettingsRequest extends Request {
     constructor(params){
@@ -16,7 +14,7 @@ class SettingsRequest extends Request {
         const {name} = this.req.body;
 
         if(!strings.isDefined(name)){
-            this.responseHandler.sendBadRequest('Setting name is required');
+            this.responseHandler.sendBadRequest("Setting name is required");
             return false;
         }
 
@@ -55,7 +53,7 @@ class SettingsRequest extends Request {
         return this.sequelize.models.settings
             .update({name, value}, {where: {name}})
             .then(affectedRows => {
-                if(affectedRows[0] === '0' || affectedRows[0] === 0)
+                if(affectedRows[0] === "0" || affectedRows[0] === 0)
                     throw new Error("No setting with the given name exists.");
 
                 this.responseHandler.sendSuccess(affectedRows);

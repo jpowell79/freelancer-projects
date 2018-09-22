@@ -1,5 +1,5 @@
-const {isLoggedInAdmin} = require('../../../services/session');
-const {getAllModelEntries} = require('./apiUtils');
+const {isLoggedInAdmin} = require("../../../services/session");
+const {getAllModelEntries} = require("./apiUtils");
 
 function SubscriptionTypes({req, sequelize, responseHandler}){
     this.model = sequelize.models.subscriptionTypes;
@@ -24,7 +24,7 @@ function SubscriptionTypes({req, sequelize, responseHandler}){
         const {name, id} = req.body;
 
         if(!name || !id){
-            return responseHandler.sendBadRequest('Subscription Type and Id is required.');
+            return responseHandler.sendBadRequest("Subscription Type and Id is required.");
         }
 
         return this.update({name, id})
@@ -46,7 +46,7 @@ function SubscriptionTypes({req, sequelize, responseHandler}){
         const {name} = req.body;
 
         if(!name){
-            return responseHandler.sendBadRequest('Name is required');
+            return responseHandler.sendBadRequest("Name is required");
         }
 
         return this.create({name})

@@ -1,5 +1,5 @@
-const Sequelize = require('sequelize');
-const defaultDatabase = require('../services/database/defaultDatabase');
+const Sequelize = require("sequelize");
+const defaultDatabase = require("../services/database/defaultDatabase");
 
 function createDatabaseIfNotExists(sequelizeOptions, dbName){
     const sequelize = new Sequelize(sequelizeOptions);
@@ -39,7 +39,7 @@ module.exports = async ({
         define: {
             defaultScope: {
                 attributes: {
-                    exclude: ['createdAt', 'updatedAt']
+                    exclude: ["createdAt", "updatedAt"]
                 }
             }
         }
@@ -51,29 +51,29 @@ module.exports = async ({
         database: DATABASE_NAME
     }));
 
-    const Settings = require('../models/settings')(sequelize, Sequelize.DataTypes);
-    const Subscribers = require('../models/subscribers')(sequelize, Sequelize.DataTypes);
-    const SubscriptionTypes = require('../models/subscriptionTypes')(sequelize, Sequelize.DataTypes);
-    const Subscriptions = require('../models/subscriptions')(sequelize, Sequelize.DataTypes);
-    const SubscriptionContracts = require('../models/subscriptionContracts')(sequelize, Sequelize.DataTypes);
-    const Users = require('../models/users')(sequelize, Sequelize.DataTypes);
+    const Settings = require("../models/settings")(sequelize, Sequelize.DataTypes);
+    const Subscribers = require("../models/subscribers")(sequelize, Sequelize.DataTypes);
+    const SubscriptionTypes = require("../models/subscriptionTypes")(sequelize, Sequelize.DataTypes);
+    const Subscriptions = require("../models/subscriptions")(sequelize, Sequelize.DataTypes);
+    const SubscriptionContracts = require("../models/subscriptionContracts")(sequelize, Sequelize.DataTypes);
+    const Users = require("../models/users")(sequelize, Sequelize.DataTypes);
 
     Users.hasMany(SubscriptionContracts, {
-        foreignKey: 'ownerUsername'
+        foreignKey: "ownerUsername"
     });
     SubscriptionContracts.belongsTo(SubscriptionTypes, {
-        foreignKey: 'typeId'
+        foreignKey: "typeId"
     });
     SubscriptionTypes.hasMany(SubscriptionContracts, {
-        foreignKey: 'typeId'
+        foreignKey: "typeId"
     });
     SubscriptionContracts.belongsToMany(Subscribers, {
         through: Subscriptions,
-        foreignKey: 'contractId'
+        foreignKey: "contractId"
     });
     Subscribers.belongsToMany(SubscriptionContracts, {
         through: Subscriptions,
-        foreignKey: 'subscriberId'
+        foreignKey: "subscriberId"
     });
 
     return createDatabaseIfNotExists(options, DATABASE_NAME)

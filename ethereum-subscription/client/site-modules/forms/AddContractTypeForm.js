@@ -1,12 +1,12 @@
-import React, {Component, Fragment} from 'react';
-import withMessage from '../../hocs/withMessage';
-import {Form} from 'semantic-ui-react';
+import React, {Component, Fragment} from "react";
+import withMessage from "../../hocs/withMessage";
+import {Form} from "semantic-ui-react";
 import {LoaderTiny} from "../../modules/icons";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 class AddContractTypeForm extends Component {
     static defaultProps = {
-        submitButtonText: 'Submit'
+        submitButtonText: "Submit"
     };
 
     static propTypes = {
@@ -37,7 +37,7 @@ class AddContractTypeForm extends Component {
                 {renderMessages()}
                 <Form>
                     <Form.Field error={
-                        fieldsWithErrors.includes('contractType')
+                        fieldsWithErrors.includes("contractType")
                     }>
                         <label>Contract Type</label>
                         <input
@@ -63,5 +63,5 @@ class AddContractTypeForm extends Component {
 }
 
 export default withMessage(AddContractTypeForm, {
-    contractType: ''
+    contractType: ""
 });
