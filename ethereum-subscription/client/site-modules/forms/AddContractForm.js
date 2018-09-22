@@ -4,9 +4,12 @@ import withMessage from "../../hocs/withMessage";
 import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
 import {connect} from "react-redux";
+import {UserDropdown} from "../UsersDropdown";
+import roles from "../../../services/constants/roles";
 
 class AddContractForm extends Component {
-    static mapStateToProps = ({subscriptionTypes}) => ({
+    static mapStateToProps = ({subscriptionTypes, users}) => ({
+        users,
         options: subscriptionTypes.map(type => ({
             value: type.id,
             text: type.name
@@ -52,16 +55,14 @@ class AddContractForm extends Component {
                         messageState.fieldsWithErrors.includes("supplierUsername")
                     }>
                         <label>Username of supplier</label>
-                        <input
-                            type="text"
+                        <UserDropdown
+                            users={this.props.users.filter(user => user.role === roles.supplier)}
                             value={messageState.supplierUsername}
                             disabled={isLoading || complete}
-                            onChange={(event) => {
-                                if(event.target.value.length <= 64){
-                                    setMessageState({
-                                        supplierUsername: event.target.value
-                                    });
-                                }
+                            onChange={(event, {value}) => {
+                                setMessageState({
+                                    supplierUsername: value
+                                });
                             }}
                         />
                     </Form.Field>

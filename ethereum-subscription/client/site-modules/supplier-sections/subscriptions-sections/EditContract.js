@@ -10,8 +10,6 @@ import DatabaseDataLoader from "../../../services/loaders/DatabaseDataLoader";
 
 export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
     const handleActivateContract = async () => {
-
-
         return subscriptions.activateSubscriptionContract({
             address: editContract.address
         }).then(() => new DatabaseDataLoader(dispatch, {
