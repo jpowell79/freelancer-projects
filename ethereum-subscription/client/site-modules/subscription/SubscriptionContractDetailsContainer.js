@@ -74,7 +74,9 @@ class SubscriptionContractDetailsContainer extends Component {
 
                 return this.props.setClearedMessageState()
                     .then(() => this.loadContract());
-            }).catch(() => {
+            }).catch(err => {
+                console.error(err);
+
                 return this.props.setClearedMessageState()
                     .then(() => {
                         AlertOptionPane.showErrorAlert({

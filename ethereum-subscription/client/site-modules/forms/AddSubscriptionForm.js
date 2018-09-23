@@ -44,7 +44,9 @@ class AddSubscriptionForm extends Component {
             })).then(() => email.sendRequestSubscriptionMails({
                 subscriberEmail: this.props.messageState.email,
                 supplierEmail: supplier.email,
-                subscriptionName: contract.subscriptionName
+                subscriptionName: contract.subscriptionName,
+                transactionHash: transaction.transactionHash,
+                etherScanUrl: this.props.etherScanUrl
             })).then(() => transaction);
     };
 

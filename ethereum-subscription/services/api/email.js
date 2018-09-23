@@ -4,12 +4,16 @@ const {urls, mailTypes} = require("../constants");
 const sendRequestSubscriptionMails = async ({
     supplierEmail,
     subscriberEmail,
-    subscriptionName
+    subscriptionName,
+    transactionHash,
+    etherScanUrl
 }) => {
     return axios.post(`${urls.email}/${mailTypes.requestSubscription}`, {
         supplierEmail,
         subscriberEmail,
-        subscriptionName
+        subscriptionName,
+        transactionHash,
+        etherScanUrl
     });
 };
 

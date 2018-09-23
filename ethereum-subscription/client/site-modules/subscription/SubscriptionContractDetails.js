@@ -29,7 +29,7 @@ export const SubscriptionContractDetails = ({
             <div className="text-center">
                 <h1 className="title">{
                     (subscriptionCancelled)
-                        ? `${subscriptionName} has been cancelled by the supplier`
+                        ? `${subscriptionName} has been cancelled`
                         : subscriptionName
                 }</h1>
                 <p className="text">Provided by: <strong>

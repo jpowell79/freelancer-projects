@@ -4,6 +4,7 @@ const {roles, paths} = require("../../../services/constants/index");
 const escapeHtml = require("html-escape");
 const serverSettings = require("../../serverSettings");
 const {emailContentStart, emailContentEnd} = require('./emailStyles');
+const etherscan = require("../../../services/api/etherscan");
 
 class Emailer {
     constructor(req){
@@ -19,7 +20,9 @@ class Emailer {
         const {
             supplierEmail,
             subscriberEmail,
-            subscriptionName
+            subscriptionName,
+            etherScanUrl,
+            transactionHash
         } = this.req.body;
 
         return this.sendMail({
@@ -33,6 +36,11 @@ class Emailer {
                         You can expect an email with details of how to start the subscription 
                         within 24 hours.
                     </p>
+                    <p>
+                        <strong>Transaction Hash:</strong> <a href="${
+                        etherscan.getTransactionUrl(etherScanUrl, transactionHash)
+                        }">${transactionHash}</a>
+                    </p>
                  ${emailContentEnd}`
             )
         });
@@ -42,10 +50,12 @@ class Emailer {
         const {
             supplierEmail,
             subscriberEmail,
-            subscriptionName
+            subscriptionName,
+            transactionHash,
+            etherScanUrl
         } = this.req.body;
 
-        if(!supplierEmail || !subscriberEmail || !subscriptionName){
+        if(!supplierEmail || !subscriberEmail || !subscriptionName || !transactionHash){
             return new Promise(() => {
                 throw new Error("Missing required fields.");
             });
@@ -62,6 +72,11 @@ class Emailer {
                     username/password details and activate the subscription. Failure to 
                     activate the subsription within 24 hours will result in an automatic 
                     refund of all Eth to the subscriber.
+                </p>
+                <p>
+                    <strong>Transaction Hash:</strong> <a href="${
+                        etherscan.getTransactionUrl(etherScanUrl, transactionHash)
+                    }">${transactionHash}</a>
                 </p>
                 ${emailContentEnd}`
             )
