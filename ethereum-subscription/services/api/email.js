@@ -1,6 +1,34 @@
 const axios = require("axios");
 const {urls, mailTypes} = require("../constants");
 
+const sendTrialStartedMail = async ({
+    supplierEmail,
+    subscriberEmail,
+    subscriptionName,
+    contractAddress,
+}) => {
+    return axios.post(`${urls.email}/${mailTypes.trialStarted}`, {
+        supplierEmail,
+        subscriberEmail,
+        contractAddress,
+        subscriptionName
+    });
+};
+
+const sendSubscriptionStartedMail = async ({
+    supplierEmail,
+    subscriberEmail,
+    subscriptionName,
+    contractAddress,
+}) => {
+    return axios.post(`${urls.email}/${mailTypes.subscriptionStarted}`, {
+        supplierEmail,
+        subscriberEmail,
+        contractAddress,
+        subscriptionName
+    });
+};
+
 const sendRequestSubscriptionMails = async ({
     supplierEmail,
     subscriberEmail,
@@ -59,5 +87,7 @@ module.exports = {
     sendMassSupplierMail,
     sendContractCreatedMail,
     sendContractRequestMail,
-    sendRequestSubscriptionMails
+    sendRequestSubscriptionMails,
+    sendSubscriptionStartedMail,
+    sendTrialStartedMail
 };

@@ -6,12 +6,18 @@ function Subscribers({req, sequelize, responseHandler}){
     this.sendGetAll = async () => getAllModelEntries(responseHandler, this.model);
 
     this.createIfNotExists = async () => {
-        const {subscriberAddress} = req.body;
+        const {
+            subscriberAddress,
+            subscriberEmail
+        } = req.body;
 
         return this.getOne({subscriberAddress})
             .then(subscriberData => {
                 if(!subscriberData){
-                    return this.model.create({walletAddress: subscriberAddress})
+                    return this.model.create({
+                        walletAddress: subscriberAddress,
+                        email: subscriberEmail
+                    });
                 }
             });
     };

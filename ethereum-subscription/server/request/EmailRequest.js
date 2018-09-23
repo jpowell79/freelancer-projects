@@ -51,6 +51,12 @@ class EmailRequest extends Request {
         case mailTypes.massMailSuppliers:
             return this.responseHandler
                 .handlePromiseResponse(this.emailer.sendMassSupplierMail(this.sequelize));
+        case mailTypes.subscriptionStarted:
+            return this.responseHandler
+                .handlePromiseResponse(this.emailer.sendSubscriptionStartedMail());
+        case mailTypes.trialStarted:
+            return this.responseHandler
+                .handlePromiseResponse(this.emailer.sendTrialStartedMail());
         default:
             this.responseHandler.sendBadRequest(`Invalid email type: ${this.req.params.type}`);
             break;

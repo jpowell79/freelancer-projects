@@ -38,7 +38,7 @@ class Emailer {
                     </p>
                     <p>
                         <strong>Transaction Hash:</strong> <a href="${
-                        etherscan.getTransactionUrl(etherScanUrl, transactionHash)
+                            etherscan.getTransactionUrl(etherScanUrl, transactionHash)
                         }">${transactionHash}</a>
                     </p>
                  ${emailContentEnd}`
@@ -230,6 +230,56 @@ class Emailer {
                     </p>
                 ${emailContentEnd}`
             )
+        });
+    }
+
+    async sendTrialStartedMail(){
+        return this.sendSubscriptionStartedMail(true);
+    }
+
+    async sendSubscriptionStartedMail(trial = false){
+        const {
+            supplierEmail,
+            subscriberEmail,
+            subscriptionName,
+            contractAddress
+        } = this.req.body;
+
+        if(!supplierEmail || !contractAddress || !subscriptionName || !subscriberEmail){
+            return new Promise(() => {
+                throw new Error("Missing required fields.");
+            });
+        }
+
+        const fullUrl = url.format({
+            protocol: this.req.protocol,
+            host: this.req.get("host"),
+            pathname: paths.pages.subscriptionInfo
+        });
+
+        const subject = (trial)
+            ? `[Ethereum Subscription] Your trial to ${subscriptionName} has just started!`
+            : `[Ethereum Subscription] Your subscription to ${subscriptionName} has just started!`;
+
+        const html = (trial)
+            ? (
+                `${emailContentStart}
+                    <p>You can now re-visit <a href="${fullUrl}?address=${contractAddress
+                    }">the contract</a> to see more details about the trial.</p>
+                ${emailContentEnd}`
+            )
+            : (
+                `${emailContentStart}
+                    <p>You can now re-visit <a href="${fullUrl}?address=${contractAddress
+                    }">the contract</a> to see more details about the subscription.</p>
+                ${emailContentEnd}`
+            );
+
+        return this.sendMail({
+            to: subscriberEmail,
+            from: supplierEmail,
+            subject,
+            html
         });
     }
 }

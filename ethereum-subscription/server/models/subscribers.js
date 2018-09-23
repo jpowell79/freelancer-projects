@@ -15,5 +15,12 @@ module.exports = (sequelize, DataTypes) => (
                 len: [42, 42]
             },
         },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            validate: {
+                isEmail: true
+            }
+        }
     })
 );

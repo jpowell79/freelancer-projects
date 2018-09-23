@@ -29,6 +29,8 @@ export const getErrorString = (err) => {
 
     if(error.includes("Invalid \"from\"")){
         error = "Unauthorized ethereum account";
+    } else if(error.includes("SequelizeUniqueConstraintValidation")){
+        error = "The given contract already exists";
     }
 
     return error;

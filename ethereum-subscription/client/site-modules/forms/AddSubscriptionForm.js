@@ -40,7 +40,8 @@ class AddSubscriptionForm extends Component {
             }).then(() => subscriptions.addSubscription({
                 subscriberAddress: this.props.metamaskAccount.address,
                 contractAddress: contract.address,
-                transactionHash: transaction.transactionHash
+                transactionHash: transaction.transactionHash,
+                subscriberEmail: this.props.messageState.email
             })).then(() => email.sendRequestSubscriptionMails({
                 subscriberEmail: this.props.messageState.email,
                 supplierEmail: supplier.email,

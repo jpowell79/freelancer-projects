@@ -4,8 +4,17 @@ import EditSubscriptionForm from "../../forms/EditSubscriptionForm";
 import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";
 import Dispatcher from "../../../services/loaders/Dispatcher";
 import {selectEditContract} from "../../../redux/actions";
+import email from "../../../../services/api/email";
 
-export default ({editContract, subscriptionDetails, dispatch, user, web3}) => {
+export default ({
+    editContract,
+    subscribers,
+    subscriptions,
+    subscriptionDetails,
+    dispatch,
+    user,
+    web3
+}) => {
     const subscriptionContract = new SubscriptionContract({
         address: editContract.address,
         web3
@@ -32,10 +41,32 @@ export default ({editContract, subscriptionDetails, dispatch, user, web3}) => {
         });
     };
 
-    const handleSubscriptionActivate = () => {
+    const handleSubscriptionActivate = async () => {
+        let transaction = {};
+
         return subscriptionContract.startTheSubscription({
             supplierAddress: user.walletAddress
-        });
+        }).then(transactionRes => {
+            transaction = transactionRes;
+
+            const subscription = subscriptions.find(subscription =>
+                subscription.contractId === editContract.id
+            );
+            const subscriberId = (subscription) ? subscription.subscriberId : null;
+            const subscriber = subscribers.find(subscriber => subscriber.id === subscriberId);
+            const subscriberEmail = (subscriber) ? subscriber.email : null;
+
+            if(!subscriberEmail){
+                throw new Error("Could not find any subscriber associated with this subscription");
+            }
+
+            return email.sendSubscriptionStartedMail({
+                contractAddress: editContract.address,
+                supplierEmail: user.email,
+                subscriptionName: editContract.subscriptionName,
+                subscriberEmail: subscriberEmail
+            });
+        }).then(() => transaction);
     };
 
     return (

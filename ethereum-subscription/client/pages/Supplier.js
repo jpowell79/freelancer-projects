@@ -17,7 +17,7 @@ import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
 
 class Supplier extends Component {
-    static mapStateToProps = ({user}) => ({user});
+    static mapStateToProps = ({user, subscribers}) => ({user, subscribers});
 
     static sections = {
         subscriptions: "Your Subscriptions",
@@ -115,10 +115,10 @@ class Supplier extends Component {
 }
 
 export default compose(
+    connect(Supplier.mapStateToProps),
     withMountObserver,
     withMetamaskAccount,
     withAuthenticateSupplier,
     withEthereumConversionRates,
-    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),
-    connect(Supplier.mapStateToProps)
+    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA})
 )(Supplier);
