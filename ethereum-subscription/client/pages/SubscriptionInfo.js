@@ -111,10 +111,10 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
+    connect(SubscriptionInfo.mapStateToProps),
     withMountObserver,
     withSubscriptionContracts({
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA
     }),
-    withMetamaskAccount,
-    connect(SubscriptionInfo.mapStateToProps)
+    withMetamaskAccount
 )(SubscriptionInfo);

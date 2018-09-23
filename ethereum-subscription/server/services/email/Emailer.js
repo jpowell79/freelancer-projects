@@ -282,6 +282,45 @@ class Emailer {
             html
         });
     }
+
+    async sendSubscriptionCancelledMails(){
+        const {
+            subscriptionName,
+            supplierEmail,
+            subscriberEmail,
+            cancelRole
+        } = this.req.body;
+
+        if(!subscriptionName || !supplierEmail || !subscriberEmail){
+            return new Promise(() => {
+                throw new Error("Missing required fields.");
+            });
+        }
+
+        const sendSubscriptionCancelledMail = ({from, to}) => {
+            return this.sendMail({
+                to,
+                from,
+                subject: (
+                    `[Ethereum Subscription] The subscription to ${subscriptionName} has been ` +
+                    `cancelled by the ${cancelRole}`
+                ),
+                html: (
+                    `${emailContentStart}
+                        <p>The subscription to ${subscriptionName} has been cancelled by the ${cancelRole}.</p>
+                    ${emailContentEnd}`
+                )
+            });
+        };
+
+        return sendSubscriptionCancelledMail({
+            from: supplierEmail,
+            to: subscriberEmail
+        }).then(() => sendSubscriptionCancelledMail({
+            from: subscriberEmail,
+            to: supplierEmail
+        }));
+    }
 }
 
 module.exports = Emailer;

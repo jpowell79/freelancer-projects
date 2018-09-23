@@ -6,10 +6,18 @@ import SubscriptionContract from "../../../services/smart-contracts/Subscription
 import alerts from "../../services/views/alerts";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import withMessage from "../../hocs/withMessage";
-import {waitingForBlockchain} from "../../services/views/messages";
+import {waitingForBlockchain, waitingForEmails} from "../../services/views/messages";
 import {updateLiveSubscriptionContract} from "../../redux/actions";
+import email from "../../../services/api/email";
+import ContractQuery from "../../services/ContractQuery";
 
 class SubscriptionContractDetailsContainer extends Component {
+    constructor(props){
+        super(props);
+
+        this.contractQuery = new ContractQuery(this.props.liveSubscriptionContracts[0]);
+    }
+
     handleAddSubscriptionFormSubmit = (event, removeAlert, disableAlert) => {
         if(this.addSubscriptionForm.hasFieldErrors()) return;
 
@@ -49,6 +57,8 @@ class SubscriptionContractDetailsContainer extends Component {
     };
 
     handleCancelSubscription = (contract) => {
+        let transaction = {};
+
         const subscriptionContract = new SubscriptionContract({
             web3: this.props.web3,
             address: contract.address
@@ -57,11 +67,23 @@ class SubscriptionContractDetailsContainer extends Component {
         this.props.setIsLoading(waitingForBlockchain)
             .then(() => subscriptionContract.cancelSubscription({
                 subscriberOrSupplier: this.props.metamaskAccount.address
-            })).then(transaction => {
-                console.log(transaction);
+            })).then(transactionRes => {
+                console.log(transactionRes);
+                transaction = transactionRes;
 
+                return this.props.setIsLoading(waitingForEmails);
+            }).then(() => email.sendSubscriptionCancelledMails({
+                subscriptionName: contract.subscriptionName,
+                supplierEmail: this.props.ownerUser.email,
+                subscriberEmail: this.contractQuery.getSubscriber({
+                    subscriptions: this.props.subscriptions,
+                    subscribers: this.props.subscribers
+                }).email,
+                cancelRole: (this.props.ownerUser.walletAddress ===
+                    this.props.metamaskAccount.address) ? "supplier" : "subscriber"
+            })).then(() => {
                 this.props.dispatch(updateLiveSubscriptionContract(
-                    Object.assign({}, contract, {subscriptionCancelled: false})
+                    Object.assign({}, contract, {subscriptionCancelled: true})
                 ));
 
                 alerts.showTransactionAlert({
@@ -72,8 +94,7 @@ class SubscriptionContractDetailsContainer extends Component {
                     message: "The subscription was cancelled successfully!"
                 });
 
-                return this.props.setClearedMessageState()
-                    .then(() => this.loadContract());
+                return this.props.setClearedMessageState();
             }).catch(err => {
                 console.error(err);
 
@@ -106,18 +127,11 @@ class SubscriptionContractDetailsContainer extends Component {
     };
 
     isSubscriberOfContract = () => {
-        const contract = this.props.liveSubscriptionContracts[0];
-        const subscribers = this.props.subscribers.filter(subscriber =>
-            subscriber.walletAddress === this.props.metamaskAccount.address
-        );
-        const subscriber = (subscribers[0]) ? subscribers[0] : {};
-        const subscriptions = this.props.subscriptions.filter(subscription =>
-            subscription.contractId === contract.id
-        );
-
-        return subscriptions.filter(subscription =>
-            subscription.subscriberId === subscriber.id
-        ).length > 0;
+        return this.contractQuery.isSubscriber({
+            subscriptions: this.props.subscriptions,
+            subscribers: this.props.subscribers,
+            walletAddress: this.props.metamaskAccount.address
+        });
     };
 
     render(){

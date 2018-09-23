@@ -7,7 +7,8 @@ const adminMailTypes = [
 ];
 
 const subscriberMailTypes = [
-    mailTypes.requestSubscription
+    mailTypes.requestSubscription,
+    mailTypes.subscriptionCancelled
 ];
 
 class EmailRequest extends Request {
@@ -57,6 +58,9 @@ class EmailRequest extends Request {
         case mailTypes.trialStarted:
             return this.responseHandler
                 .handlePromiseResponse(this.emailer.sendTrialStartedMail());
+        case mailTypes.subscriptionCancelled:
+            return this.responseHandler
+                .handlePromiseResponse(this.emailer.sendSubscriptionCancelledMails());
         default:
             this.responseHandler.sendBadRequest(`Invalid email type: ${this.req.params.type}`);
             break;

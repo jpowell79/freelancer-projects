@@ -5,6 +5,7 @@ import SubscriptionContract from "../../../../services/smart-contracts/Subscript
 import Dispatcher from "../../../services/loaders/Dispatcher";
 import {selectEditContract} from "../../../redux/actions";
 import email from "../../../../services/api/email";
+import ContractQuery from "../../../services/ContractQuery";
 
 export default ({
     editContract,
@@ -46,11 +47,8 @@ export default ({
         }).then(transactionRes => {
             transaction = transactionRes;
 
-            const subscription = subscriptions.find(subscription =>
-                subscription.contractId === editContract.id
-            );
-            const subscriberId = (subscription) ? subscription.subscriberId : null;
-            const subscriber = subscribers.find(subscriber => subscriber.id === subscriberId);
+            const subscriber = new ContractQuery(editContract)
+                .getSubscriber({subscriptions, subscribers});
             const subscriberEmail = (subscriber) ? subscriber.email : null;
 
             if(!subscriberEmail){

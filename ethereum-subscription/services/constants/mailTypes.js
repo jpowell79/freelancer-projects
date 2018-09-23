@@ -6,6 +6,7 @@ module.exports = {
     requestSubscription: "requestSubscription",
     subscriptionStarted: "subscriptionStarted",
     trialStarted: "trialStarted",
+    subscriptionCancelled: "subscriptionCancelled",
     includes: (string) => {
         return Object.keys(module.exports)
             .filter(key => key !== "includes")

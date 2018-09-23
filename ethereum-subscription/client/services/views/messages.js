@@ -8,6 +8,10 @@ export const waitingForBlockchain = {
     ]
 };
 
+export const waitingForEmails = {
+    infoTitle: "Waiting for emails to be sent..."
+};
+
 export const getTransactionMessage = (
     transaction,
     etherScanUrl,
