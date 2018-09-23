@@ -20,6 +20,8 @@ export const SubscriptionContractDetails = ({
     isSubscriber,
     onSubscribe,
     onCancelSubscription,
+    totalSubscriptionPrice,
+    subscriptionLengthInWeeks,
     ...contract
 }) => {
     return (
@@ -34,7 +36,9 @@ export const SubscriptionContractDetails = ({
                     <ProviderRating name={supplierName} reputation={reputation}/>
                 </strong>
                 </p>
-                <h2>Monthly Price: </h2>
+                <h2>4 Week Price: {weiToEth(
+                    totalSubscriptionPrice / subscriptionLengthInWeeks
+                )} Eth</h2>
                 <div className="wrapper-3 bold">
                     <Grid stackable columns={3}>
                         <Grid.Column>
@@ -44,7 +48,7 @@ export const SubscriptionContractDetails = ({
                             <p className="text">Exit Fee: {weiToEth(exitFee)} Eth</p>
                         </Grid.Column>
                         <Grid.Column>
-                            <p className="text">Free Trial: {hasFreeTrials ? "Yes" : "No"}</p>
+                            <p className="text nowrap">Free Trial: {hasFreeTrials ? "Yes" : "No"}</p>
                         </Grid.Column>
                     </Grid>
                 </div>

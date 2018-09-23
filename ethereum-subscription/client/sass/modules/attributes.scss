@@ -8,6 +8,12 @@
 );
 
 @include semanticAttribute(
+    ".nowrap",
+    "white-space",
+    "nowrap"
+);
+
+@include semanticAttribute(
     ".no-margin-bottom",
     "margin-bottom",
     "0"
