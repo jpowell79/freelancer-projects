@@ -36,10 +36,10 @@ export const SubscriptionContractDetails = ({
                     <ProviderRating name={supplierName} reputation={reputation}/>
                 </strong>
                 </p>
-                <h2>4 Week Price: {weiToEth(
+                <h2>4 Week Price: {(subscriptionLengthInWeeks === 0) ? 0 : weiToEth(
                     totalSubscriptionPrice / subscriptionLengthInWeeks
                 )} Eth</h2>
-                <div className="wrapper-3 bold">
+                <div className="wrapper-2 bold">
                     <Grid stackable columns={3}>
                         <Grid.Column>
                             <p className="text">Join Fee: {weiToEth(joiningFee)} Eth</p>
@@ -58,7 +58,10 @@ export const SubscriptionContractDetails = ({
             {(isSubscriber || isOwner) && (
                 <div>
                     {(subscriptionActive) && (
-                        <SubscriptionDetails {...contract}/>
+                        <SubscriptionDetails
+                            {...contract}
+                            subscriptionLengthInWeeks={subscriptionLengthInWeeks}
+                        />
                     )}
                     {(trialActive) && (
                         <TrialSubscriptionDetails {...contract}/>

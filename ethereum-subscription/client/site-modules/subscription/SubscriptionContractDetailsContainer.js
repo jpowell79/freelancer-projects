@@ -7,6 +7,7 @@ import alerts from "../../services/views/alerts";
 import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 import withMessage from "../../hocs/withMessage";
 import {waitingForBlockchain} from "../../services/views/messages";
+import {updateLiveSubscriptionContract} from "../../redux/actions";
 
 class SubscriptionContractDetailsContainer extends Component {
     handleAddSubscriptionFormSubmit = (event, removeAlert, disableAlert) => {
@@ -58,6 +59,10 @@ class SubscriptionContractDetailsContainer extends Component {
                 subscriberOrSupplier: this.props.metamaskAccount.address
             })).then(transaction => {
                 console.log(transaction);
+
+                this.props.dispatch(updateLiveSubscriptionContract(
+                    Object.assign({}, contract, {subscriptionCancelled: false})
+                ));
 
                 alerts.showTransactionAlert({
                     transaction,
@@ -116,6 +121,9 @@ class SubscriptionContractDetailsContainer extends Component {
     render(){
         const contract = this.props.liveSubscriptionContracts[0];
 
+        const details = (contract.subscriptionActive) ? this.props.subscriptionDetails
+            : (contract.trialActive) ? this.props.trialSubscriptionDetails : {};
+
         return (
             (!contract)
                 ? (
@@ -128,8 +136,8 @@ class SubscriptionContractDetailsContainer extends Component {
                     ) : (
                         <SubscriptionContractDetails
                             {...contract}
-                            {...this.props.subscriptionDetails}
-                            {...this.props.trialSubscriptionDetails}
+                            {...details}
+                            subscriptionLengthInWeeks={contract.subscriptionLengthInWeeks}
                             isOwner={
                                 this.props.ownerUser.walletAddress ===
                                 this.props.metamaskAccount.address

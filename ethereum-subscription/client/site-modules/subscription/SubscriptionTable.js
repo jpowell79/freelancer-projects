@@ -9,13 +9,19 @@ import Link from "next/link";
 import {ProviderRating} from "../ProviderRating";
 import {hideOnMobile, hideOnTablet, showOnMobile} from "../../services/constants/css";
 import {weiToEth} from "../../../services/utils";
+import {ContractStatus} from "../ContractStatus";
 
 class SubscriptionTable extends Component {
-    static defaultProps = {maxRows: -1, isLoading: false};
+    static defaultProps = {
+        maxRows: -1,
+        isLoading: false,
+        renderStatus: false
+    };
     static propTypes = {
         subscriptionContracts: PropTypes.array.isRequired,
         maxRows: PropTypes.number,
         buttonRenderer: PropTypes.func,
+        renderStatus: PropTypes.bool,
         isLoading: PropTypes.bool
     };
     state = {activePage: 1};
@@ -55,10 +61,14 @@ class SubscriptionTable extends Component {
                         <tr key={i}>
                             <td>{contract.type}</td>
                             <td>
-                                <ProviderRating
-                                    name={contract.supplierName}
-                                    reputation={contract.reputation}
-                                />
+                                {(this.props.renderStatus) ? (
+                                    <ContractStatus contract={contract}/>
+                                ) : (
+                                    <ProviderRating
+                                        name={contract.supplierName}
+                                        reputation={contract.reputation}
+                                    />
+                                )}
                             </td>
                             <td className={hideOnTablet()}>{contract.reputation}</td>
                             <td className={hideOnTablet()}>{
@@ -70,7 +80,10 @@ class SubscriptionTable extends Component {
                             <td className={hideOnTablet()}>{weiToEth(contract.exitFee)} Eth</td>
                             <td className={hideOnTablet()}>{contract.subscriptionLengthInWeeks} Weeks</td>
                             <td>
-                                {weiToEth(contract.totalSubscriptionPrice / contract.subscriptionLengthInWeeks)} Eth
+                                {(contract.subscriptionLengthInWeeks === 0) ? 0 :
+                                    weiToEth(contract.totalSubscriptionPrice /
+                                        contract.subscriptionLengthInWeeks
+                                    )} Eth
                             </td>
                             <td>
                                 {(this.props.buttonRenderer)
@@ -100,7 +113,8 @@ class SubscriptionTable extends Component {
     render(){
         const {
             subscriptionContracts,
-            maxRows
+            maxRows,
+            renderStatus
         } = this.props;
 
         const totalPages = Math.ceil(subscriptionContracts.length/maxRows);
@@ -111,7 +125,7 @@ class SubscriptionTable extends Component {
                     <thead>
                         <tr>
                             <th>Subscription<span className={hideOnMobile()}> Type</span></th>
-                            <th>Supplier</th>
+                            <th>{renderStatus ? "Status" : "Supplier"}</th>
                             <th className={hideOnTablet()}>Reputation</th>
                             <th className={hideOnTablet()}>Registration Age</th>
                             <th className={hideOnTablet()}>Wallet Age</th>

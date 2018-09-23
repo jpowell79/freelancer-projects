@@ -14,7 +14,9 @@ export const SubscriptionDetails = ({
             <p className="text"><strong>Password: </strong>{password}</p>
             <p className="text"><strong>Subscription Length (in weeks): </strong>{subscriptionLengthInWeeks}</p>
             <p className="text"><strong>Supplier Email: </strong>{supplierEmail}</p>
-            <p className="text"><strong>Other: </strong>{other}</p>
+            {(other !== "") && (
+                <p className="text"><strong>Other: </strong>{other}</p>
+            )}
         </Fragment>
     );
 };

@@ -25,6 +25,7 @@ class Subscriptions extends Component {
 
         return (
             <SubscriptionTable
+                renderStatus
                 subscriptionContracts={this.props.liveSubscriptionContracts}
                 buttonRenderer={({buttonClass, contract}) => {
                     return (

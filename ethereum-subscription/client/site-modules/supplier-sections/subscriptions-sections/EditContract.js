@@ -42,7 +42,6 @@ export default ({user, editContract, dispatch, web3, metamaskAccount}) => {
                     <EditContractForm
                         user={user}
                         contract={editContract}
-                        onComplete={() => {/* TODO: update editContract */}}
                         web3={web3}
                         metamaskAccount={metamaskAccount}
                     />
