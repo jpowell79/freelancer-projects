@@ -19,7 +19,7 @@ class ContractQuery {
             subscription.contractId === this.contract.id
         );
 
-        return (!subscriber || !subscriptions) ? false
+        return (!subscriber || !subscription) ? false
             : (subscriber.id === subscription.subscriberId);
     };
 }
