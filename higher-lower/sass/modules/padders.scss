@@ -1,0 +1,9 @@
+/*----------------------------------------
+ * Padders
+ *----------------------------------------*/
+@for $i from 1 through length($dividerList) {
+    .padder-#{$i}{
+        padding-left: #{nth($dividerList, $i)};
+        padding-right: #{nth($dividerList, $i)};
+    }
+}

@@ -1,0 +1,62 @@
+{
+  "name": "NextApp",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "enzyme": "^2.8.2",
+    "jest": "22.0.1",
+    "nock": "^9.3.3",
+    "react-addons-test-utils": "^15.6.2",
+    "react-test-renderer": "16.2.0",
+    "rewire": "^4.0.1",
+    "sinon": "^6.0.1",
+    "supertest": "^3.1.0"
+  },
+  "dependencies": {
+    "@zeit/next-css": "^0.2.0",
+    "@zeit/next-sass": "^0.2.0",
+    "axios": "^0.18.0",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "22.4.3",
+    "classnames": "^2.2.6",
+    "jquery": "^3.3.1",
+    "next": "^6.0.3",
+    "next-redux-wrapper": "^2.0.0-beta.6",
+    "node-sass": "^4.9.0",
+    "prop-types": "^15.6.1",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.3.0",
+    "sass-loader": "^7.0.3"
+  },
+  "scripts": {
+    "test": "jest --env=jsdom",
+    "test coverage": "jest --env=jsdom --coverage",
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "jest": {
+    "testURL": "http://localhost:3000",
+    "collectCoverageFrom": [
+      "components/**/*.js",
+      "redux/**/*.js",
+      "services/**/*.js",
+      "components/**/*.js",
+      "site-components/**/*.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/__tests__/settings.js",
+      "<rootDir>/.next/",
+      "<rootDir>/node_modules/"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/client/__mocks__/fileMock.js",
+      "\\.(css|less|scss)$": "<rootDir>/client/__mocks__/styleMock.js"
+    }
+  }
+}

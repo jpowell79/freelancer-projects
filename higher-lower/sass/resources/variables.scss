@@ -1,0 +1,152 @@
+//----------------------------------------------
+// 1.0 Colors
+//----------------------------------------------
+$primary   : #d59541;
+$secondary : #2f5572;
+$white     : #ffffff;
+$black     : #000000;
+$gray      : #eeeeee;
+
+//----------------------------------------------
+// 1.1 Bootstrap Colors
+//----------------------------------------------
+$bBlue      : #007bff;
+$bIndigo    : #6610f2;
+$bPurple    : #6f42c1;
+$bPink      : #e83e8c;
+$bRed       : #dc3545;
+$bOrange    : #fd7e14;
+$bYellow    : #ffc107;
+$bGreen     : #28a745;
+$bTeal      : #20c997;
+$bCyan      : #17a2b8;
+$bWhite     : #ffffff;
+$bGray      : #6c757d;
+$bDarkGray  : #343a40;
+$bPrimary   : #007bff;
+$bSecondary : #545b62;
+$bSuccess   : #28a745;
+$bDanger    : #dc3545;
+$bWarning   : #d39e00;
+$bInfo      : #17a2b8;
+
+//----------------------------------------------
+// 1.2 Color Maps
+//----------------------------------------------
+$darkColors: (
+    (primary     $primary)
+    (secondary   $secondary)
+    (black       $black)
+    (bBlue       $bBlue)
+    (b-Yellow    $bYellow)
+    (b-Orange    $bOrange)
+    (b-Teal      $bTeal)
+    (b-Cyan      $bCyan)
+    (b-Red       $bRed)
+    (b-Pink      $bPink)
+    (b-Purple    $bPurple)
+    (b-Indigo    $bIndigo)
+    (b-Primary   $bPrimary)
+    (b-Secondary $bSecondary)
+    (success     $bSuccess)
+    (danger      $bDanger)
+    (warning     $bWarning)
+	(b-dark-gray $bDarkGray)
+    (info        $bInfo)
+);
+
+$lightColors: (
+    (white $white)
+    (gray  $gray)
+);
+
+$colors: join($darkColors, $lightColors);
+
+//----------------------------------------------
+// 2.0 Fonts
+//----------------------------------------------
+
+
+//----------------------------------------------
+// 3.0 Site Variables
+//----------------------------------------------
+//3.1 Headings
+$display1: 6rem;
+$display2: 5rem;
+$display3: 4rem;
+$display4: 3rem;
+$display5: 2.5rem;
+$h1: 2rem;
+$h2: 2rem;
+$h3: 1.5rem;
+$h4: 1.25rem;
+$h5: 1.125rem;
+$h6: 1rem;
+
+$displayList: (
+    $display1
+    $display2
+    $display3
+    $display4
+    $display5
+);
+
+$headingList: (
+	$h1
+    $h2
+    $h3
+    $h4
+    $h5
+    $h6
+);
+
+//3.2 Wrappers
+$wrapper1: 1200px;
+$wrapper2: 992px;
+$wrapper3: 768px;
+$wrapper4: 576px;
+
+$wrapperList: (
+    $wrapper1
+    $wrapper2
+    $wrapper3
+    $wrapper4
+);
+
+//3.3 Dividers
+$divider1: 45px;
+$divider2: 30px;
+$divider3: 15px;
+$divider4: 7.5px;
+
+$dividerList: (
+    $divider1
+    $divider2
+    $divider3
+    $divider4
+);
+
+//----------------------------------------------
+// 4.0 Media Queries
+//----------------------------------------------
+// $mediaXLarge  - 1600px
+// $mediaLarge   - 1200px
+// $mediaMedium  - 992px
+// $mediaSmall   - 768px
+// $mediaXSmall  - 576px
+// $mediaXXSmall - 436px
+//----------------------------------------------
+$mediaLarge   : 1200px;
+$mediaMedium  : 992px;
+$mediaSmall   : 768px;
+$mediaXSmall  : 576px;
+$mediaXXSmall : 0;
+
+// 6.1 Media Query Map
+$mediaQueries: (
+    (lg  $mediaLarge)
+    (md  $mediaMedium)
+    (sm  $mediaSmall)
+    (xs  $mediaXSmall)
+    (xxs $mediaXXSmall)
+);

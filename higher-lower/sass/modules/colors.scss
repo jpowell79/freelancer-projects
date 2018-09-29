@@ -1,0 +1,18 @@
+/*----------------------------------------
+ * Colors
+ *----------------------------------------*/
+@each $name, $color in $colors {
+    .color-#{$name}{
+        color: $color;
+    }
+}
+
+@each $name, $color in $colors {
+    .bg-color-#{$name}{
+        background-color: $color;
+
+        &.glass {
+            background-color: rgba($color, .9);
+        }
+    }
+}
