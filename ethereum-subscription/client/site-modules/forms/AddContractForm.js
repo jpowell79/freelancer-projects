@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from "react";
-import {Form, Dropdown} from "semantic-ui-react";
+import {Form, Dropdown, Radio} from "semantic-ui-react";
 import withMessage from "../../hocs/withMessage";
 import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
@@ -114,6 +114,33 @@ class AddContractForm extends Component {
                         />
                     </Form.Field>
                     <Form.Field error={
+                        messageState.fieldsWithErrors.includes("hasFreeTrials")
+                    }>
+                        <label>Free Trials?</label>
+                        <Radio
+                            label="Yes"
+                            checked={messageState.hasFreeTrials}
+                            disabled={isLoading || complete}
+                            onChange={() =>{
+                                setMessageState({
+                                    hasFreeTrials: true
+                                });
+                            }}
+                        />
+                        <span className="padder-3">
+                            <Radio
+                                label="No"
+                                checked={!messageState.hasFreeTrials}
+                                disabled={isLoading || complete}
+                                onChange={() =>{
+                                    setMessageState({
+                                        hasFreeTrials: false
+                                    });
+                                }}
+                            />
+                        </span>
+                    </Form.Field>
+                    <Form.Field error={
                         messageState.fieldsWithErrors.includes("subscriptionDetails")
                     }>
                         <label>Subscription Details (max 2048 characters)</label>
@@ -153,5 +180,6 @@ export default withMessage(connect(AddContractForm.mapStateToProps)(AddContractF
     contractAddress: "",
     subscriptionName: "",
     subscriptionTypeId: "",
-    subscriptionDetails: ""
+    subscriptionDetails: "",
+    hasFreeTrials: false
 });

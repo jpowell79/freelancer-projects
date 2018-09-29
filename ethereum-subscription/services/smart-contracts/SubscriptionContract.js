@@ -25,7 +25,6 @@ class SubscriptionContract {
     //region Admin only methods
     /**
      * @param subscriptionName
-     * @param supplierWalletAddress
      * @param subscriptionLengthInWeeks
      * @param subscriptionPrice
      * @param joinFee The amount of Wei required to join the subscription.
@@ -36,7 +35,6 @@ class SubscriptionContract {
      */
     async setSubscriptionDetails({
         subscriptionName,
-        supplierWalletAddress,
         subscriptionLengthInWeeks,
         subscriptionPrice,
         joinFee,
@@ -47,7 +45,6 @@ class SubscriptionContract {
     }){
         return this.methods._amendDetails(
             subscriptionName,
-            supplierWalletAddress,
             subscriptionLengthInWeeks,
             subscriptionPrice,
             joinFee,
@@ -61,8 +58,7 @@ class SubscriptionContract {
      * Updates the wallet address for ALL smart contracts associated with the supplier.
      */
     async setSupplierWalletAddress({walletAddress, admin}){
-        return this.methods._setSupplierWalletAddress(walletAddress)
-            .send({from: admin});
+        return this.methods._setSupplierWalletAddress(walletAddress).send({from: admin});
     };
     //endregion
 

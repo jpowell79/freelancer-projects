@@ -6,14 +6,20 @@ import withMetamaskAccount from "../../hocs/withMetamaskAccount";
 import {LoaderSmall} from "../../modules/icons";
 import objects from "../../../services/datatypes/objects";
 import {getErrorString} from "../../services/utils";
+import SubscriptionTable from "../subscription/table/SubscriptionTable";
+import {SubscriptionTableHead} from "../subscription/table/SubsriptionTableHead";
+import {SubscriptionTableBody} from "../subscription/table/SubscriptionTableBody";
+import {ContractStatus} from "../ContractStatus";
+import subscriptions from "../../../services/api/subscriptions";
+import {updateLiveSubscriptionContract} from "../../redux/actions";
 
 class SmartContractData extends Component {
     state = {
-        supplierWalletAddress: "",
-        smartContractAddress: "",
+        selectedContract: {}
     };
 
     setSubscriptionDetails = (web3, metamaskAccount, {
+        address,
         contactDetails,
         subscriptionName,
         subscriptionLengthInWeeks,
@@ -22,10 +28,7 @@ class SmartContractData extends Component {
         exitFee,
         joinFee,
     }) => {
-        const contract = new SubscriptionContract({
-            web3,
-            address: this.state.smartContractAddress
-        });
+        const contract = new SubscriptionContract({web3, address});
 
         return contract.setSubscriptionDetails({
             subscriptionName,
@@ -55,10 +58,37 @@ class SmartContractData extends Component {
             metamaskAccount,
         } = this.props;
 
-        setIsLoading();
+        const {
+            address,
+            hasFreeTrials,
+            details,
+            subscriptionType
+        } = messageState;
 
-        return this.setSubscriptionDetails(web3, metamaskAccount, messageState)
-            .then(() => {
+        const type = this.props.subscriptionTypes.find(type => type.name === subscriptionType);
+
+        return setIsLoading()
+            .then(() => this.setSubscriptionDetails(web3, metamaskAccount, messageState))
+            .then(() => subscriptions.editSubscriptionContract({
+                address,
+                hasFreeTrials,
+                details,
+                typeId: type.id
+            }))
+            .then(() => this.props.dispatch(updateLiveSubscriptionContract(
+                Object.assign({}, this.state.selectedContract, {
+                    type: messageState.subscriptionType,
+                    subscriptionName: messageState.subscriptionName,
+                    joiningFee: messageState.joinFee,
+                    exitFee: messageState.exitFee,
+                    totalSubscriptionPrice: messageState.subscriptionPrice,
+                    smallDetails: messageState.subscriptionDetails,
+                    subscriptionLengthInWeeks: messageState.subscriptionLengthInWeeks,
+                    details,
+                    hasFreeTrials,
+                    address,
+                }))
+            )).then(() => {
                 setComplete({
                     successTitle: "The contract has been edited successfully",
                 });
@@ -68,6 +98,11 @@ class SmartContractData extends Component {
                     errors: [getErrorString(err)]
                 });
             });
+    };
+
+    filterContracts = () => {
+        return this.props.liveSubscriptionContracts
+            .filter(contract => !contract.subscriptionCancelled);
     };
 
     render(){
@@ -88,53 +123,96 @@ class SmartContractData extends Component {
             );
         }
 
+        if(objects.isEmpty(this.state.selectedContract)){
+            return (
+                <Fragment>
+                    <h2>Edit Smart Contract Data</h2>
+
+                    <SubscriptionTable
+                        maxRows={20}
+                        subscriptionContracts={this.filterContracts()}
+                    >
+                        <SubscriptionTableHead
+                            columns={{
+                                reputation: null,
+                                walletAge: null,
+                                registrationAge: null,
+                                moreInfo: null,
+                                supplier: <th key="status">Status</th>
+                            }}
+                        />
+                        <SubscriptionTableBody
+                            className="clickable"
+                            onClick={(contract) => this.setState({
+                                selectedContract: contract
+                            })}
+                            getColumns={(contract) => ({
+                                reputation: null,
+                                walletAge: null,
+                                moreInfo: null,
+                                registrationAge: null,
+                                supplier: (
+                                    <td key="status">
+                                        <ContractStatus contract={contract}/>
+                                    </td>
+                                )
+                            })}
+                        />
+                    </SubscriptionTable>
+                </Fragment>
+            );
+        }
+
         return (
             <Fragment>
                 <h2>Edit Smart Contract Data</h2>
                 <SubscriptionForm
                     onSubmit={this.handleSubmit}
-                    renderTopChildren={({messageState}) => {
+                    defaultState={Object.assign({}, this.state.selectedContract, {
+                        joinFee: this.state.selectedContract.joiningFee,
+                        subscriptionPrice: this.state.selectedContract.totalSubscriptionPrice,
+                        subscriptionType: this.state.selectedContract.type,
+                        subscriptionDetails: this.state.selectedContract.smallDetails,
+                        details: this.state.selectedContract.details
+                    })}
+                    renderBottomChildren={({messageState, setMessageState}) => {
                         return (
-                            <Form.Field error={
-                                messageState.fieldsWithErrors.includes("supplierWalletAddress")
-                            }>
-                                <label>Supplier Wallet Address</label>
-                                <input
-                                    type="text"
-                                    value={this.state.supplierWalletAddress}
-                                    disabled={messageState.isLoading || messageState.complete}
-                                    onChange={(event) => {
-                                        if(event.target.value.length <= 42){
-                                            this.setState({
-                                                supplierWalletAddress: event.target.value
-                                            });
-                                        }
-                                    }}
-                                />
-                            </Form.Field>
+                            <Fragment>
+                                <Form.Field error={
+                                    messageState.fieldsWithErrors.includes("details")
+                                }>
+                                    <label>Subscription Details (max 2048 characters)</label>
+                                    <span className="counter">
+                                        {2048 - messageState.details.length}
+                                    </span>
+                                    <textarea
+                                        value={messageState.details}
+                                        disabled={messageState.isLoading || messageState.complete}
+                                        onChange={(event) => {
+                                            if(event.target.value.length <= 2048){
+                                                setMessageState({
+                                                    details: event.target.value
+                                                });
+                                            }
+                                        }}
+                                        rows={6}
+                                    />
+                                </Form.Field>
+                            </Fragment>
                         );
                     }}
-                    renderBottomChildren={({messageState}) => {
-                        return (
-                            <Form.Field error={
-                                messageState.fieldsWithErrors.includes("smartContractAddress")
-                            }>
-                                <label>Smart Contract Address</label>
-                                <input
-                                    type="text"
-                                    value={this.state.smartContractAddress}
-                                    disabled={messageState.isLoading || messageState.complete}
-                                    onChange={(event) => {
-                                        if(event.target.value.length <= 42){
-                                            this.setState({
-                                                smartContractAddress: event.target.value
-                                            });
-                                        }
-                                    }}
-                                />
-                            </Form.Field>
-                        );
-                    }}
+                    renderExtraButtons={({messageState}) => (
+                        <button
+                            className="ui button"
+                            style={{marginLeft: "15px"}}
+                            disabled={messageState.isLoading}
+                            onClick={(event) => {
+                                event.preventDefault();
+                                this.setState({selectedContract: {}});
+                            }}>
+                            {messageState.complete ? "Back" : "Cancel"}
+                        </button>
+                    )}
                 />
             </Fragment>
         );

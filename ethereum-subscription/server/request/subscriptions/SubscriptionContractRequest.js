@@ -5,22 +5,22 @@ class SubscriptionContractRequest extends Request {
     constructor(params){
         super(params);
 
-        this.subscriptionTypes = new SubscriptionContracts({
+        this.subscriptionContracts = new SubscriptionContracts({
             ...params,
             responseHandler: this.responseHandler
         });
     }
 
     async handleGet(){
-        return this.subscriptionTypes.sendGetAll();
+        return this.subscriptionContracts.sendGetAll();
     }
 
     async handleUpdate(){
-        return this.subscriptionTypes.sendUpdate();
+        return this.subscriptionContracts.sendUpdate();
     }
 
     async handlePost(){
-        return this.subscriptionTypes.sendCreate();
+        return this.subscriptionContracts.sendCreate();
     }
 }
 

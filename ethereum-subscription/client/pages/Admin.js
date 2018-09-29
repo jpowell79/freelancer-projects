@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import Page from "../containers/Page";
 import FullWidthSegment from "../containers/FullWidthSegment";
 import withAuthenticateAdmin from "../hocs/withAuthenticateAdmin";
+import {compose} from "redux";
+import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import {Menu, Segment, Grid} from "semantic-ui-react";
 import objects from "../../services/datatypes/objects";
 import Homepage from "../site-modules/admin-sections/Homepage";
@@ -13,6 +15,11 @@ import SmartContractData from "../site-modules/admin-sections/SmartContractData"
 import AddContractType from "../site-modules/admin-sections/AddContractType";
 import DatabaseBackup from "../site-modules/admin-sections/DatabaseBackup";
 import ManageProfile from "../site-modules/shared-sections/ManageProfile";
+import {
+    AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
+    AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH,
+    USE_DUMMY_SUBSCRIPTION_DATA
+} from "../clientSettings";
 
 class Admin extends Component {
     static sections = {
@@ -30,8 +37,17 @@ class Admin extends Component {
     constructor(props){
         super(props);
 
+        this.hasLoadedAllContracts = this.props.subscriptionContracts.length ===
+            this.props.liveSubscriptionContracts.length;
+
         this.state = {
             active: 0
+        }
+    }
+
+    componentDidMount(){
+        if(!this.hasLoadedAllContracts){
+            return this.props.subscriptionContractLoader.loadAllContracts();
         }
     }
 
@@ -50,23 +66,23 @@ class Admin extends Component {
 
         switch(objects.values(Admin.sections)[active]){
         case addContract:
-            return <AddContract/>;
+            return <AddContract {...this.props}/>;
         case suspendSuppliers:
-            return <SuspendSuppliers/>;
+            return <SuspendSuppliers {...this.props}/>;
         case massEmail:
-            return <MassEmail/>;
+            return <MassEmail {...this.props}/>;
         case backupDatabase:
-            return <DatabaseBackup/>;
+            return <DatabaseBackup {...this.props}/>;
         case addContractType:
-            return <AddContractType/>;
+            return <AddContractType {...this.props}/>;
         case homepage:
-            return <Homepage/>;
+            return <Homepage {...this.props}/>;
         case smartContract:
-            return <SmartContractData/>;
+            return <SmartContractData {...this.props}/>;
         case siteIdentity:
-            return <SiteIdentity/>;
+            return <SiteIdentity {...this.props}/>;
         case manageProfile:
-            return <ManageProfile/>;
+            return <ManageProfile {...this.props}/>;
         default:
             return null;
         }
@@ -109,4 +125,11 @@ class Admin extends Component {
     }
 }
 
-export default withAuthenticateAdmin(Admin);
+export default compose(
+    withAuthenticateAdmin,
+    withSubscriptionContracts({
+        useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
+        amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
+        amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
+    })
+)(Admin);

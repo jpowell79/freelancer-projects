@@ -38,6 +38,11 @@ module.exports = (sequelize, DataTypes) => (
             allowNull: false,
             defaultValue: false
         },
+        hasFreeTrials: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         typeId: {
             type: DataTypes.INTEGER,
             allowNull: false,

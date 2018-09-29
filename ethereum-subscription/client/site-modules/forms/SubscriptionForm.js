@@ -159,7 +159,7 @@ class SubscriptionForm extends Component {
                         <Form.Field error={
                             messageState.fieldsWithErrors.includes("subscriptionPrice")
                         }>
-                            <label>Monthly Subscription Price (in Wei)</label>
+                            <label>4 Week Subscription Price (in Wei)</label>
                             <input
                                 type="number"
                                 value={messageState.subscriptionPrice}
@@ -240,7 +240,7 @@ class SubscriptionForm extends Component {
                         <Form.Field error={
                             messageState.fieldsWithErrors.includes("subscriptionDetails")
                         }>
-                            <label>Subscription Details (optional - max 50 characters)</label>
+                            <label>Contract Details (optional - max 50 characters)</label>
                             <span className="counter">
                             {50 - messageState.subscriptionDetails.length}
                         </span>
@@ -286,6 +286,7 @@ export default withMessage(connect(SubscriptionForm.mapStateToProps)(Subscriptio
     exitFee: "",
     hasFreeTrials: true,
     subscriptionDetails: "",
+    details: "",
     isLoading: false,
     complete: false
 });

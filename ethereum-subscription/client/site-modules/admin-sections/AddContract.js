@@ -25,7 +25,8 @@ class AddContract extends Component {
             address: messageState.contractAddress,
             details: messageState.subscriptionDetails,
             ownerUsername: messageState.supplierUsername,
-            typeId: messageState.subscriptionTypeId
+            typeId: messageState.subscriptionTypeId,
+            hasFreeTrials: messageState.hasFreeTrials
         }).then(() => users.getSupplier(messageState.supplierUsername))
             .then(userRes => email.sendContractCreatedMail({
                 email: userRes.data[0].email,

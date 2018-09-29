@@ -1,6 +1,12 @@
 import strings from "../../services/datatypes/strings";
 import objects from "../../services/datatypes/objects";
 
+export const getChildrenArray = (children) => {
+    if(!children) return [];
+
+    return objects.isObject(children) ? [children] : children;
+};
+
 export const getChildProps = async (ChildClass, appContext) => {
     let childProps = {};
 

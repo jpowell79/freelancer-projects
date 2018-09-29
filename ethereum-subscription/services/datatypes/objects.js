@@ -1,3 +1,7 @@
+module.exports.isObject = (object) => {
+    return (object instanceof Object && !(object instanceof Array));
+};
+
 module.exports.isEmpty = (object) => {
     if(!object) return true;
 

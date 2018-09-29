@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {compose} from "redux";
 import Page from "../containers/Page";
 import FullWidthSegment from "../containers/FullWidthSegment";
-import SubscriptionTable from "../site-modules/subscription/SubscriptionTable";
+import SubscriptionTable from "../site-modules/subscription/table/SubscriptionTable";
 import BackgroundSegment from "../containers/BackgroundSegment";
 import paths from "../../services/constants/paths";
 import {connect} from "react-redux";
