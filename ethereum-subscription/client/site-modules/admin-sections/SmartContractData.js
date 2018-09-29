@@ -165,7 +165,7 @@ class SmartContractData extends Component {
 
         return (
             <Fragment>
-                <h2>Edit Smart Contract Data</h2>
+                <h2>Edit {this.state.selectedContract.address}</h2>
                 <SubscriptionForm
                     onSubmit={this.handleSubmit}
                     defaultState={Object.assign({}, this.state.selectedContract, {
