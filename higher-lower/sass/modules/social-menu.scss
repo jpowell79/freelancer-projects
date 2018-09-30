@@ -1,0 +1,56 @@
+/*----------------------------------------
+ * Social Menu
+ *----------------------------------------*/
+
+@mixin socialIconContainer($size){
+    display: block;
+    width: $size;
+    height: $size;
+    border-radius: 50%;
+}
+
+$iconSize: 40px;
+
+.social-menu {
+    display: flex;
+    flex-wrap: wrap;
+    font-size: $h3;
+
+    > * {
+        margin-right: $divider4;
+        margin-bottom: $divider4;
+
+        i {
+            display: block;
+            margin: 0;
+        }
+    }
+
+    &.round > * {
+        @include standardHoverEffect();
+        @include socialIconContainer($iconSize);
+        color: $white;
+
+        &:hover {
+            color: $white;
+            background-color: darken($primary, 10%);
+        }
+
+        i {
+            @include socialIconContainer($iconSize);
+            font-size: $iconSize/1.75;
+            position: relative;
+
+            &::before {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    > *:last-child {
+        margin-right: 0;
+    }
+}

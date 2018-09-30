@@ -1,4 +1,7 @@
 import React, {Component} from "react";
+import MainMenu from "../MainMenu";
+import {Space} from "../../components/Space";
+import {Logo} from "../Logo";
 
 class Header extends Component {
     render(){
@@ -9,7 +12,10 @@ class Header extends Component {
 
         return (
             <header {...props}>
+                <Logo/>
                 {children}
+                <MainMenu/>
+                <Space/>
             </header>
         );
     }

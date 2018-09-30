@@ -1,3 +1,7 @@
+/*----------------------------------------
+ * Space Background
+ *----------------------------------------*/
+
 @keyframes pulse {
     from {
         background: #000;
@@ -14,12 +18,13 @@
 }
 
 #space {
+    overflow: hidden;
     position: absolute;
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    width: 2000px;
-    height: 2000px;
+    width: 100%;
+    height: $siteHeight;
     background: #000;
     color: rgba(0, 0, 0, 0);
     animation-name: pulse;
@@ -39,7 +44,7 @@
     margin-top: -1000px;
     margin-left: -1000px;
     opacity: .5;
-    background: url(/static/images/fog.png) repeat-x 0 center;
+    background: url(/static/images/space/fog.png) repeat-x 0 center;
     animation-name: fogAnimation;
     animation-duration: 30s;
     animation-iteration-count: infinite;
@@ -69,7 +74,7 @@
     width: 800px;
     height: 800px;
     margin: -400px 0 0 -400px;
-    background: url(/static/images/glow.png) repeat-x 0 0;
+    background: url(/static/images/space/glow.png) repeat-x 0 0;
     animation-name: glowAnimation;
     animation-duration: 5s;
     animation-iteration-count: infinite;
@@ -95,7 +100,7 @@
     width: 800px;
     height: 800px;
     margin: -400px 0 0 -400px;
-    background: url(/static/images/light.png) no-repeat center center;
+    background: url(/static/images/space/light.png) no-repeat center center;
     animation-name: lightAnimation;
     animation-duration: 1s;
     animation-iteration-count: infinite;
@@ -124,7 +129,7 @@
     width: 600px;
     height: 600px;
     margin: -300px 0 0 -300px;
-    background: url(/static/images/stars-large.png) no-repeat center center;
+    background: url(/static/images/space/stars-large.png) no-repeat center center;
     animation-name: starsLarge;
     animation-duration: 60s;
     animation-iteration-count: infinite;
@@ -162,7 +167,7 @@
 
 #small-stars,
 #small-stars-2 {
-    background: url(/static/images/stars-small.png) no-repeat center center;
+    background: url(/static/images/space/stars-small.png) no-repeat center center;
     animation-duration: 15s;
     animation-name: starsSmall;
 }

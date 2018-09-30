@@ -1,16 +1,24 @@
+//Import external resources
+@import "external-modules/normalize";
+
 //Import resources
 @import "resources/functions";
 @import "resources/mixins";
 @import "resources/variables";
 
 //Import modules
-@import "modules/space";
 @import "modules/colors";
 @import "modules/dividers";
 @import "modules/headings";
 @import "modules/padders";
 @import "modules/visibility";
 @import "modules/wrappers";
+@import "modules/space";
+@import "modules/social-menu";
 
 //Import site-modules
 @import "site-modules/global";
+@import "site-modules/page";
+@import "site-modules/menu";
+@import "site-modules/ad";
+@import "site-modules/logo";

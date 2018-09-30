@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {SocialMenu} from "../SocialMenu";
 
 class Footer extends Component {
     render(){
@@ -9,6 +10,7 @@ class Footer extends Component {
 
         return (
             <footer {...props}>
+                <SocialMenu/>
                 {children}
             </footer>
         );

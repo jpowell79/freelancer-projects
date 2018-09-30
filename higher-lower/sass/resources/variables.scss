@@ -71,17 +71,18 @@ $primaryFont: 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
 // 3.0 Site Variables
 //----------------------------------------------
 //3.1 Headings
-$display1: 6rem;
-$display2: 5rem;
-$display3: 4rem;
-$display4: 3rem;
-$display5: 2.5rem;
-$h1: 2rem;
-$h2: 2rem;
-$h3: 1.5rem;
-$h4: 1.25rem;
-$h5: 1.125rem;
-$h6: 1rem;
+$display1: 6em;
+$display2: 5em;
+$display3: 4em;
+$display4: 3em;
+$display5: 2.5em;
+$display6: 2.25em;
+$h1: 2em;
+$h2: 2em;
+$h3: 1.5em;
+$h4: 1.25em;
+$h5: 1.125em;
+$h6: 1em;
 
 $displayList: (
     $display1
@@ -89,6 +90,7 @@ $displayList: (
     $display3
     $display4
     $display5
+    $display6
 );
 
 $headingList: (
@@ -125,6 +127,9 @@ $dividerList: (
     $divider3
     $divider4
 );
+
+//3.4 Height
+$siteHeight: 1500px;
 
 //----------------------------------------------
 // 4.0 Media Queries
