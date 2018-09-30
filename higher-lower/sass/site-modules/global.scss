@@ -6,8 +6,10 @@ html,
 }
 
 body {
+    overflow: hidden;
     font-family: $primaryFont;
     color: $white;
+    background-color: #000;
 }
 
 h1,
@@ -40,4 +42,10 @@ cite {
 
 a {
     text-decoration: none;
+}
+
+@media (max-width: $mediaMedium) {
+    body {
+        overflow-y: auto;
+    }
 }

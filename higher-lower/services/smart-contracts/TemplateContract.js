@@ -16,7 +16,8 @@ class TemplateContract extends Contract {
             this.getCostOfNextGuess(),
             this.getNextGuess(),
             this.getLastGuessAddress(),
-            this.getGameEndTime()
+            this.getGameEndTime(),
+            this.getWinningNumber()
         ]).then(this.arrayToObject);
     };
 
@@ -24,6 +25,11 @@ class TemplateContract extends Contract {
         return this.methods.guessNumber(number).send({
             from: walletAddress
         })
+    };
+
+    getWinningNumber = async () => {
+        return this.methods.randomPublic().call()
+            .then(winningNumber => ({winningNumber: parseInt(winningNumber, 10)}));
     };
 
     getGameEndTime = async () => {

@@ -16,6 +16,7 @@ describe("TemplateContract", () => {
                 expect(typeof contract.nextGuess === "number").toBeTruthy();
                 expect(typeof contract.lastGuessAddress === "string").toBeTruthy();
                 expect(typeof contract.gameEndTime === "number").toBeTruthy();
+                expect(typeof contract.winningNumber === "number").toBeTruthy();
             });
     });
 });

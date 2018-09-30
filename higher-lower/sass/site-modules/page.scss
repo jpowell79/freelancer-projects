@@ -4,8 +4,8 @@
         "header header header"
         ". content sidebar"
         "footer footer footer";
-    grid-template-columns: 0 1fr 300px;
-    grid-template-rows: 120px 1fr 50px;
+    grid-template-columns: 0 1fr 350px;
+    grid-template-rows: 120px 1fr 80px;
     padding: 0 $divider3;
     max-width: $wrapper1;
     margin: 0 auto;
@@ -30,8 +30,10 @@
 
     #page-sidebar {
         grid-area: sidebar;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
         text-align: center;
-        margin: 0 auto;
 
         > * {
             margin-bottom: $divider3;
@@ -44,10 +46,9 @@
 
     #page-footer {
         grid-area: footer;
-
-        .social-menu {
-            justify-content: flex-end;
-        }
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
 }
 
@@ -64,6 +65,7 @@
         height: inherit;
 
         #page-header {
+            overflow: hidden;
             flex-direction: column;
             justify-content: space-around;
             text-align: center;
@@ -79,11 +81,11 @@
         }
 
         #page-footer {
-            text-align: center;
+            justify-content: center;
+        }
 
-            .social-menu {
-                justify-content: center;
-            }
+        #page-sidebar {
+            align-items: center;
         }
     }
 }

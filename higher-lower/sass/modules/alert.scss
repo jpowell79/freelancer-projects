@@ -1,0 +1,117 @@
+/*----------------------------------------
+ * Alerts
+ *----------------------------------------*/
+@mixin alertContainer(){
+    position: relative;
+    padding: 15px;
+    background-color: $white;
+    color: $black;
+}
+
+body.alert-rendered {
+    overflow: hidden;
+}
+
+.alert {
+    .alert-main {
+        transform: scale(0.8);
+        margin: 5vh auto;
+        width: 540px;
+        border-radius: 10px;
+        z-index: 1001;
+        transition: .3s ease-out;
+
+        &.alert-visible {
+            transform: scale(1);
+        }
+    }
+
+    .alert-header {
+        @include alertContainer();
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(34,36,38,.15);
+        border-radius: 5px 5px 0 0;
+
+        > div:not(.close) {
+            display: flex;
+            align-items: center;
+
+            > * {
+                margin-top: 0!important;
+                margin-bottom: 0!important;
+            }
+        }
+
+        i {
+            font-size: 20px;
+            margin-right: 15px;
+        }
+
+        .fa-times {
+            cursor: pointer;
+        }
+    }
+
+    .alert-content {
+        @include alertContainer();
+    }
+
+    .alert-buttons {
+        @include alertContainer();
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background: #f9fafb;
+        border-top: 1px solid rgba(34,36,38,.15);
+
+        > button {
+            margin-right: 15px;
+        }
+
+        > button:last-child {
+            margin-right: 0;
+        }
+    }
+
+    .alert-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        padding: 1em;
+        opacity: 0;
+        background-color: rgba(0,0,0,.85);
+        transition: .3s ease-out;
+        z-index: 1000;
+
+        &.alert-visible {
+            opacity: 1;
+        }
+    }
+}
+
+.error-alert .alert-header,
+.warning-alert .alert-header,
+.info-alert .alert-header,
+.success-alert .alert-header {
+    color: $white;
+}
+
+.error-alert .alert-header {
+    background-color: $bDanger;
+}
+
+.warning-alert .alert-header {
+    background-color: $bWarning;
+}
+
+.info-alert .alert-header {
+    background-color: $bInfo;
+}
+
+.success-alert .alert-header {
+    background-color: $bSuccess;
+}

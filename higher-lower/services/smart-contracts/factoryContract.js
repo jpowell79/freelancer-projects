@@ -13,7 +13,7 @@ class FactoryContract extends Contract {
             this.getBalance(),
             this.getCount(),
             this.getLatestSpawnedContract(),
-            this.getAdmin()
+            this.getAdmin(),
         ]).then(this.arrayToObject);
     };
 

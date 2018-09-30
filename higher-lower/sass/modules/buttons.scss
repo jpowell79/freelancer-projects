@@ -1,0 +1,23 @@
+.button {
+    display: inline-block;
+    cursor: pointer;
+    outline: 0;
+    border: none;
+    padding: 10px 15px;
+}
+
+@each $name, $color in $darkColors {
+    .button-#{$name}{
+        @extend .button;
+        background-color: $color;
+        color: $white;
+    }
+}
+
+@each $name, $color in $lightColors {
+    .button-#{$name}{
+        @extend .button;
+        background-color: $color;
+        color: $black;
+    }
+}

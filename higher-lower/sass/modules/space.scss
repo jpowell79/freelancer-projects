@@ -1,6 +1,7 @@
 /*----------------------------------------
  * Space Background
  *----------------------------------------*/
+$spaceSize: 300vh;
 
 @keyframes pulse {
     from {
@@ -24,7 +25,7 @@
     top: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    height: $siteHeight;
+    height: $spaceSize;
     background: #000;
     color: rgba(0, 0, 0, 0);
     animation-name: pulse;
@@ -39,10 +40,10 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 2000px;
-    height: 2000px;
-    margin-top: -1000px;
-    margin-left: -1000px;
+    width: $spaceSize;
+    height: $spaceSize;
+    margin-top: -150vh;
+    margin-left: -150vh;
     opacity: .5;
     background: url(/static/images/space/fog.png) repeat-x 0 center;
     animation-name: fogAnimation;
