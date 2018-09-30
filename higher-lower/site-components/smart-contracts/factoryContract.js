@@ -1,7 +1,6 @@
 import Contract from "./Contract";
 import {masterContract} from "../../settings";
 import {factoryAbi} from "./factoryAbi";
-import {parseContractArrayToObject} from "./contractParser";
 
 class FactoryContract extends Contract {
     constructor(){
@@ -10,38 +9,26 @@ class FactoryContract extends Contract {
 
     callGetters = async () => {
         return Promise.all([
-            this.getAddress().then(address => ({address})),
-            this.getBalance().then(balance => ({balance: this.toEth(balance)})),
-            this.getCount().then(count => ({count: parseInt(count, 10)})),
-            this.getLatestSpawnedContract().then(latestSpawnedContract => ({
-                latestSpawnedContract
-            })),
-            this.getAdmin().then(admin => ({admin}))
-        ]).then(parseContractArrayToObject);
-    };
-
-    getAdmin = async () => {
-        return this.methods.admin().call();
+            this.getAddress(),
+            this.getBalance(),
+            this.getCount(),
+            this.getLatestSpawnedContract(),
+            this.getAdmin()
+        ]).then(this.arrayToObject);
     };
 
     getLatestSpawnedContract = async () => {
-        return this.methods.latestSpawnedContract().call();
+        return this.methods.latestSpawnedContract().call()
+            .then(latestSpawnedContract => ({latestSpawnedContract}));
     };
 
     getPreviousContract = async () => {
         return this.methods.previousContract().call();
     };
 
-    getAddress = async () => {
-        return this.methods.thisContractAddress().call();
-    };
-
-    getBalance = async () => {
-        return this.methods.thisContractBalance().call();
-    };
-
     getCount = async () => {
-        return this.methods.getContractCount().call();
+        return this.methods.getContractCount().call()
+            .then(count => ({count: parseInt(count, 10)}));
     };
 }
 

@@ -7,7 +7,13 @@ class Contract {
         this.methods = this.contract.methods;
     }
 
-    toEth = (wei, decimals = 4) => {
+    toMilliseconds = (unixEpochTime) => {
+        return parseInt(unixEpochTime, 10) * 1000;
+    };
+
+    toEth = (wei, decimals = 6) => {
+        console.log(wei);
+
         return parseFloat(parseFloat(this.web3.utils.fromWei(wei)).toFixed(decimals));
     };
 
@@ -19,7 +25,22 @@ class Contract {
         }
 
         return {};
-    }
+    };
+
+    getAdmin = async () => {
+        return this.methods.admin().call()
+            .then(admin => ({admin}));
+    };
+
+    getAddress = async () => {
+        return this.methods.thisContractAddress().call()
+            .then(address => ({address}));
+    };
+
+    getBalance = async () => {
+        return this.methods.thisContractBalance().call()
+            .then(balance => ({balance: this.toEth(balance)}));
+    };
 }
 
 export default Contract;

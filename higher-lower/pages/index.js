@@ -2,6 +2,7 @@ import React, {Component, Fragment} from "react";
 import Page from "../site-components/containers/Page";
 import {AdContainer} from "../site-components/containers/AdContainer";
 import withFactoryContract from "../hocs/withFactoryContract";
+import withTemplateContract from "../hocs/withTemplateContract";
 import {compose} from "redux";
 import {connect} from "react-redux";
 
@@ -41,5 +42,6 @@ class Index extends Component {
 
 export default compose(
     withFactoryContract,
+    withTemplateContract("0x6dbaEa5167cF533392DC7fa145c409b79fCCb88b"),
     connect(Index.mapStateToProps)
 )(Index);

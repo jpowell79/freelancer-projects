@@ -2,18 +2,29 @@ import {constants} from "./constants";
 import {combineReducers} from "redux";
 
 export const initialState = {
-    factoryContract: {}
+    factoryContract: {},
+    templateContract: {}
 };
 
-export const factoryContract = (state = {}, action) => {
+export const factoryContract = (factoryContract = {}, action) => {
     switch(action.type){
     case constants.UPDATE_FACTORY_CONTRACT:
         return action.payload;
     default:
-        return state;
+        return factoryContract;
+    }
+};
+
+export const templateContract = (templateContract = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_TEMPLATE_CONTRACT:
+        return action.payload;
+    default:
+        return templateContract;
     }
 };
 
 export default combineReducers({
-    factoryContract
+    factoryContract,
+    templateContract
 });
