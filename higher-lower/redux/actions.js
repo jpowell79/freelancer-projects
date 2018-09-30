@@ -1,8 +1,8 @@
-import {constants} from "./constants";
+import constants from "./constants";
 
-export const sampleAction = () => {
+export const updateFactoryContract = (factoryContract) => {
     return {
-        type: constants.SAMPLE_ACTION,
-        payload: "Hello Redux!"
+        type: constants.UPDATE_FACTORY_CONTRACT,
+        payload: factoryContract
     }
 };

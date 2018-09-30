@@ -1,9 +1,18 @@
 import React, {Component, Fragment} from "react";
 import Page from "../site-components/containers/Page";
 import {AdContainer} from "../site-components/containers/AdContainer";
+import withFactoryContract from "../hocs/withFactoryContract";
+import {compose} from "redux";
+import {connect} from "react-redux";
 
 class Index extends Component {
+    static mapStateToProps = ({factoryContract}) => ({factoryContract});
+
     render () {
+        const {
+            factoryContract
+        } = this.props;
+
         return (
             <Page
                 sidebar={
@@ -23,11 +32,14 @@ class Index extends Component {
                     </Fragment>
                 }
             >
-                <h2 className="display-6">Game Number </h2>
+                <h2 className="display-6">Game Number {factoryContract.count}</h2>
                 <h1>Hello Next, Redux, React, SCSS and Jest setup!</h1>
             </Page>
         )
     }
 }
 
-export default Index;
+export default compose(
+    withFactoryContract,
+    connect(Index.mapStateToProps)
+)(Index);

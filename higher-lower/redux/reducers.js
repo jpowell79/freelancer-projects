@@ -2,12 +2,12 @@ import {constants} from "./constants";
 import {combineReducers} from "redux";
 
 export const initialState = {
-    sample: ""
+    factoryContract: {}
 };
 
-export const sample = (state = "", action) => {
+export const factoryContract = (state = {}, action) => {
     switch(action.type){
-    case constants.SAMPLE_ACTION:
+    case constants.UPDATE_FACTORY_CONTRACT:
         return action.payload;
     default:
         return state;
@@ -15,5 +15,5 @@ export const sample = (state = "", action) => {
 };
 
 export default combineReducers({
-    sample
+    factoryContract
 });
