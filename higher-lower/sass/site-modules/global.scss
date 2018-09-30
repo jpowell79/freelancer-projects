@@ -18,6 +18,24 @@ h5,
 h6 {
     margin-top: 0;
     font-weight: lighter;
+
+    p {
+        margin-top: 10px;
+    }
+}
+
+@for $i from 1 through length($headingList) {
+    h#{$i}{
+        font-size: #{nth($headingList, $i)};
+    }
+}
+
+p,
+input,
+span,
+cite {
+    margin-top: 0;
+    font-size: $h4;
 }
 
 a {

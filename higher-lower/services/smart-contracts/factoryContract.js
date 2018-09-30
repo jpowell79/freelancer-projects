@@ -7,7 +7,7 @@ class FactoryContract extends Contract {
         super(factoryAbi, masterContract);
     }
 
-    callGetters = async () => {
+    fetch = async () => {
         return Promise.all([
             this.getAddress(),
             this.getBalance(),

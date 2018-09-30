@@ -4,7 +4,7 @@
         "header header header"
         ". content sidebar"
         "footer footer footer";
-    grid-template-columns: 1fr 3fr 300px;
+    grid-template-columns: 0 1fr 300px;
     grid-template-rows: 120px 1fr 50px;
     padding: 0 $divider3;
     max-width: $wrapper1;
@@ -22,13 +22,16 @@
         grid-area: content;
         text-align: center;
         padding: $divider3;
+
+        &.full-width {
+            grid-column: 1/4;
+        }
     }
 
     #page-sidebar {
         grid-area: sidebar;
         text-align: center;
         margin: 0 auto;
-        padding: $divider1 0;
 
         > * {
             margin-bottom: $divider3;

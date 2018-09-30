@@ -7,13 +7,19 @@ class Contract {
         this.methods = this.contract.methods;
     }
 
+    fetch = async () => {
+        return Promise.all([
+            this.getAdmin(),
+            this.getAddress(),
+            this.getBalance()
+        ]).then(this.arrayToObject);
+    };
+
     toMilliseconds = (unixEpochTime) => {
         return parseInt(unixEpochTime, 10) * 1000;
     };
 
     toEth = (wei, decimals = 6) => {
-        console.log(wei);
-
         return parseFloat(parseFloat(this.web3.utils.fromWei(wei)).toFixed(decimals));
     };
 

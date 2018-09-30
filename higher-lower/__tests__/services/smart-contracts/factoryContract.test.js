@@ -1,8 +1,8 @@
-import factoryContract from "../../../site-components/smart-contracts/factoryContract";
+import factoryContract from "../../../services/smart-contracts/factoryContract";
 
 describe("FactoryContract", () => {
     it("Should get and convert values to correct datatype", () => {
-        return factoryContract.callGetters()
+        return factoryContract.fetch()
             .then(contract => {
                 console.log(contract);
                 expect(typeof contract.address === "string").toBeTruthy();

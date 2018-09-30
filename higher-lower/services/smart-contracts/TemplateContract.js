@@ -6,7 +6,7 @@ class TemplateContract extends Contract {
         super(templateAbi, address);
     }
 
-    callGetters = async () => {
+    fetch = async () => {
         return Promise.all([
             this.getAdmin(),
             this.getAddress(),
@@ -18,6 +18,12 @@ class TemplateContract extends Contract {
             this.getLastGuessAddress(),
             this.getGameEndTime()
         ]).then(this.arrayToObject);
+    };
+
+    makeGuess = async ({number, walletAddress}) => {
+        return this.methods.guessNumber(number).send({
+            from: walletAddress
+        })
     };
 
     getGameEndTime = async () => {

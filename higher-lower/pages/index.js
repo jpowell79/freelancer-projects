@@ -1,17 +1,19 @@
 import React, {Component, Fragment} from "react";
 import Page from "../site-components/containers/Page";
 import {AdContainer} from "../site-components/containers/AdContainer";
-import withFactoryContract from "../hocs/withFactoryContract";
-import withTemplateContract from "../hocs/withTemplateContract";
+import withContracts from "../site-components/hocs/withContracts";
 import {compose} from "redux";
-import {connect} from "react-redux";
+import Counter from "../external-components/react-flip-counter";
+import {Address} from "../site-components/Address";
+import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
 
 class Index extends Component {
-    static mapStateToProps = ({factoryContract}) => ({factoryContract});
-
     render () {
         const {
-            factoryContract
+            factoryContract,
+            templateContract,
+            templateContractRequest,
+            metamaskAccount
         } = this.props;
 
         return (
@@ -34,14 +36,49 @@ class Index extends Component {
                 }
             >
                 <h2 className="display-6">Game Number {factoryContract.count}</h2>
-                <h1>Hello Next, Redux, React, SCSS and Jest setup!</h1>
+                <h3>
+                    The correct number is between {templateContract.lowValue} and {
+                    templateContract.highValue}
+                </h3>
+                <h3>
+                    The next guess will be guess {templateContract.nextGuess
+                    } <p>
+                        cost of next guess: {
+                            (templateContract.costOfNextGuess === 0)
+                                ? "FREE!"
+                                : `${templateContract.costOfNextGuess} Eth`
+                        }
+                    </p>
+                </h3>
+                <h3>
+                    The last Ethereum wallet address to make a guess was: <p>
+                        <Address address={templateContract.lastGuessAddress}/>
+                    </p>
+                </h3>
+                <Counter
+                    onStop={() => console.log("Stopped")}
+                    stop={new Date(templateContract.gameEndTime)}
+                />
+                <h3>
+                    Eth currently stored in this contract: {templateContract.balance}
+                </h3>
+                <h3>
+                    Remember, if you guess incorrectly, you will still win the Eth if the
+                    countdown timer reaches zero!
+                </h3>
+                <input type="text"/>
+                <button onClick={() => {
+                    return templateContractRequest.makeGuess({
+                        number: 0,
+                        walletAddress: metamaskAccount.address
+                    });
+                }}>Guess</button>
             </Page>
         )
     }
 }
 
 export default compose(
-    withFactoryContract,
-    withTemplateContract("0x6dbaEa5167cF533392DC7fa145c409b79fCCb88b"),
-    connect(Index.mapStateToProps)
+    withMetamaskAccount,
+    withContracts
 )(Index);

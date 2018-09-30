@@ -1,5 +1,5 @@
 import web3 from "web3";
-import {isClient} from "../../services/utils";
+import {isClient} from "../utils";
 import settings from "../../settings.json";
 
 let instance = null;

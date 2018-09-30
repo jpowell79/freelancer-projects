@@ -1,10 +1,10 @@
-import TemplateContract from "../../../site-components/smart-contracts/TemplateContract";
+import TemplateContract from "../../../services/smart-contracts/TemplateContract";
 
 describe("TemplateContract", () => {
     const templateContract = new TemplateContract("0x6dbaEa5167cF533392DC7fa145c409b79fCCb88b");
 
     it("Should get and convert values to correct datatype", () => {
-        return templateContract.callGetters()
+        return templateContract.fetch()
             .then(contract => {
                 console.log(contract);
                 expect(typeof contract.address === "string").toBeTruthy();
