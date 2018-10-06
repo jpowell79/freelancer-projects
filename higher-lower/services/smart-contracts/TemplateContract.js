@@ -44,12 +44,12 @@ class TemplateContract extends Contract {
 
     getLowValue = async () => {
         return this.methods.lowValue().call()
-            .then(lowValue => ({lowValue: this.toEth(lowValue)}));
+            .then(lowValue => ({lowValue: parseInt(lowValue, 10)}));
     };
 
     getHighValue = async () => {
         return this.methods.highValue().call()
-            .then(highValue => ({highValue: this.toEth(highValue)}));
+            .then(highValue => ({highValue: parseInt(highValue, 10)}));
     };
 
     getNextGuess = async () => {

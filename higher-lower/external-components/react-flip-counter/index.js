@@ -57,7 +57,6 @@ class Countdown extends React.Component {
             d = Math.floor(h / 24);
 
         return {
-            days: Math.floor(h / 24),
             hours: h % 24,
             minutes: m % 60,
             seconds: s % 60
@@ -87,7 +86,6 @@ class Countdown extends React.Component {
      */
     render(){
         let forks = {
-                days: [[0, 9], [0, 9]],
                 hours: [[0, 2], [0, 4]],
                 minutes: [[0, 5], [0, 9]],
                 seconds: [[0, 5], [0, 9]]
