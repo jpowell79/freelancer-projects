@@ -12,7 +12,7 @@
         background-color: $color;
 
         &.glass {
-            background-color: rgba($color, .9);
+            background-color: rgba($color, .1);
         }
     }
 }

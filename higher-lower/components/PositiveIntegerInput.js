@@ -2,6 +2,18 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {joinClassNames} from "../services/className";
 
+export const filterObject = (objectToFilter, objectToFilterOut) => {
+    let filteredObject = {};
+
+    Object.keys(objectToFilter)
+        .filter(key => !Object.keys(objectToFilterOut).includes(key))
+        .forEach(key => {
+            filteredObject[key] = objectToFilter[key];
+        });
+
+    return filteredObject;
+};
+
 class PositiveIntegerInput extends Component {
     static defaultProps = {
         lowestDigit: 0,
@@ -9,7 +21,6 @@ class PositiveIntegerInput extends Component {
         value: '',
         defaultValue: '',
         className: '',
-        disabled: false,
         onIncorrectInput: (event) => {
             event.preventDefault();
         },
@@ -81,7 +92,7 @@ class PositiveIntegerInput extends Component {
         return (
             <input
                 type="text"
-                disabled={this.props.disabled}
+                {...filterObject(this.props, PositiveIntegerInput.defaultProps)}
                 className={joinClassNames("input", this.props.className)}
                 onChange={this.handleKeyDown}
                 value={this.getValueToDisplay()}/>

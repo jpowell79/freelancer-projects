@@ -61,7 +61,7 @@
             "content"
             "sidebar"
             "footer";
-        grid-template-columns: auto;
+        grid-template-columns: 1fr;
         grid-template-rows: auto;
         height: inherit;
 
@@ -71,7 +71,6 @@
             justify-content: space-around;
             text-align: center;
             margin-bottom: $divider2;
-            grid-column: 1/4;
 
             .logo {
                 margin: $divider2 auto;
@@ -84,7 +83,6 @@
 
         #page-footer {
             justify-content: center;
-            grid-column: 1/4;
         }
 
         #page-sidebar {

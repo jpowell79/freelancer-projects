@@ -42,7 +42,7 @@ class PreviousGame extends Component {
 
         return (
             <Page contentClass="full-width">
-                <div className="glass-container">
+                <div className="glass container bg-color-white">
                     <h1 className="normal display-6">Previous Game</h1>
                     {(Object.keys(previousContract).length === 0)
                         ? <p>No previous game exists</p>

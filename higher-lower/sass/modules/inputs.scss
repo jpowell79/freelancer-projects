@@ -14,4 +14,8 @@
     &:disabled {
         background: #eee;
     }
+
+    &.invalid {
+        background: #F8ECEC;
+    }
 }

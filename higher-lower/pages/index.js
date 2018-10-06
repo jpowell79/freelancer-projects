@@ -14,6 +14,7 @@ import HideFragment from "../components/HideFragment";
 import Alerts from "../site-components/Alerts";
 import {LoaderTiny} from "../components/icons";
 import Dispatcher from "../services/Dispatcher";
+import {Message} from "../components/Message";
 
 class Index extends Component {
     constructor(props){
@@ -21,7 +22,8 @@ class Index extends Component {
 
         this.state = {
             counterStopped: Date.now() > props.templateContract.gameEndTime,
-            makingTransaction: false
+            makingTransaction: false,
+            formInvalid: false
         };
 
         this.guess = (props.templateContract.lowValue + (
@@ -84,26 +86,33 @@ class Index extends Component {
             templateContract
         } = this.props;
 
+        const AdPlaceholder = (
+            <div className="display-4 lighter" style={{
+                display: "flex",
+                alignItems: "center",
+                height: "100%",
+                maxWidth: "250px",
+                margin: "0 auto"
+            }}>
+                YOUR AD HERE:
+                MOBILE 300x250
+            </div>
+        );
+
         return (
             <Page
                 sidebar={
                     <Fragment>
-                        <AdContainer className="bg-color-secondary">
-                            <div className="display-4" style={{maxWidth: "250px", margin: "0 auto"}}>
-                                YOUR AD HERE:
-                                MOBILE 300x250
-                            </div>
+                        <AdContainer className="bg-color-white glass">
+                            {AdPlaceholder}
                         </AdContainer>
-                        <AdContainer className="bg-color-secondary">
-                            <div className="display-4" style={{maxWidth: "250px", margin: "0 auto"}}>
-                                YOUR AD HERE:
-                                MOBILE 300x250
-                            </div>
+                        <AdContainer className="bg-color-white glass">
+                            {AdPlaceholder}
                         </AdContainer>
                     </Fragment>
                 }
             >
-                <div className="glass-container">
+                <div className="glass container bg-color-white">
                     <h2 className="display-6">Game Number {factoryContract.count}</h2>
                     <h3>
                         The correct number is between {templateContract.lowValue} and {
@@ -145,12 +154,16 @@ class Index extends Component {
                     </h3>
                     <div className="input-with-button divider-2">
                         <PositiveIntegerInput
+                            className={(this.state.formInvalid) ? "invalid" : ""}
                             lowestDigit={templateContract.lowValue}
                             highestDigit={templateContract.highValue}
                             defaultValue={this.guess}
                             disabled={this.state.makingTransaction}
-                            onIncorrectInput={(event) => console.log(event.target.value)}
+                            onIncorrectInput={() => {
+                                this.setState({formInvalid: true})
+                            }}
                             onCorrectInput={(event) => {
+                                this.setState({formInvalid: false});
                                 this.guess = event.target.value
                             }}
                         />
@@ -159,6 +172,17 @@ class Index extends Component {
                             onClick={this.handleGuess}
                             disabled={this.state.makingTransaction}
                         >{(this.state.makingTransaction) ? <LoaderTiny/> : "Guess"}</button>
+                    </div>
+                    <div className="wrapper-5">
+                        <Message
+                            show={this.state.formInvalid}
+                            className="message-secondary"
+                        >
+                            <p className="normal">
+                                The number must be between {templateContract.lowValue} and {
+                                templateContract.highValue}
+                            </p>
+                        </Message>
                     </div>
                 </div>
             </Page>

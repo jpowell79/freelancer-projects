@@ -19,6 +19,19 @@
         &:disabled {
             background-color: lighten($color, 5%);
         }
+
+        &.inverted {
+            background-color: rgba(0, 0, 0, 0);
+            border: 2px solid $color;
+            color: $color;
+            font-weight: bold;
+            @include standardHoverEffect();
+
+            &:hover {
+                background-color: $color;
+                color: $white;
+            }
+        }
     }
 }
 

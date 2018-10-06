@@ -33,7 +33,7 @@ $iconSize: 40px;
 
         &:hover {
             color: $white;
-            background-color: darken($secondary, 10%);
+            background-color: rgba(255, 255, 255, .1);
         }
 
         i {

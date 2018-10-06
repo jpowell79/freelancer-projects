@@ -37,17 +37,17 @@ $darkColors: (
     (primary     $primary)
     (secondary   $secondary)
     (black       $black)
-    (bBlue       $bBlue)
-    (b-Yellow    $bYellow)
-    (b-Orange    $bOrange)
-    (b-Teal      $bTeal)
-    (b-Cyan      $bCyan)
-    (b-Red       $bRed)
-    (b-Pink      $bPink)
-    (b-Purple    $bPurple)
-    (b-Indigo    $bIndigo)
-    (b-Primary   $bPrimary)
-    (b-Secondary $bSecondary)
+    (b-blue       $bBlue)
+    (b-yellow    $bYellow)
+    (b-orange    $bOrange)
+    (b-teal      $bTeal)
+    (b-cyan      $bCyan)
+    (b-red       $bRed)
+    (b-pink      $bPink)
+    (b-purple    $bPurple)
+    (b-indigo    $bIndigo)
+    (b-primary   $bPrimary)
+    (b-secondary $bSecondary)
     (success     $bSuccess)
     (danger      $bDanger)
     (warning     $bWarning)
@@ -107,12 +107,16 @@ $wrapper1: 1200px;
 $wrapper2: 992px;
 $wrapper3: 768px;
 $wrapper4: 576px;
+$wrapper5: 435px;
+$wrapper6: 326px;
 
 $wrapperList: (
     $wrapper1
     $wrapper2
     $wrapper3
     $wrapper4
+    $wrapper5
+    $wrapper6
 );
 
 //3.3 Dividers
