@@ -31,18 +31,15 @@ class EditContractForm extends Component {
         exitFee,
         joinFee,
     }) => {
-        const contract = new SubscriptionContract({
+        return new SubscriptionContract({
             web3,
             address: this.props.contract.address
-        });
-
-        return contract.setSubscriptionDetailsAsSupplier({
+        }).setSubscriptionDetailsAsSupplier({
             subscriptionName,
-            supplierWalletAddress: metamaskAccount.address,
-            subscriptionLengthInWeeks: parseFloat(subscriptionLengthInWeeks),
-            subscriptionPrice: parseFloat(subscriptionPrice),
-            joinFee: parseFloat(joinFee),
-            exitFee: parseFloat(exitFee),
+            subscriptionLengthInWeeks,
+            subscriptionPrice,
+            joinFee,
+            exitFee,
             subscriptionDetails,
             supplierEmail: this.props.user.email,
             supplier: metamaskAccount.address

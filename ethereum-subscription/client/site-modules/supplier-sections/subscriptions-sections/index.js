@@ -6,11 +6,7 @@ import objects from "../../../../services/datatypes/objects";
 import {Menu} from "semantic-ui-react";
 import PropTypes from "prop-types";
 import {LoaderSmall} from "../../../modules/icons";
-import {
-    deselectEditContract,
-    updateSubscriptionDetails,
-    updateTrialSubscriptionDetails
-} from "../../../redux/actions";
+import {deselectEditContract} from "../../../redux/actions";
 import SubscriptionContract from "../../../../services/smart-contracts/SubscriptionContract";
 import Dispatcher from "../../../services/loaders/Dispatcher";
 

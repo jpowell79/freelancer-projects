@@ -6,6 +6,7 @@ import Dispatcher from "../../../services/loaders/Dispatcher";
 import {selectEditContract} from "../../../redux/actions";
 import email from "../../../../services/api/email";
 import ContractQuery from "../../../services/ContractQuery";
+import {EditSubscriptionMessage} from "../../EditSubscriptionMessage";
 
 export default ({
     editContract,
@@ -69,13 +70,13 @@ export default ({
 
     return (
         <Segment padded>
-            <div className="container-5">
-                {(editContract.subscriptionActive) && (
+            <div className="container-4">
+                {(editContract.subscriptionActive) ? (
                     <Message
                         success
                         header="This subscription is currently active"
                     />
-                )}
+                ) : <EditSubscriptionMessage/>}
                 <EditSubscriptionForm
                     onSubmit={handleSubscriptionEdited}
                     disabled={editContract.subscriptionActive}
