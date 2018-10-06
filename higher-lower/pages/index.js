@@ -6,6 +6,7 @@ import {compose} from "redux";
 import Counter from "../external-components/react-flip-counter";
 import {Address} from "../site-components/Address";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
+import PositiveIntegerInput from "../components/PositiveIntegerInput";
 
 class Index extends Component {
     render () {
@@ -69,7 +70,10 @@ class Index extends Component {
                     countdown timer reaches zero!
                 </h3>
                 <div className="divider-2">
-                    <input className="input" type="number"/>
+                    <PositiveIntegerInput
+                        lowestDigit={templateContract.lowValue}
+                        highestDigit={templateContract.highValue}
+                    />
                     <button className="button-secondary" onClick={() => {
                         return templateContractRequest.makeGuess({
                             number: 0,
