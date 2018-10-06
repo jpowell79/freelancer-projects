@@ -7,9 +7,10 @@ import Dispatcher from "../../services/Dispatcher";
 
 export default (PageComponent) => {
     class ContractFetcher extends Component {
-        static mapStateToProps = ({factoryContract, templateContract}) => ({
+        static mapStateToProps = ({factoryContract, templateContract, previousContract}) => ({
             factoryContract,
-            templateContract
+            templateContract,
+            previousContract
         });
 
         static async getInitialProps (appContext) {

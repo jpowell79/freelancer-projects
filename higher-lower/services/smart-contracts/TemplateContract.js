@@ -16,8 +16,7 @@ class TemplateContract extends Contract {
             this.getCostOfNextGuess(),
             this.getNextGuess(),
             this.getLastGuessAddress(),
-            this.getGameEndTime(),
-            this.getWinningNumber()
+            this.getGameEndTime()
         ]).then(this.arrayToObject);
     };
 
