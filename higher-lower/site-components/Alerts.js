@@ -5,8 +5,8 @@ import settings from "../settings";
 const TransactionHash = ({transaction}) => {
     return (
         <Fragment>
-            <p className="bold mb-0">Transaction Hash:</p>
-            <p className="bold"><a
+            <p className="mb-0">Transaction Hash:</p>
+            <p className="lighter"><a
                 target="_blank"
                 style={{wordBreak: "break-all"}}
                 href={`${settings.etherscanUrl}/tx/${transaction.transactionHash}`

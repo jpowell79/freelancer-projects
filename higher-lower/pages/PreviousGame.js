@@ -1,31 +1,39 @@
-import React, {Component, Fragment} from "react";
+import React, {Component} from "react";
 import Page from "../site-components/containers/Page";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
 import withContracts from "../site-components/hocs/withContracts";
 import {compose} from "redux";
 import settings from "../settings";
-import moment from "moment";
-moment.locale("en-gb");
+import {Address} from "../site-components/Address";
+import {Date} from "../site-components/Date";
 
 class PreviousGame extends Component {
     renderPreviousContractInformation = (previousContract) => {
         return (
-            <Fragment>
-                <p className="mb-0">Contract address:</p>
-                <p className="lighter"><a
-                    target="_blank"
-                    style={{wordBreak: "break-all"}}
-                    href={`${settings.etherscanUrl}/address/${previousContract.address}`
-                    }>{previousContract.address}</a></p>
-                <p className="mb-0">Winning Number:</p>
-                <p className="lighter">{previousContract.winningNumber}</p>
-                <p className="mb-0">Last Guess Address:</p>
-                <p className="lighter">{previousContract.lastGuessAddress}</p>
-                <p className="mb-0">Game End Time:</p>
-                <p className="lighter">{
-                    moment(previousContract.gameEndTime).format("DD-MM-YYYY HH:mm:ss")
-                }</p>
-            </Fragment>
+            <table className="list-table">
+                <tbody>
+                    <tr>
+                        <td>Contract address:</td>
+                        <td><a
+                            target="_blank"
+                            style={{wordBreak: "break-all"}}
+                            href={`${settings.etherscanUrl}/address/${previousContract.address}`
+                            }><Address address={previousContract.address}/></a></td>
+                    </tr>
+                    <tr>
+                        <td>Winning Number:</td>
+                        <td>{previousContract.winningNumber}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Guess Address:</td>
+                        <td><Address address={previousContract.lastGuessAddress}/></td>
+                    </tr>
+                    <tr>
+                        <td>Game End Time:</td>
+                        <td><Date unixTime={previousContract.gameEndTime}/></td>
+                    </tr>
+                </tbody>
+            </table>
         );
     };
 
@@ -34,10 +42,12 @@ class PreviousGame extends Component {
 
         return (
             <Page contentClass="full-width">
-                <h1>Previous Game</h1>
-                {(Object.keys(previousContract).length === 0)
-                    ? <p>No previous game exists</p>
-                    : this.renderPreviousContractInformation(previousContract)}
+                <div className="glass-container">
+                    <h1 className="normal display-6">Previous Game</h1>
+                    {(Object.keys(previousContract).length === 0)
+                        ? <p>No previous game exists</p>
+                        : this.renderPreviousContractInformation(previousContract)}
+                </div>
             </Page>
         )
     }

@@ -35,14 +35,24 @@ h6 {
 p,
 input,
 span,
+tr,
 cite {
     margin-top: 0;
     font-size: $h4;
 }
 
 a {
-    color: $white;
     text-decoration: none;
+}
+
+#page {
+    a {
+        color: $white;
+    }
+}
+
+hr {
+    border: 1px solid rgba(255, 255, 255, .1);
 }
 
 @media (max-width: $mediaMedium) {
