@@ -1,4 +1,5 @@
 {
   "masterContract": "0x0cc854bbe73a96ddeed18aeee20589b0f941e986",
-  "httpProvider": "https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv"
+  "httpProvider": "https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv",
+  "etherscanUrl": "https://kovan.etherscan.io"
 }

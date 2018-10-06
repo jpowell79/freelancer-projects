@@ -20,6 +20,7 @@
 @import "modules/inputs";
 @import "modules/alert";
 @import "modules/loader";
+@import "modules/margins";
 
 //Import site-modules
 @import "site-modules/global";
@@ -27,3 +28,5 @@
 @import "site-modules/menu";
 @import "site-modules/ad";
 @import "site-modules/logo";
+@import "site-modules/input";
+@import "site-modules/utils";

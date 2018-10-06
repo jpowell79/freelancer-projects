@@ -1,10 +1,11 @@
-import {instanceOf, func} from "prop-types";
+import PropTypes from "prop-types";
 
 export default {
     types: {
-        stop: instanceOf(Date),
-        onStart: func,
-        onStop: func
+        stop: PropTypes.instanceOf(Date),
+        onStart: PropTypes.func,
+        onStop: PropTypes.func,
+        isStopped: PropTypes.bool
     },
 
     defaults: {

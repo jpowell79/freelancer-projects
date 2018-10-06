@@ -14,3 +14,8 @@ export const updateTemplateContract = (templateContract) => ({
     type: constants.UPDATE_TEMPLATE_CONTRACT,
     payload: templateContract
 });
+
+export const updatePreviousContract = (previousContract) => ({
+    type: constants.UPDATE_PREVIOUS_CONTRACT,
+    payload: previousContract
+});

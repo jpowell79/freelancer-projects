@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import factoryContractRequest from "../../services/smart-contracts/factoryContract";
 import TemplateContract from "../../services/smart-contracts/TemplateContract";
 import {getChildProps} from "../../services/utils";
-import {updateFactoryContract, updateTemplateContract} from "../../redux/actions";
 import {connect} from "react-redux";
+import Dispatcher from "../../services/Dispatcher";
 
 export default (PageComponent) => {
     class ContractFetcher extends Component {
@@ -15,24 +15,13 @@ export default (PageComponent) => {
         static async getInitialProps (appContext) {
             const {reduxStore} = appContext;
 
-            await ContractFetcher.updateContracts(reduxStore.dispatch);
+            await Dispatcher.updateContracts(reduxStore.dispatch);
 
             return await getChildProps(PageComponent, appContext);
         }
 
-        static updateContracts = async (dispatch) => {
-            const masterContract = await factoryContractRequest.fetch();
-            const templateContractRequest = new TemplateContract(
-                masterContract.latestSpawnedContract
-            );
-            const templateContract = await templateContractRequest.fetch();
-
-            dispatch(updateFactoryContract(masterContract));
-            dispatch(updateTemplateContract(templateContract));
-        };
-
         constructor(props){
-            super(props);
+            super();
 
             this.templateContractRequest = new TemplateContract(
                 props.factoryContract.latestSpawnedContract

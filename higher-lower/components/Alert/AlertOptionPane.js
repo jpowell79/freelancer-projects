@@ -14,7 +14,7 @@ class AlertOptionPane {
         onConfirm = undefined,
         onCancel = undefined
     }) => {
-        new Alert({
+        return new Alert({
             type: Alert.TYPES.ERROR,
             message: message,
             htmlMessage: htmlMessage,
@@ -43,7 +43,7 @@ class AlertOptionPane {
         onConfirm = undefined,
         onCancel = undefined
     }) => {
-        new Alert({
+        return new Alert({
             type: Alert.TYPES.WARNING,
             message: message,
             htmlMessage: htmlMessage,
@@ -72,7 +72,7 @@ class AlertOptionPane {
         onConfirm = undefined,
         onCancel = undefined
     }) => {
-        new Alert({
+        return new Alert({
             type: Alert.TYPES.INFO,
             message: message,
             htmlMessage: htmlMessage,
@@ -101,7 +101,7 @@ class AlertOptionPane {
         onConfirm = undefined,
         onCancel = undefined
     }) => {
-        new Alert({
+        return new Alert({
             type: Alert.TYPES.SUCCESS,
             message: message,
             htmlMessage: htmlMessage,
@@ -130,7 +130,7 @@ class AlertOptionPane {
         onConfirm = undefined,
         onCancel = undefined
     }) => {
-        new Alert({
+        return new Alert({
             type: Alert.TYPES.PLAIN,
             message: message,
             htmlMessage: htmlMessage,

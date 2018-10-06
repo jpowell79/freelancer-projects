@@ -21,10 +21,12 @@ class TemplateContract extends Contract {
         ]).then(this.arrayToObject);
     };
 
-    makeGuess = async ({number, walletAddress}) => {
-        return this.methods.guessNumber(number).send({
-            from: walletAddress
-        })
+    makeGuess = async ({guessedNumber, walletAddress}) => {
+        return this.methods.costOfNextGuess().call()
+            .then(costOfNextGuess => this.methods.guessNumber(guessedNumber).send({
+                from: walletAddress,
+                value: costOfNextGuess
+            }));
     };
 
     getWinningNumber = async () => {

@@ -4,6 +4,10 @@
     outline: 0;
     border: none;
     padding: 10px 15px;
+
+    &:disabled {
+        cursor: not-allowed;
+    }
 }
 
 @each $name, $color in $darkColors {
@@ -11,6 +15,10 @@
         @extend .button;
         background-color: $color;
         color: $white;
+
+        &:disabled {
+            background-color: lighten($color, 5%);
+        }
     }
 }
 
@@ -19,5 +27,9 @@
         @extend .button;
         background-color: $color;
         color: $black;
+
+        &:disabled {
+            background-color: darken($color, .5);
+        }
     }
 }

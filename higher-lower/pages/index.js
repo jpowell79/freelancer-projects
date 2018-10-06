@@ -7,14 +7,63 @@ import Counter from "../external-components/react-flip-counter";
 import {Address} from "../site-components/Address";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
 import PositiveIntegerInput from "../components/PositiveIntegerInput";
+import {updateTemplateContract} from "../redux/actions";
+import {parseErrorString} from "../services/utils";
+import AlertOptionPane from "../components/Alert/AlertOptionPane";
+import HideFragment from "../components/HideFragment";
+import Alerts from "../site-components/Alerts";
+import {LoaderSmall, LoaderTiny} from "../components/icons";
 
 class Index extends Component {
+    constructor(props){
+        super();
+
+        this.state = {
+            counterStopped: Date.now() > props.templateContract.gameEndTime,
+            makingTransaction: false
+        };
+
+        this.guess = Math.round(
+            (props.templateContract.highValue - props.templateContract.lowValue) / 2
+        ).toString();
+    }
+
+    timerShouldStop = () => {
+        return Date.now() > this.props.templateContract.gameEndTime;
+    };
+
+    handleGuess = () => {
+        let transaction = {};
+
+        this.setState({makingTransaction: true});
+
+        return this.props.templateContractRequest.makeGuess({
+            guessedNumber: this.guess,
+            walletAddress: this.props.metamaskAccount.address
+        }).then(transactionRes => {
+            transaction = transactionRes;
+            return this.props.templateContractRequest.fetch();
+        }).then(templateContract =>{
+            this.props.dispatch(updateTemplateContract(templateContract));
+            this.setState({
+                counterStopped: this.timerShouldStop(),
+                makingTransaction: false
+            });
+            Alerts.showGuessResults(transaction, this.props.templateContract);
+        }).catch(err => {
+            AlertOptionPane.showErrorAlert({
+                title: "Transaction Error",
+                message: parseErrorString(err)
+            });
+
+            this.setState({makingTransaction: false});
+        });
+    };
+
     render () {
         const {
             factoryContract,
-            templateContract,
-            templateContractRequest,
-            metamaskAccount
+            templateContract
         } = this.props;
 
         return (
@@ -57,10 +106,16 @@ class Index extends Component {
                     </p>
                 </h3>
                 <div className="divider-2">
-                    <Counter
-                        onStop={() => console.log("Stopped")}
-                        stop={new Date(templateContract.gameEndTime)}
-                    />
+                    <HideFragment>
+                        <Counter
+                            isStopped={this.state.counterStopped}
+                            onStop={() => {
+                                console.log("Stopped");
+                                this.setState({counterStopped: true})
+                            }}
+                            stop={new Date(templateContract.gameEndTime)}
+                        />
+                    </HideFragment>
                 </div>
                 <h3>
                     Eth currently stored in this contract: {templateContract.balance}
@@ -69,25 +124,23 @@ class Index extends Component {
                     Remember, if you guess incorrectly, you will still win the Eth if the
                     countdown timer reaches zero!
                 </h3>
-                <div className="divider-2">
+                <div className="input-with-button divider-2">
                     <PositiveIntegerInput
                         lowestDigit={templateContract.lowValue}
                         highestDigit={templateContract.highValue}
+                        defaultValue={this.guess}
+                        disabled={this.state.makingTransaction}
+                        onIncorrectInput={(event) => console.log(event.target.value)}
+                        onCorrectInput={(event) => {
+                            this.guess = event.target.value
+                        }}
                     />
-                    <button className="button-secondary" onClick={() => {
-                        return templateContractRequest.makeGuess({
-                            number: 0,
-                            walletAddress: metamaskAccount.address
-                        });
-                    }}>Guess</button>
+                    <button
+                        className="button-secondary"
+                        onClick={this.handleGuess}
+                        disabled={this.state.makingTransaction}
+                    >{(this.state.makingTransaction) ? <LoaderTiny/> : "Guess"}</button>
                 </div>
-                <h3>
-                    In the event of a correct guess, or if nobody guesses correctly within 15
-                    guess, the “master” contract factory will simply spawn another game, and
-                    the address of the “current” game will update automatically. At this point
-                    all the information on the homepage will update because we are now referencing
-                    a new “current” game smart contract address.
-                </h3>
             </Page>
         )
     }

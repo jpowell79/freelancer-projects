@@ -114,6 +114,8 @@ class Alert {
                 remove={this.remove}/>,
             $(`#${id}`)[0]
         );
+
+        return this;
     }
 
     remove(){

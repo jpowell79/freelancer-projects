@@ -1,0 +1,12 @@
+.input-with-button {
+    display: flex;
+    justify-content: center;
+
+    input {
+        border-radius: 5px 0 0 5px;
+    }
+
+    button {
+        border-radius: 0 5px 5px 0;
+    }
+}

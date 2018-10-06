@@ -13,6 +13,7 @@ class FactoryContract extends Contract {
             this.getBalance(),
             this.getCount(),
             this.getLatestSpawnedContract(),
+            this.getPreviousContract(),
             this.getAdmin(),
         ]).then(this.arrayToObject);
     };
@@ -23,7 +24,9 @@ class FactoryContract extends Contract {
     };
 
     getPreviousContract = async () => {
-        return this.methods.previousContract().call();
+        return this.methods.previousContract().call()
+            .then(previousContract => ({previousContract}))
+            .catch(() => null);
     };
 
     getCount = async () => {

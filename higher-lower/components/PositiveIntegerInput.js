@@ -9,6 +9,7 @@ class PositiveIntegerInput extends Component {
         value: '',
         defaultValue: '',
         className: '',
+        disabled: false,
         onIncorrectInput: (event) => {
             event.preventDefault();
         },
@@ -80,6 +81,7 @@ class PositiveIntegerInput extends Component {
         return (
             <input
                 type="text"
+                disabled={this.props.disabled}
                 className={joinClassNames("input", this.props.className)}
                 onChange={this.handleKeyDown}
                 value={this.getValueToDisplay()}/>

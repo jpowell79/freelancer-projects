@@ -20,22 +20,19 @@ class Countdown extends React.Component {
      * Create second interval
      */
     componentDidMount(){
-        if(!this.isTimeOver(this.state.diff)){
-            this.interval = window.setInterval(() =>{
-                this.setState({diff: this.getDiffObject()});
-                this.isTimeOver() && this.stopCount();
-            }, 1000);
-        } else {
-            this.stopCount();
-        }
+        this.interval = window.setInterval(() =>{
+            this.setState({diff: this.getDiffObject()});
+            this.isTimeOver() && this.stopCount();
+        }, 1000);
     }
 
     /**
      * Clears interval and drop notification
      */
     stopCount(){
-        window.clearInterval(this.interval);
-        this.props.onStop && this.props.onStop();
+        if(!this.props.isStopped){
+            this.props.onStop && this.props.onStop();
+        }
     }
 
     /**

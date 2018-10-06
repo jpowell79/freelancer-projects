@@ -4,6 +4,7 @@ import {combineReducers} from "redux";
 export const initialState = {
     factoryContract: {},
     templateContract: {},
+    previousContract: {},
     metamaskAccount: {}
 };
 
@@ -13,6 +14,15 @@ export const metamaskAccount = (metamaskAccount = {}, action) => {
         return action.payload;
     default:
         return metamaskAccount;
+    }
+};
+
+export const previousContract = (previousContract = {}, action) => {
+    switch(action.type){
+    case constants.UPDATE_PREVIOUS_CONTRACT:
+        return action.payload;
+    default:
+        return previousContract;
     }
 };
 
@@ -37,5 +47,6 @@ export const templateContract = (templateContract = {}, action) => {
 export default combineReducers({
     factoryContract,
     templateContract,
-    metamaskAccount
+    metamaskAccount,
+    previousContract
 });

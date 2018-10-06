@@ -13,10 +13,24 @@ body.alert-rendered {
 }
 
 .alert {
+    p {
+        font-size: 16px;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .alert-title {
+        font-weight: bold;
+        font-size: 20px;
+    }
+
     .alert-main {
         transform: scale(0.8);
         margin: 5vh auto;
         width: 540px;
+        max-width: 100%;
         border-radius: 10px;
         z-index: 1001;
         transition: .3s ease-out;
