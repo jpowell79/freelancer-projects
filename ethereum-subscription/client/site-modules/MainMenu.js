@@ -64,8 +64,6 @@ class MainMenu extends Component {
     renderMainMenu = (user) =>{
         const {links} = MainMenu.items;
 
-        console.log(user);
-
         const parsedLinks = (objects.isEmpty(user)) ? links : [
             {
                 content: (

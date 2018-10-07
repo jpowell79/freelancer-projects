@@ -101,7 +101,7 @@ class SubscriptionSections extends Component {
                         link
                         active={false}
                         onClick={() => this.props.dispatch(deselectEditContract())}
-                    >Back to your subscriptions</Menu.Item>
+                    >Back to main page</Menu.Item>
                 </Menu>
                 {this.renderSection()}
             </div>
