@@ -7,6 +7,7 @@ import {paths, roles} from "../../services/constants";
 import {connect} from "react-redux";
 import {hideOnMobile} from "../services/constants/css";
 import sessions from "../../services/api/sessions";
+import objects from "../../services/datatypes/objects";
 
 class MainMenu extends Component {
     static mapStateToProps = ({user, settings}) => ({user, settings});
@@ -60,8 +61,25 @@ class MainMenu extends Component {
         return (this.props.router.route === page) ? " active" : "";
     }
 
-    renderMainMenu = () =>{
+    renderMainMenu = (user) =>{
         const {links} = MainMenu.items;
+
+        console.log(user);
+
+        const parsedLinks = (objects.isEmpty(user)) ? links : [
+            {
+                content: (
+                    <div className={hideOnMobile("item")}>
+                        <span>Welcome back <strong>{user.username}</strong></span>
+                    </div>
+                )
+            },
+            {
+                name: "Control Panel",
+                href: (user.role === roles.admin) ? paths.pages.admin : paths.pages.supplier
+            },
+            ...links.filter(link => link.name !== "Register" && link.name !== "Login")
+        ];
 
         return (
             <Fragment>
@@ -70,8 +88,10 @@ class MainMenu extends Component {
                 </Link>
                 <nav>
                     {
-                        links.map((link, i) =>{
-                            if(link.href === ""){
+                        parsedLinks.map((link, i) =>{
+                            if(link.content){
+                                return link.content;
+                            } else if(link.href === ""){
                                 return (
                                     <a key={i}>{link.name}</a>
                                 );
@@ -157,7 +177,7 @@ class MainMenu extends Component {
                 ? this.renderAdminMenu()
                 : this.renderSupplierMenu();
         default:
-            return this.renderMainMenu();
+            return this.renderMainMenu(user);
         }
     };
 

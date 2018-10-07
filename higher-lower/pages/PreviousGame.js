@@ -5,7 +5,7 @@ import withContracts from "../site-components/hocs/withContracts";
 import {compose} from "redux";
 import settings from "../settings";
 import {Address} from "../site-components/Address";
-import {Date} from "../site-components/Date";
+import {Moment} from "../site-components/Moment";
 
 class PreviousGame extends Component {
     renderPreviousContractInformation = (previousContract) => {
@@ -16,7 +16,6 @@ class PreviousGame extends Component {
                         <td>Contract address:</td>
                         <td><a
                             target="_blank"
-                            style={{wordBreak: "break-all"}}
                             href={`${settings.etherscanUrl}/address/${previousContract.address}`
                             }><Address address={previousContract.address}/></a></td>
                     </tr>
@@ -30,7 +29,7 @@ class PreviousGame extends Component {
                     </tr>
                     <tr>
                         <td>Game End Time:</td>
-                        <td><Date unixTime={previousContract.gameEndTime}/></td>
+                        <td><Moment unixTime={previousContract.gameEndTime}/></td>
                     </tr>
                 </tbody>
             </table>

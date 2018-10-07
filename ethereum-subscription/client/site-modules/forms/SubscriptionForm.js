@@ -72,7 +72,6 @@ class SubscriptionForm extends Component {
 
         return (
             <Fragment>
-                {renderMessages()}
                 <Form>
                     {this.props.renderTopChildren(this.props)}
                     {!hideFields.includes("contactDetails") && (
@@ -271,6 +270,7 @@ class SubscriptionForm extends Component {
                     </button>
                     {this.props.renderExtraButtons(this.props)}
                 </Form>
+                {renderMessages()}
             </Fragment>
         );
     }
