@@ -1,32 +1,27 @@
-import React, {Component, Fragment} from "react";
-import Page from "../site-components/containers/Page";
-import {AdContainer} from "../site-components/containers/AdContainer";
-import withContracts from "../site-components/hocs/withContracts";
+import React, {Component} from "react";
 import {compose} from "redux";
-import Counter from "../external-components/react-flip-counter";
-import {Address} from "../site-components/Address";
+import Page from "../site-components/containers/Page";
+import withContracts from "../site-components/hocs/withContracts";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
-import PositiveIntegerInput from "../components/PositiveIntegerInput";
 import {updateTemplateContract} from "../redux/actions";
 import {parseErrorString} from "../services/utils";
 import AlertOptionPane from "../components/Alert/AlertOptionPane";
-import HideFragment from "../components/HideFragment";
 import Alerts from "../site-components/Alerts";
-import {LoaderTiny} from "../components/icons";
 import Dispatcher from "../services/Dispatcher";
-import {Message} from "../components/Message";
+import GuessForm from "../site-components/GuessForm";
+import {GameDetails} from "../site-components/GameDetails";
+import {AdSidebar} from "../site-components/AdSidebar";
+import {LoginMessage} from "../site-components/LoginMessage";
 
 class Index extends Component {
     constructor(props){
         super();
 
         this.state = {
-            counterStopped: Date.now() > props.templateContract.gameEndTime,
-            makingTransaction: false,
-            formInvalid: false
+            counterIsStopped: Date.now() > props.templateContract.gameEndTime
         };
 
-        this.guess = (props.templateContract.lowValue + (
+        this.defaultGuess = (props.templateContract.lowValue + (
             props.templateContract.highValue - props.templateContract.lowValue - 1
         ) / 2).toFixed(0);
     }
@@ -35,33 +30,29 @@ class Index extends Component {
         return Date.now() > this.props.templateContract.gameEndTime;
     };
 
-    handleGuess = async () => {
-        this.setState({makingTransaction: true});
-
+    handleGuess = async (guess) => {
         return this.props.templateContractRequest.makeGuess({
-            guessedNumber: this.guess,
+            guessedNumber: guess,
             walletAddress: this.props.metamaskAccount.address
-        }).then(this.handleTransaction).catch(err => {
-            AlertOptionPane.showErrorAlert({
-                title: "Transaction Error",
-                message: parseErrorString(err)
+        }).then((transaction) => this.handleTransaction(transaction, parseInt(guess, 10)))
+            .catch(err => {
+                AlertOptionPane.showErrorAlert({
+                    title: "Transaction Error",
+                    message: parseErrorString(err)
+                });
             });
-
-            this.setState({makingTransaction: false});
-        });
     };
 
-    handleTransaction = async (transaction) => {
+    handleTransaction = async (transaction, guess) => {
         return this.props.templateContractRequest.fetch()
             .then(templateContract => {
                 this.props.dispatch(updateTemplateContract(templateContract));
 
                 this.setState({
-                    counterStopped: this.timerShouldStop(),
-                    makingTransaction: false
+                    counterIsStopped: this.timerShouldStop()
                 });
 
-                Alerts.showGuessResults(transaction, this.props.templateContract);
+                Alerts.showGuessResults(transaction, this.props.templateContract, guess);
 
                 if(this.gameIsOver()){
                     return this.handleGameOver();
@@ -81,116 +72,34 @@ class Index extends Component {
     };
 
     render () {
-        const {
-            factoryContract,
-            templateContract
-        } = this.props;
+        const {factoryContract, templateContract, metamaskAccount} = this.props;
 
-        const AdPlaceholder = (
-            <div className="display-4 lighter" style={{
-                display: "flex",
-                alignItems: "center",
-                height: "100%",
-                maxWidth: "250px",
-                margin: "0 auto"
-            }}>
-                YOUR AD HERE:
-                MOBILE 300x250
-            </div>
-        );
+        const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
 
         return (
-            <Page
-                sidebar={
-                    <Fragment>
-                        <AdContainer className="bg-color-white glass">
-                            {AdPlaceholder}
-                        </AdContainer>
-                        <AdContainer className="bg-color-white glass">
-                            {AdPlaceholder}
-                        </AdContainer>
-                    </Fragment>
-                }
-            >
+            <Page sidebar={<AdSidebar/>}>
                 <div className="glass container bg-color-white">
                     <h2 className="display-6">Game Number {factoryContract.count}</h2>
-                    <h3>
-                        The correct number is between {templateContract.lowValue} and {
-                        templateContract.highValue}
-                    </h3>
-                    <h3>
-                        The next guess will be guess {templateContract.nextGuess
-                        } <p>
-                            cost of next guess: {
-                                (templateContract.costOfNextGuess === 0)
-                                    ? "FREE!"
-                                    : `${templateContract.costOfNextGuess} Eth`
-                            }
-                        </p>
-                    </h3>
-                    <h3>
-                        The last Ethereum wallet address to make a guess was: <p>
-                            <Address address={templateContract.lastGuessAddress}/>
-                        </p>
-                    </h3>
-                    <div className="divider-2">
-                        <HideFragment>
-                            <Counter
-                                isStopped={this.state.counterStopped}
-                                onStop={() => {
-                                    console.log("Stopped");
-                                    this.setState({counterStopped: true})
-                                }}
-                                stop={new Date(templateContract.gameEndTime)}
-                            />
-                        </HideFragment>
-                    </div>
-                    <h3>
-                        Eth currently stored in this contract: {templateContract.balance}
-                    </h3>
-                    <h3>
-                        Remember, if you guess incorrectly, you will still win the Eth if the
-                        countdown timer reaches zero!
-                    </h3>
-                    <div className="input-with-button divider-2">
-                        <PositiveIntegerInput
-                            className={(this.state.formInvalid) ? "invalid" : ""}
-                            lowestDigit={templateContract.lowValue}
-                            highestDigit={templateContract.highValue}
-                            defaultValue={this.guess}
-                            disabled={this.state.makingTransaction}
-                            onIncorrectInput={() => {
-                                this.setState({formInvalid: true})
-                            }}
-                            onCorrectInput={(event) => {
-                                this.setState({formInvalid: false});
-                                this.guess = event.target.value
-                            }}
+                    <GameDetails
+                        {...templateContract}
+                        counterIsStopped={this.state.counterIsStopped}
+                        onCounterStop={() => this.setState({counterIsStopped: true})}
+                    />
+                    {isLoggedIntoMetamask ? (
+                        <GuessForm
+                            defaultGuess={this.defaultGuess}
+                            onGuess={(guess) => this.handleGuess(guess)}
+                            {...templateContract}
                         />
-                        <button
-                            className="button-secondary"
-                            onClick={this.handleGuess}
-                            disabled={this.state.makingTransaction}
-                        >{(this.state.makingTransaction) ? <LoaderTiny/> : "Guess"}</button>
-                    </div>
-                    <div className="wrapper-5">
-                        <Message
-                            show={this.state.formInvalid}
-                            className="message-secondary"
-                        >
-                            <p className="normal">
-                                The number must be between {templateContract.lowValue} and {
-                                templateContract.highValue}
-                            </p>
-                        </Message>
-                    </div>
+                    ) : (
+                        <div className="wrapper-4">
+                            <LoginMessage/>
+                        </div>
+                    )}
                 </div>
             </Page>
         )
     }
 }
 
-export default compose(
-    withMetamaskAccount,
-    withContracts
-)(Index);
+export default compose(withMetamaskAccount, withContracts)(Index);

@@ -16,8 +16,8 @@ const TransactionHash = ({transaction}) => {
 };
 
 class Alerts {
-    static showGuessResults(transaction, templateContract){
-        if(templateContract.lowValue === templateContract.highValue){
+    static showGuessResults(transaction, templateContract, guess){
+        if((guess === templateContract.lowValue) && (guess === templateContract.highValue)){
             return AlertOptionPane.showSuccessAlert({
                 title: "You guessed correctly!",
                 titleIcon: null,
@@ -39,22 +39,26 @@ class Alerts {
             titleIcon: null,
             htmlMessage: (
                 <div>
-                    <TransactionHash transaction={transaction}/>
                     {(templateContract.nextGuess < 15)
                         ? (
-                            <p>
-                                Unlucky! It looks like you didn’t guess the number correctly.
-                                Don’t worry, if the countdown timer reaches 00:00 and nobody else
-                                makes a guess, you’ll win all the Eth in the contract anyway!
-                            </p>
+                            <Fragment>
+                                <p>Unlucky! It looks like you didn’t guess the number correctly.</p>
+                                <p>
+                                    Don’t worry, if the countdown timer reaches 00:00 and nobody else
+                                    makes a guess, you’ll win all the Eth in the contract anyway!
+                                </p>
+                            </Fragment>
                         ) : (
-                            <p>
-                                Unlucky! It looks like you didn’t guess the number correctly.
-                                As a consolation we are going to refund you your Eth automagically!
-                                We hope you enjoyed playing, and hope you’ll join us for the next
-                                game!
-                            </p>
+                            <Fragment>
+                                <p>Unlucky! It looks like you didn’t guess the number correctly.</p>
+                                <p>
+                                    As a consolation we are going to refund you your Eth automagically!
+                                    We hope you enjoyed playing, and hope you’ll join us for the next
+                                    game!
+                                </p>
+                            </Fragment>
                         )}
+                    <TransactionHash transaction={transaction}/>
                 </div>
             )
         })

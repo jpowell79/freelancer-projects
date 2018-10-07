@@ -1,5 +1,5 @@
 import React from "react";
-import {classNames} from "../services/className";
+import {classNames} from "../../../ethereum-subscription/client/services/className";
 
 export const Message = ({
     show = true,
@@ -16,9 +16,7 @@ export const Message = ({
 
     return (
         <div className={messageClass} {...props}>
-            {(heading) && (
-                <h4 className="heading">{heading}</h4>
-            )}
+            {(heading) && (<h4 className="heading">{heading}</h4>)}
             {(list.length > 0) && (
                 <ul>
                     {list.map((listItem, i) => <li key={i}>{listItem}</li>)}
