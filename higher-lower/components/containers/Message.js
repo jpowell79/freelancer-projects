@@ -1,5 +1,5 @@
 import React from "react";
-import {classNames} from "../../../ethereum-subscription/client/services/className";
+import {classNames} from "../../services/className";
 
 export const Message = ({
     show = true,

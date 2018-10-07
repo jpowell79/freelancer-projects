@@ -1,5 +1,5 @@
 import React from "react";
-import {joinClassNames} from "../../../ethereum-subscription/client/services/className";
+import {joinClassNames} from "../../services/className";
 
 export const AdContainer = ({className = "", children, ...props}) => {
     return (
