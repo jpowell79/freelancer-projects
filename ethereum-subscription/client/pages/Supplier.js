@@ -15,6 +15,7 @@ import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
+import {LoginMessage} from "../site-modules/LoginMessage";
 
 class Supplier extends Component {
     static mapStateToProps = ({user, subscribers}) => ({user, subscribers});
@@ -63,12 +64,17 @@ class Supplier extends Component {
         switch(activeSection){
         case subscriptions:
             return (
-                <Subscriptions
-                    {...this.props}
-                    user={this.props.user}
-                    liveSubscriptionContracts={this.props.liveSubscriptionContracts}
-                    isLoadingContracts={this.state.isLoadingContracts}
-                />
+                ((this.props.metamaskAccount.address !== this.props.user.walletAddress)
+                    ? (
+                        <LoginMessage address={this.props.user.walletAddress}/>
+                    ) : (
+                        <Subscriptions
+                            {...this.props}
+                            user={this.props.user}
+                            liveSubscriptionContracts={this.props.liveSubscriptionContracts}
+                            isLoadingContracts={this.state.isLoadingContracts}
+                        />
+                    ))
             );
         case requestContract:
             return <RequestContract {...this.props}/>;
