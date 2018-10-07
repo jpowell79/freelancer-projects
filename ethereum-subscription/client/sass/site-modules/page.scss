@@ -2,6 +2,9 @@
  * Page
  *----------------------------------------*/
 #page {
+    position: relative;
+    min-height: 90vh;
+
     .page-title {
         text-align: center;
         font-size: $display3;
@@ -13,9 +16,21 @@
     }
 
     &-footer {
+        height: 10vh;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        transform: translateY(100%);
+        max-width: $wrapper1;
+        margin: 0 auto;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
         .social-menu {
             &.round > * {
-                background-color: rgba(255, 255, 255, .1);
+                background-color: $secondary;
                 color: $white;
 
                 &:hover {
@@ -38,6 +53,10 @@
     #page {
         .page-title {
             font-size: 3.5rem;
+        }
+
+        &-footer {
+            justify-content: center;
         }
     }
 }
