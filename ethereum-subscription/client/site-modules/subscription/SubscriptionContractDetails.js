@@ -78,6 +78,13 @@ export const SubscriptionContractDetails = ({
                     {(trialActive) && (
                         <TrialSubscriptionDetails {...contract}/>
                     )}
+                    {(!subscriptionActive && !trialActive && isSubscriber) && (
+                        <p className="text">
+                            Subscription information will appear here once the supplier activates
+                            the subscription. You will receive email notification once this step 
+                            is complete. Please re-visit this page for your subscription details
+                        </p>
+                    )}
                 </div>
             )}
             <div className="text-center divider-2">
