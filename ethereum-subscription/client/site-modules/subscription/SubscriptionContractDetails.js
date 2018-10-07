@@ -51,6 +51,18 @@ export const SubscriptionContractDetails = ({
                             <p className="text nowrap">Free Trial: {hasFreeTrials ? "Yes" : "No"}</p>
                         </Grid.Column>
                     </Grid>
+                    <Grid stackable columns={2}>
+                        <Grid.Column>
+                            <p className="text">
+                                Contract length in weeks: {subscriptionLengthInWeeks}
+                            </p>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <p className="text nowrap">
+                                Total Eth to deposit: {weiToEth(totalSubscriptionPrice)}
+                            </p>
+                        </Grid.Column>
+                    </Grid>
                 </div>
             </div>
             <h2>Details:</h2>

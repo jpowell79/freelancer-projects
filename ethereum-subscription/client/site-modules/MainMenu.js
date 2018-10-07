@@ -67,7 +67,7 @@ class MainMenu extends Component {
         const parsedLinks = (objects.isEmpty(user)) ? links : [
             {
                 content: (
-                    <div className={hideOnMobile("item")}>
+                    <div className={hideOnMobile("item")} key="welcome-message">
                         <span>Welcome back <strong>{user.username}</strong></span>
                     </div>
                 )
