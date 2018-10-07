@@ -115,10 +115,10 @@ class Supplier extends Component {
 }
 
 export default compose(
-    connect(Supplier.mapStateToProps),
-    withMountObserver,
     withMetamaskAccount,
     withAuthenticateSupplier,
     withEthereumConversionRates,
-    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA})
+    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),
+    connect(Supplier.mapStateToProps),
+    withMountObserver
 )(Supplier);

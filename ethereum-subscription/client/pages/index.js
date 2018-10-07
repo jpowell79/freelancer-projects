@@ -136,11 +136,11 @@ class Index extends Component {
 }
 
 export default compose(
-    withMountObserver,
     withSubscriptionContracts({
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
         amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
         amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
     }),
-    connect(Index.mapStateToProps)
+    connect(Index.mapStateToProps),
+    withMountObserver
 )(Index);

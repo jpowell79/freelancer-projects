@@ -1,11 +1,14 @@
 const web3 = require("web3");
+const isServer = require("../utils").isServer;
 
 let instance = null;
 
 class CustomWeb3 extends web3 {
     static getInstance(provider){
+        if(isServer()) return instance;
+
         if(!instance){
-            instance = new CustomWeb3(provider);
+            instance = new CustomWeb3((provider) ? provider : window.web3.currentProvider);
         }
 
         return instance;
@@ -21,7 +24,6 @@ class CustomWeb3 extends web3 {
         this.fetchEthBalance = this.fetchEthBalance.bind(this);
         this.fetchAccount = this.fetchAccount.bind(this);
         this.fetchNetworkId = this.fetchNetworkId.bind(this);
-        this.getNetworkName = this.getNetworkName.bind(this);
     }
 
     hasMetaMask(){
@@ -55,7 +57,7 @@ class CustomWeb3 extends web3 {
         };
 
         return this.fetchNetworkId().then(netId => {
-            account.network = this.getNetworkName(netId);
+            account.network = CustomWeb3.getNetworkName(netId);
             return this.fetchAccountAddress();
         }).then(accountAddress => {
             account.address = accountAddress;
@@ -70,7 +72,7 @@ class CustomWeb3 extends web3 {
         return this.eth.net.getId();
     };
 
-    getNetworkName(networkId){
+    static getNetworkName(networkId){
         switch(networkId){
         case 1:
             return "Mainnet";

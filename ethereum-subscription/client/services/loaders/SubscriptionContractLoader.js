@@ -4,7 +4,6 @@ import etherscan from "../../../services/api/etherscan";
 import SubscriptionContract from "../../../services/smart-contracts/SubscriptionContract";
 import strings from "../../../services/datatypes/strings";
 import {updateLiveSubscriptionContracts, addLiveSubscriptionContracts} from "../../redux/actions";
-import {isServer} from "../../../services/utils";
 
 class SubscriptionContractLoader {
     constructor({
@@ -20,15 +19,9 @@ class SubscriptionContractLoader {
         this.users = users;
         this.subscriptionTypes = subscriptionTypes;
         this.subscriptions = subscriptions;
-        this.setWeb3IfClient();
+        this.web3 = Web3.getInstance();
         this.amountToLoadPerBatch = amountToLoadPerBatch;
     }
-
-    setWeb3IfClient = () => {
-        if(this.web3) return;
-
-        this.web3 = isServer() ? null : Web3.getInstance(window.web3.currentProvider);
-    };
 
     handleError = (err) => {
         console.error(err);
@@ -81,7 +74,7 @@ class SubscriptionContractLoader {
     };
 
     loadContracts = async (comparator) => {
-        this.setWeb3IfClient();
+        this.web3 = Web3.getInstance();
 
         const dispatchUpdateContracts = contracts => {
             this.dispatch(updateLiveSubscriptionContracts(contracts));
@@ -96,7 +89,7 @@ class SubscriptionContractLoader {
     };
 
     loadAllContracts = async () => {
-        this.setWeb3IfClient();
+        this.web3 = Web3.getInstance();
 
         this.dispatch(updateLiveSubscriptionContracts([]));
 

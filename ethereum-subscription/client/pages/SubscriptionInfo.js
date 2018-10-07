@@ -20,14 +20,12 @@ class SubscriptionInfo extends Component {
     static mapStateToProps = ({
         settings,
         subscribers,
-        users,
         user,
         subscriptionDetails,
         trialSubscriptionDetails,
     }) => ({
         settings,
         subscribers,
-        users,
         user,
         subscriptionDetails,
         trialSubscriptionDetails,
@@ -111,10 +109,8 @@ class SubscriptionInfo extends Component {
 }
 
 export default compose(
+    withMetamaskAccount,
+    withSubscriptionContracts({useDummyData: USE_DUMMY_SUBSCRIPTION_DATA}),
     connect(SubscriptionInfo.mapStateToProps),
     withMountObserver,
-    withSubscriptionContracts({
-        useDummyData: USE_DUMMY_SUBSCRIPTION_DATA
-    }),
-    withMetamaskAccount
 )(SubscriptionInfo);

@@ -219,6 +219,14 @@ class SubscriptionContract {
         });
     };
 
+    async getTrialActive(){
+        return this.methods.trialActive().call();
+    }
+
+    async getSubscriptionActive(){
+        return this.methods.subscriptionActive().call();
+    }
+
     async callGetters(methods){
         return Promise.all([
             methods.admin().call()

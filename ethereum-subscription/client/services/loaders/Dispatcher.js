@@ -15,6 +15,7 @@ import {
 } from "../../redux/actions";
 import {isServer, serverRequest} from "../../../services/utils";
 import parser from "../parser";
+import objects from "../../../services/datatypes/objects";
 
 class Dispatcher {
     constructor(dispatch, req = null){
@@ -35,57 +36,51 @@ class Dispatcher {
     };
 
     dispatchUpdateSubscriptionDetails = async ({subscriptionContract, supplierAddress}) => {
-        return subscriptionContract.viewFullSubscriptionDetails({supplierAddress})
-            .then(subscriptionDetails => this.dispatch(
-                updateSubscriptionDetails(subscriptionDetails)
-            )).then(() => subscriptionContract.viewTrialSubscriptionDetails({supplierAddress}))
-            .then(trialSubscriptionDetails => this.dispatch(
-                updateTrialSubscriptionDetails(trialSubscriptionDetails)
+        return subscriptionContract.getSubscriptionActive()
+            .then(subscriptionActive => (subscriptionActive)
+                ? subscriptionContract.viewFullSubscriptionDetails({supplierAddress}) : {}
+            ).then(subscriptionDetails => (!objects.isEmpty(subscriptionDetails)) &&
+                this.dispatch(updateSubscriptionDetails(subscriptionDetails)
+            )).then(() => subscriptionContract.getTrialActive())
+            .then(trialActive => (trialActive)
+                ? subscriptionContract.viewTrialSubscriptionDetails({supplierAddress}) : {}
+            ).then(trialSubscriptionDetails => (!objects.isEmpty(trialSubscriptionDetails)) &&
+                this.dispatch(updateTrialSubscriptionDetails(trialSubscriptionDetails)
             )).catch(console.error);
     };
 
     dispatchUpdateSubscriptions = async () => {
         return this.request({
             url: urls.subscriptions,
-            callback: (response) => {
-                this.dispatch(updateSubscriptions(response.data))
-            }
+            callback: (response) => this.dispatch(updateSubscriptions(response.data))
         });
     };
 
     dispatchUpdateSubscribers = async () => {
         return this.request({
             url: urls.subscriptionSubscribers,
-            callback: (response) => {
-                this.dispatch(updateSubscribers(response.data))
-            }
+            callback: (response) => this.dispatch(updateSubscribers(response.data))
         });
     };
 
     dispatchUpdateSubcriptionContracts = async () => {
         return this.request({
             url: urls.subscriptionContracts,
-            callback: (response) => {
-                this.dispatch(updateSubscriptionContracts(response.data))
-            }
+            callback: (response) => this.dispatch(updateSubscriptionContracts(response.data))
         });
     };
 
     dispatchUpdateSubscriptionTypes = async () => {
         return this.request({
             url: urls.subscriptionTypes,
-            callback: (response) => {
-                this.dispatch(updateSubscriptionTypes(response.data));
-            }
+            callback: (response) => this.dispatch(updateSubscriptionTypes(response.data))
         });
     };
 
     dispatchUpdateUsers = async () => {
         return this.request({
             url: urls.users,
-            callback: (response) => {
-                this.dispatch(updateUsers(response.data));
-            }
+            callback: (response) => this.dispatch(updateUsers(response.data))
         })
     };
 
