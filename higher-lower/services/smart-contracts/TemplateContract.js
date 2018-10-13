@@ -16,7 +16,9 @@ class TemplateContract extends Contract {
             this.getCostOfNextGuess(),
             this.getNextGuess(),
             this.getLastGuessAddress(),
-            this.getGameEndTime()
+            this.getGameEndTime(),
+            this.getGuessedCorrectly(),
+            this.getCorrectNumber()
         ]).then(this.arrayToObject);
     };
 
@@ -26,6 +28,20 @@ class TemplateContract extends Contract {
                 from: walletAddress,
                 value: costOfNextGuess
             }));
+    };
+
+    startNewGame = async () => {
+        return this.methods.startNewGame().call();
+    };
+
+    getCorrectNumber = async () => {
+        return this.methods.theCorrectNumber().call()
+            .then(correctNumber => ({correctNumber}));
+    };
+
+    getGuessedCorrectly = async () => {
+        return this.methods.guessedCorrectly().call()
+            .then(guessedCorrectly => ({guessedCorrectly}));
     };
 
     getWinningNumber = async () => {

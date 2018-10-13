@@ -17,7 +17,7 @@ const TransactionHash = ({transaction}) => {
 
 class Alerts {
     static showGuessResults(transaction, templateContract, guess){
-        if((guess === templateContract.lowValue) && (guess === templateContract.highValue)){
+        if(templateContract.correctNumber === guess){
             return AlertOptionPane.showSuccessAlert({
                 title: "You guessed correctly!",
                 titleIcon: null,

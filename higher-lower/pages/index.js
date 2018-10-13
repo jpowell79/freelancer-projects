@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {compose} from "redux";
 import Page from "../site-components/containers/Page";
 import withContracts from "../site-components/hocs/withContracts";
@@ -13,6 +13,7 @@ import {GameDetails} from "../site-components/GameDetails";
 import {AdSidebar} from "../site-components/AdSidebar";
 import {LoginMessage} from "../site-components/LoginMessage";
 import settings from "../settings";
+import {StartNewGame} from "../site-components/StartNewGame";
 
 class Index extends Component {
     constructor(props){
@@ -25,6 +26,10 @@ class Index extends Component {
         this.defaultGuess = (props.templateContract.lowValue + (
             props.templateContract.highValue - props.templateContract.lowValue - 1
         ) / 2).toFixed(0);
+    }
+
+    componentDidMount(){
+        this.props.addContractUpdateTimer();
     }
 
     timerShouldStop = () => {
@@ -69,13 +74,33 @@ class Index extends Component {
         const {templateContract} = this.props;
 
         return templateContract.nextGuess > 15 ||
-            (templateContract.highValue === templateContract.lowValue)
+            (templateContract.guessedCorrectly) ||
+            templateContract.gameEndTime < Date.now()
+    };
+
+    renderGameInteractionComponents = () => {
+        const {metamaskAccount, templateContract} = this.props;
+        const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
+
+        if(!isLoggedIntoMetamask){
+            return (
+                <div className="wrapper-4">
+                    <LoginMessage/>
+                </div>
+            );
+        } else {
+            return (
+                <GuessForm
+                    defaultGuess={this.defaultGuess}
+                    onGuess={(guess) => this.handleGuess(guess)}
+                    {...templateContract}
+                />
+            );
+        }
     };
 
     render () {
         const {factoryContract, templateContract, metamaskAccount} = this.props;
-
-        const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
 
         return (
             <Page sidebar={<AdSidebar/>}>
@@ -86,21 +111,24 @@ class Index extends Component {
                             Game Number {factoryContract.count}
                         </a>
                     </h2>
-                    <GameDetails
-                        {...templateContract}
-                        counterIsStopped={this.state.counterIsStopped}
-                        onCounterStop={() => this.setState({counterIsStopped: true})}
-                    />
-                    {isLoggedIntoMetamask ? (
-                        <GuessForm
-                            defaultGuess={this.defaultGuess}
-                            onGuess={(guess) => this.handleGuess(guess)}
-                            {...templateContract}
+                    {(this.gameIsOver()) ? (
+                        <StartNewGame
+                            metamaskAddress={metamaskAccount.address}
+                            gameWinner={templateContract.lastGuessAddress}
+                            onClick={() => this.props.templateContractRequest
+                                .startNewGame()
+                                .catch(console.error)
+                            }
                         />
                     ) : (
-                        <div className="wrapper-4">
-                            <LoginMessage/>
-                        </div>
+                        <Fragment>
+                            <GameDetails
+                                {...templateContract}
+                                counterIsStopped={this.state.counterIsStopped}
+                                onCounterStop={() => this.setState({counterIsStopped: true})}
+                            />
+                            {this.renderGameInteractionComponents()}
+                        </Fragment>
                     )}
                 </div>
             </Page>

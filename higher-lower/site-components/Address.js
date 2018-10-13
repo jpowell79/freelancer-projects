@@ -1,8 +1,8 @@
 import React from "react";
 
-export const Address = ({address}) => {
+export const Address = ({address, style = {}}) => {
     return (
-        <span style={{wordBreak: "break-all"}}>
+        <span style={{wordBreak: "break-all", ...style}}>
             {address}
         </span>
     );

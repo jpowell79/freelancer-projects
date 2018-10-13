@@ -29,9 +29,22 @@ export default (PageComponent) => {
             );
         }
 
+        addContractUpdateTimer = (duration = 5000) => {
+            this.timer = setInterval(() => {
+                return Dispatcher.updateContracts(this.props.dispatch);
+            }, duration);
+        };
+
+        componentWillUnmount(){
+            if(this.timer){
+                clearInterval(this.timer);
+            }
+        }
+
         render() {
             return (
                 <PageComponent
+                    addContractUpdateTimer={this.addContractUpdateTimer}
                     templateContractRequest={this.templateContractRequest}
                     factoryContractRequest={factoryContractRequest}
                     {...this.props}
