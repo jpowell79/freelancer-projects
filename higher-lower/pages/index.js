@@ -78,29 +78,9 @@ class Index extends Component {
             templateContract.gameEndTime < Date.now()
     };
 
-    renderGameInteractionComponents = () => {
-        const {metamaskAccount, templateContract} = this.props;
-        const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
-
-        if(!isLoggedIntoMetamask){
-            return (
-                <div className="wrapper-4">
-                    <LoginMessage/>
-                </div>
-            );
-        } else {
-            return (
-                <GuessForm
-                    defaultGuess={this.defaultGuess}
-                    onGuess={(guess) => this.handleGuess(guess)}
-                    {...templateContract}
-                />
-            );
-        }
-    };
-
     render () {
         const {factoryContract, templateContract, metamaskAccount} = this.props;
+        const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
 
         return (
             <Page sidebar={<AdSidebar/>}>
@@ -111,12 +91,16 @@ class Index extends Component {
                             Game Number {factoryContract.count}
                         </a>
                     </h2>
-                    {(this.gameIsOver()) ? (
+                    {(!isLoggedIntoMetamask) ? (
+                        <div className="wrapper-4">
+                            <LoginMessage/>
+                        </div>
+                    ) : (this.gameIsOver()) ? (
                         <StartNewGame
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
                             onClick={() => this.props.templateContractRequest
-                                .startNewGame()
+                                .startNewGame(metamaskAccount.address)
                                 .catch(console.error)
                             }
                         />
@@ -127,7 +111,11 @@ class Index extends Component {
                                 counterIsStopped={this.state.counterIsStopped}
                                 onCounterStop={() => this.setState({counterIsStopped: true})}
                             />
-                            {this.renderGameInteractionComponents()}
+                            <GuessForm
+                                defaultGuess={this.defaultGuess}
+                                onGuess={(guess) => this.handleGuess(guess)}
+                                {...templateContract}
+                            />
                         </Fragment>
                     )}
                 </div>
