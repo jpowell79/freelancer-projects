@@ -2,6 +2,10 @@
  * Margin and Padding
  *----------------------------------------*/
 @for $i from 0 through 30 {
+    .br-#{$i}{
+        border-radius: #{$i}px;
+    }
+
     .pt-#{$i}{
         padding-top: #{$i}px;
     }

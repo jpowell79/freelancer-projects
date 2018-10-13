@@ -2,26 +2,17 @@ import React, {Fragment} from "react";
 import {AdContainer} from "./containers/AdContainer";
 
 export const AdSidebar = () => {
-    const AdPlaceholder = (
-        <div className="display-4 lighter" style={{
-            display: "flex",
-            alignItems: "center",
-            height: "100%",
-            maxWidth: "250px",
-            margin: "0 auto"
-        }}>
-            YOUR AD HERE:
-            MOBILE 300x250
-        </div>
-    );
-
     return (
         <Fragment>
             <AdContainer className="bg-color-white glass">
-                {AdPlaceholder}
+                <a target="_blank" href="https://binance.com">
+                    <img src="/static/images/ads/binance.png"/>
+                </a>
             </AdContainer>
             <AdContainer className="bg-color-white glass">
-                {AdPlaceholder}
+                <a target="_blank" href="https://coinbase.com">
+                    <img src="/static/images/ads/coinbase.png"/>
+                </a>
             </AdContainer>
         </Fragment>
     );

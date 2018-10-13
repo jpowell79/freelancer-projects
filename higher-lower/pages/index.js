@@ -12,6 +12,7 @@ import GuessForm from "../site-components/GuessForm";
 import {GameDetails} from "../site-components/GameDetails";
 import {AdSidebar} from "../site-components/AdSidebar";
 import {LoginMessage} from "../site-components/LoginMessage";
+import settings from "../settings";
 
 class Index extends Component {
     constructor(props){
@@ -78,8 +79,13 @@ class Index extends Component {
 
         return (
             <Page sidebar={<AdSidebar/>}>
-                <div className="glass container bg-color-white">
-                    <h2 className="display-6">Game Number {factoryContract.count}</h2>
+                <div className="glass container bg-color-white br-5">
+                    <h2 className="display-6">
+                        <a href={`${settings.etherscanUrl}/address/${factoryContract.address}`}
+                            target="_blank">
+                            Game Number {factoryContract.count}
+                        </a>
+                    </h2>
                     <GameDetails
                         {...templateContract}
                         counterIsStopped={this.state.counterIsStopped}

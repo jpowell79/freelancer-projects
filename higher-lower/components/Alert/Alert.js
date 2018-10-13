@@ -96,6 +96,8 @@ class Alert {
             }
         }
 
+        $("html, body").animate({ scrollTop: 0 }, 0);
+
         ReactDom.render(
             <AlertContent
                 closeIcon={this.closeIcon}

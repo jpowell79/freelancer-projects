@@ -3,6 +3,13 @@
  *----------------------------------------*/
 $spaceSize: 300vh;
 
+body {
+    animation-name: pulse;
+    animation-duration: 30s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
 @keyframes pulse {
     from {
         background: #000;
