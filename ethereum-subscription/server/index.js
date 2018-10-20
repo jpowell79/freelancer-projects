@@ -12,7 +12,7 @@ if(isProduction()){
 
 const nextApp = next({
     dir: serverSettings.NEXT_DIR,
-    dev: !isProduction()
+    dev: isDevelopment()
 });
 
 nextApp.prepare()
@@ -20,7 +20,7 @@ nextApp.prepare()
     .then(sequelize => configApp(nextApp, sequelize))
     .then(app => {
         const PORT = serverSettings.DEFAULT_PORT;
-        const PROXY = network.getProxy();
+        const PROXY = isDevelopment() ? network.getProxy() : null;
 
         log.sectionTitle(`Starting Application`);
 
