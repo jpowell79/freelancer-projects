@@ -16,7 +16,7 @@ const nextApp = next({
 });
 
 nextApp.prepare()
-    .then(() => configSequelize(serverSettings))
+    .then(() => configSequelize(serverSettings, serverSettings.LOAD_DEFAULT_DATABASE))
     .then(sequelize => configApp(nextApp, sequelize))
     .then(app => {
         const PORT = serverSettings.DEFAULT_PORT;

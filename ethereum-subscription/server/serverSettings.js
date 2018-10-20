@@ -21,6 +21,7 @@ module.exports.MAX_UPLOAD_SIZE = "50mb";
 /*------------------------------------------------------------
  * MySQL options
  *------------------------------------------------------------*/
+module.exports.LOAD_DEFAULT_DATABASE = false;
 module.exports.DATABASE_NAME = "ethereum_subscription";
 module.exports.DATABASE_USER = "root";
 module.exports.DATABASE_PASSWORD = "";
