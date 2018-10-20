@@ -184,11 +184,7 @@ class Emailer {
             });
         }
 
-        const fullUrl = url.format({
-            protocol: this.req.protocol,
-            host: this.req.get("host"),
-            pathname: paths.pages.supplier
-        });
+        const fullUrl = this.getFullUrl(paths.pages.supplier);
 
         return this.sendMail({
             to: email,
@@ -207,11 +203,7 @@ class Emailer {
 
     async sendConfirmEmail(){
         const user = this.req.session.tempUser;
-        const fullUrl = url.format({
-            protocol: this.req.protocol,
-            host: this.req.get("host"),
-            pathname: this.req.originalUrl
-        });
+        const fullUrl = this.getFullUrl(this.req.originalUrl);
         const verifyLink = `${fullUrl}/${user.uuid}`;
 
         return this.sendMail({
@@ -251,11 +243,7 @@ class Emailer {
             });
         }
 
-        const fullUrl = url.format({
-            protocol: this.req.protocol,
-            host: this.req.get("host"),
-            pathname: paths.pages.subscriptionInfo
-        });
+        const fullUrl = this.getFullUrl(paths.pages.subscriptionInfo);
 
         const subject = (trial)
             ? `[Ethereum Subscription] Your trial to ${subscriptionName} has just started!`
@@ -320,6 +308,14 @@ class Emailer {
             from: subscriberEmail,
             to: supplierEmail
         }));
+    }
+
+    getFullUrl(pathname){
+        return url.format({
+            protocol: this.req.protocol,
+            host: serverSettings.EMAIL_URL_HOST,
+            pathname
+        });
     }
 }
 

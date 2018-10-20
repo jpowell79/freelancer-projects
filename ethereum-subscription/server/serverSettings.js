@@ -4,6 +4,7 @@
 module.exports.DEFAULT_PORT = 3000;
 module.exports.NEXT_DIR = "./client";
 module.exports.HOST = "localhost";
+module.exports.EMAIL_URL_HOST = "myethersub.com";
 
 /*------------------------------------------------------------
  * Cookie Options
