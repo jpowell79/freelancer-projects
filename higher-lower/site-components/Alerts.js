@@ -16,6 +16,19 @@ const TransactionHash = ({transaction}) => {
 };
 
 class Alerts {
+    static showNewGameCreated(transaction){
+        return AlertOptionPane.showSuccessAlert({
+            title: "You have started a new game!",
+            titleIcon: null,
+            htmlMessage: (
+                <div>
+                    <p>A new game has now been started</p>
+                    <TransactionHash transaction={transaction}/>
+                </div>
+            )
+        })
+    }
+
     static showGuessResults(transaction, templateContract, guess){
         if(templateContract.correctNumber === guess){
             return AlertOptionPane.showSuccessAlert({

@@ -31,7 +31,7 @@ class TemplateContract extends Contract {
     };
 
     startNewGame = async (address) => {
-        return this.methods.startNewGame().call({from: address}).then(console.log);
+        return this.methods.startNewGame().send({from: address});
     };
 
     getCorrectNumber = async () => {

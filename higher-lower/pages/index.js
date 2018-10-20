@@ -41,12 +41,16 @@ class Index extends Component {
             guessedNumber: guess,
             walletAddress: this.props.metamaskAccount.address
         }).then((transaction) => this.handleTransaction(transaction, parseInt(guess, 10)))
-            .catch(err => {
-                AlertOptionPane.showErrorAlert({
-                    title: "Transaction Error",
-                    message: parseErrorString(err)
-                });
-            });
+            .catch(this.handleTransactionError);
+    };
+
+    handleTransactionError = (err) => {
+        console.error(err);
+
+        AlertOptionPane.showErrorAlert({
+            title: "Transaction Error",
+            message: parseErrorString(err)
+        });
     };
 
     handleTransaction = async (transaction, guess) => {
@@ -75,7 +79,7 @@ class Index extends Component {
 
         return templateContract.nextGuess > 15 ||
             (templateContract.guessedCorrectly) ||
-            templateContract.gameEndTime < Date.now()
+            templateContract.gameEndTime < Date.now();
     };
 
     render () {
@@ -101,7 +105,9 @@ class Index extends Component {
                             gameWinner={templateContract.lastGuessAddress}
                             onClick={() => this.props.templateContractRequest
                                 .startNewGame(metamaskAccount.address)
-                                .catch(console.error)
+                                .then(transaction => Alerts.showNewGameCreated(transaction))
+                                .then(() => Dispatcher.updateContracts(this.props.dispatch))
+                                .catch(this.handleTransactionError)
                             }
                         />
                     ) : (
