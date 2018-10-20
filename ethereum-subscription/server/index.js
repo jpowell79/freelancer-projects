@@ -35,7 +35,6 @@ nextApp.prepare()
                     log.endOfSection();
                 });
             } else {
-                console.log("\n");
                 log.apiPoints();
                 log.endOfSection();
             }

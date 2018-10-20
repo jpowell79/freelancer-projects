@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const defaultDatabase = require("../services/database/defaultDatabase");
+const Models = require("../models");
 
 function createDatabaseIfNotExists(sequelizeOptions, dbName){
     const sequelize = new Sequelize(sequelizeOptions);
@@ -45,44 +46,14 @@ module.exports = async ({
         }
     };
 
-    if(global.isProduction()) options.logging = false;
+    if(isProduction()) options.logging = false;
 
     const sequelize = new Sequelize(Object.assign({}, options, {
         database: DATABASE_NAME
     }));
 
-    const Settings = require("../models/settings")(sequelize, Sequelize.DataTypes);
-    const Subscribers = require("../models/subscribers")(sequelize, Sequelize.DataTypes);
-    const SubscriptionTypes = require("../models/subscriptionTypes")(sequelize, Sequelize.DataTypes);
-    const Subscriptions = require("../models/subscriptions")(sequelize, Sequelize.DataTypes);
-    const SubscriptionContracts = require("../models/subscriptionContracts")(sequelize, Sequelize.DataTypes);
-    const Users = require("../models/users")(sequelize, Sequelize.DataTypes);
-
-    Users.hasMany(SubscriptionContracts, {
-        foreignKey: "ownerUsername"
-    });
-    SubscriptionContracts.belongsTo(SubscriptionTypes, {
-        foreignKey: "typeId"
-    });
-    SubscriptionTypes.hasMany(SubscriptionContracts, {
-        foreignKey: "typeId"
-    });
-    SubscriptionContracts.belongsToMany(Subscribers, {
-        through: Subscriptions,
-        foreignKey: "contractId"
-    });
-    Subscribers.belongsToMany(SubscriptionContracts, {
-        through: Subscriptions,
-        foreignKey: "subscriberId"
-    });
-
     return createDatabaseIfNotExists(options, DATABASE_NAME)
-        .then(() => Settings.sync())
-        .then(() => Users.sync())
-        .then(() => SubscriptionTypes.sync())
-        .then(() => SubscriptionContracts.sync())
-        .then(() => Subscribers.sync())
-        .then(() => Subscriptions.sync())
+        .then(() => new Models(sequelize).defineRelations().sync())
         .then(() => {
             if(loadDefaultData && global.CREATED_DATABASE){
                 return defaultDatabase.load(sequelize);
