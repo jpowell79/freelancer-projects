@@ -19,10 +19,6 @@ class Index extends Component {
     constructor(props){
         super();
 
-        this.state = {
-            counterIsStopped: Date.now() > props.templateContract.gameEndTime
-        };
-
         this.defaultGuess = (props.templateContract.lowValue + (
             props.templateContract.highValue - props.templateContract.lowValue - 1
         ) / 2).toFixed(0);
@@ -32,7 +28,7 @@ class Index extends Component {
         this.props.addContractUpdateTimer();
     }
 
-    timerShouldStop = () => {
+    timerIsStopped = () => {
         return Date.now() > this.props.templateContract.gameEndTime;
     };
 
@@ -58,10 +54,6 @@ class Index extends Component {
             .then(templateContract => {
                 this.props.dispatch(updateTemplateContract(templateContract));
 
-                this.setState({
-                    counterIsStopped: this.timerShouldStop()
-                });
-
                 Alerts.showGuessResults(transaction, this.props.templateContract, guess);
 
                 if(this.gameIsOver()){
@@ -77,9 +69,11 @@ class Index extends Component {
     gameIsOver = () => {
         const {templateContract} = this.props;
 
-        return templateContract.nextGuess > 15 ||
-            (templateContract.guessedCorrectly) ||
-            templateContract.gameEndTime < Date.now();
+        return (
+            templateContract.nextGuess > 1 &&
+            templateContract.gameEndTime > 0 &&
+            Date.now() > templateContract.gameEndTime
+        ) || templateContract.guessedCorrectly;
     };
 
     render () {
@@ -114,8 +108,8 @@ class Index extends Component {
                         <Fragment>
                             <GameDetails
                                 {...templateContract}
-                                counterIsStopped={this.state.counterIsStopped}
-                                onCounterStop={() => this.setState({counterIsStopped: true})}
+                                counterIsStopped={this.timerIsStopped()}
+                                onCounterStop={this.handleGameOver}
                             />
                             <GuessForm
                                 defaultGuess={this.defaultGuess}

@@ -10,7 +10,7 @@ export const GameDetails = ({
     costOfNextGuess,
     lastGuessAddress,
     counterIsStopped,
-    onCounterStop,
+    onCounterStop = () => {},
     gameEndTime,
     balance
 }) => {
