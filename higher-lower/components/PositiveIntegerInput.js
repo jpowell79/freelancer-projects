@@ -79,7 +79,9 @@ class PositiveIntegerInput extends Component {
     }
 
     getValueToDisplay(){
-        if(this.state.value !== undefined){
+        if(this.props.value){
+            return this.props.value;
+        } else if (this.state.value){
             return this.state.value;
         }
 

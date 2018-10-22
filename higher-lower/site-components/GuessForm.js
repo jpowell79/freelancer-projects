@@ -12,13 +12,26 @@ class GuessForm extends Component {
         onGuess: PropTypes.func.isRequired
     };
 
+    static getDerivedStateFromProps(props, state){
+        if(props.defaultGuess !== state.defaultGuess){
+            return {
+                ...state,
+                guess: props.defaultGuess,
+                defaultGuess: props.defaultGuess
+            }
+        }
+
+        return null;
+    }
+
     constructor(props){
         super();
 
         this.state = {
             formValid: true,
             isHandlingGuess: false,
-            guess: props.defaultGuess
+            guess: props.defaultGuess,
+            defaultGuess: props.defaultGuess
         };
     }
 
@@ -83,7 +96,7 @@ class GuessForm extends Component {
                         lowestDigit={lowValue}
                         highestDigit={highValue}
                         disabled={this.state.isHandlingGuess}
-                        defaultValue={this.state.guess}
+                        value={this.state.guess}
                         onIncorrectInput={() => {
                             this.setState({formInvalid: true})
                         }}

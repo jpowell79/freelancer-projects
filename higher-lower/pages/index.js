@@ -76,6 +76,12 @@ class Index extends Component {
         ) || templateContract.guessedCorrectly;
     };
 
+    calcDefaultGuess = () => {
+        return (this.props.templateContract.lowValue + (
+            this.props.templateContract.highValue - this.props.templateContract.lowValue - 1
+        ) / 2).toFixed(0);
+    };
+
     render () {
         const {factoryContract, templateContract, metamaskAccount} = this.props;
         const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
@@ -112,7 +118,7 @@ class Index extends Component {
                                 onCounterStop={this.handleGameOver}
                             />
                             <GuessForm
-                                defaultGuess={this.defaultGuess}
+                                defaultGuess={this.calcDefaultGuess()}
                                 onGuess={(guess) => this.handleGuess(guess)}
                                 {...templateContract}
                             />
