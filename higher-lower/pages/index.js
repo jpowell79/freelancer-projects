@@ -68,7 +68,7 @@ class Index extends Component {
 
     gameIsOver = () => {
         const {templateContract} = this.props;
-        
+
         return (
             templateContract.nextGuess > 1 &&
             templateContract.gameEndTime > 0 &&
@@ -90,7 +90,7 @@ class Index extends Component {
             <Page sidebar={<AdSidebar/>}>
                 <div className="glass container bg-color-white br-5">
                     <h2 className="display-6">
-                        <a href={`${settings.etherscanUrl}/address/${factoryContract.address}`}
+                        <a href={`${settings.etherscanUrl}/address/${templateContract.address}`}
                             target="_blank">
                             Game Number {factoryContract.count}
                         </a>
