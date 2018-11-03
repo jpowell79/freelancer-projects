@@ -42,8 +42,17 @@ export default (Component) => {
             }
         };
 
-        componentDidMount(){
+        async componentDidMount(){
             this.web3 = Web3.getInstance();
+
+            if(window.ethereum){
+                try {
+                    await ethereum.enable();
+                    await this.dispatchUpdateAccount();
+                } catch(err){
+                    console.error(err);
+                }
+            }
 
             if(this.web3.hasMetaMask()){
                 this.subscribeToAccountUpdate();
@@ -56,7 +65,7 @@ export default (Component) => {
         }
 
         render(){
-            return <Component metamaskAccount={this.props.metamaskAccount}/>
+            return <Component metamaskAccount={this.props.metamaskAccount}/>;
         }
     }
 
