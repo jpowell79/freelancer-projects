@@ -68,7 +68,7 @@ class Index extends Component {
 
     gameIsOver = () => {
         const {templateContract} = this.props;
-
+        
         return (
             templateContract.nextGuess > 1 &&
             templateContract.gameEndTime > 0 &&
@@ -95,11 +95,7 @@ class Index extends Component {
                             Game Number {factoryContract.count}
                         </a>
                     </h2>
-                    {(!isLoggedIntoMetamask) ? (
-                        <div className="wrapper-4">
-                            <LoginMessage/>
-                        </div>
-                    ) : (this.gameIsOver()) ? (
+                    {(this.gameIsOver()) ? (
                         <StartNewGame
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
@@ -114,14 +110,21 @@ class Index extends Component {
                         <Fragment>
                             <GameDetails
                                 {...templateContract}
+                                metamaskAddress={metamaskAccount.address}
                                 counterIsStopped={this.timerIsStopped()}
                                 onCounterStop={this.handleGameOver}
                             />
-                            <GuessForm
-                                defaultGuess={this.calcDefaultGuess()}
-                                onGuess={(guess) => this.handleGuess(guess)}
-                                {...templateContract}
-                            />
+                            {(!isLoggedIntoMetamask) ? (
+                                <div className="wrapper-4">
+                                    <LoginMessage/>
+                                </div>
+                            ) : (
+                                <GuessForm
+                                    defaultGuess = {this.calcDefaultGuess()}
+                                    onGuess={(guess) => this.handleGuess(guess)}
+                                    {...templateContract}
+                                />
+                            )}
                         </Fragment>
                     )}
                 </div>

@@ -1,6 +1,7 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {Message} from "../components/containers/Message";
 import {Address} from "./Address";
+import {LoginMessage} from "./LoginMessage";
 
 export const StartNewGame = ({gameWinner, metamaskAddress, onClick}) =>{
     const startNewGameButton = (title) =>{
@@ -26,8 +27,14 @@ export const StartNewGame = ({gameWinner, metamaskAddress, onClick}) =>{
         <div>
             <h3>The game has now completed</h3>
             <h4>Wallet address <Address address={gameWinner}/> was the winner!</h4>
-            <h4>Click the New Game button to launch a completely new game!</h4>
-            {startNewGameButton("New Game")}
+            {(!metamaskAddress) ? (
+                <LoginMessage/>
+            ) : (
+                <Fragment>
+                    <h4>Click the New Game button to launch a completely new game!</h4>
+                    {startNewGameButton("New Game")}
+                </Fragment>
+            )}
         </div>
     );
 };
