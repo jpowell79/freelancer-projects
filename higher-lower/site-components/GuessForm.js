@@ -3,6 +3,7 @@ import PositiveIntegerInput from "../components/PositiveIntegerInput";
 import {LoaderTiny} from "../components/icons";
 import PropTypes from "prop-types";
 import {Message} from "../components/containers/Message";
+import {TransactionMessage} from "./messages";
 
 class GuessForm extends Component {
     static propTypes = {
@@ -38,28 +39,15 @@ class GuessForm extends Component {
     renderMessage = () => {
         const {lowValue, highValue} = this.props;
 
-        const props = (this.state.isHandlingGuess) ? {
-            className: "message-info text-left",
-            heading: "Waiting for transaction confirmation",
-            list: [
-                "Please allow up to 30 seconds for the transaction to " +
-                "be processed and written to the Ethereum blockchain."
-            ]
-        } : {};
-
-        return (
-            <Message
-                show={this.state.formInvalid || this.state.isHandlingGuess}
-                className="message-secondary"
-                {...props}
-            >
-                {(this.state.formInvalid && !this.state.isHandlingGuess) && (
-                    <p className="normal">
-                        The guess must be between {lowValue} and {highValue}
-                    </p>
-                )}
+        return this.state.isHandlingGuess ? (
+            <TransactionMessage/>
+        ) : (this.state.formInvalid) ? (
+            <Message className="message-secondary">
+                <p className="normal">
+                    The guess must be between {lowValue} and {highValue}
+                </p>
             </Message>
-        );
+        ) : null;
     };
 
     handleGuess = () => {

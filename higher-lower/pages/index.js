@@ -11,13 +11,17 @@ import Dispatcher from "../services/Dispatcher";
 import GuessForm from "../site-components/GuessForm";
 import {GameDetails} from "../site-components/GameDetails";
 import {AdSidebar} from "../site-components/AdSidebar";
-import {LoginMessage} from "../site-components/LoginMessage";
+import {LoginMessage, TransactionMessage} from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/StartNewGame";
 
 class Index extends Component {
     constructor(props){
         super();
+
+        this.state = {
+            isHandlingTransaction: false
+        };
 
         this.defaultGuess = (props.templateContract.lowValue + (
             props.templateContract.highValue - props.templateContract.lowValue - 1
@@ -99,12 +103,14 @@ class Index extends Component {
                         <StartNewGame
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
-                            onClick={() => this.props.templateContractRequest
-                                .startNewGame(metamaskAccount.address)
-                                .then(transaction => Alerts.showNewGameCreated(transaction))
-                                .then(() => Dispatcher.updateContracts(this.props.dispatch))
-                                .catch(this.handleTransactionError)
-                            }
+                            onClick={() => this.setState({isHandlingTransaction: true}, () => {
+                                this.props.templateContractRequest
+                                    .startNewGame(metamaskAccount.address)
+                                    .then(transaction => Alerts.showNewGameCreated(transaction))
+                                    .then(() => Dispatcher.updateContracts(this.props.dispatch))
+                                    .catch(this.handleTransactionError)
+                                    .finally(() => this.setState({isHandlingTransaction: false}));
+                            })}
                         />
                     ) : (
                         <Fragment>
@@ -126,6 +132,9 @@ class Index extends Component {
                                 />
                             )}
                         </Fragment>
+                    )}
+                    {(this.state.isHandlingTransaction) && (
+                        <TransactionMessage/>
                     )}
                 </div>
             </Page>

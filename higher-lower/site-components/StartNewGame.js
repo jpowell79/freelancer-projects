@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import {Message} from "../components/containers/Message";
 import {Address} from "./Address";
-import {LoginMessage} from "./LoginMessage";
+import {LoginMessage} from "./messages";
 
 export const StartNewGame = ({gameWinner, metamaskAddress, onClick}) =>{
     const startNewGameButton = (title) =>{
