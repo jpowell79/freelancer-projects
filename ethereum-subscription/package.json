@@ -70,7 +70,7 @@
     "default database": "node scripts.js defaultDatabase",
     "dummy database": "node scripts.js dummyDatabase",
     "remove database": "node scripts.js removeDatabase",
-    "dump database": "node scripts.js dump",
+    "dump database": "node scripts.js dumpDatabase",
     "create admin": "node scripts.js createAdmin",
     "favicon": "node scripts.js favicon",
     "dev": "nodemon -w server -w package.json server/index.js",

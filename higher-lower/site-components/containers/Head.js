@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import NextHead from "next/head";
 import "../../sass/style.scss";
+import {Favicon} from "../Favicon";
 
 class Head extends Component {
     render(){
@@ -16,6 +17,7 @@ class Head extends Component {
                       integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
                       crossOrigin="anonymous"/>
                 <link rel="stylesheet" href="/_next/static/style.css"/>
+                <Favicon/>
                 {this.props.children}
             </NextHead>
         );

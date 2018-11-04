@@ -40,7 +40,8 @@
     "test coverage": "jest --env=jsdom --coverage",
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "favicon": "node scripts.js favicon"
   },
   "jest": {
     "testURL": "http://localhost:3000",

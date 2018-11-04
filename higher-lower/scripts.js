@@ -1,14 +1,15 @@
-require('./server/config/defineGlobals');
 const path = require("path");
 const fs = require("fs");
 global.PROJECT_ROOT = __dirname;
 
-const scriptsFolder = path.join(__dirname, "/server/scripts");
+const scriptsFolder = path.join(__dirname, "/scripts");
 const scripts = fs.readdirSync(scriptsFolder)
     .map(file => file.replace(".js", ""))
     .map(file => ({[file]: require(`${scriptsFolder}/${file}`)}))
     .reduce((accumulator, file) => Object.assign({}, accumulator, file));
 const scriptNames = Object.keys(scripts);
+
+console.log(scripts);
 
 const printHelp = (arguments) => {
     let options = '';

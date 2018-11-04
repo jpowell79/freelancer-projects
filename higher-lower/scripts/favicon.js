@@ -1,7 +1,5 @@
-const {paths} = require("../../services/constants/index");
 const fs = require("fs");
 const path = require("path");
-const log = require("../services/log");
 
 const getRel = (file) => {
     if(file.startsWith("apple-icon")){
@@ -21,7 +19,7 @@ const getSizes = (file) => {
 };
 
 const getHref = (file) => {
-    return `href="/${paths.static.favicon}/${file}"`;
+    return `href="/static/images/favicon/${file}"`;
 };
 
 const excludeFiles = (file) => (
@@ -33,7 +31,7 @@ const generateContent = (faviconFiles) => {
     const filesToInclude = faviconFiles.filter(excludeFiles);
 
     return (
-`import React, {Fragment} from "react";
+        `import React, {Fragment} from "react";
 
 export const Favicon = () => (
     <Fragment>
@@ -46,18 +44,16 @@ export const Favicon = () => (
 );`);
 };
 
-module.exports = () => {
-    log.sectionTitle("Updating Favicon component");
+module.exports = async () => {
+    const faviconFiles = fs.readdirSync(path.join(PROJECT_ROOT, `/static/images/favicon/`));
+    const outputLocation = `${PROJECT_ROOT}/site-components/Favicon.js`;
 
-    console.log("Reading favicon files...");
-    const faviconFiles = fs.readdirSync(path.join(PROJECT_ROOT, `/client/${paths.static.favicon}`));
-    const outputLocation = `${PROJECT_ROOT}/client/site-modules/Favicon.js`;
+    return new Promise(resolve => {
+        fs.writeFile(outputLocation, generateContent(faviconFiles), (err) => {
+            if(err) throw err;
 
-    console.log("Writing to Favicon component...");
-    fs.writeFile(outputLocation, generateContent(faviconFiles), (err) => {
-        if(err) throw err;
-
-        console.log("Favicon component was updated successfully!");
-        log.endOfSection();
+            console.log("Favicon component was updated successfully!");
+            resolve();
+        });
     });
 };
