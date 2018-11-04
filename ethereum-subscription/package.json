@@ -72,6 +72,7 @@
     "remove database": "node scripts.js removeDatabase",
     "dump database": "node scripts.js dump",
     "create admin": "node scripts.js createAdmin",
+    "favicon": "node scripts.js favicon",
     "dev": "nodemon -w server -w package.json server/index.js",
     "dev debug": "set DEBUG=* & nodemon -w server -w package.json server/index.js",
     "build": "next build client",

@@ -4,10 +4,10 @@ const serverSettings = require('./server/serverSettings');
 const {removeDatabase} = require('./server/services/database/databaseUtils');
 const dummyDatabase = require('./server/services/database/dummyDatabase');
 const passwordHash = require('password-hash');
-const mysqldump = require('mysqldump');
-const readline = require('readline');
-const {roles} = require('./services/constants');
-const log = require('./server/services/log');
+const createAdminUser = require("./server/scripts/createAdminUser");
+const dumpDatabase = require("./server/scripts/dumpDatabase");
+const updateFaviconComponent = require("./server/scripts/updateFaviconComponent");
+global.PROJECT_ROOT = __dirname;
 
 const argument = process.argv[2];
 const arguments = {
@@ -16,6 +16,7 @@ const arguments = {
     dummyDatabase: 'dummyDatabase',
     createAdmin: 'createAdmin',
     hashPassword: 'hashPassword',
+    favicon: 'favicon',
     dump: 'dump'
 };
 
@@ -38,50 +39,9 @@ if (process.argv.length < 3) {
     printHelp();
 }
 
-const promiseQuestion = (rl, question) => {
-    return new Promise(resolve => {
-        rl.question(question, answer => resolve(answer))
-    });
-};
+const isDatabaseArgument = argument.includes('Database') || argument.includes('createAdmin');
 
-const createAdminUser = (sequelize) => {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
-
-    const user = {
-        username: '',
-        walletAddress: '',
-        email: '',
-        role: roles.admin,
-        rating: 0
-    };
-
-    log.sectionTitle('Create Admin');
-
-    return promiseQuestion(rl, 'Username?\n')
-        .then(username => {
-            user.username = username;
-            return promiseQuestion(rl, 'Password?\n');
-        })
-        .then(password => {
-            user.password = password;
-            return promiseQuestion(rl, 'Wallet Address?\n');
-        })
-        .then(walletAddress => {
-            user.walletAddress = walletAddress;
-            return promiseQuestion(rl, 'Email?\n')
-        })
-        .then(email => {
-            user.email = email;
-            rl.close();
-            return sequelize.models.users.create(user);
-        })
-        .then(() => log.endOfSection());
-};
-
-if(argument.includes('Database') || argument.includes('createAdmin')){
+if(isDatabaseArgument){
     configSequelize(serverSettings, false)
         .then(sequelize => {
             switch (argument) {
@@ -117,16 +77,10 @@ if(argument.includes('Database') || argument.includes('createAdmin')){
         console.log(passwordHash.generate(process.argv[3]));
         break;
     case arguments.dump:
-        mysqldump({
-            connection: {
-                host: serverSettings.DATABASE_DUMP_HOST,
-                port: serverSettings.DATABASE_PORT,
-                user: serverSettings.DATABASE_USER,
-                password: serverSettings.DATABASE_PASSWORD,
-                database: serverSettings.DATABASE_NAME
-            },
-            dumpToFile: `./${serverSettings.DATABASE_DUMP_FILE}`
-        });
+        dumpDatabase(`./${serverSettings.DATABASE_DUMP_FILE}`);
+        break;
+    case arguments.favicon:
+        updateFaviconComponent();
         break;
     case 'help':
         printHelp();

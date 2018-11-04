@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import NextHead from "next/head";
 import "../sass/style.scss";
 import {connect} from "react-redux";
+import {Favicon} from "../site-modules/Favicon";
 
 class Head extends Component {
     static mapStateToProps = ({settings}) => ({settings});
@@ -17,6 +18,7 @@ class Head extends Component {
                     href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i"
                     rel="stylesheet"/>
                 <link rel="stylesheet" href="/_next/static/style.css"/>
+                <Favicon/>
                 {this.props.children}
             </NextHead>
         );

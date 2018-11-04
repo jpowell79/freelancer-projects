@@ -9,6 +9,7 @@
 1. `npm run "remove database"`: Removes the database with the name defined in [serverSettings.js](./server/serverSettings.js).
 2. `npm run "default database"`: First runs `removeDatabase` then loads all [defaultData](server/services/database/defaultData.js).
 3. `npm run "dummy database"`: First runs `removeDatabase` then loads all [dummyData](server/services/database/dummyData.js).
+4. `npm run favicon`: Automatically updates the Favicon component to link towards images in the favicon folder.
 
 ## Login:
 The site loads in some accounts by default. Check the list of users defined in [defaultData](server/services/database/defaultData.js).

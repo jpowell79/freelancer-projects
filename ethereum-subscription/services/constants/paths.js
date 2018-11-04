@@ -3,6 +3,7 @@ const IMAGES = `${STATIC}/images`;
 const AUDIO = `${STATIC}/audio`;
 const VIDEO = `${STATIC}/video`;
 const FILES = `${STATIC}/files`;
+const FAVICON = `${IMAGES}/favicon`;
 const isServer = require("../utils").isServer;
 const session = require("../session");
 
@@ -18,6 +19,7 @@ module.exports = {
         subscriptionInfo: "/SubscriptionInfo"
     },
     static: {
+        favicon: FAVICON,
         images: IMAGES,
         audio: AUDIO,
         video: VIDEO,
