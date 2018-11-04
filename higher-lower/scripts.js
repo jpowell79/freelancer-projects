@@ -1,15 +1,31 @@
-const path = require("path");
 const fs = require("fs");
 global.PROJECT_ROOT = __dirname;
 
-const scriptsFolder = path.join(__dirname, "/scripts");
-const scripts = fs.readdirSync(scriptsFolder)
-    .map(file => file.replace(".js", ""))
-    .map(file => ({[file]: require(`${scriptsFolder}/${file}`)}))
-    .reduce((accumulator, file) => Object.assign({}, accumulator, file));
-const scriptNames = Object.keys(scripts);
+const main = async () => {
+    const scripts = readScripts();
+    const argument = getValidatedArgument(Object.keys(scripts));
 
-console.log(scripts);
+    return scripts[argument]();
+};
+
+const readScripts = () => {
+    const scriptsFolder = `${__dirname}/scripts`;
+
+    return fs.readdirSync(scriptsFolder)
+        .map(file => file.replace(".js", ""))
+        .map(file => ({[file]: require(`${scriptsFolder}/${file}`)}))
+        .reduce((accumulator, file) => Object.assign({}, accumulator, file));
+};
+
+const getValidatedArgument = (arguments) => {
+    const argument = process.argv[2];
+
+    if (process.argv.length < 3 || !arguments.includes(argument)) {
+        printHelp(arguments);
+    }
+
+    return argument;
+};
 
 const printHelp = (arguments) => {
     let options = '';
@@ -26,13 +42,7 @@ const printHelp = (arguments) => {
     process.exit(0);
 };
 
-const argument = process.argv[2];
-
-if (process.argv.length < 3 || !scriptNames.includes(argument)) {
-    printHelp(scriptNames);
-}
-
-scripts[argument]()
+main()
     .then(() => process.exit(0))
     .catch(err => {
         console.error(err);
