@@ -29,7 +29,7 @@ class GuessForm extends Component {
         super();
 
         this.state = {
-            formValid: true,
+            formInvalid: false,
             isHandlingGuess: false,
             guess: props.defaultGuess,
             defaultGuess: props.defaultGuess
@@ -41,13 +41,16 @@ class GuessForm extends Component {
 
         return this.state.isHandlingGuess ? (
             <TransactionMessage/>
-        ) : (this.state.formInvalid) ? (
-            <Message className="message-secondary">
+        ) : (
+            <Message
+                show={this.state.formInvalid}
+                className="message-secondary"
+            >
                 <p className="normal">
                     The guess must be between {lowValue} and {highValue}
                 </p>
             </Message>
-        ) : null;
+        );
     };
 
     handleGuess = () => {
