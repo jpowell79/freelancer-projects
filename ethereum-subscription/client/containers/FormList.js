@@ -8,8 +8,19 @@ import objects from "../../services/datatypes/objects";
 
 const specialInputTypes = [
     "date", "datetime-local", "email", "hidden", "month",
-    "number", "password", "contractPassword", "tel", "time", "url", "week"
+    "number", "password", "contractPassword", "confirmPassword",
+    "tel", "time", "url", "week"
 ];
+
+const getInputType = (type) => {
+    if(type.includes("Password")){
+        return "password";
+    } else if(specialInputTypes.includes(type)){
+        return type;
+    }
+
+    return "text";
+};
 
 class FormList extends Component {
     static defaultProps = {
@@ -47,10 +58,12 @@ class FormList extends Component {
     };
 
     constructor(props){
-        super(props);
+        super();
 
         this.state = props.fields
-            .map(field => ({[field.type]: (field.defaultValue) ? field.defaultValue : ""}))
+            .map(field => ({
+                [field.type]: (field.defaultValue) ? field.defaultValue : ""
+            }))
             .reduce((accumulator, currentValue) => Object.assign({}, accumulator, currentValue));
 
         this.fieldErrors = {};
@@ -79,7 +92,7 @@ class FormList extends Component {
             if(this.props.onError){
                 this.props.onError(this.fieldErrors);
             } else {
-                this.forceUpdate();
+                this.setState({});
             }
         }
     };
@@ -102,7 +115,7 @@ class FormList extends Component {
                 <div className={fieldClass} key={i}>
                     <label>{(field.label) ? field.label : field.type}</label>
                     <input
-                        type={(type === "contractPassword") ? "password" : type}
+                        type={getInputType(type)}
                         disabled={this.props.disabled}
                         value={this.state[field.type]}
                         onKeyDown={event => {

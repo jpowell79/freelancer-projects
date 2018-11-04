@@ -45,8 +45,7 @@ const addMiddleware = (app) => {
 
 const addRoutes = (app, nextApp, sequelize) => {
     const csrfProtection = csrf({cookie: true});
-    const rootPath = require("path").normalize(__dirname + "/../..");
-    glob.sync(rootPath + "/server/routes/*.js").forEach(
+    glob.sync(`${PROJECT_ROOT}/server/routes/*.js`).forEach(
         controllerPath => require(controllerPath)(app, sequelize)
     );
 

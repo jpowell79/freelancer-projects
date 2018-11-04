@@ -5,6 +5,7 @@ global.isDevelopment = () => (
     process.argv[2] !== "production"
 );
 global.createdDatabase = false;
+global.PROJECT_ROOT = require("path").normalize(__dirname + "/../..");
 
 String.prototype.padEnd = function padEnd(targetLength,padString) {
     targetLength = targetLength>>0;

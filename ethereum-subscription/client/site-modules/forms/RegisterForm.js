@@ -27,25 +27,35 @@ class RegisterForm extends Component {
             label: "Password:"
         },
         {
+            type: "confirmPassword",
+            label: "Confirm password: "
+        },
+        {
             type: "grecaptcha",
             hidden: true
         }
     ];
 
-    handleSubmit = ({username, password, email}) => {
+    handleSubmit = ({username, password, confirmPassword, email}) => {
+        RegisterForm.fields[3].error = false;
+
+        if(password !== confirmPassword){
+            RegisterForm.fields[3].error = "The passwords does not match.";
+            this.setState({});
+            return;
+        }
+
         this.props.setMessageState({
             isLoading: true,
             showSuccess: false,
             errors: []
-        });
-
-        users.registerSupplier({
+        }).then(() => users.registerSupplier({
             username,
             password,
             email,
             walletAddress: this.props.metamaskAccount.address
-        }).then(() => {
-            this.props.setMessageState({
+        })).then(() => {
+            return this.props.setMessageState({
                 isLoading: false,
                 showSuccess: true,
                 successTitle: "Your registration was completed successfully.",
@@ -57,7 +67,7 @@ class RegisterForm extends Component {
         })
         .catch(err => {
             grecaptcha.reset();
-            this.props.setMessageState({
+            return this.props.setMessageState({
                 errors: [getErrorString(err)],
                 isLoading: false,
             });
@@ -109,7 +119,7 @@ class RegisterForm extends Component {
                 <FormList
                     onSubmit={this.handleSubmit}
                     onError={() => {
-                        this.props.setMessageState({
+                        return this.props.setMessageState({
                             errors: [],
                             showSuccess: false
                         });
