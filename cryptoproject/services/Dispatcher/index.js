@@ -5,8 +5,7 @@ import {
     updateCrypto,
     updateMarketData,
     updateClaimInfo,
-    updateTokenSale,
-    databaseConnectionDetected
+    updateTokenSale
 } from "../../redux/actions";
 import web3 from "../../server/services/Web3/index";
 import {
@@ -21,6 +20,7 @@ import CoinMarketCapApi from "../CoinMarketCapApi";
 import urls from '../../server/services/utils/urls';
 import {isClient} from "../utils";
 import Settings from '../../site-settings';
+import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 
 class Dispatcher {
     constructor(dispatch){
@@ -33,6 +33,7 @@ class Dispatcher {
         this.fetchMarketData = this.fetchMarketData.bind(this);
         this.subscribeToAccountUpdate = this.subscribeToAccountUpdate.bind(this);
         this.unsubscribe = this.unsubscribe.bind(this);
+        this.askForPermission = this.askForPermission.bind(this);
     }
 
     async fetchMarketData(){
@@ -58,18 +59,39 @@ class Dispatcher {
             });
     }
 
-    async updateAccount(){
-        this.dispatch(updateAccount({
-            isLoading: true
-        }));
-
-        return web3.fetchAccount().then(account => {
-            account.isLoading = false;
-            this.dispatch(updateAccount(account));
-        }).catch(err => {
+    async askForPermission(){
+        try {
+            await ethereum.enable();
+        } catch(err){
+            AlertOptionPane.showInfoAlert({
+                message: (
+                    "Please note that the site won't work properly without access " +
+                    "to your metamask account."
+                )
+            });
             console.error(err);
-            this.dispatch(updateAccount({isLoading: false}));
-        });
+            return false;
+        }
+
+        return true;
+    };
+
+    async updateAccount(){
+        const hasPermission = (window.ethereum) ? await this.askForPermission() : web3;
+
+        if(hasPermission){
+            this.dispatch(updateAccount({
+                isLoading: true
+            }));
+
+            return web3.fetchAccount().then(account => {
+                account.isLoading = false;
+                this.dispatch(updateAccount(account));
+            }).catch(err => {
+                console.error(err);
+                this.dispatch(updateAccount({isLoading: false}));
+            });
+        }
     }
 
     async updateClaimInfo(address, claimBlock){

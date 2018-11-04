@@ -3,7 +3,9 @@ const Settings = require('../../../site-settings');
 const utils = require('../utils');
 
 const getProvider = () => {
-    if (utils.isClient() && typeof window.web3 !== 'undefined') {
+    if(utils.isClient() && window.ethereum){
+        return window.ethereum;
+    } else if (utils.isClient() && window.web3) {
         return window.web3.currentProvider;
     }
 
