@@ -5,7 +5,9 @@ import settings from "../../settings.json";
 let instance = null;
 
 const getProvider = () => {
-    if (isClient() && typeof window.web3 !== 'undefined') {
+    if (isClient() && window.ethereum) {
+        return window.ethereum;
+    } else if(isClient() && window.web3){
         return window.web3.currentProvider;
     }
 

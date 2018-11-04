@@ -3,6 +3,7 @@ import Web3 from "../../services/smart-contracts/Web3";
 import {getChildProps} from "../../services/utils";
 import {updateMetamaskAccount} from "../../redux/actions";
 import {connect} from "react-redux";
+import AlertOptionPane from "../Alert/AlertOptionPane";
 
 export default (Component) => {
     class MetamaskAccount extends Component {
@@ -42,21 +43,40 @@ export default (Component) => {
             }
         };
 
+        isModernDappBrowser = () => window.ethereum;
+
+        isLegacyDappBrowser = () => window.web3;
+
+        askForPermission = async () => {
+            try {
+                await ethereum.enable();
+            } catch(err){
+                AlertOptionPane.showInfoAlert({
+                    message: (
+                        "Please note that the site won't work properly without access " +
+                        "to your metamask account."
+                    )
+                });
+                console.error(err);
+                return false;
+            }
+
+            return true;
+        };
+
         async componentDidMount(){
             this.web3 = Web3.getInstance();
 
-            if(window.ethereum){
-                try {
-                    await ethereum.enable();
-                    await this.dispatchUpdateAccount();
-                } catch(err){
-                    console.error(err);
-                }
-            }
+            if(this.isModernDappBrowser()){
+                const hasPermission = await this.askForPermission();
 
-            if(this.web3.hasMetaMask()){
+                if(hasPermission){
+                    await this.dispatchUpdateAccount();
+                    this.subscribeToAccountUpdate();
+                }
+            } else if(this.isLegacyDappBrowser()) {
+                await this.dispatchUpdateAccount();
                 this.subscribeToAccountUpdate();
-                return this.dispatchUpdateAccount();
             }
         }
 
