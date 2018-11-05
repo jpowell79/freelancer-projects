@@ -3,7 +3,8 @@ module.exports.saveUser = (req, user) => {
         username: user.username,
         email: user.email,
         role: user.role,
-        walletAddress: user.walletAddress
+        walletAddress: user.walletAddress,
+        rating: user.rating
     };
 };
 

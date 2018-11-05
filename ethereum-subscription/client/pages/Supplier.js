@@ -16,6 +16,7 @@ import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
 import {LoginMessage} from "../site-modules/LoginMessage";
+import Dispatcher from "../services/loaders/Dispatcher";
 
 class Supplier extends Component {
     static mapStateToProps = ({user, subscribers}) => ({user, subscribers});
@@ -52,6 +53,9 @@ class Supplier extends Component {
         } else {
             this.setState({isLoadingContracts: false});
         }
+
+        return new Dispatcher(this.props.dispatch)
+            .dispatchAddWalletAddressToUser(this.props.user);
     }
 
     renderSection = (activeSection) => {

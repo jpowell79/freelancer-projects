@@ -17,6 +17,8 @@ import {
 import {isServer, serverRequest} from "../../../services/utils";
 import parser from "../parser";
 import objects from "../../../services/datatypes/objects";
+import strings from "../../../services/datatypes/strings";
+import etherscan from "../../../services/api/etherscan";
 
 class Dispatcher {
     constructor(dispatch, req = null){
@@ -115,12 +117,26 @@ class Dispatcher {
         });
     };
 
-    dispatchUpdateSuspendedUsers(){
+    dispatchUpdateSuspendedUsers = async () => {
         return this.request({
             url: `${urls.users}/${actions.getSuspendedSuppliers}`,
             callback: (response) => this.dispatch(updateSuspendedUsers(response.data))
         });
-    }
+    };
+
+    dispatchAddWalletAddressToUser = async (user) => {
+        return etherscan.getWalletAddressTransactions({
+            walletAddress: user.walletAddress
+        }).then(transactions => {
+            const walletAge = (transactions.result[0])
+                ? strings.toDateString(
+                    new Date(parseInt(transactions.result[0].timeStamp, 10) * 1000)
+                )
+                : "Unavailable";
+
+            this.dispatch(updateUser(Object.assign({}, user, {walletAge})));
+        }).catch(console.error);
+    };
 }
 
 export default Dispatcher;

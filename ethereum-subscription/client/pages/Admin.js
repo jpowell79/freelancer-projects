@@ -3,6 +3,7 @@ import Page from "../containers/Page";
 import FullWidthSegment from "../containers/FullWidthSegment";
 import withAuthenticateAdmin from "../hocs/withAuthenticateAdmin";
 import {compose} from "redux";
+import {connect} from "react-redux";
 import withSubscriptionContracts from "../hocs/withSubscriptionContracts";
 import {Menu, Segment, Grid} from "semantic-ui-react";
 import objects from "../../services/datatypes/objects";
@@ -22,8 +23,11 @@ import {
 } from "../clientSettings";
 import DatabaseDataLoader from "../services/loaders/DatabaseDataLoader";
 import UnsuspendSuppliers from "../site-modules/admin-sections/UnsuspendSuppliers";
+import Dispatcher from "../services/loaders/Dispatcher";
 
 class Admin extends Component {
+    static mapStateToProps = ({user}) => ({user});
+
     static sections = {
         addContract: "Add new contract to site",
         suspendSuppliers: "Suspend Suppliers",
@@ -49,13 +53,15 @@ class Admin extends Component {
     }
 
     componentDidMount(){
-        if(!this.hasLoadedAllContracts){
-            return this.props.subscriptionContractLoader.loadAllContracts();
-        }
-
         return new DatabaseDataLoader(this.props.dispatch, {
             suspendedUsers: true
-        }).loadFromClientSide();
+        }).loadFromClientSide().then(() => new Dispatcher(this.props.dispatch)
+            .dispatchAddWalletAddressToUser(this.props.user)
+        ).then(() => {
+            if(!this.hasLoadedAllContracts){
+                return this.props.subscriptionContractLoader.loadAllContracts();
+            }
+        });
     }
 
     renderSection = (active) => {
@@ -141,5 +147,6 @@ export default compose(
         useDummyData: USE_DUMMY_SUBSCRIPTION_DATA,
         amountOfDummyDataToGenerate: AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
         amountToLoadPerBatch: AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH
-    })
+    }),
+    connect(Admin.mapStateToProps)
 )(Admin);

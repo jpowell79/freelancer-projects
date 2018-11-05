@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {roles} from "../../../services/constants";
 import DatabaseDataLoader from "../../services/loaders/DatabaseDataLoader";
@@ -6,7 +6,7 @@ import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
 import {getErrorString} from "../../services/utils";
-import {Message} from "semantic-ui-react";
+import {Grid, Message} from "semantic-ui-react";
 import users from "../../../services/api/users";
 
 class ManageProfile extends Component {
@@ -67,33 +67,62 @@ class ManageProfile extends Component {
     };
 
     render(){
+        console.log(this.props);
+
+        const columns = (this.props.user.role === roles.admin) ? 1 : 2;
+
         return (
-            <div className="container-3">
-                {this.props.user.role === roles.supplier && (
-                    <Message
-                        info
-                        header={`Your wallet address is: ${this.props.user.walletAddress}`}
-                        list={[
-                            "You will need to contact our support team if you ever need to change this address",
-                            "You will lose all feedback if you do this."
-                        ]}
+            <Grid padded stackable doubling columns={columns}>
+                <Grid.Column>
+                    <h2>Manage Your Profile</h2>
+                    {this.props.renderMessages()}
+                    <FormList
+                        fields={this.fields}
+                        onSubmit={this.handleSubmit}
+                        onError={() => {
+                            return this.props.setMessageState({
+                                showSuccess: false,
+                                errors: []
+                            });
+                        }}
+                        disabled={this.props.messageState.isLoading}
+                        submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Save"}
                     />
-                )}
-                <h2>Manage Your Profile</h2>
-                {this.props.renderMessages()}
-                <FormList
-                    fields={this.fields}
-                    onSubmit={this.handleSubmit}
-                    onError={() => {
-                        this.props.setMessageState({
-                            showSuccess: false,
-                            errors: []
-                        });
-                    }}
-                    disabled={this.props.messageState.isLoading}
-                    submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Save"}
-                />
-            </div>
+                </Grid.Column>
+                <Grid.Column>
+                    <h2>Other Information</h2>
+                    <Message info>
+                        <div className="header mb-10">
+                            Your wallet age is:
+                        </div>
+                        <span className="h4">{this.props.user.walletAge}</span>
+                        <hr className="ui divider"/>
+                        <div className="header mb-10">
+                            Your reputation is:
+                        </div>
+                        <span className="h4">{this.props.user.rating}</span>
+                        {this.props.user.role === roles.supplier && (
+                            <Fragment>
+                                <hr className="ui divider"/>
+                                <div className="header">
+                                    Your wallet address is:
+                                </div>
+                                <span className="h4">{this.props.user.walletAddress}</span>
+                                <ul className="list">
+                                    <li className="content">
+                                        You will need to contact our support team if you ever
+                                        need to change this address
+                                    </li>
+                                    <li className="content">
+                                        You will lose all feedback if you do this.
+                                    </li>
+                                </ul>
+                            </Fragment>
+                        )}
+                    </Message>
+                </Grid.Column>
+            </Grid>
+
         );
     }
 }
