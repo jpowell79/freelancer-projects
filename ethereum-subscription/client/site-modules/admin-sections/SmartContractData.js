@@ -12,6 +12,8 @@ import {SubscriptionTableBody} from "../subscription/table/SubscriptionTableBody
 import {ContractStatus} from "../ContractStatus";
 import subscriptions from "../../../services/api/subscriptions";
 import {updateLiveSubscriptionContract} from "../../redux/actions";
+import {Moment} from "../../modules/Moment";
+import {hideOnTablet} from "../../services/constants/css";
 
 class SmartContractData extends Component {
     state = {
@@ -136,9 +138,19 @@ class SmartContractData extends Component {
                             columns={{
                                 reputation: null,
                                 walletAge: null,
-                                registrationAge: null,
                                 moreInfo: null,
-                                supplier: <th key="status">Status</th>
+                                joinFee: null,
+                                exitFee: null,
+                                freeTrial: null,
+                                contractLength: null,
+                                price: null,
+                                status: <th key="status">Status</th>,
+                                timestamp: (
+                                    <th key="timestamp" className={hideOnTablet()}>
+                                        Timestamp:
+                                    </th>
+                                ),
+                                subscriptionName: <th>Contract Name:</th>
                             }}
                         />
                         <SubscriptionTableBody
@@ -150,12 +162,22 @@ class SmartContractData extends Component {
                                 reputation: null,
                                 walletAge: null,
                                 moreInfo: null,
-                                registrationAge: null,
-                                supplier: (
+                                joinFee: null,
+                                exitFee: null,
+                                freeTrial: null,
+                                contractLength: null,
+                                price: null,
+                                status: (
                                     <td key="status">
                                         <ContractStatus contract={contract}/>
                                     </td>
-                                )
+                                ),
+                                timestamp: (
+                                    <td className={hideOnTablet()}>
+                                        <Moment unixTime={contract.creationTime}/>
+                                    </td>
+                                ),
+                                subscriptionName: <td>{contract.subscriptionName}</td>
                             })}
                         />
                     </SubscriptionTable>
