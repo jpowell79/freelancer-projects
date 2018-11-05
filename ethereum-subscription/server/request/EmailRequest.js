@@ -1,6 +1,8 @@
 const Request = require("./Request");
-const {mailTypes} = require("../../services/constants");
+const {mailTypes, paths} = require("../../services/constants");
 const Emailer = require("../services/email/Emailer");
+const cookieSession = require("../services/cookieSession");
+const uuidv4 = require("uuid/v4");
 
 const adminMailTypes = [
     mailTypes.massMailSuppliers
@@ -8,7 +10,8 @@ const adminMailTypes = [
 
 const subscriberMailTypes = [
     mailTypes.requestSubscription,
-    mailTypes.subscriptionCancelled
+    mailTypes.subscriptionCancelled,
+    mailTypes.restorePassword
 ];
 
 class EmailRequest extends Request {
@@ -18,8 +21,30 @@ class EmailRequest extends Request {
         this.emailer = new Emailer(params.req);
     }
 
+    async handleGet(){
+        if(this.isEmailConfirmation()){
+            this.req.session.restorePassword = true;
+            return this.responseHandler.redirect(paths.pages.login);
+        }
+
+        return this.responseHandler.sendBadRequest();
+    }
+
     async handlePost(){
         return this.sendMail();
+    }
+
+    async getUser(){
+        const {username} = this.req.body;
+
+        return this.sequelize.models.users
+            .findOne({where: {username}})
+            .then(userRes => {
+                if(!userRes)
+                    throw new Error("The user does not exist");
+
+                return userRes.dataValues;
+            });
     }
 
     async sendMail(){
@@ -61,10 +86,27 @@ class EmailRequest extends Request {
         case mailTypes.subscriptionCancelled:
             return this.responseHandler
                 .handlePromiseResponse(this.emailer.sendSubscriptionCancelledMails());
+        case mailTypes.restorePassword:
+            return this.responseHandler
+                .handlePromiseResponse(this.getUser()
+                    .then(user => {
+                        const uuid = uuidv4();
+                        console.log(user);
+                        cookieSession.saveTempUser(this.req, user, uuid);
+                        console.log('tempUser', this.req.session.tempUser);
+                        return this.emailer.sendRestorePasswordMail(user.email, uuid);
+                    })
+                );
         default:
             this.responseHandler.sendBadRequest(`Invalid email type: ${this.req.params.type}`);
             break;
         }
+    }
+
+    isEmailConfirmation(){
+        if(!this.req.params.uuid) return false;
+
+        return this.req.params.uuid === this.req.session.tempUser.uuid;
     }
 }
 

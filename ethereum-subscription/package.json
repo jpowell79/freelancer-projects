@@ -73,7 +73,7 @@
     "dump database": "node scripts.js dumpDatabase",
     "create admin": "node scripts.js createAdmin",
     "favicon": "node scripts.js favicon",
-    "dev": "nodemon -w server -w package.json server/index.js",
+    "dev": "nodemon -w server/ server/index.js",
     "dev debug": "set DEBUG=* & nodemon -w server -w package.json server/index.js",
     "build": "next build client",
     "start": "node server/index.js production NODE_ENV=production"

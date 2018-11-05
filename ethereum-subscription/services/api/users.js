@@ -1,6 +1,10 @@
 const axios = require("axios");
 const {urls, roles} = require("../constants");
 
+const restorePassword = ({password}) => {
+    return axios.post(`${urls.users}/restorePassword`, {password});
+};
+
 const getSupplier = async (username) => {
     return axios.get(`${urls.users}/${username}`);
 };
@@ -36,5 +40,6 @@ module.exports = {
     registerSupplier,
     suspendSupplier,
     getSupplier,
-    updateSupplier
+    updateSupplier,
+    restorePassword
 };

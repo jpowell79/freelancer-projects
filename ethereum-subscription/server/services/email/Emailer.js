@@ -310,6 +310,27 @@ class Emailer {
         }));
     }
 
+    async sendRestorePasswordMail(email, uuid){
+        const {username} = this.req.body;
+        const fullUrl = this.getFullUrl(this.req.originalUrl);
+        const restoreLink = `${fullUrl}/${uuid}`;
+
+        return this.sendMail({
+            to: email,
+            subject: `[Ethereum Subscription] Reset password for ${username}`,
+            html: (
+                `${emailContentStart}
+                    <p>
+                        A request has been made to reset your password. Please click on the ` +
+                        `link below to reset your password. If you did not make this request ` +
+                        `please ignore this email.
+                    </p>
+                    <p><a href="${restoreLink}">Restore password</a></p>
+                ${emailContentEnd}`
+            )
+        });
+    }
+
     getFullUrl(pathname){
         return url.format({
             protocol: this.req.protocol,

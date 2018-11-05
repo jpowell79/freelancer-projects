@@ -24,9 +24,7 @@ class LoginForm extends Component {
         this.props.setMessageState({
             errors: [],
             isLoading: true
-        });
-
-        sessions.login({username, password})
+        }).then(() => sessions.login({username, password}))
             .then(res => {
                 if(res.data.role === roles.admin){
                     redirect(paths.pages.admin);
@@ -35,7 +33,7 @@ class LoginForm extends Component {
                 }
             })
             .catch(err => {
-                this.props.setMessageState({
+                return this.props.setMessageState({
                     errors: [getErrorString(err)],
                     isLoading: false
                 });
@@ -52,6 +50,10 @@ class LoginForm extends Component {
                     disabled={this.props.messageState.isLoading}
                     fields={LoginForm.fields}
                     submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Login"}
+                    buttonChildren={<span style={{
+                        position: "absolute",
+                        right: 0
+                    }}><a onClick={this.props.onForgotPassword}>Forgot your password?</a></span>}
                 />
             </Fragment>
         );

@@ -165,7 +165,7 @@ class FormList extends Component {
                     <button
                         disabled={this.props.disabled}
                         ref={button => {this.submitButton = button;}}
-                        className="ui primary button"
+                        className="ui primary button mr-15"
                         onClick={this.handleSubmit}>{this.props.submitButtonHtml}</button>
                     {this.props.buttonChildren}
                 </form>

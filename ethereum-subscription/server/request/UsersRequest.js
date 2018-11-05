@@ -44,6 +44,10 @@ class UsersRequest extends Request {
     }
 
     async handlePost(){
+        if(this.req.params.param === "restorePassword"){
+            return this.restorePassword();
+        }
+
         return this.registerTempUser();
     };
 
@@ -74,10 +78,26 @@ class UsersRequest extends Request {
             .catch(err => this.responseHandler.sendNotFound(err))
     };
 
-    isEmailConfirmation(){
-        if(!this.req.params.param) return false;
+    async restorePassword(){
+        const {password} = this.req.body;
+        const tempUser = this.req.session.tempUser;
+        this.req.session.tempUser = {};
+        const hashedPassword = passwordHash.generate(password);
 
-        return this.req.params.param === this.req.session.tempUser.uuid;
+        console.log([
+            {tempUser},
+            {password},
+            {hashedPassword},
+            {where: {username: tempUser.username}}
+        ]);
+
+        return this.responseHandler.handlePromiseResponse(
+            this.model.update({password: hashedPassword}, {
+                where: {username: tempUser.username}
+            }).then(() => {
+                this.req.session.restorePassword = false;
+            })
+        );
     }
 
     async getUser(username){
@@ -104,6 +124,12 @@ class UsersRequest extends Request {
                 }
             })
             .catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    }
+
+    isEmailConfirmation(){
+        if(!this.req.params.param) return false;
+
+        return this.req.params.param === this.req.session.tempUser.uuid;
     }
 
     isValidUser(){

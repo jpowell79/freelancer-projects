@@ -1,6 +1,10 @@
 const axios = require("axios");
 const {urls, mailTypes} = require("../constants");
 
+const sendRestorePasswordMail = async ({username}) => {
+    return axios.post(`${urls.email}/${mailTypes.restorePassword}`, {username});
+};
+
 const sendSubscriptionCancelledMails = async ({
     subscriptionName,
     supplierEmail,
@@ -104,5 +108,6 @@ module.exports = {
     sendRequestSubscriptionMails,
     sendSubscriptionStartedMail,
     sendTrialStartedMail,
-    sendSubscriptionCancelledMails
+    sendSubscriptionCancelledMails,
+    sendRestorePasswordMail
 };
