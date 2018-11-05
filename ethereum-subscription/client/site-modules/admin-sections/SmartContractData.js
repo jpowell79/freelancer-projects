@@ -5,6 +5,7 @@ import SubscriptionContract from "../../../services/smart-contracts/Subscription
 import withMetamaskAccount from "../../hocs/withMetamaskAccount";
 import {LoaderSmall} from "../../modules/icons";
 import objects from "../../../services/datatypes/objects";
+import strings from "../../../services/datatypes/strings";
 import {getErrorString} from "../../services/utils";
 import SubscriptionTable from "../subscription/table/SubscriptionTable";
 import {SubscriptionTableHead} from "../subscription/table/SubsriptionTableHead";
@@ -17,7 +18,8 @@ import {hideOnTablet} from "../../services/constants/css";
 
 class SmartContractData extends Component {
     state = {
-        selectedContract: {}
+        selectedContract: {},
+        searchQuery: ""
     };
 
     setSubscriptionDetails = (web3, metamaskAccount, {
@@ -103,8 +105,15 @@ class SmartContractData extends Component {
     };
 
     filterContracts = () => {
+        const searchQuery = this.state.searchQuery.toLowerCase();
+
         return this.props.liveSubscriptionContracts
-            .filter(contract => !contract.subscriptionCancelled);
+            .filter(contract => !contract.subscriptionCancelled)
+            .filter(contract => (
+                strings.isDefined(searchQuery)
+                    ? contract.subscriptionName.toLowerCase().startsWith(searchQuery)
+                    : true
+            ));
     };
 
     render(){
@@ -129,7 +138,18 @@ class SmartContractData extends Component {
             return (
                 <Fragment>
                     <h2>Edit Smart Contract Data</h2>
-
+                    <Form className="mb-15">
+                        <Form.Field>
+                            <label>Search contracts</label>
+                            <input
+                                type="text"
+                                value={this.state.searchQuery}
+                                onChange={(event) => this.setState({
+                                    searchQuery: event.target.value
+                                })}
+                            />
+                        </Form.Field>
+                    </Form>
                     <SubscriptionTable
                         maxRows={20}
                         subscriptionContracts={this.filterContracts()}
