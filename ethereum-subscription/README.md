@@ -32,4 +32,4 @@ The site loads in some accounts by default. Check the list of users defined in [
     - **Services:** Contains other utilities and tools specific to the server.
     
 ## Database Design:
-![alt-text](./markdown/ethereum_er.png)
+![alt-text](./markdown/ethereum_database.png)

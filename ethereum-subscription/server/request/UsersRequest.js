@@ -1,11 +1,12 @@
 const Request = require("./Request");
-const {roles, paths} = require("../../services/constants/index");
+const {roles, paths, actions} = require("../../services/constants");
 const cookieSession = require("../services/cookieSession");
 const uuidv4 = require("uuid/v4");
 const passwordHash = require("password-hash");
 const Emailer = require("../services/email/Emailer");
 const FieldValidator = require("../../services/FieldValidator");
 const grecaptcha = require("../services/grecaptcha");
+const {Transaction} = require("sequelize");
 
 class UsersRequest extends Request {
     static filterUsers(userEntries){
@@ -44,20 +45,29 @@ class UsersRequest extends Request {
     }
 
     async handlePost(){
-        if(this.req.params.param === "restorePassword"){
-            return this.restorePassword();
-        }
+        const action = this.req.params.param ? this.req.params.param : "";
 
-        return this.registerTempUser();
+        switch(action){
+        case actions.restorePassword:
+            return this.restorePassword();
+        case actions.suspendSupplier:
+            return this.suspendSupplier();
+        case actions.unsuspendSupplier:
+            return this.unsuspendSupplier();
+        default:
+            return this.registerTempUser();
+        }
     };
 
     async handleGet(){
-        const username = this.req.params.param;
+        const action = this.req.params.param;
 
         if(this.isEmailConfirmation()){
             return this.createUser(this.req, this.res, this.sequelize);
-        } else if(username){
-            return this.getUser(username);
+        } else if(action === actions.getSuspendedSuppliers) {
+            return this.getSuspendedSuppliers();
+        } else if(action){
+            return this.getUser(action);
         }
 
         return this.getAllUsers();
@@ -78,18 +88,76 @@ class UsersRequest extends Request {
             .catch(err => this.responseHandler.sendNotFound(err))
     };
 
+    async getSuspendedSuppliers(){
+        return this.sequelize.models.suspendedUsers.findAll()
+            .then(users => {
+                if(this.isLoggedInAdmin()){
+                    return this.responseHandler
+                        .sendSuccess(UsersRequest.filterUsersAsAdmin(users));
+                } else {
+                    return this.responseHandler.sendSuccess([]);
+                }
+            })
+            .catch(err => this.responseHandler.sendSomethingWentWrong(err));
+    }
+
+    async suspendSupplier(){
+        const {username} = this.req.body;
+
+        if(!this.isLoggedInAdmin())
+            return this.responseHandler.sendUnauthorized();
+
+        return this.responseHandler.handlePromiseResponse(
+            this.sequelize.transaction({
+                isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
+            }, transaction => {
+                return this.model.findOne({
+                    where: {username},
+                    transaction
+                }).then(userRes => userRes.dataValues)
+                    .then(user => {
+                        if(user.role === roles.admin){
+                            throw new Error("You cannot suspend an admin account");
+                        }
+
+                        return this.sequelize.models.suspendedUsers.create(user, {transaction});
+                    })
+                    .then(() => this.model.destroy({
+                        where: {username},
+                        transaction
+                    }));
+            })
+        );
+    }
+
+    async unsuspendSupplier(){
+        const {username} = this.req.body;
+
+        if(!this.isLoggedInAdmin())
+            return this.responseHandler.sendUnauthorized();
+
+        return this.responseHandler.handlePromiseResponse(
+            this.sequelize.transaction({
+                isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
+            }, transaction => {
+                return this.sequelize.models.suspendedUsers.findOne({
+                    where: {username},
+                    transaction
+                }).then(userRes => userRes.dataValues)
+                    .then(user => this.model.create(user, {transaction}))
+                    .then(() => this.sequelize.models.suspendedUsers.destroy({
+                        where: {username},
+                        transaction
+                    }));
+            })
+        );
+    }
+
     async restorePassword(){
         const {password} = this.req.body;
         const tempUser = this.req.session.tempUser;
         this.req.session.tempUser = {};
         const hashedPassword = passwordHash.generate(password);
-
-        console.log([
-            {tempUser},
-            {password},
-            {hashedPassword},
-            {where: {username: tempUser.username}}
-        ]);
 
         return this.responseHandler.handlePromiseResponse(
             this.model.update({password: hashedPassword}, {

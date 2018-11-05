@@ -1,13 +1,12 @@
-const Sequelize = require("sequelize");
-
 class Models {
     constructor(sequelize){
-        this.Settings = require("../models/settings")(sequelize, Sequelize.DataTypes);
-        this.Subscribers = require("../models/subscribers")(sequelize, Sequelize.DataTypes);
-        this.SubscriptionTypes = require("../models/subscriptionTypes")(sequelize, Sequelize.DataTypes);
-        this.Subscriptions = require("../models/subscriptions")(sequelize, Sequelize.DataTypes);
-        this.SubscriptionContracts = require("../models/subscriptionContracts")(sequelize, Sequelize.DataTypes);
-        this.Users = require("../models/users")(sequelize, Sequelize.DataTypes);
+        this.Settings = require("./settings")(sequelize);
+        this.Subscribers = require("./subscribers")(sequelize);
+        this.SubscriptionTypes = require("./subscriptionTypes")(sequelize);
+        this.Subscriptions = require("./subscriptions")(sequelize);
+        this.SubscriptionContracts = require("./subscriptionContracts")(sequelize);
+        this.Users = require("./users").defineModel(sequelize);
+        this.SuspendedUsers = require("./suspendedUsers")(sequelize);
     }
 
     defineRelations(){
@@ -39,6 +38,7 @@ class Models {
             .then(() => this.SubscriptionContracts.sync())
             .then(() => this.Subscribers.sync())
             .then(() => this.Subscriptions.sync())
+            .then(() => this.SuspendedUsers.sync())
     }
 }
 

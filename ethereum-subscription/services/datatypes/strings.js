@@ -88,3 +88,18 @@ module.exports.toDateString = (date) => {
 
     return `${year}/${month}/${day}`;
 };
+
+module.exports.capitalizeFirstLetter = (string, all = false) => {
+    if(string.length === 0) return "";
+
+    const capitalize = (string) => {
+        const capitalizedFirstLetter = string.charAt(0).toUpperCase();
+        const restOfString = string.substring(1);
+
+        return `${capitalizedFirstLetter}${restOfString}`;
+    };
+
+    return (all)
+        ? string.split(" ").map(string => capitalize(string)).join(" ")
+        : capitalize(string)
+};

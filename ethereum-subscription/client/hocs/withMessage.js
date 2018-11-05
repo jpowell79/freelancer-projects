@@ -2,7 +2,7 @@ import React, {Component, Fragment} from "react";
 import {Message} from "semantic-ui-react";
 import validation from "../../services/validation";
 import {isDefined} from "../../services/datatypes/strings";
-import {getChildProps} from "../services/utils";
+import {getChildProps, getErrorString} from "../services/utils";
 
 const defaultInitialState = {
     successTitle: "Your changes have been saved successfully!",
@@ -41,6 +41,13 @@ export default (Module, initialState = defaultInitialState) => {
 
         setMessageState = async (state = {}) => {
             return this.promiseSetState((prevState) => Object.assign({}, prevState, state));
+        };
+
+        setStandardErrorState = async (err) => {
+            return this.setClearedMessageState({
+                errors: [getErrorString(err)],
+                isLoading: false,
+            });
         };
 
         hasFieldErrors = (additionalFields = {}) => {
@@ -119,6 +126,7 @@ export default (Module, initialState = defaultInitialState) => {
                     renderMessages={this.renderMessages}
                     setMessageState={this.setMessageState}
                     setClearedMessageState={this.setClearedMessageState}
+                    setStandardErrorState={this.setStandardErrorState}
                     messageState={this.state}
                     hasFieldErrors={this.hasFieldErrors}
                     setIsLoading={this.setIsLoading}

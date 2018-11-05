@@ -13,6 +13,7 @@ export default (loadOptions = {}) => (App) => {
                     settings: true,
                     user: true,
                     users: true,
+                    suspendedUsers: true,
                     subscriptionTypes: true,
                     subscribers: true,
                     subscriptionContracts: true,

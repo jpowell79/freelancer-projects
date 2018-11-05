@@ -20,11 +20,14 @@ import {
     AMOUNT_OF_SUBSCRIPTION_DATA_TO_LOAD_PER_BATCH,
     USE_DUMMY_SUBSCRIPTION_DATA
 } from "../clientSettings";
+import DatabaseDataLoader from "../services/loaders/DatabaseDataLoader";
+import UnsuspendSuppliers from "../site-modules/admin-sections/UnsuspendSuppliers";
 
 class Admin extends Component {
     static sections = {
         addContract: "Add new contract to site",
         suspendSuppliers: "Suspend Suppliers",
+        unsuspendSuppliers: "Unsuspend Suppliers",
         massEmail: "Mass Email to Suppliers",
         backupDatabase: "Backup Database",
         addContractType: "Add new contract type",
@@ -49,12 +52,17 @@ class Admin extends Component {
         if(!this.hasLoadedAllContracts){
             return this.props.subscriptionContractLoader.loadAllContracts();
         }
+
+        return new DatabaseDataLoader(this.props.dispatch, {
+            suspendedUsers: true
+        }).loadFromClientSide();
     }
 
     renderSection = (active) => {
         const {
             addContract,
             suspendSuppliers,
+            unsuspendSuppliers,
             massEmail,
             backupDatabase,
             addContractType,
@@ -69,6 +77,8 @@ class Admin extends Component {
             return <AddContract {...this.props}/>;
         case suspendSuppliers:
             return <SuspendSuppliers {...this.props}/>;
+        case unsuspendSuppliers:
+            return <UnsuspendSuppliers {...this.props}/>
         case massEmail:
             return <MassEmail {...this.props}/>;
         case backupDatabase:

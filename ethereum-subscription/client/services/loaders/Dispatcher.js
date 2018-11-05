@@ -1,5 +1,5 @@
 import axios from "axios";
-import urls from "../../../services/constants/urls";
+import {urls, actions} from "../../../services/constants";
 import {
     loadSettings,
     updateMetamaskAccount,
@@ -11,7 +11,8 @@ import {
     updateUser,
     updateUsers,
     updateTrialSubscriptionDetails,
-    updateSubscriptionDetails
+    updateSubscriptionDetails,
+    updateSuspendedUsers
 } from "../../redux/actions";
 import {isServer, serverRequest} from "../../../services/utils";
 import parser from "../parser";
@@ -113,6 +114,13 @@ class Dispatcher {
             this.dispatch(updateMetamaskAccount({}));
         });
     };
+
+    dispatchUpdateSuspendedUsers(){
+        return this.request({
+            url: `${urls.users}/${actions.getSuspendedSuppliers}`,
+            callback: (response) => this.dispatch(updateSuspendedUsers(response.data))
+        });
+    }
 }
 
 export default Dispatcher;

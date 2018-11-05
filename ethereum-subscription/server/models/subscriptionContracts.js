@@ -1,4 +1,6 @@
-module.exports = (sequelize, DataTypes) => (
+const {DataTypes} = require("sequelize");
+
+module.exports = (sequelize) => (
     sequelize.define("subscriptionContracts", {
         id: {
             type: DataTypes.INTEGER,

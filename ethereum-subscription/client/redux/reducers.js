@@ -26,7 +26,8 @@ export const initialState = {
     subscribers: [],
     subscriptions: [],
     user: {},
-    users: []
+    users: [],
+    suspendedUsers: []
 };
 
 export const subscriptionDetails = (subscriptionDetails = {}, action) => {
@@ -119,6 +120,15 @@ export const subscriptionTypes = (subscriptionTypes = [], action) => {
     }
 };
 
+export const suspendedUsers = (suspendedUsers = [], action) => {
+    switch(action.type){
+    case constants.UPDATE_SUSPENDED_USERS:
+        return action.payload;
+    default:
+        return suspendedUsers;
+    }
+};
+
 export const users = (users = [], action) => {
     switch(action.type){
     case constants.UPDATE_USERS:
@@ -160,6 +170,7 @@ export default combineReducers({
     metamaskAccount,
     user,
     users,
+    suspendedUsers,
     editContract,
     subscriptionContracts,
     liveSubscriptionContracts,

@@ -1,5 +1,17 @@
 const axios = require("axios");
-const {urls, roles} = require("../constants");
+const {urls, roles, actions} = require("../constants");
+
+const getSuspendedSuppliers = async () => {
+    return axios.post(`${urls.users}/${actions.suspendSupplier}`);
+};
+
+const suspendSupplier = async ({username}) => {
+    return axios.post(`${urls.users}/${actions.suspendSupplier}`, {username});
+};
+
+const unsuspendSupplier = async ({username}) => {
+    return axios.post(`${urls.users}/${actions.unsuspendSupplier}`, {username});
+};
 
 const restorePassword = ({password}) => {
     return axios.post(`${urls.users}/restorePassword`, {password});
@@ -20,7 +32,7 @@ const registerSupplier = async ({username, email, password, walletAddress}) => {
     });
 };
 
-const suspendSupplier = async ({username}) => {
+const removeSupplier = async ({username}) => {
     return axios.delete(urls.users, {
         params: {username}
     });
@@ -37,8 +49,11 @@ const updateSupplier = async ({originalUsername, username, email, password}) => 
 };
 
 module.exports = {
-    registerSupplier,
+    getSuspendedSuppliers,
     suspendSupplier,
+    unsuspendSupplier,
+    registerSupplier,
+    removeSupplier,
     getSupplier,
     updateSupplier,
     restorePassword

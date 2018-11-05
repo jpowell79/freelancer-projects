@@ -8,6 +8,7 @@ class DatabaseDataLoader {
         settings: false,
         user: false,
         users: false,
+        suspendedUsers: false,
         subscriptionTypes: false,
         subscribers: false,
         subscriptionContracts: false,
@@ -40,6 +41,10 @@ class DatabaseDataLoader {
 
         if(this.options.users && storeState.users.length === 0){
             promises.push(this.dispatcher.dispatchUpdateUsers());
+        }
+
+        if(this.options.suspendedUsers && storeState.suspendedUsers.length === 0){
+            promises.push(this.dispatcher.dispatchUpdateSuspendedUsers());
         }
 
         if(this.options.subscriptionTypes && storeState.subscriptionTypes.length === 0){

@@ -57,6 +57,11 @@ export const updateUsers = (users) => ({
     payload: users
 });
 
+export const updateSuspendedUsers = (suspendedUsers) => ({
+    type: constants.UPDATE_SUSPENDED_USERS,
+    payload: suspendedUsers
+});
+
 export const updateUser = (user) => ({
     type: constants.UPDATE_USER,
     payload: user
