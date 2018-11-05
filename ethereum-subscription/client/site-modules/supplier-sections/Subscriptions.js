@@ -8,6 +8,8 @@ import {selectEditContract} from "../../redux/actions";
 import {ContractStatus} from "../ContractStatus";
 import {SubscriptionTableHead} from "../subscription/table/SubsriptionTableHead";
 import {SubscriptionTableBody} from "../subscription/table/SubscriptionTableBody";
+import {Moment} from "../../modules/Moment";
+import {hideOnMobile, hideOnTablet} from "../../services/constants/css";
 
 class Subscriptions extends Component {
     static mapStateToProps = ({editContract, subscriptionDetails, trialSubscriptionDetails}) => ({
@@ -33,12 +35,36 @@ class Subscriptions extends Component {
             >
                 <SubscriptionTableHead
                     columns={{
-                        supplier: <th key="status">Status</th>
+                        reputation: null,
+                        freeTrial: <th key="freeTrial">Trial</th>,
+                        supplier: <th key="status">Status</th>,
+                        timestamp: <th className={hideOnTablet()} key="timestamp">Timestamp</th>,
+                        contractName: (
+                            <th className={hideOnMobile()} key="contractName">Contract Name</th>
+                        ),
+                        walletAge: null,
+                        moreInfo: null,
+                        actions: <th key="actions" className="no-sort"/>
                     }}
                 />
                 <SubscriptionTableBody
                     getColumns={(contract) => ({
-                        moreInfo: (
+                        reputation: null,
+                        timestamp: (
+                            <td  className={hideOnTablet()} key="timestamp">
+                                <Moment unitTime={contract.creationTime}/>
+                            </td>
+                        ),
+                        contractName: (
+                            <td className={hideOnMobile()} key="contractName" style={{
+                                wordBreak: "break-word"
+                            }}>
+                                {contract.subscriptionName}
+                            </td>
+                        ),
+                        walletAge: null,
+                        moreInfo: null,
+                        actions: (
                             <td key="moreInfo">
                                 {(contract.subscriptionCancelled)
                                     ? (
@@ -62,7 +88,7 @@ class Subscriptions extends Component {
                             <td key="status">
                                 <ContractStatus contract={contract}/>
                             </td>
-                        )
+                        ),
                     })}
                 />
             </SubscriptionTable>
