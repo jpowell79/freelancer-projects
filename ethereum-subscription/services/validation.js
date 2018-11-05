@@ -149,7 +149,7 @@ module.exports.getGrecaptchaError = () => {
         if(grecaptcha === undefined){
             return "Error loading ReCAPTCHA. Please try again later.";
         } else if(!strings.isDefined(grecaptcha.getResponse())){
-            return "Please verify that you\"re not a robot.";
+            return "Please verify that you're not a robot.";
         }
     }
 

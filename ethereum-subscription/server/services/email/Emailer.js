@@ -334,7 +334,7 @@ class Emailer {
     getFullUrl(pathname){
         return url.format({
             protocol: this.req.protocol,
-            host: serverSettings.EMAIL_URL_HOST,
+            host: this.req.get("host"),
             pathname
         });
     }
