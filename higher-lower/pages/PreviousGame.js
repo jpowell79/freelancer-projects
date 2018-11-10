@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {connect} from "react-redux";
 import Page from "../site-components/containers/Page";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
 import withContracts from "../site-components/hocs/withContracts";
@@ -6,8 +7,11 @@ import {compose} from "redux";
 import settings from "../settings";
 import {Address} from "../site-components/Address";
 import {Moment} from "../site-components/Moment";
+import {Space} from "../components/Space";
 
 class PreviousGame extends Component {
+    static mapStateToProps = ({dangerMode}) => ({dangerMode});
+
     renderPreviousContractInformation = (previousContract) => {
         return (
             <table className="list-table">
@@ -40,7 +44,7 @@ class PreviousGame extends Component {
         const {previousContract} = this.props;
 
         return (
-            <Page contentClass="full-width">
+            <Page header={<Space danger={this.props.dangerMode}/>} contentClass="full-width">
                 <div className="glass container bg-color-white br-5">
                     <h1 className="normal display-6">Previous Game</h1>
                     {(Object.keys(previousContract).length === 0)
@@ -54,5 +58,6 @@ class PreviousGame extends Component {
 
 export default compose(
     withMetamaskAccount,
-    withContracts
+    withContracts,
+    connect(PreviousGame.mapStateToProps)
 )(PreviousGame);

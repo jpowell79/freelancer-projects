@@ -1,5 +1,13 @@
 import constants from "./constants";
 
+export const turnOnDangerMode = () => ({
+    type: constants.TURN_ON_DANGER_MODE
+});
+
+export const turnOffDangerMode = () => ({
+    type: constants.TURN_OFF_DANGER_MODE
+});
+
 export const updateMetamaskAccount = (metamaskAccount) => ({
     type: constants.UPDATE_METAMASK_ACCOUNT,
     payload: metamaskAccount

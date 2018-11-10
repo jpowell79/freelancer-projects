@@ -1,9 +1,10 @@
 import React, {Component, Fragment} from "react";
 import {compose} from "redux";
+import {connect} from "react-redux";
 import Page from "../site-components/containers/Page";
 import withContracts from "../site-components/hocs/withContracts";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
-import {updateTemplateContract} from "../redux/actions";
+import {turnOffDangerMode, turnOnDangerMode, updateTemplateContract} from "../redux/actions";
 import {parseErrorString} from "../services/utils";
 import AlertOptionPane from "../components/Alert/AlertOptionPane";
 import Alerts from "../site-components/Alerts";
@@ -13,21 +14,21 @@ import {GameDetails} from "../site-components/GameDetails";
 import {AdSidebar} from "../site-components/AdSidebar";
 import {
     LoginMessage,
-    TransactionMessage,
-    OraclizeErrorMessage
+    TransactionMessage
 } from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/StartNewGame";
 import {Space} from "../components/Space";
 
 class Index extends Component {
+    static mapStateToProps = ({dangerMode}) => ({dangerMode});
+
     constructor(props){
         super();
 
         this.state = {
             isHandlingTransaction: false,
-            oraclizeError: false,
-            dangerMode: false
+            oraclizeError: !props.templateContract.randomNumberRetrieved
         };
 
         this.defaultGuess = (props.templateContract.lowValue + (
@@ -39,6 +40,8 @@ class Index extends Component {
         this.props.addContractUpdateTimer();
     }
 
+
+
     timerIsStopped = () => {
         return Date.now() > this.props.templateContract.gameEndTime;
     };
@@ -48,7 +51,7 @@ class Index extends Component {
             guessedNumber: guess,
             walletAddress: this.props.metamaskAccount.address
         }).then((transaction) => this.handleTransaction(transaction, parseInt(guess, 10)))
-            .then(() => this.setState({dangerMode: false}))
+            .then(() => this.props.dispatch(turnOffDangerMode()))
             .catch(this.handleTransactionError);
     };
 
@@ -85,7 +88,7 @@ class Index extends Component {
             templateContract.nextGuess > 1 &&
             templateContract.gameEndTime > 0 &&
             Date.now() > templateContract.gameEndTime
-        ) || templateContract.guessedCorrectly;
+        ) || templateContract.guessedCorrectly || this.state.oraclizeError;
     };
 
     calcDefaultGuess = () => {
@@ -95,26 +98,24 @@ class Index extends Component {
     };
 
     handleStartNewGame = () => {
-        this.setState({isHandlingTransaction: true, dangerMode: false}, () => {
+        this.props.dispatch(turnOffDangerMode());
+        this.setState({isHandlingTransaction: true}, () => {
             const startNewGameMethod = (this.state.oraclizeError)
                 ? this.props.templateContractRequest.startNewGameError
                 : this.props.templateContractRequest.startNewGame;
 
-            this.setState({oraclizeError: false}, () => {
-                return startNewGameMethod(this.props.metamaskAccount.address)
-                    .then(transaction =>
-                        Dispatcher.updateContracts(this.props.dispatch)
-                            .then(() => transaction)
-                    ).then(transaction => {
-                        if(!this.props.templateContract.randomNumberWasRetrieved){
-                            this.setState({oraclizeError: true});
-                        } else {
-                            Alerts.showNewGameCreated(transaction);
-                        }
-                    })
-                    .catch(this.handleTransactionError)
-                    .finally(() => this.setState({isHandlingTransaction: false}));
-            });
+            return startNewGameMethod(this.props.metamaskAccount.address)
+                .then(transaction =>
+                    Dispatcher.updateContracts(this.props.dispatch).then(() => transaction)
+                ).then(transaction => {
+                    this.setState({
+                        oraclizeError: !this.props.templateContract.randomNumberRetrieved
+                    });
+
+                    Alerts.showNewGameCreated(transaction);
+                })
+                .catch(this.handleTransactionError)
+                .finally(() => this.setState({isHandlingTransaction: false}));
         });
     };
 
@@ -123,7 +124,7 @@ class Index extends Component {
         const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
 
         return (
-            <Page header={<Space danger={this.state.dangerMode}/>} sidebar={<AdSidebar/>}>
+            <Page header={<Space danger={this.props.dangerMode}/>} sidebar={<AdSidebar/>}>
                 <div className="glass container bg-color-white br-5">
                     <h2 className="display-6">
                         <a href={`${settings.etherscanUrl}/address/${templateContract.address}`}
@@ -131,11 +132,9 @@ class Index extends Component {
                             Game Number {factoryContract.count}
                         </a>
                     </h2>
-                    {(this.state.oraclizeError) && (
-                        <OraclizeErrorMessage/>
-                    )}
                     {(this.gameIsOver()) ? (
                         <StartNewGame
+                            oraclizeError={this.state.oraclizeError}
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
                             onClick={this.handleStartNewGame}
@@ -147,9 +146,9 @@ class Index extends Component {
                                 metamaskAddress={metamaskAccount.address}
                                 counterIsStopped={this.timerIsStopped()}
                                 onCounterStop={this.handleGameOver}
-                                hasNotified={this.state.dangerMode || this.timerIsStopped()}
+                                hasNotified={this.props.dangerMode || this.timerIsStopped()}
                                 notifyAt={1000 * 60 * 2}
-                                notify={() => this.setState({dangerMode: true})}
+                                notify={() => this.props.dispatch(turnOnDangerMode())}
                             />
                             {(!isLoggedIntoMetamask) ? (
                                 <div className="wrapper-4">
@@ -173,4 +172,8 @@ class Index extends Component {
     }
 }
 
-export default compose(withMetamaskAccount, withContracts)(Index);
+export default compose(
+    withMetamaskAccount,
+    withContracts,
+    connect(Index.mapStateToProps)
+)(Index);

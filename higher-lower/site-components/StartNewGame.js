@@ -1,9 +1,9 @@
 import React, {Fragment} from "react";
 import {Message} from "../components/containers/Message";
 import {Address} from "./Address";
-import {LoginMessage} from "./messages";
+import {LoginMessage, OraclizeErrorMessage} from "./messages";
 
-export const StartNewGame = ({gameWinner, metamaskAddress, onClick}) =>{
+export const StartNewGame = ({oraclizeError, gameWinner, metamaskAddress, onClick}) =>{
     const startNewGameButton = (title) =>{
         return (
             <button
@@ -12,6 +12,15 @@ export const StartNewGame = ({gameWinner, metamaskAddress, onClick}) =>{
             >{title}</button>
         );
     };
+
+    if(oraclizeError){
+        return (
+            <Fragment>
+                <OraclizeErrorMessage/>
+                {startNewGameButton("Start New Game")}
+            </Fragment>
+        );
+    }
 
     return (gameWinner === metamaskAddress) ? (
         <div className="wrapper-4">

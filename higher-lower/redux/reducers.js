@@ -5,7 +5,19 @@ export const initialState = {
     factoryContract: {},
     templateContract: {},
     previousContract: {},
-    metamaskAccount: {}
+    metamaskAccount: {},
+    dangerMode: false
+};
+
+export const dangerMode = (dangerMode = false, action) => {
+    switch(action.type){
+    case constants.TURN_OFF_DANGER_MODE:
+        return false;
+    case constants.TURN_ON_DANGER_MODE:
+        return true;
+    default:
+        return dangerMode;
+    }
 };
 
 export const metamaskAccount = (metamaskAccount = {}, action) => {
@@ -48,5 +60,6 @@ export default combineReducers({
     factoryContract,
     templateContract,
     metamaskAccount,
-    previousContract
+    previousContract,
+    dangerMode
 });

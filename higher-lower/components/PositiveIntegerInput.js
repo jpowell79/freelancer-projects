@@ -57,7 +57,6 @@ class PositiveIntegerInput extends Component {
         } else {
             let {lowestDigit, highestDigit} = this.props;
             let keyPressed = parseFloat(event.target.value);
-            console.log(highestDigit);
 
             if(isNaN(keyPressed)){
                 this.props.onIncorrectInput(event);
