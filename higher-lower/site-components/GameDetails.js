@@ -13,6 +13,9 @@ export const GameDetails = ({
     counterIsStopped,
     onCounterStop = () => {},
     gameEndTime,
+    hasNotified,
+    notify,
+    notifyAt,
     balance
 }) => {
     return (
@@ -47,6 +50,9 @@ export const GameDetails = ({
                         isStopped={counterIsStopped}
                         onStop={onCounterStop}
                         stop={new Date(gameEndTime)}
+                        hasNotified={hasNotified}
+                        notifyAt={notifyAt}
+                        notify={notify}
                     />
                 </HideFragment>
             </div>

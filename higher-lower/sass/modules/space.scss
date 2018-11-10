@@ -8,6 +8,25 @@ body {
     animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+
+    &.danger {
+        animation-name: danger-pulse;
+    }
+}
+
+@keyframes danger-pulse {
+    from {
+        background: #000;
+    }
+    25% {
+        background-color: #003;
+    }
+    50% {
+        background-color: #330000;
+    }
+    to {
+        background: #000;
+    }
 }
 
 @keyframes pulse {
@@ -39,6 +58,16 @@ body {
     animation-iteration-count: infinite;
     animation-timing-function: linear;
     z-index: -1;
+
+    &.danger {
+        animation-name: danger-pulse;
+    }
+}
+
+@media (max-width: $mediaMedium) {
+    #space {
+        height: 150%;
+    }
 }
 
 #fog,
@@ -56,6 +85,10 @@ body {
     animation-duration: 30s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
+
+    &.danger {
+        background: url(/static/images/space/red-fog.png) repeat-x 0 center;
+    }
 }
 
 #fog-2 {

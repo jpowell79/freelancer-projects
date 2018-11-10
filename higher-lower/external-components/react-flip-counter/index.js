@@ -23,7 +23,19 @@ class Countdown extends React.Component {
         this.interval = window.setInterval(() =>{
             this.setState({diff: this.getDiffObject()});
             this.isTimeOver() && this.stopCount();
+
+            if(this.isTimeToNotify()){
+                this.notify();
+            }
+
+            this.isTimeOver() && this.stopCount();
         }, 1000);
+    }
+
+    notify(){
+        if(!this.props.hasNotified){
+            this.props.notify();
+        }
     }
 
     /**
@@ -57,6 +69,12 @@ class Countdown extends React.Component {
             minutes: m % 60,
             seconds: s % 60
         };
+    }
+
+    isTimeToNotify(){
+        if(!this.props.notifyAt) return false;
+
+        return (new Date()).getTime() + this.props.notifyAt > this.props.stop.getTime();
     }
 
     /**

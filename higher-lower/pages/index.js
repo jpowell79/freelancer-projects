@@ -18,6 +18,7 @@ import {
 } from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/StartNewGame";
+import {Space} from "../components/Space";
 
 class Index extends Component {
     constructor(props){
@@ -25,7 +26,8 @@ class Index extends Component {
 
         this.state = {
             isHandlingTransaction: false,
-            oraclizeError: false
+            oraclizeError: false,
+            dangerMode: false
         };
 
         this.defaultGuess = (props.templateContract.lowValue + (
@@ -46,6 +48,7 @@ class Index extends Component {
             guessedNumber: guess,
             walletAddress: this.props.metamaskAccount.address
         }).then((transaction) => this.handleTransaction(transaction, parseInt(guess, 10)))
+            .then(() => this.setState({dangerMode: false}))
             .catch(this.handleTransactionError);
     };
 
@@ -92,7 +95,7 @@ class Index extends Component {
     };
 
     handleStartNewGame = () => {
-        this.setState({isHandlingTransaction: true}, () => {
+        this.setState({isHandlingTransaction: true, dangerMode: false}, () => {
             const startNewGameMethod = (this.state.oraclizeError)
                 ? this.props.templateContractRequest.startNewGameError
                 : this.props.templateContractRequest.startNewGame;
@@ -120,7 +123,7 @@ class Index extends Component {
         const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
 
         return (
-            <Page sidebar={<AdSidebar/>}>
+            <Page header={<Space danger={this.state.dangerMode}/>} sidebar={<AdSidebar/>}>
                 <div className="glass container bg-color-white br-5">
                     <h2 className="display-6">
                         <a href={`${settings.etherscanUrl}/address/${templateContract.address}`}
@@ -144,6 +147,9 @@ class Index extends Component {
                                 metamaskAddress={metamaskAccount.address}
                                 counterIsStopped={this.timerIsStopped()}
                                 onCounterStop={this.handleGameOver}
+                                hasNotified={this.state.dangerMode || this.timerIsStopped()}
+                                notifyAt={1000 * 60 * 2}
+                                notify={() => this.setState({dangerMode: true})}
                             />
                             {(!isLoggedIntoMetamask) ? (
                                 <div className="wrapper-4">

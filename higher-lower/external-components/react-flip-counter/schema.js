@@ -5,7 +5,10 @@ export default {
         stop: PropTypes.instanceOf(Date),
         onStart: PropTypes.func,
         onStop: PropTypes.func,
-        isStopped: PropTypes.bool
+        isStopped: PropTypes.bool,
+        notifyAt: PropTypes.number,
+        notify: PropTypes.func,
+        hasNotified: PropTypes.bool
     },
 
     defaults: {
