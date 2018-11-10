@@ -1,5 +1,5 @@
 import React, {Fragment} from "react";
-import {AdContainer} from "./containers/AdContainer";
+import {AdContainer} from "../containers/AdContainer";
 
 export const AdSidebar = () => {
     return (

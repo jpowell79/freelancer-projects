@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {joinClassNames} from "../services/className";
+import {joinClassNames} from "../../../ethereum-subscription/client/services/className";
 import Link from "next/link";
 import {withRouter} from "next/router";
 

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import Page from "../site-components/containers/Page";
+import Page from "../site-components/page/Page";
 import {Space} from "../components/Space";
 
 class Details extends Component {

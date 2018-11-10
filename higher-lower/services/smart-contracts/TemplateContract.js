@@ -2,6 +2,20 @@ import Contract from "./Contract";
 import {templateAbi} from "./templateAbi";
 
 class TemplateContract extends Contract {
+    static hasContractAddress = [];
+    static instance = null;
+
+    static getInstance = (address) => {
+        if(TemplateContract.hasContractAddress[address]){
+            return TemplateContract.instance;
+        }
+
+        TemplateContract.instance = new TemplateContract(address);
+        TemplateContract.hasContractAddress[address] = true;
+
+        return TemplateContract.instance;
+    };
+
     constructor(address){
         super(templateAbi, address);
     }

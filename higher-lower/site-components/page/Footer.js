@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {SocialMenu} from "../SocialMenu";
+import {SocialMenu} from "../menus/SocialMenu";
 
 class Footer extends Component {
     render(){

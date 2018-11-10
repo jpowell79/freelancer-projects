@@ -1,7 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {compose} from "redux";
 import {connect} from "react-redux";
-import Page from "../site-components/containers/Page";
+import Page from "../site-components/page/Page";
 import withContracts from "../site-components/hocs/withContracts";
 import withMetamaskAccount from "../components/hocs/withMetamaskAccount";
 import {turnOffDangerMode, turnOnDangerMode, updateTemplateContract} from "../redux/actions";
@@ -9,15 +9,15 @@ import {parseErrorString} from "../services/utils";
 import AlertOptionPane from "../components/Alert/AlertOptionPane";
 import Alerts from "../site-components/Alerts";
 import Dispatcher from "../services/Dispatcher";
-import GuessForm from "../site-components/GuessForm";
-import {GameDetails} from "../site-components/GameDetails";
-import {AdSidebar} from "../site-components/AdSidebar";
+import GuessForm from "../site-components/containers/GuessForm";
+import {GameDetails} from "../site-components/containers/GameDetails";
+import {AdSidebar} from "../site-components/images/AdSidebar";
 import {
     LoginMessage,
     TransactionMessage
 } from "../site-components/messages";
 import settings from "../settings";
-import {StartNewGame} from "../site-components/StartNewGame";
+import {StartNewGame} from "../site-components/containers/StartNewGame";
 import {Space} from "../components/Space";
 
 class Index extends Component {

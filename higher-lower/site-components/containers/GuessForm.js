@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
-import PositiveIntegerInput from "../components/PositiveIntegerInput";
-import {LoaderTiny} from "../components/icons";
+import PositiveIntegerInput from "../../components/PositiveIntegerInput";
+import {LoaderTiny} from "../../components/icons";
 import PropTypes from "prop-types";
-import {Message} from "../components/containers/Message";
-import {TransactionMessage} from "./messages";
+import {Message} from "../../components/containers/Message";
+import {TransactionMessage} from "../messages";
 
 class GuessForm extends Component {
     static propTypes = {

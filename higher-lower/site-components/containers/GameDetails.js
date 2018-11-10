@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
-import {Address} from "./Address";
-import HideFragment from "../components/containers/HideFragment";
-import Counter from "../external-components/react-flip-counter";
+import {Address} from "../Address";
+import HideFragment from "../../components/containers/HideFragment";
+import Counter from "../../external-components/react-flip-counter/index";
 
 export const GameDetails = ({
     nextGuess,

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import MainMenu from "../MainMenu";
-import {Logo} from "../Logo";
+import MainMenu from "../menus/MainMenu";
+import {Logo} from "../images/Logo";
 
 class Header extends Component {
     render(){
