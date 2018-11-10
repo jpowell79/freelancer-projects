@@ -6,7 +6,7 @@ import Dispatcher from "../../../services/loaders/Dispatcher";
 import {selectEditContract} from "../../../redux/actions";
 import email from "../../../../services/api/email";
 import ContractQuery from "../../../services/ContractQuery";
-import {EditSubscriptionMessage} from "../../EditSubscriptionMessage";
+import {EditSubscriptionMessage} from "../../messages/EditSubscriptionMessage";
 
 export default ({
     editContract,

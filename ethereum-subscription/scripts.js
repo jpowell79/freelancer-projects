@@ -17,23 +17,23 @@ const readScripts = () => {
         .reduce((accumulator, file) => Object.assign({}, accumulator, file));
 };
 
-const getValidatedArgument = (arguments) => {
+const getValidatedArgument = (args) => {
     const argument = process.argv[2];
 
-    if (process.argv.length < 3 || !arguments.includes(argument)) {
-        printHelp(arguments);
+    if (process.argv.length < 3 || !args.includes(argument)) {
+        printHelp(args);
     }
 
     return argument;
 };
 
-const printHelp = (arguments) => {
+const printHelp = (args) => {
     let options = '';
 
-    arguments.forEach((arg, i) => {
+    args.forEach((arg, i) => {
         options += arg;
 
-        if (i !== arguments.length - 1) {
+        if (i !== args.length - 1) {
             options += '|';
         }
     });

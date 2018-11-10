@@ -4,7 +4,7 @@ import withMessage from "../../hocs/withMessage";
 import PropTypes from "prop-types";
 import {LoaderTiny} from "../../modules/icons";
 import {connect} from "react-redux";
-import {UserDropdown} from "../UsersDropdown";
+import {UserDropdown} from "../dropdowns/UsersDropdown";
 import roles from "../../../services/constants/roles";
 
 class AddContractForm extends Component {

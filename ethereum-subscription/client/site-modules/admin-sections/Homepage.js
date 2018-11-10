@@ -3,7 +3,7 @@ import {Form} from "semantic-ui-react";
 import FileInput from "../../modules/FileInput";
 import ColorPicker from "../../modules/ColorPicker";
 import withSettingsEditor from "../../hocs/withSettingsEditor";
-import {AnimationDropdown} from "../AnimationDropdown";
+import {AnimationDropdown} from "../dropdowns/AnimationDropdown";
 
 class Homepage extends Component {
     constructor(props){

@@ -1,13 +1,13 @@
 import React, {Component, Fragment} from "react";
 import Link from "next/link";
 import {withRouter} from "next/router";
-import {MobileMenuIcon} from "../modules/icons";
+import {MobileMenuIcon} from "../../modules/icons";
 import $ from "jquery";
-import {paths, roles} from "../../services/constants";
+import {paths, roles} from "../../../services/constants/index";
 import {connect} from "react-redux";
-import {hideOnMobile} from "../services/constants/css";
-import sessions from "../../services/api/sessions";
-import objects from "../../services/datatypes/objects";
+import {hideOnMobile} from "../../services/constants/css";
+import sessions from "../../../services/api/sessions";
+import objects from "../../../services/datatypes/objects";
 
 class MainMenu extends Component {
     static mapStateToProps = ({user, settings}) => ({user, settings});

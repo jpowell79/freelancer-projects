@@ -1,6 +1,6 @@
 import React from 'react';
-import {joinClassNames} from "../services/className";
-import {Github, Medium, Reddit, Telegram, Twitter} from "../modules/icons";
+import {joinClassNames} from "../../services/className";
+import {Github, Medium, Reddit, Telegram, Twitter} from "../../modules/icons";
 
 export const SocialMenu = ({className = '', ...props}) => {
     return (

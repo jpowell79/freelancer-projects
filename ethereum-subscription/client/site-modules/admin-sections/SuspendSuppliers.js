@@ -6,13 +6,14 @@ import {connect} from "react-redux";
 import users from "../../../services/api/users";
 import DatabaseDataLoader from "../../services/loaders/DatabaseDataLoader";
 import {SuspendTable} from "../SuspendTable";
+import AlertOptionPane from "../../services/Alert/AlertOptionPane";
 
 class SuspendSuppliers extends Component {
     static mapStateToProps = ({users}) => ({
         suppliers: users.filter(user => user.role === roles.supplier)
     });
 
-    handleSuspend = async (username) => {
+    suspend = async (username) => {
         return this.props.setClearedMessageState({isLoading: true})
             .then(() => users.suspendSupplier({username}))
             .then(() => new DatabaseDataLoader(this.props.dispatch, {
@@ -24,7 +25,19 @@ class SuspendSuppliers extends Component {
                 showSuccess: true,
                 successTitle: "The supplier was suspended successfully."
             }))
-            .catch(err => this.props.setStandardErrorState(err))
+            .catch(err => this.props.setStandardErrorState(err));
+    };
+
+    confirmSuspend = async (username) => {
+        AlertOptionPane.showWarningAlert({
+            title: `Do you really want to suspend ${username}?`,
+            message: `All information related to ${username} will be removed if you do this.`,
+            onConfirm: (event, removeAlert) => {
+                removeAlert();
+                return this.suspend(username);
+            },
+            onCancel: (event, removeAlert) => removeAlert()
+        });
     };
 
     render(){
@@ -40,7 +53,7 @@ class SuspendSuppliers extends Component {
                         <td>
                             <button
                                 className="ui bg-color-uiRed color-white button"
-                                onClick={() => this.handleSuspend(supplier.username)}>
+                                onClick={() => this.confirmSuspend(supplier.username)}>
                                 Suspend
                             </button>
                         </td>

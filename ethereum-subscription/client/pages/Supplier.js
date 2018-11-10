@@ -15,7 +15,7 @@ import RequestContract from "../site-modules/supplier-sections/RequestContract";
 import Subscriptions from "../site-modules/supplier-sections/Subscriptions";
 import {classNames, joinClassNames} from "../services/className";
 import {USE_DUMMY_SUBSCRIPTION_DATA} from "../clientSettings";
-import {LoginMessage} from "../site-modules/LoginMessage";
+import {LoginMessage} from "../site-modules/messages/LoginMessage";
 import Dispatcher from "../services/loaders/Dispatcher";
 
 class Supplier extends Component {

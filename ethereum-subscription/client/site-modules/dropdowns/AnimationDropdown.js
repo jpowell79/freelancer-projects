@@ -1,5 +1,5 @@
 import React from "react";
-import {animationTypes} from "../services/constants/animationTypes";
+import {animationTypes} from "../../services/constants/animationTypes";
 import {Dropdown} from "semantic-ui-react";
 
 export const AnimationDropdown = ({...props}) => {
