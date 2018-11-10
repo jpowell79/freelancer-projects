@@ -4,6 +4,7 @@
 $spaceSize: 300vh;
 
 body {
+    position: relative;
     animation-name: pulse;
     animation-duration: 30s;
     animation-iteration-count: infinite;
@@ -47,10 +48,11 @@ body {
 #space {
     overflow: hidden;
     position: absolute;
-    top: 0;
+    top: -20px;
     left: 0;
     right: 0;
-    bottom: 0;
+    bottom: -20px;
+    min-height: 120vh;
     background: #000;
     color: rgba(0, 0, 0, 0);
     animation-name: pulse;
@@ -61,12 +63,6 @@ body {
 
     &.danger {
         animation-name: danger-pulse;
-    }
-}
-
-@media (max-width: $mediaMedium) {
-    #space {
-        height: 150%;
     }
 }
 
