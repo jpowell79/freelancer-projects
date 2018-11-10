@@ -11,7 +11,11 @@ import Dispatcher from "../services/Dispatcher";
 import GuessForm from "../site-components/GuessForm";
 import {GameDetails} from "../site-components/GameDetails";
 import {AdSidebar} from "../site-components/AdSidebar";
-import {LoginMessage, TransactionMessage} from "../site-components/messages";
+import {
+    LoginMessage,
+    TransactionMessage,
+    OraclizeErrorMessage
+} from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/StartNewGame";
 
@@ -20,7 +24,8 @@ class Index extends Component {
         super();
 
         this.state = {
-            isHandlingTransaction: false
+            isHandlingTransaction: false,
+            oraclizeError: false
         };
 
         this.defaultGuess = (props.templateContract.lowValue + (
@@ -86,6 +91,30 @@ class Index extends Component {
         ) / 2).toFixed(0);
     };
 
+    handleStartNewGame = () => {
+        this.setState({isHandlingTransaction: true}, () => {
+            const startNewGameMethod = (this.state.oraclizeError)
+                ? this.props.templateContractRequest.startNewGameError
+                : this.props.templateContractRequest.startNewGame;
+
+            this.setState({oraclizeError: false}, () => {
+                return startNewGameMethod(this.props.metamaskAccount.address)
+                    .then(transaction =>
+                        Dispatcher.updateContracts(this.props.dispatch)
+                            .then(() => transaction)
+                    ).then(transaction => {
+                        if(!this.props.templateContract.randomNumberWasRetrieved){
+                            this.setState({oraclizeError: true});
+                        } else {
+                            Alerts.showNewGameCreated(transaction);
+                        }
+                    })
+                    .catch(this.handleTransactionError)
+                    .finally(() => this.setState({isHandlingTransaction: false}));
+            });
+        });
+    };
+
     render () {
         const {factoryContract, templateContract, metamaskAccount} = this.props;
         const isLoggedIntoMetamask = Object.keys(metamaskAccount).length > 0;
@@ -99,18 +128,14 @@ class Index extends Component {
                             Game Number {factoryContract.count}
                         </a>
                     </h2>
+                    {(this.state.oraclizeError) && (
+                        <OraclizeErrorMessage/>
+                    )}
                     {(this.gameIsOver()) ? (
                         <StartNewGame
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
-                            onClick={() => this.setState({isHandlingTransaction: true}, () => {
-                                this.props.templateContractRequest
-                                    .startNewGame(metamaskAccount.address)
-                                    .then(transaction => Alerts.showNewGameCreated(transaction))
-                                    .then(() => Dispatcher.updateContracts(this.props.dispatch))
-                                    .catch(this.handleTransactionError)
-                                    .finally(() => this.setState({isHandlingTransaction: false}));
-                            })}
+                            onClick={this.handleStartNewGame}
                         />
                     ) : (
                         <Fragment>

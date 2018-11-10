@@ -12,6 +12,22 @@ export const LoginMessage = () => {
     );
 };
 
+export const OraclizeErrorMessage = () => {
+    return (
+        <div className="wrapper-4">
+            <Message
+                className="message-danger text-left mb-15"
+                heading="Oraclize Error"
+                list={[
+                    "Unfortunately, we were unable to retrieve a random number from Oraclize " +
+                    "to start a new game.",
+                    "Please click on Start New Game to generate a new game and try again."
+                ]}
+            />
+        </div>
+    );
+};
+
 export const TransactionMessage = (props) => {
     return (
         <div className="wrapper-4">

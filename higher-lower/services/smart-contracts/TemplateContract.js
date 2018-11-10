@@ -18,7 +18,8 @@ class TemplateContract extends Contract {
             this.getLastGuessAddress(),
             this.getGameEndTime(),
             this.getGuessedCorrectly(),
-            this.getCorrectNumber()
+            this.getCorrectNumber(),
+            this.randomNumberWasRetrieved()
         ]).then(this.arrayToObject);
     };
 
@@ -32,6 +33,15 @@ class TemplateContract extends Contract {
 
     startNewGame = async (address) => {
         return this.methods.startNewGame().send({from: address});
+    };
+
+    startNewGameError = async (address) => {
+        return this.methods.startNewGameError().send({from: address});
+    };
+
+    randomNumberWasRetrieved = async () => {
+        return this.methods.randomNumberRetrieved().call()
+            .then(randomNumberRetrieved => ({randomNumberRetrieved}));
     };
 
     getCorrectNumber = async () => {

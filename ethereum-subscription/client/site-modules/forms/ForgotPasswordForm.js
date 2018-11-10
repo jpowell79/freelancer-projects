@@ -4,7 +4,6 @@ import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
 import email from "../../../services/api/email";
 import {getErrorString} from "../../services/utils";
-import {Message} from "semantic-ui-react";
 
 class ForgotPasswordForm extends Component {
     static fields = [{
@@ -37,7 +36,7 @@ class ForgotPasswordForm extends Component {
             <Fragment>
                 <p>
                     Enter your username and we will send you a link to reset your password to
-                    the email address associated with your user.
+                    the associated email address.
                 </p>
                 {this.props.renderMessages()}
                 <FormList

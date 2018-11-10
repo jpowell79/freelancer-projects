@@ -88,23 +88,25 @@ class Countdown extends React.Component {
             },
             isOver = this.isTimeOver();
 
-        return <div className={classNames("countdown", this.props.className)}>
-            {Object.keys(this.state.diff).map(key => <div
-                key={key}
-                className={classNames(`countdown-${key}`, this.props.slotClassName)}>
-                {Array(2).fill(0).map((_, i) => <Flipper
-                    key={`${key}${i}`}
-                    reverse
-                    className={this.props.cardsClassName}
-                    cardClassName={this.props.cardClassName}
-                    sidesWrapClassName={this.props.sidesWrapClassName}
-                    sideClassName={this.props.sideClassName}
-                    numClassName={this.props.numClassName}
-                    now={!isOver ? +this.getFormattedVal(this.state.diff[key])[i] : 0}
-                    min={forks[key][i][0]}
-                    max={forks[key][i][1]}/>)}
-            </div>)}
-        </div>;
+        return (
+            <div className={classNames("countdown", this.props.className)}>
+                {Object.keys(this.state.diff).map(key => <div
+                    key={key}
+                    className={classNames(`countdown-${key}`, this.props.slotClassName)}>
+                    {Array(2).fill(0).map((_, i) => <Flipper
+                        key={`${key}${i}`}
+                        reverse
+                        className={this.props.cardsClassName}
+                        cardClassName={this.props.cardClassName}
+                        sidesWrapClassName={this.props.sidesWrapClassName}
+                        sideClassName={this.props.sideClassName}
+                        numClassName={this.props.numClassName}
+                        now={!isOver ? +this.getFormattedVal(this.state.diff[key])[i] : 0}
+                        min={forks[key][i][0]}
+                        max={forks[key][i][1]}/>)}
+                </div>)}
+            </div>
+        );
     }
 };
 

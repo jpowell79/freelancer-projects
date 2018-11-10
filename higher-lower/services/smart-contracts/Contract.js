@@ -1,9 +1,16 @@
 import Web3 from "./Web3";
 
 class Contract {
+    static instances = [];
+
     constructor(abi, contract){
         this.web3 = Web3.getInstance();
-        this.contract = new this.web3.eth.Contract(abi, contract);
+
+        if(!Contract.instances[contract]){
+            Contract.instances[contract] = new this.web3.eth.Contract(abi, contract);
+        }
+
+        this.contract = Contract.instances[contract];
         this.methods = this.contract.methods;
     }
 
