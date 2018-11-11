@@ -58,6 +58,12 @@ class PositiveIntegerInput extends Component {
             let {lowestDigit, highestDigit} = this.props;
             let keyPressed = parseFloat(event.target.value);
 
+            if(event.target.value.startsWith('0') && event.target.value.length > 1){
+                if(!event.target.value.startsWith("0.")){
+                    return this.props.onIncorrectInput(event);
+                }
+            }
+
             if(isNaN(keyPressed)){
                 this.props.onIncorrectInput(event);
                 return;

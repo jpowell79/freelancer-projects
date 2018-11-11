@@ -74,17 +74,13 @@ class GuessForm extends Component {
 
 
     render(){
-        const {
-            lowValue,
-            highValue
-        } = this.props;
+        const {highValue} = this.props;
 
         return (
             <Fragment>
                 <div className="input-with-button divider-2">
                     <PositiveIntegerInput
                         className={(this.state.formInvalid) ? "invalid" : ""}
-                        lowestDigit={lowValue}
                         highestDigit={highValue}
                         disabled={this.state.isHandlingGuess}
                         value={this.state.guess}
