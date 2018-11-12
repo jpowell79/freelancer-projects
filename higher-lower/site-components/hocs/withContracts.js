@@ -29,7 +29,7 @@ export default (PageComponent) => {
             );
         }
 
-        addContractUpdateTimer = (duration = 8000) => {
+        addContractUpdateTimer = (duration = 3000) => {
             this.timer = setInterval(() => {
                 return Dispatcher.updateContracts(this.props.dispatch);
             }, duration);
