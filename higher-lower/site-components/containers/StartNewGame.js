@@ -2,14 +2,23 @@ import React, {Fragment} from "react";
 import {Message} from "../../components/containers/Message";
 import {Address} from "../Address";
 import {LoginMessage, OraclizeErrorMessage} from "../messages";
+import {Button} from "../../components/Button";
 
-export const StartNewGame = ({oraclizeError, gameWinner, metamaskAddress, onClick}) =>{
+export const StartNewGame = ({
+    oraclizeError,
+    startingGame,
+    gameWinner,
+    metamaskAddress,
+    onClick
+}) =>{
     const startNewGameButton = (title) =>{
         return (
-            <button
-                className="button-primary"
+            <Button
+                loading={startingGame}
+                disabled={startingGame}
+                className="primary"
                 onClick={onClick}
-            >{title}</button>
+            >{title}</Button>
         );
     };
 

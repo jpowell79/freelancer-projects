@@ -1,45 +1,109 @@
+/*----------------------------------------
+ * Buttons
+ *----------------------------------------*/
 .button {
     display: inline-block;
+    position: relative;
     cursor: pointer;
     outline: 0;
     border: none;
     padding: 10px 15px;
+    border-radius: 5px;
+	
+	&:focus {
+	    outline: none;
+	}
 
     &:disabled {
         cursor: not-allowed;
     }
+
+    &.message {
+        border: none;
+    }
+
+    &.loading {
+        content: "";
+        cursor: not-allowed;
+        color: transparent!important;
+        user-select: none;
+
+        &:after {
+            position: absolute;
+            left: calc(50% - (1em / 2));
+            top: calc(50% - (1em / 2));
+            animation: loader-spin .5s infinite linear;
+            border: 2px solid #FFF;
+            border-radius: 100%;
+            border-right-color: transparent;
+            border-top-color: transparent;
+            content: "";
+            display: block;
+            height: 1em;
+            width: 1em;
+        }
+    }
+
+    @include standardHoverEffect();
 }
 
 @each $name, $color in $darkColors {
-    .button-#{$name}{
-        @extend .button;
+    .button.#{$name}{
         background-color: $color;
-        color: $white;
+        color: #FFF;
 
         &:disabled {
-            background-color: lighten($color, 5%);
+            background-color: lighten($color, 25%);
         }
 
-        &.inverted {
+        &:hover:not(:disabled):not(.loading):not(.message) {
+            background-color: darken($color, 8%);
+            color: #FFF;
+        }
+
+        &.message {
+            border: none;
+        }
+
+        &.outlined {
             background-color: rgba(0, 0, 0, 0);
             border: 2px solid $color;
             color: $color;
             font-weight: bold;
             @include standardHoverEffect();
 
-            &:hover {
+            &.loading {
+                content: "";
+                cursor: not-allowed;
+                color: transparent;
+
+                &:after {
+                    border: 2px solid $color;
+                    border-right-color: transparent;
+                    border-top-color: transparent;
+                }
+            }
+
+            &:hover:not(:disabled):not(.loading) {
                 background-color: $color;
-                color: $white;
+                color: #FFF;
+            }
+
+            &:disabled {
+                border: 2px solid lighten($color, 25%);
+                color: lighten($color, 25%);
             }
         }
     }
 }
 
 @each $name, $color in $lightColors {
-    .button-#{$name}{
-        @extend .button;
+    .button.#{$name}{
         background-color: $color;
-        color: $black;
+
+        &:not(.loading):not(.message){
+            color: #000;
+        }
 
         &:disabled {
             background-color: darken($color, .5);

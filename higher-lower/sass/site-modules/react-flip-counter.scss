@@ -1,0 +1,35 @@
+@media (max-width: $mediaSmall) {
+    $scale: 0.75;
+
+    .cards {
+        height: 100px * $scale;
+        width: 70px * $scale;
+    }
+
+    .side-num {
+        font-size: 100px * $scale;
+        height: 50px * $scale;
+    }
+
+    .sides {
+        height: 50px * $scale;
+    }
+
+    .card {
+        perspective: 500px * $scale;
+    }
+
+    .card, .front, .back {
+        width: 70px * $scale;
+        height: 50px * $scale;
+    }
+
+    .countdown-days:after, .countdown-hours:after, .countdown-minutes:after {
+        line-height: 95px * $scale;
+        font-size: 60px * $scale;
+    }
+
+    .back .side-num {
+        margin-top: -50px * $scale;
+    }
+}

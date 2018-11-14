@@ -20,7 +20,7 @@ class Countdown extends React.Component {
      * Create second interval
      */
     componentDidMount(){
-        this.interval = window.setInterval(() =>{
+        this.interval = setInterval(() =>{
             this.setState({diff: this.getDiffObject()});
             this.isTimeOver() && this.stopCount();
 
@@ -51,7 +51,9 @@ class Countdown extends React.Component {
      * Destroy second interval
      */
     componentWillUnmount(){
-        window.clearInterval(this.interval);
+        if(this.interval){
+            clearInterval(this.interval);
+        }
     }
 
     /**
@@ -59,7 +61,7 @@ class Countdown extends React.Component {
      * @return {Object} formatted value
      */
     getDiffObject(){
-        var ms = Math.abs(this.props.stop.getTime() - (new Date()).getTime()),
+        let ms = Math.abs(this.props.stop.getTime() - (new Date()).getTime()),
             s = Math.floor(ms / 1000),
             m = Math.floor(s / 60),
             h = Math.floor(m / 60),

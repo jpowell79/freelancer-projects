@@ -1,9 +1,9 @@
 import React, {Component, Fragment} from "react";
 import PositiveIntegerInput from "../../components/PositiveIntegerInput";
-import {LoaderTiny} from "../../components/icons";
 import PropTypes from "prop-types";
 import {Message} from "../../components/containers/Message";
 import {TransactionMessage} from "../messages";
+import {Button} from "../../components/Button";
 
 class GuessForm extends Component {
     static propTypes = {
@@ -94,15 +94,16 @@ class GuessForm extends Component {
                             });
                         }}
                     />
-                    <button
-                        className="button-secondary"
+                    <Button
+                        className="secondary"
+                        loading={this.state.isHandlingGuess}
+                        disabled={this.state.isHandlingGuess}
                         onClick={() => {
                             this.setState({isHandlingGuess: true}, () => {
                                 this.handleGuess();
                             });
                         }}
-                        disabled={this.state.isHandlingGuess}
-                    >{(this.state.isHandlingGuess) ? <LoaderTiny/> : "Guess"}</button>
+                    >Guess</Button>
                 </div>
                 <div className="wrapper-4">
                     {this.renderMessage()}

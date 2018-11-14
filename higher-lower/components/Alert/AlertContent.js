@@ -107,7 +107,7 @@ class AlertContent extends Component {
                         {(showCancel)
                             ? <button
                                 id={cancelButtonId}
-                                className="button-secondary"
+                                className="button secondary"
                                 disabled={this.state.disabled}
                                 onClick={(event) => {
                                     (onCancel !== undefined)
@@ -117,7 +117,7 @@ class AlertContent extends Component {
                             : null}
                         <button
                             id={confirmButtonId}
-                            className="button-primary"
+                            className="button secondary"
                             autoFocus
                             disabled={this.state.disabled}
                             onClick={(event) => {

@@ -4,6 +4,7 @@ import TemplateContract from "../../services/smart-contracts/TemplateContract";
 import {getChildProps} from "../../services/utils";
 import {connect} from "react-redux";
 import Dispatcher from "../../services/Dispatcher";
+import settings from "../../settings";
 
 export default (PageComponent) => {
     class ContractFetcher extends Component {
@@ -29,10 +30,10 @@ export default (PageComponent) => {
             );
         }
 
-        addContractUpdateTimer = (duration = 3000) => {
+        addContractUpdateTimer = () => {
             this.timer = setInterval(() => {
                 return Dispatcher.updateContracts(this.props.dispatch);
-            }, duration);
+            }, settings.contractUpdateInterval.seconds * 1000);
         };
 
         componentWillUnmount(){

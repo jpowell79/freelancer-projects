@@ -1,5 +1,6 @@
 import React from "react";
 import {Message} from "../components/containers/Message";
+import settings from "../settings";
 
 export const LoginMessage = () => {
     return (
@@ -11,6 +12,14 @@ export const LoginMessage = () => {
         </Message>
     );
 };
+
+export const RandomNumberWaitMessage = () => (
+    <Message
+        className="message-danger text-left mb-15"
+        heading="Waiting for contract to update."
+        list={[`This could take up to ${settings.randomNumberWaitTime / 1000} seconds`]}
+    />
+);
 
 export const OraclizeErrorMessage = () => {
     return (

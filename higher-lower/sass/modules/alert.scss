@@ -10,6 +10,7 @@
 
 body.alert-rendered {
     overflow: hidden;
+    min-height: 100vh;
 }
 
 .alert {
@@ -33,7 +34,8 @@ body.alert-rendered {
         max-width: 100%;
         border-radius: 10px;
         z-index: 1001;
-        transition: .3s ease-out;
+        transition: transform .2s ease-out;
+        will-change: transform;
 
         &.alert-visible {
             transform: scale(1);
@@ -98,8 +100,9 @@ body.alert-rendered {
         padding: 1em;
         opacity: 0;
         background-color: rgba(0,0,0,.85);
-        transition: .3s ease-out;
+        transition: opacity .3s linear;
         z-index: 1000;
+        will-change: opacity;
 
         &.alert-visible {
             opacity: 1;

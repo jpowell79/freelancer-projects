@@ -90,3 +90,9 @@
         }
     }
 }
+
+@media (max-width: $mediaSmall) {
+    #page {
+        padding: 0;
+    }
+}

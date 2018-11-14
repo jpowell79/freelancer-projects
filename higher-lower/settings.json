@@ -1,5 +1,15 @@
 {
   "masterContract": "0xA6695A539337B3F12C1b88868BB4151EFe99dEf8",
   "httpProvider": "https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv",
-  "etherscanUrl": "https://kovan.etherscan.io"
+  "etherscanUrl": "https://kovan.etherscan.io",
+  "contractUpdateInterval": {
+    "seconds": 3
+  },
+  "randomNumberWaitTime": {
+    "seconds": 10
+  },
+  "dangerModeStartTime": {
+    "minutes": 2,
+    "seconds": 0
+  }
 }

@@ -14,7 +14,8 @@ import {GameDetails} from "../site-components/containers/GameDetails";
 import {AdSidebar} from "../site-components/images/AdSidebar";
 import {
     LoginMessage,
-    TransactionMessage
+    TransactionMessage,
+    RandomNumberWaitMessage
 } from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/containers/StartNewGame";
@@ -28,19 +29,26 @@ class Index extends Component {
 
         this.state = {
             isHandlingTransaction: false,
-            oraclizeError: !props.templateContract.randomNumberRetrieved
+            isWaitingForRandomNumber: false
         };
 
         this.defaultGuess = (props.templateContract.lowValue + (
             props.templateContract.highValue - props.templateContract.lowValue - 1
         ) / 2).toFixed(0);
+
+        this.dangerModeStartTime = settings.dangerModeStartTime.minutes * 60000 +
+            settings.dangerModeStartTime.seconds * 1000;
     }
 
     componentDidMount(){
         this.props.addContractUpdateTimer();
     }
 
-
+    componentWillUnmount(){
+        if(this.timer){
+            clearInterval(this.timer);
+        }
+    }
 
     timerIsStopped = () => {
         return Date.now() > this.props.templateContract.gameEndTime;
@@ -88,7 +96,8 @@ class Index extends Component {
             templateContract.nextGuess > 1 &&
             templateContract.gameEndTime > 0 &&
             Date.now() > templateContract.gameEndTime
-        ) || templateContract.guessedCorrectly || this.state.oraclizeError;
+        ) || templateContract.guessedCorrectly || !templateContract.randomNumberRetrieved ||
+            this.state.isWaitingForRandomNumber;
     };
 
     calcDefaultGuess = () => {
@@ -97,10 +106,29 @@ class Index extends Component {
         ) / 2).toFixed(0);
     };
 
+    waitForRandomNumber = () => {
+        this.setState({isWaitingForRandomNumber: true}, () => {
+            let tries = 0;
+            let maxTries = settings.randomNumberWaitTime.seconds;
+            this.timer = setInterval(() => {
+                tries++;
+                Dispatcher.updateContracts(this.props.dispatch);
+
+                if(this.props.templateContract.randomNumberRetrieved){
+                    this.setState({isWaitingForRandomNumber: false});
+                    clearInterval(timer);
+                } else if(tries >= maxTries){
+                    this.setState({isWaitingForRandomNumber: false});
+                    clearInterval(timer);
+                }
+            }, 1000);
+        });
+    };
+
     handleStartNewGame = () => {
         this.props.dispatch(turnOffDangerMode());
         this.setState({isHandlingTransaction: true}, () => {
-            const startNewGameMethod = (this.state.oraclizeError)
+            const startNewGameMethod = (!this.props.templateContract.randomNumberRetrieved)
                 ? this.props.templateContractRequest.startNewGameError
                 : this.props.templateContractRequest.startNewGame;
 
@@ -108,11 +136,11 @@ class Index extends Component {
                 .then(transaction =>
                     Dispatcher.updateContracts(this.props.dispatch).then(() => transaction)
                 ).then(transaction => {
-                    this.setState({
-                        oraclizeError: !this.props.templateContract.randomNumberRetrieved
-                    });
-
                     Alerts.showNewGameCreated(transaction);
+
+                    if(!this.props.templateContract.randomNumberRetrieved){
+                        this.waitForRandomNumber();
+                    }
                 })
                 .catch(this.handleTransactionError)
                 .finally(() => this.setState({isHandlingTransaction: false}));
@@ -134,7 +162,8 @@ class Index extends Component {
                     </h2>
                     {(this.gameIsOver()) ? (
                         <StartNewGame
-                            oraclizeError={this.state.oraclizeError}
+                            oraclizeError={!this.props.templateContract.randomNumberRetrieved}
+                            startingGame={this.state.isHandlingTransaction}
                             metamaskAddress={metamaskAccount.address}
                             gameWinner={templateContract.lastGuessAddress}
                             onClick={this.handleStartNewGame}
@@ -147,7 +176,7 @@ class Index extends Component {
                                 counterIsStopped={this.timerIsStopped()}
                                 onCounterStop={this.handleGameOver}
                                 hasNotified={this.props.dangerMode || this.timerIsStopped()}
-                                notifyAt={1000 * 60 * 2}
+                                notifyAt={this.dangerModeStartTime}
                                 notify={() => this.props.dispatch(turnOnDangerMode())}
                             />
                             {(!isLoggedIntoMetamask) ? (
@@ -162,6 +191,9 @@ class Index extends Component {
                                 />
                             )}
                         </Fragment>
+                    )}
+                    {this.state.isWaitingForRandomNumber && (
+                        <RandomNumberWaitMessage/>
                     )}
                     {(this.state.isHandlingTransaction) && (
                         <TransactionMessage/>
