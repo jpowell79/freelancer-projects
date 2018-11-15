@@ -16,6 +16,22 @@ const TransactionHash = ({transaction}) => {
 };
 
 class Alerts {
+    static showOraclizeError(transaction){
+        return AlertOptionPane.showErrorAlert({
+            title: "Oraclize Error",
+            titleIcon: null,
+            htmlMessage: (
+                <div>
+                    <p>
+                        Unfortunately, we were unable to retrieve a random number from Oraclize
+                        to start a new game.
+                    </p>
+                    <TransactionHash transaction={transaction}/>
+                </div>
+            )
+        });
+    }
+
     static showNewGameCreated(transaction){
         return AlertOptionPane.showSuccessAlert({
             title: "You have started a new game!",
@@ -26,7 +42,7 @@ class Alerts {
                     <TransactionHash transaction={transaction}/>
                 </div>
             )
-        })
+        });
     }
 
     static showGuessResults(transaction, templateContract, guess){

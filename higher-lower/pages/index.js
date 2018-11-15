@@ -105,24 +105,20 @@ class Index extends Component {
         ) / 2).toFixed(0);
     };
 
-    waitForRandomNumber = () => {
-        this.setState({isWaitingForRandomNumber: true}, () => {
-            let tries = 0;
-            let maxTries = settings.randomNumberWaitTime.seconds;
-            this.timer = setInterval(() => {
-                tries++;
-                Dispatcher.updateContracts(this.props.dispatch);
+    waitForRandomNumber = async () => new Promise(resolve => {
+        let tries = 0;
+        let maxTries = settings.randomNumberWaitTime.seconds;
+        this.timer = setInterval(() => {
+            tries++;
+            Dispatcher.updateContracts(this.props.dispatch);
 
-                if(this.props.templateContract.randomNumberRetrieved){
-                    this.setState({isWaitingForRandomNumber: false});
-                    clearInterval(this.timer);
-                } else if(tries >= maxTries){
-                    this.setState({isWaitingForRandomNumber: false});
-                    clearInterval(this.timer);
-                }
-            }, 1000);
-        });
-    };
+            if(this.props.templateContract.randomNumberRetrieved || tries >= maxTries){
+                this.setState({isWaitingForRandomNumber: false});
+                resolve(clearInterval(this.timer));
+            }
+        }, 1000);
+    });
+
 
     handleStartNewGame = () => {
         this.props.dispatch(turnOffDangerMode());
@@ -132,15 +128,13 @@ class Index extends Component {
                 : this.props.templateContractRequest.startNewGame;
 
             return startNewGameMethod(this.props.metamaskAccount.address)
-                .then(transaction =>
-                    Dispatcher.updateContracts(this.props.dispatch).then(() => transaction)
-                ).then(transaction => {
-                    Alerts.showNewGameCreated(transaction);
-
-                    if(!this.props.templateContract.randomNumberRetrieved){
-                        this.waitForRandomNumber();
-                    }
-                })
+                .then(transaction => {
+                    this.setState({isWaitingForRandomNumber: true});
+                    return Dispatcher.updateContracts(this.props.dispatch).then(() => transaction);
+                }).then(transaction => this.waitForRandomNumber().then(() => transaction))
+                .then(transaction => (this.props.templateContract.randomNumberRetrieved)
+                    ? Alerts.showNewGameCreated(transaction)
+                    : Alerts.showOraclizeError(transaction))
                 .catch(this.handleTransactionError)
                 .finally(() => this.setState({isHandlingTransaction: false}));
         });
@@ -192,7 +186,7 @@ class Index extends Component {
                             )}
                         </Fragment>
                     )}
-                    {(this.state.isHandlingTransaction) && (
+                    {(this.state.isHandlingTransaction && !this.state.isWaitingForRandomNumber) && (
                         <TransactionMessage/>
                     )}
                 </div>
