@@ -115,10 +115,10 @@ class Index extends Component {
 
                 if(this.props.templateContract.randomNumberRetrieved){
                     this.setState({isWaitingForRandomNumber: false});
-                    clearInterval(timer);
+                    clearInterval(this.timer);
                 } else if(tries >= maxTries){
                     this.setState({isWaitingForRandomNumber: false});
-                    clearInterval(timer);
+                    clearInterval(this.timer);
                 }
             }, 1000);
         });

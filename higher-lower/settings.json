@@ -6,7 +6,7 @@
     "seconds": 3
   },
   "randomNumberWaitTime": {
-    "seconds": 10
+    "seconds": 20
   },
   "dangerModeStartTime": {
     "minutes": 2,
