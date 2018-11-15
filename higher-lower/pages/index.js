@@ -14,8 +14,7 @@ import {GameDetails} from "../site-components/containers/GameDetails";
 import {AdSidebar} from "../site-components/images/AdSidebar";
 import {
     LoginMessage,
-    TransactionMessage,
-    RandomNumberWaitMessage
+    TransactionMessage
 } from "../site-components/messages";
 import settings from "../settings";
 import {StartNewGame} from "../site-components/containers/StartNewGame";
@@ -162,6 +161,7 @@ class Index extends Component {
                     </h2>
                     {(this.gameIsOver()) ? (
                         <StartNewGame
+                            isWaitingForRandomNumber={this.state.isWaitingForRandomNumber}
                             oraclizeError={!this.props.templateContract.randomNumberRetrieved}
                             startingGame={this.state.isHandlingTransaction}
                             metamaskAddress={metamaskAccount.address}
@@ -191,9 +191,6 @@ class Index extends Component {
                                 />
                             )}
                         </Fragment>
-                    )}
-                    {this.state.isWaitingForRandomNumber && (
-                        <RandomNumberWaitMessage/>
                     )}
                     {(this.state.isHandlingTransaction) && (
                         <TransactionMessage/>

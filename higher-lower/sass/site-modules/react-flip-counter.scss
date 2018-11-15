@@ -24,7 +24,10 @@
         height: 50px * $scale;
     }
 
-    .countdown-days:after, .countdown-hours:after, .countdown-minutes:after {
+    .countdown-seconds:after,
+    .countdown-days:after,
+    .countdown-hours:after,
+    .countdown-minutes:after {
         line-height: 95px * $scale;
         font-size: 60px * $scale;
     }

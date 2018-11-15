@@ -14,11 +14,13 @@ export const LoginMessage = () => {
 };
 
 export const RandomNumberWaitMessage = () => (
-    <Message
-        className="message-danger text-left mb-15"
-        heading="Waiting for contract to update."
-        list={[`This could take up to ${settings.randomNumberWaitTime / 1000} seconds`]}
-    />
+    <div className="wrapper-4">
+        <Message
+            className="message-info text-left mb-15"
+            heading="Waiting for contract to update."
+            list={[`This could take up to ${settings.randomNumberWaitTime.seconds} seconds`]}
+        />
+    </div>
 );
 
 export const OraclizeErrorMessage = () => {

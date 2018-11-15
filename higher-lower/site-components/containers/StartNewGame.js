@@ -1,10 +1,11 @@
 import React, {Fragment} from "react";
 import {Message} from "../../components/containers/Message";
 import {Address} from "../Address";
-import {LoginMessage, OraclizeErrorMessage} from "../messages";
+import {LoginMessage, OraclizeErrorMessage, RandomNumberWaitMessage} from "../messages";
 import {Button} from "../../components/Button";
 
 export const StartNewGame = ({
+    isWaitingForRandomNumber,
     oraclizeError,
     startingGame,
     gameWinner,
@@ -14,7 +15,7 @@ export const StartNewGame = ({
     const startNewGameButton = (title) =>{
         return (
             <Button
-                loading={startingGame}
+                loading={startingGame || isWaitingForRandomNumber}
                 disabled={startingGame}
                 className="primary"
                 onClick={onClick}
@@ -22,7 +23,14 @@ export const StartNewGame = ({
         );
     };
 
-    if(oraclizeError){
+    if(isWaitingForRandomNumber){
+        return (
+            <Fragment>
+                <RandomNumberWaitMessage/>
+                {startNewGameButton("Start New Game")}
+            </Fragment>
+        );
+    } else if(oraclizeError){
         return (
             <Fragment>
                 <OraclizeErrorMessage/>
