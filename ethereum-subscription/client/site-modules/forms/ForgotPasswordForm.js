@@ -2,18 +2,28 @@ import React, {Component, Fragment} from "react";
 import FormList from "../../containers/FormList";
 import {LoaderTiny} from "../../modules/icons";
 import withMessage from "../../hocs/withMessage";
-import email from "../../../services/api/email";
+import emailApi from "../../../services/api/email";
 import {getErrorString} from "../../services/utils";
+import {Checkbox} from "semantic-ui-react";
 
 class ForgotPasswordForm extends Component {
-    static fields = [{
+    state = {
+        showEmailField: false
+    };
+
+    static usernameField = [{
         type: "username",
         label: "Username:"
     }];
 
-    handleSubmit = ({username}) => {
+    static emailField = [{
+        type: "email",
+        label: "Email:"
+    }];
+
+    handleSubmit = ({username, email}) => {
         return this.props.setClearedMessageState({isLoading: true})
-            .then(() => email.sendRestorePasswordMail({username}))
+            .then(() => emailApi.sendRestorePasswordMail({username, email}))
             .then(() => {
                 return this.props.setMessageState({
                     isLoading: false,
@@ -31,7 +41,13 @@ class ForgotPasswordForm extends Component {
             });
     };
 
+    toggleShowEmailField = () => this.setState((prevState) => ({
+        showEmailField: !prevState.showEmailField
+    }));
+
     render(){
+        const {showEmailField} = this.state;
+
         return (
             <Fragment>
                 <p>
@@ -39,13 +55,21 @@ class ForgotPasswordForm extends Component {
                     the associated email address.
                 </p>
                 {this.props.renderMessages()}
-                <FormList
-                    onSubmit={this.handleSubmit}
-                    disabled={this.props.messageState.isLoading || this.props.messageState.complete}
-                    fields={ForgotPasswordForm.fields}
-                    submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Restore password"}
-                    buttonChildren={this.props.children}
-                />
+                <div key={this.state.showEmailField}>
+                    <FormList
+                        onSubmit={this.handleSubmit}
+                        disabled={this.props.messageState.isLoading || this.props.messageState.complete}
+                        fields={(showEmailField) ? ForgotPasswordForm.emailField : ForgotPasswordForm.usernameField}
+                        submitButtonHtml={this.props.messageState.isLoading ? <LoaderTiny/> : "Restore password"}
+                        buttonChildren={this.props.children}
+                    >
+                        <Checkbox
+                            label='I want to enter my email instead'
+                            checked={this.state.showEmailField}
+                            onChange={this.toggleShowEmailField}
+                        />
+                    </FormList>
+                </div>
             </Fragment>
         );
     }

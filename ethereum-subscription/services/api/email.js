@@ -1,8 +1,8 @@
 const axios = require("axios");
 const {urls, mailTypes} = require("../constants");
 
-const sendRestorePasswordMail = async ({username}) => {
-    return axios.post(`${urls.email}/${mailTypes.restorePassword}`, {username});
+const sendRestorePasswordMail = async ({username, email}) => {
+    return axios.post(`${urls.email}/${mailTypes.restorePassword}`, {username, email});
 };
 
 const sendSubscriptionCancelledMails = async ({

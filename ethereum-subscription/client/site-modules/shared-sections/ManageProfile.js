@@ -56,8 +56,12 @@ class ManageProfile extends Component {
             showSuccess: true,
             isLoading: false
         })).catch(err => {
-            const error = getErrorString(err);
-            console.log(error);
+            console.error(err);
+
+            let error = getErrorString(err);
+            error = (error === "The given contract already exists")
+                ? "A user with the given email already exists"
+                : error;
 
             return this.props.setMessageState({
                 errors: [(error.includes("Sequelize") ? "Username already exists" : error)],
@@ -67,8 +71,6 @@ class ManageProfile extends Component {
     };
 
     render(){
-        console.log(this.props);
-
         const columns = (this.props.user.role === roles.admin) ? 1 : 2;
 
         return (

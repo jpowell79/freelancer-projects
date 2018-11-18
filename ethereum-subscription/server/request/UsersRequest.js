@@ -6,7 +6,7 @@ const passwordHash = require("password-hash");
 const Emailer = require("../services/email/Emailer");
 const FieldValidator = require("../../services/FieldValidator");
 const grecaptcha = require("../services/grecaptcha");
-const {Transaction} = require("sequelize");
+const {Transaction, Op} = require("sequelize");
 
 class UsersRequest extends Request {
     static filterUsers(userEntries){
@@ -233,6 +233,18 @@ class UsersRequest extends Request {
         }).catch(err => this.responseHandler.sendSomethingWentWrong(err));
     };
 
+    checkIfUserExists(user){
+        if(!user) return;
+
+        const {username, email} = this.req.body;
+
+        if(user.email === email)
+            throw new Error("A user with the given email already exists");
+        if(user.username === username){
+            throw new Error("The username already exists.");
+        }
+    }
+
     async registerTempUser(){
         const {
             username,
@@ -249,11 +261,15 @@ class UsersRequest extends Request {
                 if(!recaptchaValidation.success)
                     throw new Error("The reCAPTCHA could not be verified.");
 
-                return this.sequelize.models.users.findOne({where: {username}});
+                return this.sequelize.models.users.findOne({
+                    where: {
+                        [Op.or]: [{username}, {email}]
+                    }
+                });
             })
             .then(userRes => {
-                if (userRes !== null || username === this.req.session.tempUser.username)
-                    throw new Error("The username already exists.");
+                this.checkIfUserExists(userRes);
+                this.checkIfUserExists(this.req.session.tempUser);
 
                 cookieSession.saveTempUser(this.req, {
                     username,

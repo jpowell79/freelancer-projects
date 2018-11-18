@@ -310,8 +310,7 @@ class Emailer {
         }));
     }
 
-    async sendRestorePasswordMail(email, uuid){
-        const {username} = this.req.body;
+    async sendRestorePasswordMail({username, email}, uuid){
         const fullUrl = this.getFullUrl(this.req.originalUrl);
         const restoreLink = `${fullUrl}/${uuid}`;
 

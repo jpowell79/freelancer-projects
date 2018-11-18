@@ -3,6 +3,7 @@ const {mailTypes, paths} = require("../../services/constants");
 const Emailer = require("../services/email/Emailer");
 const cookieSession = require("../services/cookieSession");
 const uuidv4 = require("uuid/v4");
+const {Op} = require("sequelize");
 
 const adminMailTypes = [
     mailTypes.massMailSuppliers
@@ -35,10 +36,14 @@ class EmailRequest extends Request {
     }
 
     async getUser(){
-        const {username} = this.req.body;
+        const {username, email} = this.req.body;
 
         return this.sequelize.models.users
-            .findOne({where: {username}})
+            .findOne({
+                where: {
+                    [Op.or]: {username, email}
+                }
+            })
             .then(userRes => {
                 if(!userRes)
                     throw new Error("The user does not exist");
@@ -91,10 +96,8 @@ class EmailRequest extends Request {
                 .handlePromiseResponse(this.getUser()
                     .then(user => {
                         const uuid = uuidv4();
-                        console.log(user);
                         cookieSession.saveTempUser(this.req, user, uuid);
-                        console.log('tempUser', this.req.session.tempUser);
-                        return this.emailer.sendRestorePasswordMail(user.email, uuid);
+                        return this.emailer.sendRestorePasswordMail(user, uuid);
                     })
                 );
         default:
