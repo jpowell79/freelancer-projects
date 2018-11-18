@@ -1,5 +1,5 @@
 const weiToEth = (wei) => {
-    return parseFloat((wei / 1000000000000000000).toFixed(4));
+    return parseFloat((wei / 1000000000000000000).toFixed(5));
 };
 
 const isNumber = (string) => {

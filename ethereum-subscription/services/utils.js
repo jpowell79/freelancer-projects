@@ -35,7 +35,7 @@ module.exports.ethToWei = (eth) => {
     return eth * 1000000000000000000;
 };
 
-module.exports.weiToEth = (wei, decimals = 3) => {
+module.exports.weiToEth = (wei, decimals = 5) => {
     return round(wei/1000000000000000000, decimals);
 };
 
