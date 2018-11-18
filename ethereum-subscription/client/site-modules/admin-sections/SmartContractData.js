@@ -194,7 +194,7 @@ class SmartContractData extends Component {
                                 ),
                                 timestamp: (
                                     <td className={hideOnTablet()}>
-                                        <Moment unixTime={contract.creationTime}/>
+                                        <Moment unixTime={contract.contractCreation}/>
                                     </td>
                                 ),
                                 subscriptionName: <td>{contract.subscriptionName}</td>
