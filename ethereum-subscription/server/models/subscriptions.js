@@ -24,6 +24,11 @@ module.exports = (sequelize) => (
                 key: "id"
             }
         },
+        hasSentRefundEmail: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+            defaultValue: false
+        },
         transactionHash: {
             type: DataTypes.STRING,
             allowNull: false,

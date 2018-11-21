@@ -38,6 +38,7 @@ const logout = () => {
 describe("Rest API", () => {
     it(`Should return status code of 200 when making GET requests to gettable urls.`, () => {
         const gettableUrls = [
+            urls.host,
             urls.users,
             urls.sessions,
             urls.settings,
@@ -51,6 +52,7 @@ describe("Rest API", () => {
             .then(app => Promise.all(gettableUrls.map(url => request(app).get(url))))
             .then(responses => {
                 responses.forEach(response => {
+                    console.log(response.text);
                     expect(response.status).to.be.equal(200);
                 });
             });
@@ -62,19 +64,6 @@ describe("Rest API", () => {
                 .then(app => request(app).post(`${urls.subscriptionTypes}`)
                     .send({name: "Foo"}))
                 .then(checkUnauthorized);
-        });
-    });
-
-    describe(urls.subscriptions, () => {
-        it("Should create subscription", () => {
-            return setupOrGetMockApp()
-                .then(app => request(app).post(`${urls.subscriptions}`)
-                    .send({
-                        subscriberAddress: "0x18b3806bF06EDFDE1F57FD55B802f62259F90d8F",
-                        contractAddress: mocks.subscription.contractAddress,
-                        transactionHash: mocks.subscription.transactionHash
-                    }))
-                .then(checkSuccess);
         });
     });
 
@@ -151,66 +140,6 @@ describe("Rest API", () => {
                 .then(checkUnauthorized)
                 .then(logout);
         });
-
-        /*
-        it("Should not be able to create setting with existing name.", () => {
-            return setupOrGetMockApp()
-                .then(loginAsAdmin)
-                .then(() => request(global.app).post(urls.settings).send({
-                    name: mocks.setting.name,
-                    value: true
-                }))
-                .then(checkBadRequest)
-                .then(logout);
-        });
-
-        it("Should create setting with unique name.", () => {
-            return setupOrGetMockApp()
-                .then(loginAsAdmin)
-                .then(() => request(global.app).post(urls.settings).send({
-                    name: "UniqueSetting",
-                    value: true
-                }))
-                .then(checkSuccess)
-                .then(logout);
-        });
-
-        it("Should not update unexisting setting", () => {
-            return setupOrGetMockApp()
-                .then(loginAsAdmin)
-                .then(() => request(global.app).post(urls.settings).send({
-                    name: "AnotherUnexistingSetting",
-                    value: false,
-                    update: true
-                }))
-                .then(checkNotExists)
-                .then(logout);
-        });
-
-        it("Should update existing setting with update true", () => {
-            return setupOrGetMockApp()
-                .then(loginAsAdmin)
-                .then(() => request(global.app).post(urls.settings).send({
-                    name: "AnotherSetting",
-                    value: false
-                }))
-                .then(() => request(global.app).get(`${urls.settings}/AnotherSetting`))
-                .then(response => {
-                    expect(response.body.value).to.be.equal("0");
-
-                    return request(global.app).post(urls.settings).send({
-                        name: "AnotherSetting",
-                        value: true,
-                        update: true
-                    });
-                })
-                .then(() => request(global.app).get(`${urls.settings}/AnotherSetting`))
-                .then(response => {
-                    expect(response.body.value).to.be.equal("1");
-                })
-                .then(logout);
-        });
-        */
     });
 
     describe(`${urls.email}`, () => {

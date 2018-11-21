@@ -26,11 +26,17 @@ nextApp.prepare()
 
         app.listen(PORT, serverSettings.HOST, () => {
             console.log("You can now view the client in the browser.");
-            console.log(`${"Local:".padEnd(17)} http://${serverSettings.HOST}:${PORT}/`);
+            console.log(
+                `${"Local:".padEnd(17)} ` +
+                `${serverSettings.PROTOCOL}://${serverSettings.HOST}:${PORT}/`
+            );
 
             if(PROXY !== null){
                 app.listen(PORT, PROXY, () => {
-                    console.log(`${"On Your Network:".padEnd(17)} http://${PROXY}:${PORT}/\n`);
+                    console.log(
+                        `${"On Your Network:".padEnd(17)} ` +
+                        `${serverSettings.PROTOCOL}://${PROXY}:${PORT}/\n`
+                    );
                     log.apiPoints();
                     log.endOfSection();
                 });

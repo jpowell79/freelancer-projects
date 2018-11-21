@@ -14,7 +14,12 @@ module.exports = (sequelize) => {
         .then(() => sequelize.query(`DELETE FROM users`))
         .then(() => sequelize.models.users.create(mocks.user))
         .then(() => sequelize.models.users.create(mocks.admin))
-        .then(() => sequelize.models.settings.create(mocks.setting))
+        .then(() => Promise.all(Object.keys(mocks.settings).map(key => {
+            return sequelize.models.settings.create({
+                name: key,
+                value: mocks.settings[key]
+            });
+        })))
         .then(() => sequelize.models.subscriptionTypes.create(mocks.subscriptionType))
         .then(() => sequelize.models.subscribers.create(mocks.subscriber))
         .then(() => subscriptionContracts.create(mocks.subscriptionContract))

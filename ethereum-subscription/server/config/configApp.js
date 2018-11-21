@@ -7,6 +7,9 @@ const csrf = require("csurf");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const serverSettings = require("../serverSettings");
+const RefundDaemon = require("../services/RefundDaemon");
+const Web3 = require("../../services/smart-contracts/Web3");
+const log = require("../services/log");
 
 const addPlugins = (app) => {
     app.set("json spaces", 4);
@@ -63,12 +66,35 @@ const addRoutes = (app, nextApp, sequelize) => {
     app.get("*", nextApp.getRequestHandler());
 };
 
-module.exports = (nextApp, sequelize) => {
+const initializeWeb3 = async (sequelize) => {
+    return sequelize.models.settings.findOne({
+        where: {name: "httpProvider"}
+    }).then(setting => setting.dataValues.value)
+        .then(httpProvider => {
+            global.web3 = new Web3(httpProvider);
+        });
+};
+
+const addDaemons = (sequelize) => {
+    if(serverSettings.REFUND_DAEMON_SETTINGS.enabled){
+        log.sectionTitle("Starting RefundDaemon");
+        new RefundDaemon(serverSettings.REFUND_DAEMON_SETTINGS, sequelize).start();
+        console.log("RefundDaemon started successfully!");
+        console.log(
+            `It will run every ${serverSettings.REFUND_DAEMON_SETTINGS.interval.minutes} minutes`
+        );
+        log.endOfSection();
+    }
+};
+
+module.exports = async (nextApp, sequelize) => {
     const app = express();
 
     addPlugins(app);
     addMiddleware(app);
     addRoutes(app, nextApp, sequelize);
+    addDaemons(sequelize);
+    await initializeWeb3(sequelize);
 
     return app;
 };

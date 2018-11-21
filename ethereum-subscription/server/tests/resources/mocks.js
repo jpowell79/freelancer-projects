@@ -15,11 +15,12 @@ module.exports.user = {
 };
 
 module.exports.subscriber = {
-    walletAddress: "0xB736a9bACC8855531AeF429735D477D4b5A4D208"
+    walletAddress: "0xB736a9bACC8855531AeF429735D477D4b5A4D208",
+    email: "foo@example.com"
 };
 
 module.exports.subscription = {
-    contractAddress: "0x3cbc16e2c379a1584ec821ac5720511ddbf355e0",
+    contractAddress: "0x807bf1433e7c3d9ee6b72a3b5dbe2cd05d3764e9",
     subscriberAddress: "0xB736a9bACC8855531AeF429735D477D4b5A4D208",
     transactionHash: "0xB736a9bACC8855531AeF429735D477D4b5A4D208"
 };
@@ -29,10 +30,15 @@ module.exports.subscriptionType = {
 };
 
 module.exports.subscriptionContract = {
-    address: "0x3cbc16e2c379a1584ec821ac5720511ddbf355e0",
+    address: "0x807bf1433e7c3d9ee6b72a3b5dbe2cd05d3764e9",
     ownerUsername: "Foobar",
     typeName: "FooType",
     details: "Random details"
+};
+
+module.exports.settings = {
+    FooColor: "#FF0000",
+    httpProvider: "https://kovan.infura.io/1Vql2txeV5cLgGiNaSXv",
 };
 
 module.exports.setting = {

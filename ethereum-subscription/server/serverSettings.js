@@ -3,6 +3,7 @@
  *------------------------------------------------------------*/
 module.exports.DEFAULT_PORT = 3000;
 module.exports.NEXT_DIR = "./client";
+module.exports.PROTOCOL = "http";
 module.exports.HOST = "localhost";
 
 /*------------------------------------------------------------
@@ -17,6 +18,26 @@ module.exports.COOKIE_NAME = "session";
  * Upload Options
  *------------------------------------------------------------*/
 module.exports.MAX_UPLOAD_SIZE = "50mb";
+
+
+/*------------------------------------------------------------
+ * Refund Daemon
+ *------------------------------------------------------------
+ * Runs in the background with a specified interval and
+ * checks for any subscription which has been inactive for more
+ * than a certain amount of hours. For each subscription it
+ * will send an email about a refund being available to the
+ * subscriber and supplier if it haven't done so already.
+ *------------------------------------------------------------*/
+module.exports.REFUND_DAEMON_SETTINGS = {
+    enabled: true,
+    interval: {
+        minutes: 15
+    },
+    refundSubscriptionsOlderThan: {
+        hours: 24
+    }
+};
 
 
 /*------------------------------------------------------------

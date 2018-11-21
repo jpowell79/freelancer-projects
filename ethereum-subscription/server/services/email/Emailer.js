@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const url = require("url");
 const {roles, paths} = require("../../../services/constants/index");
 const escapeHtml = require("html-escape");
 const serverSettings = require("../../serverSettings");
@@ -7,7 +6,7 @@ const {emailContentStart, emailContentEnd} = require('./emailStyles');
 const etherscan = require("../../../services/api/etherscan");
 
 class Emailer {
-    constructor(req){
+    constructor(req = null){
         this.req = req;
         this.smtpTransport = nodemailer.createTransport(serverSettings.NODEMAILER_TRANSPORT);
     }
@@ -310,6 +309,59 @@ class Emailer {
         }));
     }
 
+    async sendRefundAvailableMails({subscriberEmail, supplierEmail, contractAddress}){
+        const fullUrl = this.getFullUrl(paths.pages.subscriptionInfo);
+        const subscriptionLink = `${fullUrl}?address=${contractAddress}`;
+
+        return this.sendMail({
+            to: subscriberEmail,
+            subject: `[Ethereum Subscription] Your subscription is still inactive`,
+            html: (
+                `${emailContentStart}
+                    <p>
+                        It appears that the subscription supplier has not yet activated your ` +
+                        `subscription. Please note that you can now make a request for an ` +
+                        `immediate full refund of your Eth from the subscription smart contract ` +
+                        `by visiting this <a href="${subscriptionLink}">page</a>
+                    </p>
+                    <p>
+                        Please ensure you are logged into Metamask or a web3 wallet with ` +
+                        `the same Ethereum wallet address that you used to deposit the Eth, ` +
+                        `and simply click on the “Cancel Subscription” button.
+                    </p>
+                    <p>
+                        If you prefer to give the supplier a little more time, you can hold ` +
+                        `off clicking on the “Cancel Subscription” button for a little longer, ` +
+                        `but this decision is up to you. If you visit the page and find the ` +
+                        `subscription is now active, it probably means that the supplier has ` +
+                        `reacted immediately to the warning email we just issued to him/her!
+                    </p>
+                    <p>If you have any questions, please don’t hesitate to email us.</p>
+                ${emailContentEnd}`
+            )
+        }).then(() => this.sendMail({
+            to: supplierEmail,
+            subject: `[Ethereum Subscription] Your subscription is still inactive`,
+            html: (
+                `${emailContentStart}
+                    <p>
+                        Please note that 24 hours have now elapsed since the subscriber made a ` +
+                        `purchase of your subscription, and the subscription has not been ` +
+                        `activated on our website. 
+                    </p>
+                    <p>
+                        The subscriber has now been informed that they can make a request for ` +
+                        `a full refund of Ether deposited to this account at any time they wish.
+                    </p>
+                    <p>
+                        If you haven’t done so already, please login to your control panel ` +
+                        `and activate the subscription before the supplier changes his/her mind.
+                    </p>
+                ${emailContentEnd}`
+            )
+        }));
+    }
+
     async sendRestorePasswordMail({username, email}, uuid){
         const fullUrl = this.getFullUrl(this.req.originalUrl);
         const restoreLink = `${fullUrl}/${uuid}`;
@@ -331,11 +383,9 @@ class Emailer {
     }
 
     getFullUrl(pathname){
-        return url.format({
-            protocol: this.req.protocol,
-            host: this.req.get("host"),
-            pathname
-        });
+        const port = (isDevelopment()) ? `:${serverSettings.DEFAULT_PORT}` : "";
+
+        return `${serverSettings.PROTOCOL}://${serverSettings.HOST}${port}${pathname}`;
     }
 }
 

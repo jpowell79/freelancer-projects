@@ -5,7 +5,7 @@ let instance = null;
 
 class CustomWeb3 extends web3 {
     static getInstance(provider){
-        if(isServer()) return instance;
+        if(isServer()) return (instance) ? instance : global.web3;
 
         if(!instance){
             instance = new CustomWeb3((provider) ? provider : window.web3.currentProvider);

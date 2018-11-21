@@ -21,10 +21,8 @@ module.exports = async () => {
                 global.sequelize = sequelize;
                 return loadTestDatabase(sequelize);
             })
-            .then(() => {
-                const server = configApp(mockApp, global.sequelize);
-                return server.listen(testSettings.PORT);
-            })
+            .then(() => configApp(mockApp, global.sequelize))
+            .then(server => server.listen(testSettings.PORT))
             .then(app => {
                 global.app = app;
                 return app;
