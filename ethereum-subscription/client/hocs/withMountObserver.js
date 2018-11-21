@@ -7,7 +7,11 @@ export default (PageComponent) => {
             return await getChildProps(PageComponent, appContext);
         }
 
-        isMounted = true;
+        isMounted = false;
+
+        componentDidMount(){
+            this.isMounted = true;
+        }
 
         componentWillUnmount(){
             this.isMounted = false;

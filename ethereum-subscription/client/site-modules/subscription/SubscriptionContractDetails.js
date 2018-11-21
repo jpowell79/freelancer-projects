@@ -25,6 +25,22 @@ export const SubscriptionContractDetails = ({
     subscriptionLengthInWeeks,
     ...contract
 }) => {
+    const showSubscribeButton = () => (
+        !isSubscriber && !isOwner &&
+        !subscriptionActive && !trialActive &&
+        !subscriptionCancelled
+    );
+
+    const showCancelButton = () => (
+        (isSubscriber || isOwner) &&
+        (subscriptionActive || trialActive) &&
+        !subscriptionCancelled
+    );
+
+    const showWaitingForActivation = () => (
+        !subscriptionActive && !trialActive && isSubscriber && !subscriptionCancelled
+    );
+
     return (
         <div className="wrapper-2">
             <div className="text-center">
@@ -73,7 +89,7 @@ export const SubscriptionContractDetails = ({
                 </Fragment>
             )}
             {(isSubscriber || isOwner) && (
-                <div>
+                <div className="mt-30">
                     {(subscriptionActive) && (
                         <SubscriptionDetails
                             {...contract}
@@ -83,8 +99,8 @@ export const SubscriptionContractDetails = ({
                     {(trialActive) && (
                         <TrialSubscriptionDetails {...contract}/>
                     )}
-                    {(!subscriptionActive && !trialActive && isSubscriber) && (
-                        <div className="wrapper-4 mt-30">
+                    {(showWaitingForActivation()) && (
+                        <div className="wrapper-4">
                             <Message
                                 info
                                 header="Waiting for supplier to activate your subscription"
@@ -103,12 +119,12 @@ export const SubscriptionContractDetails = ({
                 </div>
             )}
             <div className="text-center divider-2">
-                {(!isSubscriber && !isOwner && !subscriptionActive && !trialActive) && (
+                {showSubscribeButton() && (
                     <button className="ui huge primary button" onClick={onSubscribe}>
                         Subscribe
                     </button>
                 )}
-                {((isSubscriber || isOwner) && (subscriptionActive || trialActive)) && (
+                {showCancelButton() && (
                     <button
                         className="ui huge bg-color-uiRed color-white button"
                         onClick={onCancelSubscription}
