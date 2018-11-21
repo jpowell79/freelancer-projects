@@ -1,9 +1,10 @@
-import React from "react";
+import React, {Fragment} from "react";
 import {ProviderRating} from "../ProviderRating";
 import {Grid} from "semantic-ui-react";
 import {weiToEth} from "../../../services/utils";
 import {SubscriptionDetails} from "./SubscriptionDetails";
 import {TrialSubscriptionDetails} from "./TrialSubscriptionDetails";
+import strings from "../../../services/datatypes/strings";
 
 export const SubscriptionContractDetails = ({
     subscriptionName,
@@ -65,8 +66,12 @@ export const SubscriptionContractDetails = ({
                     </Grid>
                 </div>
             </div>
-            <h2>Details:</h2>
-            <p className="text">{details}</p>
+            {(strings.isDefined(details)) && (
+                <Fragment>
+                    <h2>Details:</h2>
+                    <p className="text">{details}</p>
+                </Fragment>
+            )}
             {(isSubscriber || isOwner) && (
                 <div>
                     {(subscriptionActive) && (
