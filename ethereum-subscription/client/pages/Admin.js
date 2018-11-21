@@ -15,6 +15,7 @@ import AddContract from "../site-modules/admin-sections/AddContract";
 import SmartContractData from "../site-modules/admin-sections/SmartContractData";
 import AddContractType from "../site-modules/admin-sections/AddContractType";
 import DatabaseBackup from "../site-modules/admin-sections/DatabaseBackup";
+import Ethereum from "../site-modules/admin-sections/Ethereum";
 import ManageProfile from "../site-modules/shared-sections/ManageProfile";
 import {
     AMOUNT_OF_DUMMY_SUBSCRIPTION_DATA_TO_GENERATE,
@@ -38,7 +39,8 @@ class Admin extends Component {
         homepage: "Homepage",
         smartContract: "Smart Contract Data",
         siteIdentity: "Site Identity",
-        manageProfile: "Manage Your Profile"
+        manageProfile: "Manage Your Profile",
+        ethereum: "Ethereum"
     };
 
     constructor(props){
@@ -75,7 +77,8 @@ class Admin extends Component {
             homepage,
             smartContract,
             siteIdentity,
-            manageProfile
+            manageProfile,
+            ethereum
         } = Admin.sections;
 
         switch(objects.values(Admin.sections)[active]){
@@ -99,6 +102,8 @@ class Admin extends Component {
             return <SiteIdentity {...this.props}/>;
         case manageProfile:
             return <ManageProfile {...this.props}/>;
+        case ethereum:
+            return <Ethereum {...this.props}/>;
         default:
             return null;
         }

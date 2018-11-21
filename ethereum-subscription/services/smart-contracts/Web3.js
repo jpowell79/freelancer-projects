@@ -31,11 +31,15 @@ class CustomWeb3 extends web3 {
     };
 
     onMetamaskUpdate(callback){
-        this.currentProvider.publicConfigStore.on("update", callback);
+        if(callback){
+            this.currentProvider.publicConfigStore.on("update", callback);
+        }
     };
 
     unsubscribeToMetmaskUpdate(callback){
-        this.currentProvider.publicConfigStore.unsubscribe(callback);
+        if(callback){
+            this.currentProvider.publicConfigStore.unsubscribe(callback);
+        }
     };
 
     fetchAccountAddress(){

@@ -30,7 +30,7 @@ module.exports.MAX_UPLOAD_SIZE = "50mb";
  * subscriber and supplier if it haven't done so already.
  *------------------------------------------------------------*/
 module.exports.REFUND_DAEMON_SETTINGS = {
-    enabled: true,
+    enabled: false,
     interval: {
         minutes: 15
     },

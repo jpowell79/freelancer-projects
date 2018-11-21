@@ -170,7 +170,7 @@ class SmartContractData extends Component {
                                         Timestamp:
                                     </th>
                                 ),
-                                subscriptionName: <th>Contract Name:</th>
+                                subscriptionName: <th key="contractName">Contract Name:</th>
                             }}
                         />
                         <SubscriptionTableBody
@@ -193,11 +193,15 @@ class SmartContractData extends Component {
                                     </td>
                                 ),
                                 timestamp: (
-                                    <td className={hideOnTablet()}>
+                                    <td key="timestamp" className={hideOnTablet()}>
                                         <Moment unixTime={contract.contractCreation}/>
                                     </td>
                                 ),
-                                subscriptionName: <td>{contract.subscriptionName}</td>
+                                subscriptionName: (
+                                    <td key="subscriptionName">
+                                        {contract.subscriptionName}
+                                    </td>
+                                )
                             })}
                         />
                     </SubscriptionTable>

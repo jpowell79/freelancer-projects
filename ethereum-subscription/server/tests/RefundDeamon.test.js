@@ -42,8 +42,6 @@ describe("RefundDaemon", () => {
                 console.log(refundContracts);
                 return refundDaemon.setHasSentRefundEmail(refundContracts);
             }).then(() => refundDaemon.findNotRefundedSubscriptionsOlderThan(0))
-            .then(oldSubscriptions => expect(oldSubscriptions.length).to.be.equal(0))
-            .then(() => refundDaemon.getHost())
-            .then(console.log);
+            .then(oldSubscriptions => expect(oldSubscriptions.length).to.be.equal(0));
     }).timeout(1000 * 60);
 });
