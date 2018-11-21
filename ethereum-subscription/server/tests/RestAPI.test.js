@@ -38,7 +38,6 @@ const logout = () => {
 describe("Rest API", () => {
     it(`Should return status code of 200 when making GET requests to gettable urls.`, () => {
         const gettableUrls = [
-            urls.host,
             urls.users,
             urls.sessions,
             urls.settings,

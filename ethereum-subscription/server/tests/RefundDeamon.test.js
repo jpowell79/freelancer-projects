@@ -12,7 +12,7 @@ describe("RefundDaemon", () => {
         }
     };
 
-    it("Should find subscriptions elible for refund", () => {
+    it("Should have correctly functioning find operations", () => {
         let subscriptions = [];
 
         return setupOrGetMockApp()
