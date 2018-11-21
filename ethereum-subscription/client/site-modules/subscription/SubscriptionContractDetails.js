@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import {ProviderRating} from "../ProviderRating";
-import {Grid} from "semantic-ui-react";
+import {Grid, Message} from "semantic-ui-react";
 import {weiToEth} from "../../../services/utils";
 import {SubscriptionDetails} from "./SubscriptionDetails";
 import {TrialSubscriptionDetails} from "./TrialSubscriptionDetails";
@@ -84,11 +84,21 @@ export const SubscriptionContractDetails = ({
                         <TrialSubscriptionDetails {...contract}/>
                     )}
                     {(!subscriptionActive && !trialActive && isSubscriber) && (
-                        <p className="text">
-                            Subscription information will appear here once the supplier activates
-                            the subscription. You will receive email notification once this step
-                            is complete. Please re-visit this page for your subscription details
-                        </p>
+                        <div className="wrapper-4 mt-30">
+                            <Message
+                                info
+                                header="Waiting for supplier to activate your subscription"
+                                list={[
+                                    ("Subscription information will appear here once the " +
+                                     "supplier activates your subscription. This could take up " +
+                                     "to 24 hours."),
+                                    ("You will receive an email notification once the supplier " +
+                                     "has activated your subscription."),
+                                    ("If the supplier does not activate the subscription within " +
+                                     "24 hours you will be eligible for a refund.")
+                                ]}
+                            />
+                        </div>
                     )}
                 </div>
             )}
