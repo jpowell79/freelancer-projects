@@ -24,18 +24,19 @@ nextApp.prepare()
 
         log.sectionTitle(`Starting Application`);
 
-        app.listen(PORT, serverSettings.HOST, () => {
+        app.listen(PORT, global.HOST, () => {
             console.log("You can now view the client in the browser.");
-            console.log(
-                `${"Local:".padEnd(17)} ` +
-                `${serverSettings.PROTOCOL}://${serverSettings.HOST}:${PORT}/`
+            console.log(`${"Local:".padEnd(17)}`,
+                (isDevelopment())
+                    ? `${global.PROTOCOL}://${global.HOST}:${PORT}/`
+                    : `${global.PROTOCOL}://${global.HOST}/`
             );
 
             if(PROXY !== null){
                 app.listen(PORT, PROXY, () => {
                     console.log(
                         `${"On Your Network:".padEnd(17)} ` +
-                        `${serverSettings.PROTOCOL}://${PROXY}:${PORT}/\n`
+                        `${global.PROTOCOL}://${PROXY}:${PORT}/\n`
                     );
                     log.apiPoints();
                     log.endOfSection();
