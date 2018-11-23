@@ -83,7 +83,7 @@ class EditContractForm extends Component {
             totalSubscriptionPrice,
             joiningFee,
             exitFee,
-            details
+            smallDetails
         } = this.props.contract;
 
         return (
@@ -113,7 +113,7 @@ class EditContractForm extends Component {
                         subscriptionPrice: totalSubscriptionPrice,
                         joinFee: joiningFee,
                         exitFee,
-                        subscriptionDetails: details
+                        subscriptionDetails: smallDetails
                     }}
                 />
             </Fragment>

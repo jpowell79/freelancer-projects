@@ -1,7 +1,6 @@
 const roles = require("../../../services/constants/roles");
 
 // const unusedContracts = [
-//     "0x807bf1433e7c3d9ee6b72a3b5dbe2cd05d3764e9",
 //     "0x3f35f7182821b75ccf76228ef2111c32bc537ef2"
 // ];
 

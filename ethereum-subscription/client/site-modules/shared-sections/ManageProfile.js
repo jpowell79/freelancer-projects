@@ -8,6 +8,7 @@ import withMessage from "../../hocs/withMessage";
 import {getErrorString} from "../../services/utils";
 import {Grid, Message} from "semantic-ui-react";
 import users from "../../../services/api/users";
+import strings from "../../../services/datatypes/strings";
 
 class ManageProfile extends Component {
     static mapStateToProps = ({user}) => ({user});
@@ -35,8 +36,6 @@ class ManageProfile extends Component {
     }
 
     handleSubmit = ({username, email, password}) => {
-        console.log("Submit");
-
         return this.props.setMessageState({
             errors: [],
             showSuccess: false,
@@ -97,7 +96,11 @@ class ManageProfile extends Component {
                         <div className="header mb-10">
                             Your wallet age is:
                         </div>
-                        <span className="h4">{this.props.user.walletAge}</span>
+                        <span className="h4">{
+                            (strings.isDefined(this.props.user.walletAge))
+                                ? this.props.user.walletAge
+                                : "Unavailable"
+                        }</span>
                         <hr className="ui divider"/>
                         <div className="header mb-10">
                             Your reputation is:

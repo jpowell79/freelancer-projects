@@ -34,16 +34,18 @@ class SubscriptionSections extends Component {
     };
 
     componentDidMount(){
-        const subscriptionContract = new SubscriptionContract({
-            web3: this.props.web3,
-            address: this.props.editContract.address
-        });
-
-        return new Dispatcher(this.props.dispatch)
-            .dispatchUpdateSubscriptionDetails({
-                subscriptionContract,
-                supplierAddress: this.props.user.walletAddress
+        if(this.props.web3){
+            const subscriptionContract = new SubscriptionContract({
+                web3: this.props.web3,
+                address: this.props.editContract.address
             });
+
+            return new Dispatcher(this.props.dispatch)
+                .dispatchUpdateSubscriptionDetails({
+                    subscriptionContract,
+                    supplierAddress: this.props.user.walletAddress
+                });
+        }
     }
 
     renderSection = () => {

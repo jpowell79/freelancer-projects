@@ -383,7 +383,7 @@ class Emailer {
     }
 
     getFullUrl(pathname){
-        const port = (isDevelopment()) ? `:${serverSettings.DEFAULT_PORT}` : "";
+        const port = (serverSettings.HOST === "localhost") ? `:${serverSettings.DEFAULT_PORT}` : "";
 
         return `${serverSettings.PROTOCOL}://${serverSettings.HOST}${port}${pathname}`;
     }
