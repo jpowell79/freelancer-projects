@@ -382,7 +382,7 @@ class Emailer {
     getFullUrl(pathname){
         return url.format({
             protocol: this.req.protocol,
-            host: this.req.get("host"),
+            host: global.isProduction() ? serverSettings.EMAIL_URL_HOST : this.req.get("host"),
             pathname
         });
     }
