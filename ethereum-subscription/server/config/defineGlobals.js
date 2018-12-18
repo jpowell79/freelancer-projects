@@ -1,15 +1,10 @@
-const settings = require("../serverSettings");
-
-global.isProduction = () => (
-    process.argv[2] === "production"
-);
+global.isProduction = () => process.env.NODE_ENV === "production";
 global.isDevelopment = () => (
-    process.argv[2] !== "production"
+    process.env.NODE_ENV !== "production" && process.env.NODE_ENV !== "test"
 );
+global.isTest = () => process.env.NODE_ENV === "test";
 global.createdDatabase = false;
 global.PROJECT_ROOT = require("path").normalize(__dirname + "/../..");
-global.HOST = (isDevelopment()) ? settings.DEV_HOST : settings.PRODUCTION_HOST;
-global.PROTOCOL = (isDevelopment()) ? settings.DEV_PROTOCOL : settings.PRODUCTION_PROTOCOL;
 
 String.prototype.padEnd = function padEnd(targetLength,padString) {
     targetLength = targetLength>>0;

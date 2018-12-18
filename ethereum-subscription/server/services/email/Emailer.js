@@ -4,6 +4,7 @@ const escapeHtml = require("html-escape");
 const serverSettings = require("../../serverSettings");
 const {emailContentStart, emailContentEnd} = require('./emailStyles');
 const etherscan = require("../../../services/api/etherscan");
+const url = require("url");
 
 class Emailer {
     constructor(req = null){
@@ -309,10 +310,7 @@ class Emailer {
         }));
     }
 
-    async sendRefundAvailableMails({subscriberEmail, supplierEmail, contractAddress}){
-        const fullUrl = this.getFullUrl(paths.pages.subscriptionInfo);
-        const subscriptionLink = `${fullUrl}?address=${contractAddress}`;
-
+    async sendRefundAvailableMails({subscriberEmail, supplierEmail}){
         return this.sendMail({
             to: subscriberEmail,
             subject: `[Ethereum Subscription] Your subscription is still inactive`,
@@ -321,9 +319,8 @@ class Emailer {
                     <p>
                         It appears that the subscription supplier has not yet activated your ` +
                         `subscription. Please note that you can now make a request for an ` +
-                        `immediate full refund of your Eth from the subscription smart contract ` +
-                        `by visiting this <a href="${subscriptionLink}">page</a>
-                    </p>
+                        `immediate full refund of your Eth from the subscription smart contract.` +
+                   `</p>
                     <p>
                         Please ensure you are logged into Metamask or a web3 wallet with ` +
                         `the same Ethereum wallet address that you used to deposit the Eth, ` +
@@ -383,9 +380,11 @@ class Emailer {
     }
 
     getFullUrl(pathname){
-        const port = (global.HOST === "localhost") ? `:${serverSettings.DEFAULT_PORT}` : "";
-
-        return `${global.PROTOCOL}://${global.HOST}${port}${pathname}`;
+        return url.format({
+            protocol: this.req.protocol,
+            host: this.req.get("host"),
+            pathname
+        });
     }
 }
 

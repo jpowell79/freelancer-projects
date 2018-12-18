@@ -1,4 +1,3 @@
-module.exports.HOST = "localhost";
 module.exports.PORT = 3300;
 
 /*----------------------------------------

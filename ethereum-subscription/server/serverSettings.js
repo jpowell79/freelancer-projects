@@ -1,12 +1,8 @@
 /*------------------------------------------------------------
  * Server Options
  *------------------------------------------------------------*/
-module.exports.DEFAULT_PORT = 3000;
+module.exports.DEFAULT_PORT = 3001;
 module.exports.NEXT_DIR = "./client";
-module.exports.DEV_PROTOCOL = "http";
-module.exports.DEV_HOST = "localhost";
-module.exports.PRODUCTION_PROTOCOL = "https";
-module.exports.PRODUCTION_HOST = "myethersub.com";
 
 /*------------------------------------------------------------
  * Cookie Options
